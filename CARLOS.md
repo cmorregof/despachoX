@@ -54,4 +54,11 @@ Los criterios 3 y 5 (30 puntos) siguen en cero, y dependen de personas.
 - [ ] **Un usuario real** (Banco de Alimentos, Cruz Roja, Defensa Civil o gestión del riesgo). Nombre y cargo: ______
 - [ ] Mostrarle el bot y el tablero en vivo a ese usuario. Una frase suya vale más que cualquier función.
 
+## Tarea 5 · Lo que salió de la mentoría 1 (viernes, 5:10 p. m.)
+
+- [ ] Que tu sesión B-despacho ejecute la parte B de `encargos/T1_TERRITORIO.md`: `despacho/territorio.py`, la tabla por comuna y vereda.
+- [ ] Decidir si `FACTOR_CRITICO` pasa de 1 a 3, como propone la simulación en el canal (16:57). Fable recomienda que sí.
+- [ ] Hablar hoy con un usuario real usando el guion de `docs/MENTORIA_1.md`. Al Banco de Alimentos, una pregunta más: en un día normal, ¿reparten ustedes o las organizaciones recogen en la bodega?
+- [ ] Cerrar con Fable el diseño del piloto de 30 a 90 días para la recuperación del territorio.
+
 ## Notas y bloqueos

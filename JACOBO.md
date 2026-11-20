@@ -44,4 +44,9 @@ Diseño completo en `docs/SIN_CONEXION.md`. Pídeselo a tu sesión de Claude Cod
 - [ ] Ensaya la «Versión de 75 segundos» de `docs/GUION_DEMO.md` hasta hacer los clics sin mirar.
 - [ ] Esta noche, con los datos recién reiniciados, graba la pantalla haciendo esa versión. Súbela a la carpeta de Drive. Enlace: ______
 
+## Tarea 5 · Pestaña «Territorio» (mentoría 1)
+
+- [ ] Pídele a tu Claude Code la parte C de `encargos/T1_TERRITORIO.md`: una pestaña con la tabla por comuna y vereda y la lista de barrios sin pedidos. Puede empezar antes de que exista `despacho/territorio.py`; mientras tanto, la pestaña dice «Pendiente».
+- [ ] Va después de la etapa 1 de C2 (lo que rompe la demo) y antes del mapa sin internet.
+
 ## Notas y bloqueos

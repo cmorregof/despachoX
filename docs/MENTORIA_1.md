@@ -1,0 +1,57 @@
+# Mentoría 1 · viernes 20 de noviembre de 2026
+
+Lo anotó Fable, el coordinador, a partir de lo que contó Carlos al salir de la mentoría (5:02 y 5:04 p. m.). Los mentores son de Bogotá y no conocen la región, así que el contexto regional lo tenemos que poner nosotros.
+
+## Lo que dijeron
+
+- La palabra clave es **recuperación del territorio**. La solución no puede ser solo tecnología: también son personas y territorio. La idea es que nos recuperemos como territorio.
+- Hay que vender el piloto de 30 a 90 días como un piloto para la recuperación del territorio.
+- Enfocarse en el porqué y en para qué sirve.
+- Decir a qué personas impacta y a quién le sirve.
+- ¿Hay algo parecido? Si lo hay, ¿por qué no se usa en Manizales o en la región? ¿Por qué fallan las otras soluciones en la ciudad y en la región?
+- ¿Cuál es el prototipo funcional que va a poder medir el efecto de la solución para la región?
+- No importa que la solución cambie. Hay que enamorarse del problema para que la solución le sirva a todos y a la región.
+
+## Lo que pide la hackathon para el piloto
+
+La página oficial describe el entregable como «Prueba real en territorio» y anuncia pilotos de campo «con entidades aliadas y comunidades del Eje Cafetero». La pregunta central del evento es cómo acelerar la recuperación de Manizales y del Eje Cafetero después del sismo. El piloto, entonces, ocurre en la fase de recuperación.
+
+## Lo que se decidió (Carlos, 5:10 p. m.)
+
+1. Dos agentes de investigación más, con entrega hacia las 8:00 p. m. Uno trabaja alternativas, por qué no se usan aquí, quién usaría la solución y el marco oficial de la recuperación (`docs/investigacion/10_problema_usuarios_alternativas.md`). El otro reúne lo que dijeron en público los actores de Manizales en redes, prensa e informes de gestión (`docs/investigacion/11_voz_publica_actores.md`).
+2. Un informe de contexto regional en LaTeX que crece durante la noche: `docs/informe/`. La versión 0.1 llega hacia las 6:30 p. m.
+3. Una vista por territorio en el prototipo, antes del congelamiento del sábado a las 8:30 a. m.: `encargos/T1_TERRITORIO.md`.
+
+## En discusión: el piloto
+
+Carlos preguntó cómo funciona el piloto, y cómo se mide su efecto, si la calamidad fue en agosto. La propuesta del coordinador es llevar DespachoX a la operación diaria de un aliado, por ejemplo el Banco de Alimentos, en un territorio con nombre. El efecto se mediría con cuatro instrumentos:
+
+1. La operación diaria contra su propia línea base: dos semanas registrando cómo se despacha hoy, después el sistema en sombra y luego asistiendo.
+2. Un simulacro con la Unidad de Gestión del Riesgo, con un cierre planeado y vehículos reales.
+3. Los cierres reales de la temporada de lluvias, si ocurren dentro de los 90 días.
+4. La reconstrucción de los despachos de agosto, si el aliado entrega los registros, más la simulación calibrada con datos públicos.
+
+Falta un dato que cambia el diseño: si el Banco de Alimentos reparte en vehículos en un día normal o si las organizaciones recogen en su bodega.
+
+## Lo que hay que poder responder el sábado
+
+| Pregunta | Dónde se trabaja |
+|---|---|
+| ¿Por qué hacemos esto y para qué sirve? | Ficha, componente 1; informe de contexto, secciones 2 y 3 |
+| ¿A quién le sirve y a quién impacta? | Ficha, componentes 1 y 6; investigaciones 10 y 11 |
+| ¿Hay algo parecido y por qué no se usa aquí? | `docs/ESTADO_DEL_ARTE.md`; investigación 10 |
+| ¿Qué prototipo mide el efecto en la región? | Tablero, encargo T1 y `docs/SIMULACION.md` |
+| ¿Cómo es el piloto para la recuperación del territorio? | Ficha, componente 4 |
+
+## Guion de cinco minutos para hablar con un usuario real
+
+1. En agosto, ¿cómo decidían qué ayuda salía, a qué barrio o vereda y en qué vehículo? ¿Quién decidía y con qué: cuaderno, Excel, WhatsApp o algún programa?
+2. ¿Cómo les llegaban los pedidos? ¿Qué se perdía: pedidos repetidos, barrios o veredas que nunca pidieron?
+3. ¿Cómo se enteraban de una vía cerrada, y cuánto tardaban?
+4. ¿Se dañó o se venció comida? ¿Más o menos cuánta, y por qué?
+5. ¿Usaron alguna plataforma (de ABACO, la Alcaldía, la UNGRD u otra)? ¿Por qué sí o por qué no?
+6. Si mañana hay otro derrumbe grande, ¿qué les haría más falta?
+7. ¿Quién de su equipo usaría algo así, y en qué momento del día?
+8. ¿Podemos citarlo mañana con nombre y cargo? ¿Nos recibirían para un piloto de 30 a 90 días?
+
+Anoten nombre, cargo, entidad y hora. Con un líder de junta de acción comunal, cambien la 1 y la 7: cómo pidieron, si les llegó la ayuda y cómo se enteraron. Al Banco de Alimentos háganle una pregunta más: en un día normal, ¿reparten ustedes o las organizaciones recogen en la bodega?

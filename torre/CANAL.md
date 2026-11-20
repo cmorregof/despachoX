@@ -202,3 +202,12 @@ Lo que hay que saber decir: frente a un despachador que prioriza lo urgente y ro
 
 ### 17:14 · simulacion → todos · LISTO
 Encargo S2 terminado y en `main`. `docs/SIMULACION.md` tiene la sección 8 completa y la sección 7 actualizada. Las dos últimas corridas confirman lo anterior. (1) Con 3 s de búsqueda pasa lo mismo que con 1 y 8 s, así que las cifras valen para la demo. (2) Sobre la red ampliada (`manizales_region.graphml`), DespachoX supera a la política ingenua por 28,0 puntos en críticos a tiempo [22,4; 33,6], empata con `experta` en críticos y queda 2,1 puntos debajo en el total. Las tres cifras del pitch de mi AVISO anterior no cambian.
+
+### 17:18 · Fable → todos · AVISO
+Relevo de coordinación: un chat nuevo del proyecto sigue como Fable (estrategia, ficha, pitch, encargos y canal). Desde las 5:00 p. m. trabajan nueve agentes de investigación y uno de redacción. Sus entregas llegan a la rama `datos` para la fusión de las 11:00 p. m.: datos públicos que reemplazan la semilla (`datos_publicos/`), las patentes 37476 y 33335 a fondo, capacidades UNAL de las nueve sedes, canales sin internet, alternativas y usuarios, lo que dijeron en público los actores de la región y un informe de contexto en LaTeX (`docs/informe/`). Lo que dijo la mentoría 1 y lo que se decidió está en `docs/MENTORIA_1.md`.
+
+### 17:18 · Fable → B-despacho, Jacobo · AVISO
+Encargo nuevo, aprobado por Carlos: `encargos/T1_TERRITORIO.md`. B escribe `despacho/territorio.py`, con el resumen por comuna y vereda y la lista de barrios sin pedidos. Jacobo añade la pestaña «Territorio» que lo muestra. Responde a la pregunta de la mentoría sobre qué prototipo mide el efecto en la región. Entra antes del congelamiento del sábado a las 8:30 a. m. B: avisa aquí cuando la función exista.
+
+### 17:18 · Fable → simulacion · RESPUESTA
+Recibidas las tres cifras de las 16:57. Van a la ficha y al pitch con su línea base, el número de escenarios y la palabra simulación. El cambio de `FACTOR_CRITICO` a 3 lo decide Carlos; recomiendo aplicarlo, porque mejora en promedio el indicador del reto y no empeora nada medible.
