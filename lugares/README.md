@@ -48,6 +48,21 @@ Probar a mano: `python -m lugares.nomenclator "por la panamericana" "la siria"`
 
 ## Límites conocidos
 
-- Si un sitio no está en el nomenclátor (hoy, La Siria), el sistema lo dice y pide un pin. No adivina.
+- Si un sitio no está en el nomenclátor, el sistema lo dice y pide un pin. No adivina. Hoy faltan, entre otros, la Galería, el kilómetro 41, los peajes, los túneles y viaductos, y las estaciones del cable: Nominatim no los devolvió y no se pusieron de memoria.
 - El acceso por tipo de vehículo no se decide aquí: lo calcula `despacho/matriz.py` cuando el punto ya tiene coordenadas.
-- Los umbrales de parecido se fijaron a ojo con una docena de frases. El encargo `B2` pide medirlos con un banco de frases.
+- Los apodos de `lugares_extra.csv` los escribió el equipo; no se han validado con habitantes. El uso los corrige (paso 6).
+
+## Medición (20 de noviembre de 2026)
+
+Banco de 44 frases escritas como en un chat (`lugares/tests/frases.csv`), sin modelo de lenguaje, con `UMBRAL_SEGURO = 0.90` y `MARGEN = 0.08`:
+
+| Resultado | Frases |
+|---|---|
+| Acierto seguro (propuso un solo lugar y era el correcto) | 30 |
+| Acierto por opciones (el correcto estaba entre las alternativas) | 5 |
+| «No sé» (9 de 9 eran lugares que no existen en el nomenclátor) | 9 |
+| Error seguro (propuso con seguridad un lugar equivocado) | 0 |
+
+Los umbrales no se cambiaron: ya daban cero errores seguros. El margen es el que protege: con `MARGEN = 0` aparece un error seguro («piedras en la carretera a villamaria» se iba al casco urbano de Villamaría y no a la vía). Repetir: `python -m lugares.tests.test_frases`.
+
+Límite de la medición: las frases las escribió el equipo conociendo el nomenclátor. No es una muestra de mensajes reales; sirve para vigilar que un cambio no introduzca errores seguros, y hay que repetirla con mensajes de usuarios.

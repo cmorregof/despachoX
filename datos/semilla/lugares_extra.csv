@@ -1,0 +1,101 @@
+nombre,alias,tipo,lat,lon,osm_u,osm_v,origen
+Panamericana,la pana|pana|carretera panamericana,via,5.048702,-75.505740,12714854352,12714854354,geocodificado
+avenida Kevin Ángel,la kevin|kevin angel|la kevin angel|avenida kevin,via,5.067601,-75.492619,323308582,581252254,geocodificado
+avenida Paralela,la paralela|paralela,via,5.062695,-75.498150,581162026,475479430,geocodificado
+avenida Santander,la santander|santander,via,5.062146,-75.493183,469620729,582617890,geocodificado
+autopista del Café,la autopista|autopista,via,4.996234,-75.601051,331597814,5175017515,geocodificado
+vía a Medellín,carretera a medellin|via medellin|salida a medellin,via,5.053207,-75.564843,6112066842,6112066902,geocodificado
+vía a Chinchiná,via chinchina|carretera a chinchina|salida a chinchina,via,5.045477,-75.529446,6103772493,5176808908,geocodificado
+vía a Villamaría,carretera a villamaria|via villamaria|salida a villamaria,via,5.049078,-75.504871,1124902367,581897103,geocodificado
+vía a Neira,carretera a neira|salida a neira|via neira,via,5.145969,-75.507447,3778590861,424707114,geocodificado
+salida a Letras,alto de letras|letras|via a letras|via al nevado del ruiz|via a bogota|salida a bogota,via,5.029824,-75.381086,7717401609,4869089814,geocodificado
+avenida del Centro,avenida gilberto alzate|la gilberto alzate|gilberto alzate avendano,via,5.070343,-75.516826,582617778,323215241,geocodificado
+avenida 12 de Octubre,la 12 de octubre|12 de octubre|doce de octubre,via,5.072663,-75.524975,315058045,8626983349,geocodificado
+avenida Alberto Mendoza,alberto mendoza|la alberto mendoza|avenida mendoza,via,5.042363,-75.475894,5434277067,581953384,geocodificado
+avenida Bernardo Arango,bernardo arango|la bernardo arango,via,5.074499,-75.520547,633020158,599158570,geocodificado
+carrera 19,la 19|cra 19,via,5.069965,-75.512238,323223406,323223405,geocodificado
+carrera 20,la 20|cra 20,via,5.066574,-75.497723,469847171,469846888,geocodificado
+carrera 21,la 21|cra 21,via,5.066607,-75.499616,7695799502,469847158,geocodificado
+carrera 22,la 22|cra 22,via,5.064712,-75.495778,469563959,469563919,geocodificado
+carrera 23,la 23|cra 23,via,5.067308,-75.512100,582637630,579611953,geocodificado
+carrera 24,la 24|cra 24,via,5.061640,-75.493923,469620728,13103222325,geocodificado
+carrera 27,la 27|cra 27,via,5.062429,-75.501531,323230235,315058392,geocodificado
+carrera 28,la 28|cra 28,via,5.063350,-75.508992,323227712,315059275,geocodificado
+calle 23,cll 23,via,5.064965,-75.516840,9456773447,321706079,geocodificado
+calle 48,cll 48,via,5.067999,-75.499273,4843968447,4843968445,geocodificado
+calle 50,cll 50,via,5.063768,-75.498301,309309758,469620715,geocodificado
+avenida Marcelino Palacio,marcelino palacio|la marcelino palacio,via,5.072693,-75.513282,1773543210,5427815248,geocodificado
+avenida Centenario,centenario avenida,via,5.056355,-75.530121,1165169401,9712550177,geocodificado
+avenida El Guamo,avenida guamo,via,5.073287,-75.491833,587376141,1129589436,geocodificado
+avenida La Sultana,la sultana avenida|avenida sultana,via,5.059606,-75.474743,6459943915,582618115,geocodificado
+avenida José Restrepo,jose restrepo|avenida restrepo,via,5.082863,-75.525483,7714151040,582683762,geocodificado
+avenida Las Araucarias,las araucarias|avenida araucarias,via,5.064966,-75.502860,581161335,332338554,geocodificado
+avenida Lindsay,la lindsay|lindsay,via,5.055542,-75.487178,12716793690,582617884,geocodificado
+Troncal del Eje Cafetero,la troncal|troncal|troncal del eje,via,5.109336,-75.657796,6154582167,7176208753,geocodificado
+Terminal de Transportes,la terminal|el terminal|terminal de manizales|terminal de transporte,sitio,5.049364,-75.506333,,,geocodificado
+Los Cámbulos,estacion cambulos|estacion los cambulos,sitio,5.050181,-75.506743,,,geocodificado
+Aeropuerto La Nubia,aeropuerto|el aeropuerto|aeropuerto de manizales,sitio,5.029572,-75.464087,,,geocodificado
+La Manuela,sector la manuela,sitio,5.060063,-75.607844,,,geocodificado
+Tres Puertas,sector tres puertas,sitio,5.088141,-75.650824,,,geocodificado
+La Cabaña,sector la cabana,sitio,5.095157,-75.589392,,,geocodificado
+La Rochela,parque la rochela,sitio,5.080171,-75.682141,,,geocodificado
+Glorieta San Rafael,glorieta de san rafael|san rafael glorieta,sitio,5.053755,-75.481765,,,geocodificado
+Glorieta El Caribe,glorieta del caribe|glorieta caribe,sitio,5.075109,-75.496767,,,geocodificado
+Glorieta Peralonso,glorieta de peralonso,sitio,5.073346,-75.500160,,,geocodificado
+Glorieta San Cayetano,glorieta de san cayetano,sitio,5.073477,-75.493371,,,geocodificado
+Puente de Cristal,puente de vidrio,sitio,5.070807,-75.524911,,,geocodificado
+Hospital de Caldas,hospital caldas,sitio,5.062585,-75.500464,,,geocodificado
+Hospital Santa Sofía,santa sofia|hospital departamental|hospital de santa sofia,sitio,5.057983,-75.529544,,,geocodificado
+Clínica de La Presentación,clinica la presentacion|la presentacion,sitio,5.065776,-75.501732,,,geocodificado
+Clínica San Juan de Dios,clinica psiquiatrica san juan de dios|san juan de dios,sitio,5.048752,-75.492667,,,geocodificado
+Clínica Esimed,esimed,sitio,5.068636,-75.514905,,,geocodificado
+Clínica Versalles,clinica de versalles,sitio,5.062827,-75.497807,,,geocodificado
+Clínica de la Policía,sanidad de la policia,sitio,5.057207,-75.479320,,,geocodificado
+Defensa Civil,,sitio,5.031428,-75.467569,,,geocodificado
+Bomberos Fundadores,estacion de bomberos fundadores|bomberos del centro,sitio,5.069127,-75.510481,,,geocodificado
+Bomberos Palogrande,estacion de bomberos palogrande,sitio,5.058234,-75.489767,,,geocodificado
+Bomberos Oriental,bomberos juanchito|estacion de bomberos oriental,sitio,5.032718,-75.451449,,,geocodificado
+Policía Metropolitana de Manizales,policia metropolitana|comando de policia,sitio,5.065896,-75.510689,,,geocodificado
+Estación de Policía Maltería,policia malteria|estacion de policia de malteria,sitio,5.036465,-75.430934,,,geocodificado
+Batallón Ayacucho,el batallon|batallon de infanteria 22,sitio,5.048454,-75.485123,,,geocodificado
+Estadio Palogrande,estadio de palogrande|el estadio|estadio de manizales,sitio,5.057005,-75.490689,,,geocodificado
+Coliseo Mayor,coliseo mayor de manizales,sitio,5.058001,-75.488449,,,geocodificado
+Coliseo Menor,coliseo menor de manizales,sitio,5.055962,-75.488616,,,geocodificado
+Plaza de Toros,plaza de toros de manizales,sitio,5.063985,-75.524753,,,geocodificado
+Expoferias,centro de ferias|las ferias|expoferias manizales,sitio,5.041416,-75.475356,,,geocodificado
+Universidad Nacional Palogrande,nacional palogrande|unal palogrande|la nacional de palogrande,sitio,5.056879,-75.491379,,,geocodificado
+Universidad Nacional El Cable,nacional el cable|unal el cable|la nacional del cable,sitio,5.055442,-75.486178,,,geocodificado
+Universidad Nacional La Nubia,nacional la nubia|unal la nubia|campus la nubia,sitio,5.029611,-75.472041,,,geocodificado
+Universidad de Caldas,u de caldas|ucaldas,sitio,5.055600,-75.493888,,,geocodificado
+Universidad Autónoma de Manizales,la autonoma|autonoma|uam,sitio,5.066697,-75.504305,,,geocodificado
+Universidad Católica de Manizales,la catolica|catolica|ucm,sitio,5.060344,-75.487375,,,geocodificado
+Universidad de Manizales,umanizales|la u de manizales,sitio,5.077071,-75.519602,,,geocodificado
+Universidad Luis Amigó,luis amigo|funlam,sitio,5.053435,-75.483601,,,geocodificado
+SENA Manizales,el sena|sena|sena juanchito,sitio,5.031896,-75.450337,,,geocodificado
+Catedral de Manizales,la catedral|catedral basilica|catedral de nuestra senora del rosario,sitio,5.067386,-75.517323,,,geocodificado
+Plaza de Bolívar,plaza bolivar|plaza principal|plaza de simon bolivar,sitio,5.068083,-75.517363,,,geocodificado
+Parque Caldas,parque de caldas,sitio,5.067559,-75.512743,,,geocodificado
+Monumento a los Colonizadores,los colonizadores|colonizadores|monumento de chipre,sitio,5.076869,-75.527832,,,geocodificado
+Torre al Cielo,torre del cielo|mirador torre al cielo,sitio,5.072472,-75.524973,,,geocodificado
+Parque Antonio Nariño,parque narino|el parque narino,sitio,5.056240,-75.486524,,,geocodificado
+Ecoparque Los Yarumos,los yarumos|yarumos|parque los yarumos,sitio,5.067837,-75.482079,,,geocodificado
+Parque del Agua,parque del agua manizales,sitio,5.067058,-75.523620,,,geocodificado
+Cable Plaza,centro comercial cable plaza|c c cable plaza,sitio,5.056269,-75.485533,,,geocodificado
+Centro Comercial Sancancio,c c sancancio|centro comercial de sancancio,sitio,5.053608,-75.489723,,,geocodificado
+Hacienda Venecia,finca venecia,sitio,5.055692,-75.560581,,,geocodificado
+Cementerio San Esteban,san esteban|cementerio de san esteban,sitio,5.062987,-75.503583,,,geocodificado
+Cementerio Universal,cementerio universal de manizales,sitio,5.062155,-75.505105,,,geocodificado
+Cementerio Municipal de Villamaría,cementerio de villamaria,sitio,5.044911,-75.519986,,,geocodificado
+Cable Aéreo Línea 1,cable linea 1|linea 1 del cable,sitio,5.058718,-75.509055,,,geocodificado
+Cable Aéreo Línea 2,cable linea 2|linea 2 del cable,sitio,5.048072,-75.509349,,,geocodificado
+Cable Aéreo Línea 3,cable linea 3|linea 3 del cable,sitio,5.053958,-75.496818,,,geocodificado
+Villamaría,villa maria|casco urbano de villamaria|parque de villamaria,sitio,5.044970,-75.515126,,,geocodificado
+Santágueda,termales de santagueda,vereda,5.082417,-75.682750,,,geocodificado
+Arauca,arauca caldas,vereda,5.111029,-75.702096,,,geocodificado
+San Peregrino,vereda san peregrino,vereda,5.057989,-75.572078,,,geocodificado
+El Arenillo,vereda el arenillo,vereda,5.053972,-75.541832,,,geocodificado
+Corinto,vereda corinto,vereda,5.084278,-75.515635,,,geocodificado
+Alto Tablazo,vereda alto tablazo,vereda,5.042921,-75.533135,,,geocodificado
+Bajo Tablazo,vereda bajo tablazo,vereda,5.029143,-75.538190,,,geocodificado
+El Águila,vereda el aguila,vereda,5.109807,-75.510754,,,geocodificado
+La Aurora,vereda la aurora,vereda,5.073595,-75.547149,,,geocodificado

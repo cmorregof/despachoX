@@ -1,0 +1,101 @@
+nombre,fuente,consulta,osm_tipo,osm_id,display_name,metros_a_la_red
+Panamericana,vias.csv,(fila existente de vias.csv),edge,12714854352-12714854354,Panamericana,0.0
+avenida Kevin Ángel,vias.csv,(fila existente de vias.csv),edge,323308582-581252254,avenida Kevin Ángel,0.0
+avenida Paralela,vias.csv,(fila existente de vias.csv),edge,581162026-475479430,avenida Paralela,0.0
+avenida Santander,vias.csv,(fila existente de vias.csv),edge,469620729-582617890,avenida Santander,0.0
+autopista del Café,vias.csv,(fila existente de vias.csv),edge,331597814-5175017515,autopista del Café,0.0
+vía a Medellín,vias.csv,(fila existente de vias.csv),edge,6112066842-6112066902,vía a Medellín,0.1
+vía a Chinchiná,vias.csv,(fila existente de vias.csv),edge,6103772493-5176808908,vía a Chinchiná,0.0
+vía a Villamaría,vias.csv,(fila existente de vias.csv),edge,1124902367-581897103,vía a Villamaría,0.0
+vía a Neira,vias.csv,(fila existente de vias.csv),edge,3778590861-424707114,vía a Neira,0.0
+salida a Letras,vias.csv,(fila existente de vias.csv),edge,7717401609-4869089814,salida a Letras,0.0
+avenida del Centro,vias.csv,(fila existente de vias.csv),edge,582617778-323215241,avenida del Centro,0.0
+avenida 12 de Octubre,vias.csv,(fila existente de vias.csv),edge,315058045-8626983349,avenida 12 de Octubre,0.1
+avenida Alberto Mendoza,vias.csv,(fila existente de vias.csv),edge,5434277067-581953384,avenida Alberto Mendoza,0.0
+avenida Bernardo Arango,vias.csv,(fila existente de vias.csv),edge,633020158-599158570,avenida Bernardo Arango,0.0
+carrera 19,grafo,^Carrera 19$,edge,323223406-323223405,carrera 19,0.0
+carrera 20,grafo,^Carrera 20$,edge,469847171-469846888,carrera 20,0.0
+carrera 21,grafo,^Carrera 21$,edge,7695799502-469847158,carrera 21,0.0
+carrera 22,grafo,^Carrera 22$,edge,469563959-469563919,carrera 22,0.0
+carrera 23,grafo,^Carrera 23$,edge,582637630-579611953,carrera 23,0.0
+carrera 24,grafo,^Carrera 24$,edge,469620728-13103222325,carrera 24,0.0
+carrera 27,grafo,^Carrera 27$,edge,323230235-315058392,carrera 27,0.0
+carrera 28,grafo,^Carrera 28$,edge,323227712-315059275,carrera 28,0.0
+calle 23,grafo,^Calle 23$,edge,9456773447-321706079,calle 23,0.1
+calle 48,grafo,^Calle 48$,edge,4843968447-4843968445,calle 48,0.0
+calle 50,grafo,^Calle 50$,edge,309309758-469620715,calle 50,0.0
+avenida Marcelino Palacio,grafo,^Avenida Marcelino Palacio$,edge,1773543210-5427815248,avenida Marcelino Palacio,0.0
+avenida Centenario,grafo,^Avenida Centenario$,edge,1165169401-9712550177,avenida Centenario,0.0
+avenida El Guamo,grafo,^Avenida El Guamo$,edge,587376141-1129589436,avenida El Guamo,0.0
+avenida La Sultana,grafo,^Avenida La Sultana$,edge,6459943915-582618115,avenida La Sultana,0.0
+avenida José Restrepo,grafo,^Avenida José Restrepo$,edge,7714151040-582683762,avenida José Restrepo,0.0
+avenida Las Araucarias,grafo,^Avenida Las Araucarias$,edge,581161335-332338554,avenida Las Araucarias,0.0
+avenida Lindsay,grafo,^Avenida Lindsay$,edge,12716793690-582617884,avenida Lindsay,0.0
+Troncal del Eje Cafetero,grafo,^Troncal del Eje Cafetero$,edge,6154582167-7176208753,Troncal del Eje Cafetero,0.0
+Terminal de Transportes,nominatim,Terminal de Transportes Manizales,way,95121860,"Terminal de Transportes de Manizales, Carretera Panamericana, Las Colinas, Comuna Universitaria, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170004, Colombia",45.3
+Los Cámbulos,nominatim,Los Cámbulos Manizales,way,493479311,"Los Cámbulos, Carretera Panamericana, Las Colinas, Comuna Universitaria, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170004, Colombia",83.5
+Aeropuerto La Nubia,nominatim,Aeropuerto La Nubia Manizales,way,47654234,"Aeropuerto La Nubia, Calle 105B, Bosques de la Enea, Comuna Tesorito, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170003, Colombia",91.9
+La Manuela,nominatim,La Manuela Manizales,node,606727419,"La Manuela, Perímetro Urbano Manizales, El Remanso, Centrosur, Caldas, RAP del Agua y la Montaña, 170008, Colombia",24.6
+Tres Puertas,nominatim,Tres Puertas Manizales,node,1691298109,"Tres Puertas, Perímetro Urbano Manizales, El Remanso, Centrosur, Caldas, RAP del Agua y la Montaña, 176048, Colombia",11.6
+La Cabaña,nominatim,La Cabaña Manizales,node,703213542,"La Cabaña, Perímetro Urbano Manizales, El Remanso, Centrosur, Caldas, RAP del Agua y la Montaña, 170008, Colombia",12.8
+La Rochela,nominatim,La Rochela Manizales,relation,2118659,"La Rochela, Troncal del Eje Cafetero, El Remanso, Centrosur, Caldas, RAP del Agua y la Montaña, 170008, Colombia",111.9
+Glorieta San Rafael,nominatim,Glorieta San Rafael Manizales,way,81218303,"Glorieta San Rafael, Alta Suiza, Comuna Ecoturística Cerro de Oro, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170002, Colombia",0.0
+Glorieta El Caribe,nominatim,Glorieta El Caribe Manizales,way,627811926,"Glorieta El Caribe, Comuna Ciudadela del Norte, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, Colombia",22.4
+Glorieta Peralonso,nominatim,Glorieta Peralonso Manizales,way,627812802,"Glorieta Peralonso, Comuna Ciudadela del Norte, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, Colombia",16.9
+Glorieta San Cayetano,nominatim,Glorieta San Cayetano Manizales,way,627810523,"Glorieta San Cayetano, Comuna Ciudadela del Norte, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, Colombia",12.9
+Puente de Cristal,nominatim,Puente de Cristal Manizales,way,1581733865,"Puente de Cristal, Carrera 17, Las Americas, Comuna Atardeceres, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170001, Colombia",24.4
+Hospital de Caldas,nominatim,Hospital de Caldas Manizales,way,498802653,"Hospital de Caldas, Calle 48, Bavaria, Comuna La Estación, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170006, Colombia",62.8
+Hospital Santa Sofía,nominatim,Hospital Santa Sofía Manizales,way,499715045,"ESE Hospital Departamental Universitario Santa Sofía de Caldas, Calle 4C, Asturias, Comuna Atardeceres, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170001, Colombia",71.9
+Clínica de La Presentación,nominatim,Clínica de La Presentación Manizales,way,499707233,"Clínica de La Presentación, Avenida Santander, Lleras, Comuna La Estación, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170001, Colombia",28.1
+Clínica San Juan de Dios,nominatim,Clínica Psiquiátrica San Juan de Dios Manizales,way,494839849,"Clínica Psiquiátrica San Juan de Dios, Carrera 28C, Sancancio, Comuna Palogrande, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170004, Colombia",67.6
+Clínica Esimed,nominatim,Clínica Esimed Manizales,way,558911384,"Clínica Esimed, Carrera 21, Fundadores, Comuna Cumanday, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170001, Colombia",13.7
+Clínica Versalles,nominatim,Clínica Versalles Manizales,node,579737157,"Clínica Versalles, Avenida Paralela, Versalles, Comuna La Estación, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170004, Colombia",13.9
+Clínica de la Policía,nominatim,Clínica de la Policía Manizales,node,946273087,"Clínica de la Policía, Avenida La Sultana, Baja Suiza, Comuna Ecoturística Cerro de Oro, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170002, Colombia",12.1
+Defensa Civil,nominatim,Defensa Civil Manizales,way,1044309295,"Defensa Civil, Carrera 36, La Enea, Comuna Tesorito, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170003, Colombia",11.0
+Bomberos Fundadores,nominatim,Estación de Bomberos Fundadores Manizales,way,48059693,"Estación de Bomberos Fundadores, Calle 33A, Fundadores, Comuna Cumanday, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170001, Colombia",11.1
+Bomberos Palogrande,nominatim,Estación de Bomberos Palogrande Manizales,way,47459130,"Estación de Bomberos Palogrande, Calle 62, La Estrella, Comuna Palogrande, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170004, Colombia",16.3
+Bomberos Oriental,nominatim,Estación de Bomberos Oriental Manizales,way,52046033,"Estación de Bomberos Oriental, Calle 110, Parque Industrial Juanchito, Comuna Tesorito, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170003, Colombia",11.4
+Policía Metropolitana de Manizales,nominatim,Policía Metropolitana de Manizales,way,48472866,"Policía Metropolitana de Manizales, Calle 33, Fundadores, Comuna Cumanday, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170006, Colombia",24.0
+Estación de Policía Maltería,nominatim,Estación de Policía Maltería,node,5512254873,"Estación de Policía Malteria, Carretera Panamericana, Parque Industrial Juanchito, Comuna Tesorito, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170003, Colombia",21.2
+Batallón Ayacucho,nominatim,Batallón Ayacucho Manizales,way,45585114,"Batallón de Infantería Nº 22 Ayacucho, Comuna Palogrande, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, Colombia",42.5
+Estadio Palogrande,nominatim,Estadio Palogrande Manizales,relation,375993,"Estadio Palogrande, Avenida Paralela, Guayacanes, Comuna Palogrande, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170004, Colombia",20.7
+Coliseo Mayor,nominatim,Coliseo Mayor Manizales,way,45566557,"Coliseo Mayor, Carrera 24, Palogrande, Comuna Palogrande, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170002, Colombia",36.3
+Coliseo Menor,nominatim,Coliseo Menor Manizales,relation,7923252,"Coliseo Menor, Avenida Lindsay, Guayacanes, Comuna Palogrande, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170004, Colombia",38.7
+Plaza de Toros,nominatim,Plaza de toros de Manizales,relation,371143,"Plaza de toros de Manizales, Carrera 27, El Bosque, Comuna La Macarena, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170006, Colombia",32.6
+Expoferias,nominatim,Expoferias Manizales,way,912595209,"Centro de Ferias y Exposiciones Expoferias, Avenida Alberto Mendoza Hoyos, El Trébol, Comuna Palogrande, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170003, Colombia",79.0
+Universidad Nacional Palogrande,nominatim,Universidad Nacional Campus Palogrande Manizales,way,47465642,"Universidad Nacional - Campus Palogrande, Avenida Paralela, Guayacanes, Comuna Palogrande, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170004, Colombia",36.7
+Universidad Nacional El Cable,nominatim,Universidad Nacional Campus El Cable Manizales,way,47466085,"Universidad Nacional - Campus El Cable, Avenida Santander, El Cable, Comuna Palogrande, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170002, Colombia",19.4
+Universidad Nacional La Nubia,nominatim,Universidad Nacional Campus La Nubia Manizales,way,47463347,"Universidad Nacional - Campus La Nubia, Carrera 36A, La Enea, Comuna Tesorito, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170003, Colombia",65.0
+Universidad de Caldas,nominatim,Universidad de Caldas Manizales,way,106577012,"Universidad de Caldas, Calle 62, Palogrande, Comuna Palogrande, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170004, Colombia",57.0
+Universidad Autónoma de Manizales,nominatim,Universidad Autónoma de Manizales,relation,14554606,"Universidad Autónoma de Manizales, Carrera 20A, Santa Helena, Comuna La Estación, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170001, Colombia",39.3
+Universidad Católica de Manizales,nominatim,Universidad Católica de Manizales,way,556111557,"Universidad Católica De Manizales, 60 - 63, Avenida Santander, La Rambla, Comuna Palogrande, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170002, Colombia",48.8
+Universidad de Manizales,nominatim,Universidad de Manizales,way,493501386,"Universidad de Manizales, Bulevar de la 19, Campohermoso, Comuna Atardeceres, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170001, Colombia",29.6
+Universidad Luis Amigó,nominatim,Universidad Luis Amigó Manizales,way,574568553,"Universidad Luis Amigó, Carrera 22, Alta Suiza, Comuna Ecoturística Cerro de Oro, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170002, Colombia",26.1
+SENA Manizales,nominatim,SENA Manizales,way,52045044,"SENA, Calle 110, Parque Industrial Juanchito, Comuna Tesorito, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170003, Colombia",140.7
+Catedral de Manizales,nominatim,Catedral Basílica de Manizales,way,955166433,"Catedral basílica de Nuestra Señora del Rosario de Manizales, Carrera 23, Centro Histórico de Manizales, Comuna Cumanday, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170006, Colombia",35.3
+Plaza de Bolívar,nominatim,Plaza de Bolívar Manizales,relation,12856878,"Plaza de Bolívar, Centro Histórico de Manizales, Comuna Cumanday, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, Colombia",33.8
+Parque Caldas,nominatim,Parque Caldas Manizales,way,995406783,"Parque Caldas, Comuna Cumanday, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, Colombia",30.3
+Monumento a los Colonizadores,nominatim,Monumento a los Colonizadores Manizales,way,46611367,"Monumento a los Colonizadores, Comuna Atardeceres, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, Colombia",32.7
+Torre al Cielo,nominatim,Torre al Cielo Manizales,node,8821570343,"Torre al Cielo, Avenida 12 de Octubre, Chipre, Comuna Atardeceres, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170001, Colombia",11.3
+Parque Antonio Nariño,nominatim,Parque Antonio Nariño Manizales,way,46751995,"Parque Antonio Nariño, Comuna Palogrande, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, Colombia",23.5
+Ecoparque Los Yarumos,nominatim,Ecoparque Los Yarumos Manizales,relation,12897232,"Ecoparque Los Yarumos, Comuna Ecoturística Cerro de Oro, Perímetro Urbano Manizales, El Manantial, Centrosur, Caldas, RAP del Agua y la Montaña, Colombia",241.0
+Parque del Agua,nominatim,Parque del Agua Manizales,way,45587329,"Parque del Agua, Comuna Cumanday, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, Colombia",5.1
+Cable Plaza,nominatim,Cable Plaza Manizales,way,617501064,"Cable Plaza, Avenida Juan Antonio Toro, El Cable, Comuna Palogrande, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170002, Colombia",39.3
+Centro Comercial Sancancio,nominatim,Centro Comercial Sancancio Manizales,way,46679912,"Sancancio, Carrera 27A, Palermo, Comuna Palogrande, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170004, Colombia",47.3
+Hacienda Venecia,nominatim,Hacienda Venecia Manizales,node,12757912501,"Hacienda Venecia Coffee Farm, Carretera Panamericana Manizales - Medellín, San Peregrino, Panorama, Centrosur, Caldas, RAP del Agua y la Montaña, Colombia",1.3
+Cementerio San Esteban,nominatim,Cementerio San Esteban Manizales,way,49709107,"San Esteban, Comuna La Fuente, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, Colombia",64.3
+Cementerio Universal,nominatim,Cementerio Universal Manizales,way,48173991,"Cementerio Universal, Comuna La Fuente, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, Colombia",11.7
+Cementerio Municipal de Villamaría,nominatim,Cementerio Villamaría,way,161137330,"Cementerio Municipal, Cabecera Municipal Villamaría, Villamaría, Centrosur, Caldas, RAP del Agua y la Montaña, Colombia",39.1
+Cable Aéreo Línea 1,nominatim,Línea 1 Cable Aéreo Manizales,way,45580312,"Línea 1 Cable Aéreo, Carrera 7N, Santa Ana, Perímetro Urbano Manizales, Villamaría, Centrosur, Caldas, RAP del Agua y la Montaña, 176001, Colombia",0.7
+Cable Aéreo Línea 2,nominatim,Línea 2 Cable Aéreo Manizales,way,555873621,"Línea 2 Cable Aéreo, Carrera 1A, Urapanes, Perímetro Urbano Manizales, Villamaría, Centrosur, Caldas, RAP del Agua y la Montaña, 176001, Colombia",27.7
+Cable Aéreo Línea 3,nominatim,Línea 3 Cable Aéreo Manizales,way,951618447,"Línea 3 Cable Aéreo, Carrera 33, La Isabela, Comuna La Fuente, Perímetro Urbano Manizales, Centrosur, Caldas, RAP del Agua y la Montaña, 170006, Colombia",1.5
+Villamaría,nominatim,Villamaría Caldas,relation,13344171,"Cabecera Municipal Villamaría, Villamaría, Centrosur, Caldas, RAP del Agua y la Montaña, 176001, Colombia",22.5
+Santágueda,nominatim,Santágueda Palestina Caldas,node,606299442,"Santágueda, Palestina, Centrosur, Caldas, RAP del Agua y la Montaña, 176048, Colombia",42.7
+Arauca,nominatim,Arauca Palestina Caldas,node,317973291,"Arauca, Palestina, Centrosur, Caldas, RAP del Agua y la Montaña, 176048, Colombia",20.1
+San Peregrino,nominatim,San Peregrino Manizales,node,703213860,"San Peregrino, Perímetro Urbano Manizales, Panorama, Centrosur, Caldas, RAP del Agua y la Montaña, Colombia",23.5
+El Arenillo,nominatim,El Arenillo Manizales,node,703213846,"El Arenillo, Perímetro Urbano Manizales, Panorama, Centrosur, Caldas, RAP del Agua y la Montaña, 170006, Colombia",123.6
+Corinto,nominatim,Corinto Manizales,node,703213842,"Corinto, Perímetro Urbano Manizales, El Manantial, Centrosur, Caldas, RAP del Agua y la Montaña, 170006, Colombia",85.5
+Alto Tablazo,nominatim,Alto Tablazo Manizales,node,703213835,"Alto Tablazo, Perímetro Urbano Manizales, Corredor Agroturístico, Centrosur, Caldas, RAP del Agua y la Montaña, 170006, Colombia",202.3
+Bajo Tablazo,nominatim,Bajo Tablazo Manizales,node,703213836,"Bajo Tablazo, Perímetro Urbano Manizales, Corredor Agroturístico, Centrosur, Caldas, RAP del Agua y la Montaña, 176001, Colombia",34.0
+El Águila,nominatim,El Águila Manizales,node,703213921,"El Águila, Perímetro Urbano Manizales, El Manantial, Centrosur, Caldas, RAP del Agua y la Montaña, 170006, Colombia",14.4
+La Aurora,nominatim,La Aurora Manizales,node,703213852,"La Aurora, Perímetro Urbano Manizales, Panorama, Centrosur, Caldas, RAP del Agua y la Montaña, 170006, Colombia",21.1
