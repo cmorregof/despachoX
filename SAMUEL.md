@@ -22,7 +22,7 @@ Esa tabla es la entrada de tu tarea 2.
 
 ## Tarea 2 · Dirigir a Claude Code para mejorar el bot
 
-- [ ] Abre Claude Code en tu copia del repositorio y pega `encargos/A2_BOT_SAMUEL.md`. Dale tu tabla de la tarea 1 como casos de prueba.
+- [ ] Abre Claude Code en tu copia del repositorio y escribe: «Haz git pull --rebase, lee `encargos/A2_BOT_SAMUEL.md` y ejecútalo». No hace falta pegar el archivo. Dale tu tabla de la tarea 1 como casos de prueba.
 - [ ] Etapa 1 (que entienda «6 bebés sin leche») antes de las 6:30 p. m.
 - [ ] Etapas 2 y 3 (comodidad y miles de mensajes) antes del congelamiento, sábado 8:30 a. m.
 - [ ] Revisa lo que haga antes de pedir que lo fusionen. Si no lo entiendes, pídele que te lo explique: mañana te lo preguntan a ti.

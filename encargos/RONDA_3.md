@@ -6,9 +6,12 @@ Cada sesión: `git pull --rebase`, leer las entradas del canal desde las 14:20 y
 
 1. **`empaque_activo` deja de ser decorativo.** En el surtido, un lote perecedero con `empaque_activo=1` vence más tarde: multiplica el tiempo restante hasta `vence_en` por `FACTOR_EMPAQUE_ACTIVO`, constante declarada como supuesto (valor inicial 1,5; se lee de `DESPACHOX_FACTOR_EMPAQUE`). Va al `resumen.supuestos` de cada plan con la nota «supuesto, pendiente de datos del ICTA; patente UNAL 37476». Prueba: el mismo lote con y sin empaque activo cambia qué pedidos se pueden surtir.
 2. **Trazabilidad mínima.** Al aprobar un plan, crear una fila en `paquetes` por parada: código corto único, `pedido_id`, `lote_id` principal, kilos, estado `en_ruta`. Función `entregar(con, codigo, quien)` que pasa el paquete y su pedido a `entregado` y lo anota en la bitácora. Línea de órdenes: `python -m despacho.paquetes --entregar CODIGO`.
-3. **Plan vigente.** El plan anterior pasa a `reemplazado` cuando se aprueba el nuevo, no cuando se propone. Avisa a `C-tablero` y a `simulacion` antes de subirlo y verifica que sus pruebas siguen pasando.
+3. **Cantidad supuesta a la vista.** Si un pedido entra al plan con kilos o familias completados por la red de seguridad de `_demanda`, la parada y el resumen lo marcan como «cantidad supuesta», para que el despachador lo vea (caso real: «6 bebés sin leche en La Enea» salió con 10 kg genéricos).
+4. **Plan vigente.** El plan anterior pasa a `reemplazado` cuando se aprueba el nuevo, no cuando se propone. Avisa a `C-tablero` y a `simulacion` antes de subirlo y verifica que sus pruebas siguen pasando.
 
 ## C-tablero
+
+> Reemplazado por `encargos/C2_TABLERO_JACOBO.md`, que ahora dirige Jacobo.
 
 1. **Urgente:** con un plan aprobado, «Calcular plan» ejecuta `despacho.recalcular --motivo "pedido nuevo"`, no `despacho.optimizar`. Pasa `--segundos 3`.
 2. Botón para marcar o desmarcar un punto como crítico, con anotación en la bitácora.

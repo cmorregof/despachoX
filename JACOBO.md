@@ -22,7 +22,7 @@ Esa tabla es la entrada de tu tarea 2.
 
 ## Tarea 2 · Dirigir a Claude Code para mejorar el tablero
 
-- [ ] Abre Claude Code en tu copia del repositorio y pega `encargos/C2_TABLERO_JACOBO.md`. Dale tu tabla de la tarea 1.
+- [ ] Abre Claude Code en tu copia del repositorio y escribe: «Haz git pull --rebase, lee `encargos/C2_TABLERO_JACOBO.md` y ejecútalo». No hace falta pegar el archivo. Dale tu tabla de la tarea 1.
 - [ ] Etapa 1 (el fallo de «Calcular plan», reiniciar datos, completar pedidos incompletos) antes de las 6:30 p. m.
 - [ ] Etapa 2: el **resumen de la mesa** hecho por un modelo, para cuando hay miles de pedidos.
 - [ ] Etapa 3: filtros, agrupación y prueba con 1.000 pedidos.
