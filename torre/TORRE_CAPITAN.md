@@ -1,16 +1,17 @@
 # Torre de control · Carlos · capitán
-Última actualización: viernes 20 de noviembre de 2026, 8:00 a. m.
+Última actualización: viernes 20 de noviembre de 2026, 8:20 a. m.
 
 ## Estado en una frase
-Repositorio montado con estrategia, prompt del equipo y torre de control; revisión del estado del arte en curso; todavía no hay código.
+Repositorio montado con estrategia, prompt del equipo, torre de control y revisión del estado del arte; todavía no hay código.
 
 ## Hecho
 - Lectura completa del sitio de la hackathon: bases, rúbrica, fichas de las ocho verticales, patentes, banco de capacidades, equipos. Resumen en `docs/ESTRATEGIA.md`.
 - Propuesta de producto para la vertical 04 y horario de las dos jornadas.
 - Prompt del equipo en `CLAUDE.md` y `docs/PROMPT_EQUIPO.md`.
+- Revisión del estado del arte con cinco agentes: síntesis en `docs/ESTADO_DEL_ARTE.md`, informes en `docs/investigacion/`.
 
 ## En curso
-- Revisión del estado del arte con cinco agentes (referentes técnicos, referentes latinoamericanos, capacidades y patentes UNAL, evidencia del problema, datos abiertos y aliados). Sale en `docs/ESTADO_DEL_ARTE.md` y `docs/investigacion/`.
+- Nada. Falta que el equipo abra las fuentes y pase las cifras a `docs/FUENTES.md`.
 
 ## Siguiente paso exacto
 1. Confirmar con Samuel que la vertical inscrita es la 04.
@@ -19,6 +20,10 @@ Repositorio montado con estrategia, prompt del equipo y torre de control; revisi
 4. A las 2:30 p. m.: esqueleto de punta a punta (pedido por chat → ruta en el mapa).
 
 ## Decisiones y por qué
+- Usuario principal: ABACO y el Banco de Alimentos. Es quien ya opera desde Manizales y ya dijo en prensa que su reto es el transporte.
+- No repetir «desabastecimiento en 48 horas» como hecho: no tiene fuente para este sismo.
+- Capacidad UNAL principal: indicador A25 del IDEA como riesgo de tramo. Segunda: patente del empaque captador de etileno, como supuesto de vida útil.
+- Pila: python-telegram-bot, Claude Haiku, SQLite, osmnx, OR-Tools, Streamlit. Simulación con tres políticas y 30 semillas.
 - Vertical 04: es la que Samuel inscribió (por confirmar) y su entregable coincide con el nombre del equipo.
 - Telegram para la demo: se despliega en una hora. WhatsApp queda para el piloto.
 - OR-Tools sobre OpenStreetMap como motor mientras no haya acceso confirmado al software de ruteo UNAL.
