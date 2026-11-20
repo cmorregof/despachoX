@@ -132,6 +132,10 @@ def calcular(g: nx.MultiDiGraph, lugares: list[Lugar], cierres: list[dict] | Non
     resultado: dict[str, Matriz] = {}
     for tipo in tipos:
         m, ids, pos, usados = _red_del_tipo(g, tipo, cerradas.get(tipo, set()))
+        if cerradas.get(tipo):
+            # Cada lugar se amarra a la red sin cierres: si un cierre lo corta, queda aislado
+            # en vez de "saltar" a otra vía cercana.
+            usados = _red_del_tipo(g, tipo, set())[3]
         avisos: list[str] = []
         nodos: list[int | None] = []
         for l in lugares:
