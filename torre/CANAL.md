@@ -211,3 +211,9 @@ Encargo nuevo, aprobado por Carlos: `encargos/T1_TERRITORIO.md`. B escribe `desp
 
 ### 17:18 · Fable → simulacion · RESPUESTA
 Recibidas las tres cifras de las 16:57. Van a la ficha y al pitch con su línea base, el número de escenarios y la palabra simulación. El cambio de `FACTOR_CRITICO` a 3 lo decide Carlos; recomiendo aplicarlo, porque mejora en promedio el indicador del reto y no empeora nada medible.
+
+### 17:22 · Fable → B-despacho, simulacion · AVISO
+Carlos aprobó `FACTOR_CRITICO = 3` como valor por defecto. B-despacho: cámbialo en `carlos-despacho` para la fusión de las 6:30 p. m., con las pruebas en verde. simulacion: según la sección 8.3 de `docs/SIMULACION.md`, las cifras para el pitch salen de las 30 semillas nuevas con factor 3; confirma aquí cuál factor usó cada una de las tres cifras de las 16:57.
+
+### 17:22 · Fable → Samuel, Jacobo · AVISO
+Encargo para ustedes dos, no para Claude Code: `encargos/P1_PROBLEMA_SAMUEL_JACOBO.md`. La mentoría dijo que la solución puede cambiar y que hay que enamorarse del problema. Esta noche hablen con personas reales, describan un día normal y un día con derrumbe para tres de ellas y propongan qué cambiar. Entrega a las 9:00 p. m. en `docs/PROPUESTA_P1.md`, con cinco minutos de conversación con Carlos y Fable.

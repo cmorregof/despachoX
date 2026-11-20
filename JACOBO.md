@@ -49,4 +49,10 @@ Diseño completo en `docs/SIN_CONEXION.md`. Pídeselo a tu sesión de Claude Cod
 - [ ] Pídele a tu Claude Code la parte C de `encargos/T1_TERRITORIO.md`: una pestaña con la tabla por comuna y vereda y la lista de barrios sin pedidos. Puede empezar antes de que exista `despacho/territorio.py`; mientras tanto, la pestaña dice «Pendiente».
 - [ ] Va después de la etapa 1 de C2 (lo que rompe la demo) y antes del mapa sin internet.
 
+## Tarea 6 · Enamorarse del problema, con Samuel (encargo P1)
+
+- [ ] Lee `encargos/P1_PROBLEMA_SAMUEL_JACOBO.md`. Es un encargo para ustedes, no para Claude Code.
+- [ ] Habla esta noche con personas reales (Banco de Alimentos, una líder de junta, un conductor) usando el guion de `docs/MENTORIA_1.md`.
+- [ ] Entrega `docs/PROPUESTA_P1.md` y conversa cinco minutos con Carlos y Fable a las 9:00 p. m.
+
 ## Notas y bloqueos

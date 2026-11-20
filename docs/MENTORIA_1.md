@@ -22,6 +22,12 @@ La página oficial describe el entregable como «Prueba real en territorio» y a
 2. Un informe de contexto regional en LaTeX que crece durante la noche: `docs/informe/`. La versión 0.1 llega hacia las 6:30 p. m.
 3. Una vista por territorio en el prototipo, antes del congelamiento del sábado a las 8:30 a. m.: `encargos/T1_TERRITORIO.md`.
 
+## Lo que decidió Carlos a las 5:19 p. m.
+
+1. `FACTOR_CRITICO` pasa de 1 a 3, como propuso la simulación.
+2. Principio de diseño: DespachoX tiene que servir un día normal. Muchas herramientas de emergencia funcionan bien cuando llega la tragedia, pero nadie sabe usarlas, porque solo se diseñaron para la tragedia. Los derrumbes y cierres viales, que en Manizales pasan sin terremoto, pueden ser el uso cotidiano; se estudia.
+3. Samuel y Jacobo piensan qué cambiar en la solución, hablando con personas reales: `encargos/P1_PROBLEMA_SAMUEL_JACOBO.md`, con entrega a las 9:00 p. m.
+
 ## En discusión: el piloto
 
 Carlos preguntó cómo funciona el piloto, y cómo se mide su efecto, si la calamidad fue en agosto. La propuesta del coordinador es llevar DespachoX a la operación diaria de un aliado, por ejemplo el Banco de Alimentos, en un territorio con nombre. El efecto se mediría con cuatro instrumentos:
