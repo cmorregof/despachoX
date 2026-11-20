@@ -87,8 +87,10 @@ Una forma rápida: abre Claude en esta carpeta y escribe «explícame `entrada/`
 
 **En la nube (cuando Carlos termine el despliegue):** le escribes al bot en Telegram y abres el tablero en la dirección que Carlos ponga aquí.
 
-- Bot: _por definir_
+- Bot: [t.me/despachox_bot](https://t.me/despachox_bot) (o escanea el código de abajo)
 - Tablero: _por definir_
+
+<img src="recursos/qr_bot.png" alt="Código QR del bot de DespachoX en Telegram" width="220">
 
 **En tu computador:** `docs/GUIA_SIGUIENTE.md`, «Paso 0». Ojo: solo un proceso puede leer el bot con el mismo token. Si el bot corre en la nube, no lo arranques en local.
 
