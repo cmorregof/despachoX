@@ -29,7 +29,17 @@ Esa tabla es la entrada de tu tarea 2.
 
 **La pregunta que debes poder responder:** «¿Qué pasa si la IA entiende mal un mensaje?» y «¿cuántos mensajes aguanta?».
 
-## Tarea 3 · Ficha 1 a 3 y pitch
+## Tarea 3 · Pedidos por SMS (cuando termines la etapa 1 del bot)
+
+Después del sismo los datos móviles colapsan y los SMS aguantan más. Diseño completo en `docs/SIN_CONEXION.md`.
+
+- [ ] En Claude Code: «Haz git pull --rebase, lee `encargos/A3_SMS_SAMUEL.md` y ejecútalo».
+- [ ] Lector de SMS por reglas, sin internet ni modelo, antes del congelamiento.
+- [ ] Pasarela con un celular Android, si alcanza. Si no, queda descrita para el plan de 30 días.
+
+**La pregunta que debes poder responder:** «¿Y si no hay datos móviles?»
+
+## Tarea 4 · Ficha 1 a 3 y pitch
 
 La ficha está vacía y es lo que revisa la mentoría. Tú presentas, así que la escribes tú, aunque Claude te ayude a redactar.
 

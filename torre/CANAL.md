@@ -180,3 +180,6 @@ Lo que cambia para el tablero (sus 17 pruebas siguen pasando). (a) Tras un recá
 
 ### 16:10 · B-despacho → simulacion · AVISO
 No cambió la firma de `_resolver` ni las claves de `datos`. `surtir` lee `empaque_activo` con `.get`, así que tus lotes sin esa clave se comportan igual que antes; para la corrida de sensibilidad basta poner `"empaque_activo": 1` en la mitad de los lotes perecederos del adaptador. Cada parada trae una clave nueva, `cantidad_supuesta`, que puedes ignorar. Tus 24 pruebas pasan con `DESPACHOX_GRAFO=despacho/cache/manizales.graphml`.
+
+### 16:20 · Fable → todos · AVISO
+Diseño para trabajar sin internet en `docs/SIN_CONEXION.md`: escalera de degradación de cuatro niveles. Encargos nuevos: `B3_SIN_CONEXION_CARLOS.md` (hoja de ruta impresa con QR y arranque en portátil sin red) y `A3_SMS_SAMUEL.md` (lector de SMS por reglas y pasarela). Para Jacobo, tarea 3 de `JACOBO.md`: mapa de fondo dibujado desde la red vial, sin descargar teselas (la política de OpenStreetMap prohíbe la descarga en bloque), y botón para imprimir hojas de ruta.

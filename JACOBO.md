@@ -30,7 +30,15 @@ Esa tabla es la entrada de tu tarea 2.
 
 **La pregunta que debes poder responder:** «¿Quién decide, el sistema o la persona?» y «¿cómo lee el despachador mil pedidos?».
 
-## Tarea 3 · La demo y su respaldo
+## Tarea 3 · El tablero sin internet
+
+Diseño completo en `docs/SIN_CONEXION.md`. Pídeselo a tu sesión de Claude Code cuando termine la etapa 1 de C2:
+
+- [ ] **Mapa de fondo sin conexión** con `DESPACHOX_MAPA=local`: dibujar como fondo las vías de la red guardada en disco (`despacho/cache/`), en gris claro, en vez de las teselas de OpenStreetMap. **No descargar teselas en bloque**: la política de uso de los servidores de OpenStreetMap lo prohíbe. La red vial ya la tenemos, así que el fondo sale de ahí.
+- [ ] Botón **«Imprimir hojas de ruta»** con el plan aprobado, que llama `despacho.hoja.generar` y ofrece los PDF para descargar. Carlos avisa por el canal cuando la función exista.
+- [ ] Registrar entregas por código de paquete (lo que el conductor trae anotado en la hoja).
+
+## Tarea 4 · La demo y su respaldo
 
 - [ ] Entra a https://innovo-hub.netlify.app con tu correo UNAL y pídeles a Nicolás y a José Manuel que hagan lo mismo.
 - [ ] Ensaya la «Versión de 75 segundos» de `docs/GUION_DEMO.md` hasta hacer los clics sin mirar.
