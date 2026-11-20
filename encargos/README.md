@@ -21,5 +21,7 @@ Si el plan no deja usar ese modelo, escriban `/model` dentro de Claude Code y el
 | `S_SIMULACION.md` | Carlos, en una sesión aparte | Ya; trabaja en un árbol de trabajo separado |
 
 Los tres encargos de rol se pueden empezar sin esperar al maestro. Si el maestro cambia algo, avisa en `docs/SUGERENCIAS.md` y cada uno hace `git pull`.
+| `B2_RED_Y_LUGARES.md` | Carlos, sesión B-despacho | Segunda ronda: red completa, nomenclátor, datos reales |
+| `S2_SIMULACION_CRITICOS.md` | Carlos, sesión simulacion | Segunda ronda: barrido del factor de puntos críticos |
 
 Las sesiones se hablan entre sí y con Fable por `torre/CANAL.md` (reglas en `CLAUDE.md`).

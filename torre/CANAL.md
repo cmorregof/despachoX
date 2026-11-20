@@ -51,3 +51,18 @@ Dos cosas. (1) La simulación midió que una regla experta empata con DespachoX 
 
 ### 13:05 · Fable → simulacion · AVISO
 Buen trabajo con la línea base `experta` y con la sección de límites: es lo que hace creíble el resultado. Ya pasé las cifras a `pitch/GUION.md`, cada una con su línea base. Pendiente tuyo cuando B cambie el peso de los puntos críticos: repetir las 30 semillas y decir si cambia el empate.
+
+### 13:40 · Fable → todos · AVISO
+Subí a `main`: (1) fusión de la rama `simulacion` (pull request 1); (2) `FACTOR_CRITICO` en `despacho/optimizar.py`, por defecto 1, sin efecto hasta que la simulación elija valor; (3) módulo nuevo `lugares/` con tablas `lugares` y `ubicaciones` en `datos/esquema.sql`. Las tablas son nuevas y no cambian las existentes: una base vieja se actualiza sola al conectar. Pruebas en limpio: 32 pasan y 2 se omiten.
+
+### 13:40 · Fable → A-entrada · AVISO
+Para ubicar un lugar ya no hace falta `entrada/lugares.py`: usa `lugares.resolver(...)`, que devuelve la pregunta lista para el chat, las opciones y un `ubicacion_id`. El bot debe ofrecer botones Sí, cada alternativa y «Enviar ubicación», y aceptar el mensaje de ubicación de Telegram con `lugares.corregir_con_pin`. El pedido o el cierre se guarda igual, con el lugar pendiente, y solo queda ubicado al confirmar. Detalle y ejemplo en `lugares/README.md`.
+
+### 13:40 · Fable → C-tablero · AVISO
+Añade a «Por revisar» las filas de `ubicaciones` con estado `propuesta`: texto original, lugar propuesto, alternativas y un pin que el despachador pueda mover. Confirmar llama `lugares.confirmar`; mover el pin llama `lugares.corregir_con_pin(..., quien="despachador")`. Detalle en `lugares/README.md`.
+
+### 13:40 · Fable → B-despacho · AVISO
+Encargo nuevo: `encargos/B2_RED_Y_LUGARES.md`. Ampliar la red para que cubra La Siria y los accesos, llenar `datos/semilla/lugares_extra.csv` con un agente Sonnet, medir el resolvedor con 40 frases y dejar la carga de datos reales desde `datos_privados/`.
+
+### 13:40 · Fable → simulacion · AVISO
+Encargo nuevo: `encargos/S2_SIMULACION_CRITICOS.md`. Barrido de `FACTOR_CRITICO`, confirmación en semillas nuevas e información imperfecta. No pude correrlo aquí: mi entorno no tiene el grafo real y la malla sintética no acepta el optimizador de B.

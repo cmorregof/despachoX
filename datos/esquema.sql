@@ -70,3 +70,25 @@ CREATE TABLE IF NOT EXISTS paquetes (      -- trazabilidad; codigo = contenido d
 CREATE TABLE IF NOT EXISTS bitacora (      -- quién decidió qué
   id INTEGER PRIMARY KEY, cuando TEXT NOT NULL, quien TEXT, accion TEXT, detalle TEXT
 );
+
+-- ---------- Ubicación de lugares dichos en lenguaje coloquial (módulo lugares/) ----------
+CREATE TABLE IF NOT EXISTS lugares (       -- nomenclátor: barrios, vías y sitios con sus apodos
+  id INTEGER PRIMARY KEY, nombre TEXT NOT NULL,
+  alias TEXT NOT NULL,                     -- un apodo ya normalizado (sin tildes, minúsculas)
+  tipo TEXT CHECK(tipo IN ('barrio','via','sitio','vereda','punto')) NOT NULL,
+  lat REAL NOT NULL, lon REAL NOT NULL,
+  osm_u INTEGER, osm_v INTEGER,            -- solo para vías: arista que se cierra
+  punto_id INTEGER REFERENCES puntos(id),  -- si el lugar es un punto de entrega
+  origen TEXT DEFAULT 'semilla' CHECK(origen IN ('semilla','geocodificado','aprendido')),
+  creado_en TEXT, UNIQUE(alias, tipo, lat, lon)
+);
+CREATE TABLE IF NOT EXISTS ubicaciones (   -- una propuesta de ubicación por pedido o cierre
+  id INTEGER PRIMARY KEY, creado_en TEXT NOT NULL,
+  tabla TEXT CHECK(tabla IN ('pedidos','cierres')) NOT NULL, fila_id INTEGER NOT NULL,
+  texto TEXT NOT NULL,                     -- lo que dijo la persona: «por la siria»
+  lugar_id INTEGER REFERENCES lugares(id), lat REAL, lon REAL,
+  metodo TEXT,                             -- exacto, parecido, modelo, pin, despachador, ninguno
+  puntaje REAL, candidatos TEXT,           -- JSON con las alternativas que se ofrecieron
+  estado TEXT DEFAULT 'propuesta' CHECK(estado IN ('propuesta','confirmada','rechazada')),
+  confirmado_por TEXT, confirmado_en TEXT
+);

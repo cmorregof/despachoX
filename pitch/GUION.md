@@ -49,7 +49,7 @@ Si algo falla: se dice «tenemos el mismo recorrido grabado» y se reproduce el 
 
 > Es una simulación, con sus supuestos escritos. No todos los centros de acopio tienen a ese experto un domingo a las tres de la mañana: DespachoX deja esa pericia escrita y disponible para cualquier voluntario. El dato real sale del piloto.
 
-Fuente: `docs/SIMULACION.md` (rama `simulacion`, pull request 1). Decir siempre contra qué línea base es cada cifra.
+Fuente: `docs/SIMULACION.md`. Estas cifras son de la primera corrida; el encargo S2 las puede cambiar. Decir siempre contra qué línea base es cada cifra.
 
 ### 6. Plan y aliados (25 s) · criterios 4 y 5
 

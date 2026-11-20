@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sqlite3
 import sys
 import time
@@ -39,6 +40,11 @@ MARGEN_VENCIMIENTO_S = 1800      # el perecedero debe llegar 30 minutos antes de
 KG_POR_FAMILIA = 10.0            # si el pedido no trae kilos
 LIMITE_POR_URGENCIA_H = {3: 4, 2: 12, 1: 24}      # si el pedido no trae `limite_en`
 PESO_RETRASO = {1: 1, 2: 3, 3: 10}                # costo por segundo de retraso
+# Los pedidos de puntos críticos (albergues, comedores) pesan más en el retraso y en quedar
+# sin atender: es lo que mide el indicador del reto. 1 = sin trato especial. El valor por
+# defecto lo elige la simulación (docs/SIMULACION.md) y se puede barrer con la variable
+# de entorno DESPACHOX_FACTOR_CRITICO. Queda en 1 hasta que la simulación elija el valor.
+FACTOR_CRITICO = max(1, int(os.environ.get("DESPACHOX_FACTOR_CRITICO", "1")))
 PENAL_SIN_ATENDER = 20_000_000                    # por nivel de urgencia
 PENAL_KG_PERECEDERO = 20_000                      # extra por kilo perecedero que se quedaría
 
@@ -265,6 +271,7 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
         if s.vence is not None:
             duro = int((s.vence - ahora).total_seconds()) - MARGEN_VENCIMIENTO_S
         nodos_pedido.append({"p": p, "s": s, "permitidos": permitidos, "urg": urg, "limite": limite,
+                             "factor": FACTOR_CRITICO if puntos[p["punto_id"]]["critico"] else 1,
                              "blando": max(0, int((limite - ahora).total_seconds())), "duro": duro})
     if not nodos_pedido:
         return vacio("ningún pedido se puede despachar: " +
@@ -299,13 +306,15 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
 
     for n, x in enumerate(nodos_pedido, start=2 * n_v):
         i = manager.NodeToIndex(n)
-        penal = PENAL_SIN_ATENDER * x["urg"] + int(PENAL_KG_PERECEDERO * x["s"].kg_perecedero)
+        penal = (PENAL_SIN_ATENDER * x["urg"] * x["factor"]
+                 + int(PENAL_KG_PERECEDERO * x["s"].kg_perecedero))
         routing.AddDisjunction([i], penal)
         if len(x["permitidos"]) < n_v:
             routing.VehicleVar(i).SetValues([-1] + x["permitidos"])   # -1 = sin atender
         if x["duro"] is not None:
             dim_t.CumulVar(i).SetMax(max(0, min(HORIZONTE_S, x["duro"])))
-        dim_t.SetCumulVarSoftUpperBound(i, min(HORIZONTE_S, x["blando"]), PESO_RETRASO[x["urg"]])
+        dim_t.SetCumulVarSoftUpperBound(i, min(HORIZONTE_S, x["blando"]),
+                                        PESO_RETRASO[x["urg"]] * x["factor"])
 
     params = pywrapcp.DefaultRoutingSearchParameters()
     params.first_solution_strategy = routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC
@@ -384,6 +393,7 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
         "supuestos": {"servicio_s": SERVICIO_S, "margen_vencimiento_s": MARGEN_VENCIMIENTO_S,
                       "horizonte_s": HORIZONTE_S, "kg_por_familia": KG_POR_FAMILIA,
                       "limite_por_urgencia_h": LIMITE_POR_URGENCIA_H, "peso_retraso": PESO_RETRASO,
+                      "factor_critico": FACTOR_CRITICO,
                       "factor_tiempo": mod_matriz.FACTOR_TIEMPO, "un_viaje_por_vehiculo": True},
     }
     if not paradas:
