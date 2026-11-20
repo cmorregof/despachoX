@@ -60,8 +60,8 @@ Los módulos no se llaman entre sí: solo se comunican por la base de datos. Por
 | Optimizador | Funciona. Planea 17 pedidos en unos 10 segundos y recalcula ante cierres |
 | Tablero | Funciona. Un fallo conocido: con un plan ya aprobado, «Calcular plan» borra las rutas anteriores. En corrección |
 | Simulación | Primera ronda completa, segunda en curso |
-| Todo junto con un teléfono real | **Pendiente.** Es el siguiente paso |
-| En la nube | **En curso** (Carlos) |
+| Todo junto con un teléfono real | **Funciona.** Un mensaje del teléfono llegó al tablero, se confirmó el lugar, entró al plan 2 (19 de 19 pedidos en 8 s). Falta probar un cierre vial y la aprobación en la nube |
+| En la nube | **Funciona** desde las 3:45 p. m.: bot y tablero en Railway |
 | Trazabilidad de paquetes | Pendiente |
 | Ficha de los seis componentes | **Vacía** (`docs/FICHA.md`). Hay borrador de los componentes 4 a 6 |
 | Cifras verificadas por una persona | **Ninguna** (`docs/FUENTES.md` vacío) |
@@ -85,10 +85,10 @@ Una forma rápida: abre Claude en esta carpeta y escribe «explícame `entrada/`
 
 ## Cómo probarlo
 
-**En la nube (cuando Carlos termine el despliegue):** le escribes al bot en Telegram y abres el tablero en la dirección que Carlos ponga aquí.
+**En la nube (ya funciona):** le escribes al bot en Telegram y abres el tablero. Es la misma base de datos para todos: lo que confirmes o apruebes lo ven los demás. Si el mapa sale gris en Brave, desactiva los escudos de Brave para esa página.
 
 - Bot: [t.me/despachox_bot](https://t.me/despachox_bot) (o escanea el código de abajo)
-- Tablero: _por definir_
+- Tablero: [despachox-production.up.railway.app](https://despachox-production.up.railway.app/)
 
 <img src="recursos/qr_bot.png" alt="Código QR del bot de DespachoX en Telegram" width="220">
 

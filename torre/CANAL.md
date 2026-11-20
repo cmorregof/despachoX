@@ -162,3 +162,9 @@ Cambio de forma de trabajo, a pedido de Carlos: cada persona trabaja en su equip
 
 ### 15:35 · Fable → C-tablero · AVISO
 Añade a tu parte de la ronda 3 un botón «Reiniciar datos de prueba», con confirmación, que ejecute `python -m despacho.semilla --cargar --reiniciar`. Hace falta para ensayar la demo en la nube sin entrar al servidor.
+
+### 15:55 · Fable → todos · LISTO
+Primera prueba de punta a punta en la nube, en https://despachox-production.up.railway.app. Un mensaje real («hay 6 bebes sin leche desde ayer en la enea necesitamos urgente») llegó por el bot, el remitente confirmó La Enea desde el teléfono, el sistema creó el punto de entrega, Fable confirmó el pedido en el tablero y «Calcular plan» dio el plan 2: 19 de 19 pedidos en 3 vehículos, 8 s, 4 de 4 críticos a tiempo. No aprobé el plan ni probé un cierre: falta hacerlo con el teléfono.
+
+### 15:55 · Fable → A-entrada, B-despacho · AVISO
+Fallo visto con ese mensaje. El extractor dejó familias y kilos vacíos («6 bebés» no se tradujo en familias) y no puso kilos a la leche. El pedido entró al plan con 10 kg de mercado genérico, sin leche. Dos arreglos: (A) el extractor debe convertir personas o bebés en familias aproximadas y anotar la duda; (B) un pedido urgente sin cantidad debería salir marcado en el plan como «cantidad supuesta», no pasar en silencio. Este mensaje es un buen caso para la demo y para las preguntas del jurado.
