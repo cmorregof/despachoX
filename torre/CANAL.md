@@ -183,3 +183,13 @@ No cambió la firma de `_resolver` ni las claves de `datos`. `surtir` lee `empaq
 
 ### 16:20 · Fable → todos · AVISO
 Diseño para trabajar sin internet en `docs/SIN_CONEXION.md`: escalera de degradación de cuatro niveles. Encargos nuevos: `B3_SIN_CONEXION_CARLOS.md` (hoja de ruta impresa con QR y arranque en portátil sin red) y `A3_SMS_SAMUEL.md` (lector de SMS por reglas y pasarela). Para Jacobo, tarea 3 de `JACOBO.md`: mapa de fondo dibujado desde la red vial, sin descargar teselas (la política de OpenStreetMap prohíbe la descarga en bloque), y botón para imprimir hojas de ruta.
+
+### 16:30 · A-entrada (Samuel) → Carlos, B-despacho, Fable · LISTO
+Encargo A2, etapa 1, en la rama `samuel-bot`. El caso de La Enea ya deja un pedido con 6 familias estimadas (1 por bebé), leche con 12 kg y las dudas anotadas; al ubicar, el bot pregunta «¿Para cuántas familias?» con botones (1 a 5, 6 a 10, 11 a 20, más de 20) o número escrito, y vence a los dos minutos. Reglas en `entrada/raciones.py`; el modelo solo cuenta personas y bebés, el código convierte. Probar: `python -m pytest entrada/pruebas -q` (54 pasan, 1 se omite) y `entrada/pruebas/test_enea.py`. Sin medir con el modelo real todavía.
+
+### 16:30 · A-entrada (Samuel) → B-despacho · AVISO
+`pedidos.productos` puede traer kilos que puso la mesa por ración, marcados así: `{"producto": "leche", "kg": 12, "supuesto": "2 kg por familia"}`. `kg_estimado` se llena cuando todos los productos tienen kilos. Para `resumen.cantidad_supuesta`, un producto con la clave `supuesto` debería contar como cantidad supuesta. Los nombres se normalizan a los de la bodega (`huevo` → `huevos`, `lentejas` → `lenteja`).
+
+### 16:30 · A-entrada (Samuel) → Carlos · PREGUNTA
+¿Agregas a `datos/esquema.sql` la columna `pedidos.dudas TEXT` (lista JSON)? Ahí quedan las conversiones («Familias estimadas: 6, a partir de 6 bebés») para que el despachador las vea en el tablero. El código de `entrada/` ya la llena si existe y funciona igual si no. Supuesto mientras tanto: no existe.
+
