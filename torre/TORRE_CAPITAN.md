@@ -1,5 +1,5 @@
 # Torre de control · Carlos · capitán
-Última actualización: viernes 20 de noviembre de 2026, 14:33
+Última actualización: viernes 20 de noviembre de 2026, 16:10
 
 ## Estado en una frase
 El módulo B corre de punta a punta: semilla cargada, plan en 10 s y recálculo que evita la vía cerrada. Faltan las pruebas (agente en curso) y, esta noche, la simulación.
@@ -23,7 +23,7 @@ Decisiones del modelo (quedan en el `resumen` de cada plan como supuestos):
 - Un viaje por vehículo y por plan. El vehículo `en_ruta` arranca desde su posición y conserva solo lo que ya lleva.
 - El camión no entra a vías residenciales; llega si hay una vía apta a menos de 300 m. Velocidades y factores por tipo son supuestos, no mediciones.
 - Límite de búsqueda de 8 s por defecto (tope 10) para que el comando completo quede por debajo de 15 s.
-- `python -m despacho.optimizar` planea solo pedidos `confirmado` y no toca un plan aprobado. `recalcular` reemplaza el plan vigente y vuelve a planear también los `asignado`.
+- `python -m despacho.optimizar` planea solo pedidos `confirmado` y no toca un plan aprobado. `recalcular` vuelve a planear también los `asignado`. Desde la ronda 3, el aprobado solo pasa a `reemplazado` cuando se aprueba el nuevo.
 - El regreso al acopio no es una fila de `paradas`: su geometría va en `resumen.vehiculos[].regreso`.
 - Añadí `scipy` a `requirements.txt` (Dijkstra rápido).
 
@@ -52,6 +52,14 @@ Salida de `python -m lugares.nomenclator "la siria" "la pana" "por la terminal"`
 «la pana» -> exacto, seguro=True     Ubiqué «la pana» en: Panamericana (via). ¿Es correcto?
 «por la terminal» -> exacto, seguro=True   Ubiqué «por la terminal» en: Terminal de Transportes (sitio). ¿Es correcto?
 ```
+
+### Ronda 3 (cerrada a las 16:10, rama `carlos-despacho`, sin fusionar a `main`)
+1. **Empaque activo.** `surtir` usa `vence_efectivo`: si un lote perecedero tiene `empaque_activo=1`, el tiempo que le queda hasta `vence_en` se multiplica por `FACTOR_EMPAQUE_ACTIVO` (1,5 por defecto; `DESPACHOX_FACTOR_EMPAQUE`). El orden «primero lo que vence primero» y la ventana dura usan ese vencimiento. Va en `resumen.supuestos.factor_empaque_activo` con la nota «supuesto, pendiente de datos del ICTA; patente UNAL 37476». La semilla tiene 2 lotes con empaque de 20 perecederos.
+2. **Trazabilidad.** `despacho/paquetes.py`. `optimizar.aprobar` crea un paquete `en_ruta` por parada (código `DX-XXXX`, sin letras que se confundan al dictarlas), con el lote que más kilos aporta. Un pedido tiene un solo paquete vivo: si un recálculo lo mueve, conserva su código. Si el plan aprobado nuevo deja fuera un pedido del anterior (y no va en un vehículo `en_ruta`), el pedido vuelve a `confirmado` y su paquete a `en_bodega`. `entregar(con, codigo, quien)` y `python -m despacho.paquetes --entregar CODIGO`; sin argumentos lista los paquetes del plan aprobado. `paquetes.listar(con)` es lo que puede leer el tablero.
+3. **Cantidad supuesta.** `_demanda(p, notas)` dice qué completó la red de seguridad. Cada parada lleva `cantidad_supuesta` (texto o `None`) en el resultado del solver; en la base queda en `resumen.cantidad_supuesta` (`{pedido_id: motivo}`) y como aviso legible en `resumen.avisos`, que el tablero ya muestra. No toqué el esquema de `paradas`. Los 20 pedidos de la semilla traen kilos: ninguno sale marcado.
+4. **Plan vigente.** `planificar` ya no marca `reemplazado` el aprobado; solo las propuestas anteriores. `resumen.reemplaza_a` sigue nombrando el aprobado, así que la comparación «qué cambió» del tablero no cambia. `aprobar` es el único que pasa el aprobado a `reemplazado`.
+
+Pruebas: `despacho/tests` 25 pasan (12 nuevas en `test_ronda3.py`); simulación 24 pasan con el grafo urbano; `tablero`, `lugares` y `entrada` 64 pasan y 1 se omite. Punta a punta en una base temporal con la semilla y el grafo regional: plan 1 con 17 de 17 y 3 de 3 críticos a tiempo; aprobado, 17 paquetes; un pedido sintético sin cantidad en un albergue entra al recálculo marcado «sin kilos ni familias: se supuso 1 familia, 10 kg»; rechazar ese recálculo deja el plan 1 aprobado; aprobar el siguiente lo reemplaza y crea 18 paquetes (los 17 conservan código); entregar por línea de órdenes funciona y la segunda vez se rechaza.
 
 ## En curso
 - Nada de B. Pendiente de otra sesión: encargo S2 de la simulación (barrido de `FACTOR_CRITICO`), que no se ejecutó, y el indicador A25 como riesgo de tramo.

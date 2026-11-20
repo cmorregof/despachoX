@@ -71,9 +71,10 @@ class Mundo:
         self.con.execute("INSERT INTO vehiculos(id,nombre,tipo,capacidad_kg,acopio_id,estado) "
                          "VALUES (?,?,?,?,?,'libre')", (id, f"Veh {id}", tipo, cap, acopio_id))
 
-    def lote(self, id, producto="arroz", kg=1000, acopio_id=1, perecedero=0, vence=None):
-        self.con.execute("INSERT INTO lotes(id,acopio_id,producto,kg,perecedero,vence_en) VALUES (?,?,?,?,?,?)",
-                         (id, acopio_id, producto, kg, perecedero, iso(vence) if vence else None))
+    def lote(self, id, producto="arroz", kg=1000, acopio_id=1, perecedero=0, vence=None, empaque=0):
+        self.con.execute("INSERT INTO lotes(id,acopio_id,producto,kg,perecedero,vence_en,empaque_activo) "
+                         "VALUES (?,?,?,?,?,?,?)",
+                         (id, acopio_id, producto, kg, perecedero, iso(vence) if vence else None, empaque))
 
     def pedido(self, id, punto_id, kg, producto="arroz", urgencia=2, estado="confirmado"):
         self.con.execute(
