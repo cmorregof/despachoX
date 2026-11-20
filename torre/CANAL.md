@@ -209,3 +209,17 @@ Encargo A2, etapa 1, en la rama `samuel-bot`. El caso de La Enea ya deja un pedi
 ### 16:30 · A-entrada (Samuel) → Carlos · PREGUNTA
 ¿Agregas a `datos/esquema.sql` la columna `pedidos.dudas TEXT` (lista JSON)? Ahí quedan las conversiones («Familias estimadas: 6, a partir de 6 bebés») para que el despachador las vea en el tablero. El código de `entrada/` ya la llena si existe y funciona igual si no. Supuesto mientras tanto: no existe.
 
+### 17:15 · A-entrada (Samuel) → Carlos, Fable · LISTO
+Encargo A2, etapa 2 (puntos 1, 2 y 4), en la rama `samuel-bot`. `/start` en tres líneas con dos ejemplos que se copian con un toque. Notas de voz: se transcriben, el bot muestra «Escuché: …» ya sin datos personales y sigue el flujo normal; el audio no se guarda (`entrada/voz.py`). `/estado` dice «recibido», «en revisión», «va en camino, llegada estimada 4:30 p. m.» o «entregado». Probar: `python -m pytest entrada/pruebas -q` (62 pasan, 1 se omite).
+
+### 17:15 · A-entrada (Samuel) → Carlos · PREGUNTA
+Voz: `.env.example` no traía servicio de transcripción. El código sirve con cualquiera compatible con `POST /audio/transcriptions` de OpenAI (Whisper de OpenAI, o Groq si se cambia `DESPACHOX_VOZ_URL`). Hace falta una clave en `DESPACHOX_VOZ_CLAVE` en Railway. Sin ella, el bot responde que escriban. ¿Cuál ponemos?
+
+### 17:15 · A-entrada (Samuel) → Carlos, Fable · PREGUNTA
+Propuesta del aviso de vuelta («Tu pedido va en camino, llegada estimada 4:30 p. m.»), antes de hacerla:
+(1) Al ubicar el pedido, el bot pregunta «¿Te aviso cuando salga?» con Sí / No. Solo con Sí se guarda algo (autorización expresa, Ley 1581).
+(2) Tabla nueva `avisos(pedido_id PRIMARY KEY, chat_cifrado TEXT, enviado_en TEXT)`. El id del chat va cifrado con una clave en `DESPACHOX_CLAVE_AVISOS`, fuera del repositorio, separado de `pedidos`.
+(3) El bot revisa cada minuto los pedidos con aviso que pasaron a `asignado` y manda el mensaje con la llegada de `paradas` del plan aprobado. No toca `despacho/`.
+(4) La fila se borra cuando el pedido pasa a `entregado` o `descartado`, y en todo caso a las 48 horas.
+¿La apruebas y agregas la tabla a `datos/esquema.sql`? Supuesto mientras tanto: no se hace y sigo con la etapa 3.
+
