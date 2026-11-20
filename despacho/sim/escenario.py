@@ -25,7 +25,7 @@ class Parametros:
     separacion_min_m: float = 250.0
     radio_km: float = 6.0                  # los puntos quedan a esta distancia del centro, como mucho
     # demanda
-    pedidos_por_punto: float = 3.0
+    pedidos_por_punto: float = 2.5
     frac_pedidos_inicio: float = 0.40      # pedidos que ya están en cola al empezar
     horas_pedidos: float = 8.0             # los demás llegan uniformes en [0, 8 h]
     horas_jornada: float = 14.0            # corte de la simulación
@@ -52,7 +52,7 @@ class Parametros:
     radio_libre_acopio_m: float = 400.0    # no se cierran tramos pegados al acopio
     # operación
     min_carga: float = 10.0                # minutos para cargar en el acopio
-    min_servicio: float = 8.0              # minutos por entrega
+    min_servicio: float = 10.0             # minutos por entrega (igual que el optimizador de B)
     min_reporte: float = 3.0               # lo que pierde el conductor al toparse un cierre
     min_confirmacion: float = 5.0          # del reporte a la confirmación humana del cierre
     min_aprobacion: float = 2.0            # lo que tarda el despachador en aprobar un plan
@@ -60,12 +60,12 @@ class Parametros:
 
 
 # Niveles de carga del sistema: cuántos pedidos hace cada punto en la jornada. Se eligieron con
-# semillas de calibración (100 a 111): la política ingenua cumple cerca del 82 %, 63 % y 46 % de
+# semillas de calibración (100 a 111): la política ingenua cumple cerca del 86 %, 74 % y 52 % de
 # los pedidos críticos a tiempo en cada nivel.
 NIVELES_CARGA = {
-    "holgada": {"pedidos_por_punto": 2.5},
-    "media": {"pedidos_por_punto": 3.0},
-    "alta": {"pedidos_por_punto": 3.5},
+    "holgada": {"pedidos_por_punto": 2.0},
+    "media": {"pedidos_por_punto": 2.5},
+    "alta": {"pedidos_por_punto": 3.0},
 }
 
 
