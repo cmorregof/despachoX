@@ -7,6 +7,7 @@ Uso:
 from __future__ import annotations
 
 import argparse
+import os
 import pickle
 import socket
 import sys
@@ -21,9 +22,16 @@ import shapely
 from shapely.geometry import LineString, Point
 
 CACHE = Path(__file__).resolve().parent / "cache"
-RUTA_GRAFO = CACHE / "manizales.graphml"
-RUTA_PICKLE = CACHE / "manizales.pkl"
+# Red ampliada (casco urbano completo + vías principales de los accesos). La variable de entorno
+# DESPACHOX_GRAFO permite fijar otro archivo, por ejemplo el grafo urbano original
+# `manizales.graphml` con el que se midió la primera simulación.
+RUTA_GRAFO = Path(os.environ.get("DESPACHOX_GRAFO") or CACHE / "manizales_region.graphml")
+RUTA_PICKLE = RUTA_GRAFO.with_suffix(".pkl")
 LUGARES = ["Manizales, Caldas, Colombia", "Villamaría, Caldas, Colombia"]
+# Accesos: Chinchiná y Palestina (autopista del Café, vía antigua por La Siria), kilómetro 41,
+# Neira al norte y el alto de Letras al oriente. (oeste, sur, este, norte)
+AREA = (-75.74, 4.93, -75.30, 5.20)
+FILTRO_ACCESOS = '["highway"~"^(motorway|trunk|primary|secondary|tertiary|unclassified)(_link)?$"]'
 
 # Velocidades supuestas (km/h) cuando la vía no trae `maxspeed`. Son un supuesto nuestro
 # para ciudad de ladera; no vienen de una medición.
@@ -63,18 +71,23 @@ def descargar() -> nx.MultiDiGraph:
     ox.settings.use_cache = True
     ox.settings.cache_folder = str(CACHE / "http")
     ox.settings.requests_timeout = 120
-    g = None
-    for intento in range(1, INTENTOS + 1):   # Overpass público se satura; se insiste con pausa
-        try:
-            _evitar_ip_caida()
-            g = ox.graph_from_place(LUGARES, network_type="drive", simplify=True)
-            break
-        except Exception as e:  # noqa: BLE001  (red caída, 502, cola llena)
-            print(f"intento {intento}/{INTENTOS} falló: {type(e).__name__}: {str(e)[:120]}",
-                  file=sys.stderr, flush=True)
-            if intento == INTENTOS:
-                raise
-            time.sleep(8)
+    def insistir(f):
+        for intento in range(1, INTENTOS + 1):   # Overpass público se satura; se insiste con pausa
+            try:
+                _evitar_ip_caida()
+                return f()
+            except Exception as e:  # noqa: BLE001  (red caída, 502, cola llena)
+                print(f"intento {intento}/{INTENTOS} falló: {type(e).__name__}: {str(e)[:120]}",
+                      file=sys.stderr, flush=True)
+                if intento == INTENTOS:
+                    raise
+                time.sleep(8)
+
+    # Sin simplificar, para poder unir las dos descargas por sus nodos de OSM y simplificar después.
+    urbano = insistir(lambda: ox.graph_from_place(LUGARES, network_type="drive", simplify=False))
+    accesos = insistir(lambda: ox.graph_from_bbox(AREA, custom_filter=FILTRO_ACCESOS, simplify=False,
+                                                  truncate_by_edge=True))
+    g = ox.simplify_graph(nx.compose(accesos, urbano))
     g = ox.truncate.largest_component(g, strongly=True)
     g = ox.add_edge_speeds(g, hwy_speeds=VELOCIDADES, fallback=VELOCIDAD_POR_DEFECTO)
     g = ox.add_edge_travel_times(g)

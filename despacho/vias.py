@@ -6,6 +6,7 @@ Escribe datos/semilla/vias.csv con cabecera nombre,lat,lon,osm_u,osm_v y muestra
 Para añadir un tramo, agrega una entrada a TRAMOS:
     nombre   nombre coloquial que usaría quien reporta
     patron   regex (sin distinguir mayúsculas) sobre `name` y `ref` de la arista
+    arista   (osm_u, osm_v) fija, para tramos sin nombre en OSM; lleva `nota` con la validación
     bbox     (lon_min, lon_max) opcional, para acotar el tramo por geografía
     urbana   True si es avenida urbana (se exige desvío cuando exista una arista candidata con desvío)
 """
@@ -26,8 +27,17 @@ CATEGORIAS = {"motorway", "trunk", "primary", "secondary", "tertiary",
 
 TRAMOS = [
     {"nombre": "Panamericana", "patron": r"^Carretera Panamericana|^50$", "bbox": (-75.5300, -75.4500), "urbana": False},
-    {"nombre": "salida a Letras", "patron": r"^50$", "bbox": (-75.4300, -75.4200), "urbana": False,
-     "nota": "ruta 50 al oriente de Maltería (geografía, sin nombre en OSM)"},
+    {"nombre": "salida a Letras", "patron": r"Alto de Letras", "bbox": (-75.4250, -75.3400), "urbana": False},
+    {"nombre": "autopista del Café", "patron": r"^Autopista del Café$", "urbana": False},
+    {"nombre": "vía a Medellín", "patron": r"^Carretera Panamericana Manizales - Medellín$",
+     "bbox": (-75.6100, -75.5400), "urbana": False},
+    # Sin nombre propio en OSM: se fija la arista y se dice cómo se validó.
+    {"nombre": "La Siria", "arista": (11147476274, 1141102833), "urbana": False,
+     "nota": "vía antigua a Chinchiná (ref 29) en el cruce con «La Siria - Alto del Naranjo», a 310 m del "
+             "centro de la vereda La Siria"},
+    {"nombre": "vía a Neira", "arista": (3778590861, 424707114), "urbana": False,
+     "nota": "secundaria sin nombre que sigue a la carrera 15 hacia el norte; es el camino más corto del "
+             "centro a Neira (12 km), donde empalma con «Filadelfia - Neira»"},
     {"nombre": "avenida Santander", "patron": r"^Avenida Santander$", "urbana": True},
     {"nombre": "avenida Kevin Ángel", "patron": r"^Avenida Kevin Ángel$", "urbana": True},
     {"nombre": "vía a Chinchiná", "patron": r"^Vía A Chinchina$", "urbana": False},
@@ -38,7 +48,6 @@ TRAMOS = [
     {"nombre": "avenida Bernardo Arango", "patron": r"^Avenida Bernardo Arango$", "urbana": True},
     {"nombre": "vía a Villamaría", "patron": r"^Carretera a Villamaria$", "urbana": False},
 ]
-# Sin ubicar con confianza (el grafo no los cubre o no tienen nombre en OSM): La Siria, vía a Neira.
 
 
 def _lista(x):
@@ -77,6 +86,12 @@ def candidatas(g, t):
 
 
 def elegir(g, t):
+    if "arista" in t:
+        u, v = t["arista"]
+        if not g.has_edge(u, v):
+            return None
+        lat, lon = _punto_medio(g, u, v)
+        return (u, v, lat, lon, 0.0, tiene_desvio(g, u, v))
     c = candidatas(g, t)
     if not c:
         return None

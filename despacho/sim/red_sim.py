@@ -182,10 +182,13 @@ class Red:
 def ruta_cache() -> Path | None:
     """Busca el grafo de Manizales: variable de entorno, este árbol o la carpeta principal."""
     aqui = Path(__file__).resolve()
-    candidatas = [os.environ.get("DESPACHOX_GRAFO", ""), aqui.parents[1] / "cache" / "manizales.graphml"]
+    # Mismo orden que despacho/red.py: la red ampliada y, si no está, la urbana original.
+    # Para reproducir las corridas del 20 de noviembre: DESPACHOX_GRAFO=despacho/cache/manizales.graphml
+    nombres = ("manizales_region.graphml", "manizales.graphml")
+    candidatas = [os.environ.get("DESPACHOX_GRAFO", "")] + [aqui.parents[1] / "cache" / n for n in nombres]
     for padre in aqui.parents:  # si se corre desde un árbol de trabajo, mirar el repositorio principal
         if padre.name == ".claude":
-            candidatas.append(padre.parent / "despacho" / "cache" / "manizales.graphml")
+            candidatas += [padre.parent / "despacho" / "cache" / n for n in nombres]
     for c in candidatas:
         if c and Path(c).is_file():
             return Path(c)

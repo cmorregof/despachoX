@@ -28,7 +28,7 @@ def test_error_de_tipeo(con):
 
 
 def test_desconocido_pide_pin_y_no_inventa(con):
-    r = R.resolver(con, "la siria", tipos=("via", "sitio"), elegir=None)
+    r = R.resolver(con, "finca el zancudo", tipos=("via", "sitio"), elegir=None)
     assert r.elegido is None and not r.seguro
     assert "ubicación" in r.pregunta
 
@@ -46,11 +46,11 @@ def test_el_modelo_solo_elige_de_la_lista(con):
 
 
 def test_pin_confirma_y_enseña_el_apodo(con):
-    r = R.resolver(con, "la siria", tabla="cierres", fila_id=1, tipos=("via", "sitio"), elegir=None)
+    r = R.resolver(con, "finca el zancudo", tabla="cierres", fila_id=1, tipos=("via", "sitio"), elegir=None)
     assert R.corregir_con_pin(con, r.ubicacion_id, 5.0301, -75.5702, "remitente")
     c = con.execute("SELECT lat, lon FROM cierres WHERE id=1").fetchone()
     assert (c["lat"], c["lon"]) == (5.0301, -75.5702)
-    otra = R.resolver(con, "derrumbe en la siria", tipos=("via", "sitio"), elegir=None)
+    otra = R.resolver(con, "derrumbe en la finca el zancudo", tipos=("via", "sitio"), elegir=None)
     assert otra.seguro and otra.elegido.lat == 5.0301          # ya no pregunta
 
 
