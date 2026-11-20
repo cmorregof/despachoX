@@ -67,7 +67,8 @@ def test_las_politicas_respetan_capacidad_y_conservan_los_kilos(nombre):
     # cada kilo perecedero está en bodega, a bordo o entregado (válido o vencido)
     a_bordo = sum(kg for v in r.vehiculos for items in v.carga.values() for l, kg in items if l is not None)
     entregado = sum(r.kg_valido_por_lote.values()) + sum(e["kg_vencido"] for e in r.entregas.values())
-    assert sum(motor.inv.values()) + a_bordo + entregado == pytest.approx(sum(l.kg for l in esc.lotes))
+    if not any(v.estado == "fuera" for v in r.vehiculos):     # la carga de un vehículo aislado se pierde
+        assert sum(motor.inv.values()) + a_bordo + entregado == pytest.approx(sum(l.kg for l in esc.lotes))
     assert all(kg >= -1e-6 for kg in motor.inv.values())
 
 
@@ -104,7 +105,7 @@ def _camino_previsto(esc, tipo, punto):
 
 
 def _punto_lejano(esc):
-    return max(esc.puntos, key=lambda q: len(_camino_previsto(esc, "campero", q.id))).id
+    return max(esc.puntos, key=lambda q: len(_camino_previsto(esc, "campero", q.id) or [])).id
 
 
 def test_cierre_desconocido_no_altera_la_ruta_hasta_que_se_descubre(red):
@@ -179,3 +180,33 @@ def test_el_escenario_cumple_el_diseno():
     assert all(6 * H <= l.vence <= 48 * H for l in esc.lotes)
     assert {v.tipo for v in esc.vehiculos} == {"camion", "campero", "moto"}
     assert esc.p.cierres_min <= len(esc.cierres) <= esc.p.cierres_max
+
+
+def test_vehiculo_aislado_devuelve_sus_pedidos_a_la_cola(red):
+    # mientras el campero descarga, se cierran todos los tramos que tocan el punto: no puede salir
+    base = mini(red, [], [Vehiculo(1, "campero", 700.0)])
+    punto = _punto_lejano(base)
+    nodo = base.puntos[punto - 1].nodo
+    otro = next(q.id for q in base.puntos if q.id != punto)
+    arma = lambda cs: mini(red, [pedido(1, punto, 100.0), pedido(2, otro, 100.0)],
+                           [Vehiculo(1, "campero", 700.0), Vehiculo(2, "moto", 60.0)], cierres=cs)
+    llegada = simular(arma([]), Fija({1: [1, 2]})).entregas[1]["t"]
+    tocan = tuple(i for i, (u, v) in enumerate(zip(red.eu, red.ev)) if u == nodo or v == nodo)
+    motor = Motor(arma([Cierre(1, tocan, llegada + 60.0, ("campero",))]), Fija({1: [1, 2]}))
+    r = motor.correr()
+    assert r.vehiculos[0].estado == "fuera"
+    assert 1 in r.entregas and 2 not in r.entregas
+    assert motor.estado_ped[2] == "pendiente"           # queda disponible para otro vehículo
+
+
+def test_vehiculo_sin_regreso_por_su_red_sale_en_emergencia(red):
+    # se cierran las salidas del punto, pero no el tramo de entrada: el campero vuelve en contravía
+    base = mini(red, [], [Vehiculo(1, "campero", 700.0)])
+    punto = _punto_lejano(base)
+    nodo = base.puntos[punto - 1].nodo
+    salidas = tuple(i for i, (u, v) in enumerate(zip(red.eu, red.ev)) if u == nodo)
+    esc = mini(red, [pedido(1, punto, 100.0)], [Vehiculo(1, "campero", 700.0)],
+               cierres=[Cierre(1, salidas, 0.0, ("campero",))])
+    r = simular(esc, Fija({1: [1]}))
+    v = r.vehiculos[0]
+    assert v.estado == "libre" and v.emergencias == 1 and 1 in r.entregas

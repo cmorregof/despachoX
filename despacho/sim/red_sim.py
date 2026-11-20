@@ -1,8 +1,12 @@
 """Red vial de la simulación.
 
-`Red` es la red verdadera (aristas dirigidas con largo y clase de vía).
-`Conocimiento` es lo que el despacho cree de la red: la misma red menos los cierres ya
-reportados. Las políticas y los conductores solo calculan caminos con `Conocimiento`.
+`Red` es la red verdadera. `Conocimiento` es lo que el despacho cree de ella: la misma red
+menos los cierres ya reportados. Políticas y conductores solo calculan caminos con `Conocimiento`.
+
+Las velocidades y las reglas de acceso son las mismas de `despacho/red.py` y
+`despacho/matriz.py` (el optimizador de B), para que el plan y la simulación hablen de la
+misma ciudad: tiempo base por tipo de vía, un factor por tipo de vehículo, y el camión fuera
+de las vías residenciales pero con permiso de parquear a 300 m del punto y descargar a mano.
 """
 from __future__ import annotations
 
@@ -12,69 +16,78 @@ from pathlib import Path
 
 import numpy as np
 from scipy.sparse import csr_matrix
-from scipy.sparse.csgraph import connected_components, dijkstra
+from scipy.sparse.csgraph import dijkstra
 
 TIPOS = ("camion", "campero", "moto")
-CLASES = ("principal", "local", "estrecha")
 
-# Supuesto declarado: velocidades en km/h por tipo de vehículo y clase de vía, ciudad después
-# del sismo. 0 significa que ese tipo no puede usar esa clase de vía.
-VELOCIDAD_KMH = {
-    "camion": {"principal": 30.0, "local": 18.0, "estrecha": 0.0},
-    "campero": {"principal": 35.0, "local": 22.0, "estrecha": 12.0},
-    "moto": {"principal": 40.0, "local": 28.0, "estrecha": 15.0},
+# Copia de los supuestos de B. `tests/test_supuestos.py` falla si dejan de coincidir.
+VELOCIDADES = {
+    "motorway": 60, "trunk": 50, "primary": 40, "secondary": 35, "tertiary": 30,
+    "unclassified": 25, "residential": 20, "living_street": 10, "service": 15,
+    "motorway_link": 40, "trunk_link": 35, "primary_link": 30,
+    "secondary_link": 25, "tertiary_link": 25,
 }
-
-_PRINCIPAL = {"motorway", "trunk", "primary", "secondary",
-              "motorway_link", "trunk_link", "primary_link", "secondary_link"}
-_LOCAL = {"tertiary", "tertiary_link", "residential", "unclassified"}
+VELOCIDAD_POR_DEFECTO = 20
+FACTOR_TIEMPO = {"camion": 1.25, "campero": 1.0, "moto": 0.9}
+VIAS_SIN_CAMION = {"residential", "living_street", "service", "track", "path", "pedestrian"}
+TOLERANCIA_M = {"camion": 300.0, "campero": 400.0, "moto": 400.0}
+# Supuesto de la simulación: un vehículo sin regreso por su red sale por cualquier vía de
+# conducción, al doble del tiempo en las que no son aptas para él, y puede devolverse en
+# contravía por donde vino, también al doble del tiempo.
+FACTOR_EMERGENCIA = 2.0
 
 CENTRO_MANIZALES = (5.0689, -75.5174)  # lat, lon de la plaza de Bolívar (aproximado)
 SIN_CAMINO = -9999
 
 
-def _clase_de(highway) -> int:
-    texto = str(highway)
-    etiquetas = [e.strip(" '\"[]") for e in texto.split(",")]
-    if any(e in _PRINCIPAL for e in etiquetas):
-        return 0
-    if any(e in _LOCAL for e in etiquetas):
-        return 1
-    return 2
+def _via(highway) -> str:
+    return str(highway).split(",")[0].strip(" '\"[]")
+
+
+def _apta_camion(via: str, hgv="", maxweight="99") -> bool:
+    if via in VIAS_SIN_CAMION or str(hgv).lower() in {"no", "private"}:
+        return False
+    try:
+        return float(str(maxweight).split()[0]) >= 5
+    except (ValueError, IndexError):
+        return True
 
 
 class Red:
-    """Red verdadera. Nodos 0..n-1 y aristas dirigidas 0..m-1."""
+    """Red verdadera. Nodos 0..n-1 y aristas dirigidas 0..m-1 (una por par de nodos)."""
 
-    def __init__(self, lat, lon, eu, ev, largo_m, clase, origen: str):
+    def __init__(self, lat, lon, eu, ev, largo_m, seg_general, seg_camion, origen: str, osm_id=None):
         self.lat = np.asarray(lat, float)
         self.lon = np.asarray(lon, float)
         self.eu = np.asarray(eu, np.int32)
         self.ev = np.asarray(ev, np.int32)
         self.largo_m = np.asarray(largo_m, float)
-        self.clase = np.asarray(clase, np.int8)
         self.origen = origen
-        self.n = len(self.lat)
-        self.m = len(self.eu)
+        self.n, self.m = len(self.lat), len(self.eu)
+        self.osm_id = np.arange(self.n) if osm_id is None else np.asarray(osm_id)
         self.arista = {(int(u), int(v)): i for i, (u, v) in enumerate(zip(self.eu, self.ev))}
-        self.segundos = {}
-        for tipo in TIPOS:
-            vel = np.array([VELOCIDAD_KMH[tipo][c] for c in CLASES])[self.clase]
-            with np.errstate(divide="ignore"):
-                self.segundos[tipo] = np.where(vel > 0, self.largo_m / (vel / 3.6), np.inf)
+        general, camion = np.asarray(seg_general, float), np.asarray(seg_camion, float)
+        self.segundos = {"camion": np.maximum(camion * FACTOR_TIEMPO["camion"], 0.01),
+                         "campero": np.maximum(general * FACTOR_TIEMPO["campero"], 0.01),
+                         "moto": np.maximum(general * FACTOR_TIEMPO["moto"], 0.01)}
+        # salida de emergencia: todas las vías; las no aptas para el tipo, al doble de tiempo
+        self.segundos_emergencia = {
+            t: np.where(np.isfinite(self.segundos[t]), self.segundos[t],
+                        np.maximum(general * FACTOR_TIEMPO[t] * FACTOR_EMERGENCIA, 0.01)) for t in TIPOS}
+        self._nodos_tipo, self._acceso = {}, {}
 
     # ---------- constructores ----------
     @classmethod
     def malla(cls, lado: int = 22, paso_m: float = 350.0, semilla: int = 0) -> "Red":
-        """Malla sintética con avenidas cada cinco cuadras, vías estrechas y cuadras sin paso."""
+        """Malla sintética para pruebas: avenidas cada cinco cuadras, calles y callejones."""
         rng = np.random.default_rng(semilla)
         lat0, lon0 = CENTRO_MANIZALES
         xs, ys = np.meshgrid(np.arange(lado), np.arange(lado))
         x = (xs.ravel() - lado / 2) * paso_m + rng.normal(0, paso_m * 0.08, lado * lado)
         y = (ys.ravel() - lado / 2) * paso_m + rng.normal(0, paso_m * 0.08, lado * lado)
-        lat = lat0 + y / 111_320.0
+        lat = lat0 + y / 110_540.0
         lon = lon0 + x / (111_320.0 * math.cos(math.radians(lat0)))
-        eu, ev, largo, clase = [], [], [], []
+        eu, ev, largo, general, camion = [], [], [], [], []
         for i in range(lado):
             for j in range(lado):
                 a = i * lado + j
@@ -85,68 +98,77 @@ class Red:
                     b = ii * lado + jj
                     avenida = (di == 0 and i % 5 == 0) or (dj == 0 and j % 5 == 0)
                     if avenida:
-                        c = 0
+                        via = "secondary"
                     else:
                         r = rng.random()
                         if r < 0.08:
                             continue  # cuadra sin paso
-                        c = 2 if r < 0.20 else 1
+                        via = "residential" if r < 0.20 else "tertiary"
                     d = float(np.hypot(x[a] - x[b], y[a] - y[b])) * 1.15  # las vías no son rectas
+                    t = d / (VELOCIDADES[via] / 3.6)
                     eu += [a, b]
                     ev += [b, a]
                     largo += [d, d]
-                    clase += [c, c]
-        return cls(lat, lon, eu, ev, largo, clase, origen=f"malla sintética {lado}x{lado}")
+                    general += [t, t]
+                    camion += [t if _apta_camion(via) else np.inf] * 2
+        return cls(lat, lon, eu, ev, largo, general, camion, origen=f"malla sintética {lado}x{lado}")
 
     @classmethod
-    def desde_graphml(cls, ruta, radio_km: float = 6.0, centro=CENTRO_MANIZALES) -> "Red":
-        """Lee el grafo de osmnx y se queda con la parte conectada a `radio_km` del centro."""
+    def desde_graphml(cls, ruta) -> "Red":
+        """Lee el grafo que guarda `despacho/red.py` (osmnx). Si no trae `travel_time`, lo calcula."""
         import networkx as nx
 
         g = nx.read_graphml(ruta)
-        lat0, lon0 = centro
-        kx = 111.32 * math.cos(math.radians(lat0))
-        ids, lat, lon = [], [], []
-        for nodo, d in g.nodes(data=True):
-            la, lo = float(d["y"]), float(d["x"])
-            if math.hypot((la - lat0) * 111.32, (lo - lon0) * kx) <= radio_km:
-                ids.append(nodo)
-                lat.append(la)
-                lon.append(lo)
+        ids = list(g.nodes)
         idx = {nodo: i for i, nodo in enumerate(ids)}
-        mejor = {}
+        lat = [float(g.nodes[n]["y"]) for n in ids]
+        lon = [float(g.nodes[n]["x"]) for n in ids]
+        mejor = {}       # par -> [largo, segundos general, segundos camión]
         for u, v, d in g.edges(data=True):
-            if u not in idx or v not in idx or u == v:
+            if u == v:
                 continue
+            via = _via(d.get("highway", ""))
             largo = float(d.get("length", 0.0)) or 1.0
-            clave = (idx[u], idx[v])
-            if clave not in mejor or largo < mejor[clave][0]:
-                mejor[clave] = (largo, _clase_de(d.get("highway", "")))
-        eu = np.array([k[0] for k in mejor], np.int32)
-        ev = np.array([k[1] for k in mejor], np.int32)
-        largo = np.array([v[0] for v in mejor.values()])
-        clase = np.array([v[1] for v in mejor.values()], np.int8)
-        # mayor componente fuertemente conexa, para que todo nodo sirva de punto o de acopio
-        n = len(ids)
-        _, etiqueta = connected_components(
-            csr_matrix((np.ones(len(eu)), (eu, ev)), shape=(n, n)), connection="strong")
-        grande = np.bincount(etiqueta).argmax()
-        vivos = np.flatnonzero(etiqueta == grande)
-        nuevo = -np.ones(n, np.int64)
-        nuevo[vivos] = np.arange(len(vivos))
-        ok = (nuevo[eu] >= 0) & (nuevo[ev] >= 0)
-        return cls(np.array(lat)[vivos], np.array(lon)[vivos], nuevo[eu[ok]], nuevo[ev[ok]],
-                   largo[ok], clase[ok], origen=f"OpenStreetMap, {Path(ruta).name}, radio {radio_km} km")
+            if "travel_time" in d:
+                t = float(d["travel_time"])
+            else:
+                t = largo / (VELOCIDADES.get(via, VELOCIDAD_POR_DEFECTO) / 3.6)
+            tc = t if _apta_camion(via, d.get("hgv", ""), d.get("maxweight", "99")) else np.inf
+            par = (idx[u], idx[v])
+            if par not in mejor:
+                mejor[par] = [largo, t, tc]
+            else:
+                if t < mejor[par][1]:
+                    mejor[par][0], mejor[par][1] = largo, t
+                mejor[par][2] = min(mejor[par][2], tc)
+        pares = list(mejor)
+        vals = np.array([mejor[p] for p in pares])
+        return cls(lat, lon, [p[0] for p in pares], [p[1] for p in pares], vals[:, 0], vals[:, 1], vals[:, 2],
+                   origen=f"OpenStreetMap ({Path(ruta).name}, {len(ids)} nodos)",
+                   osm_id=[int(n) for n in ids])
 
     # ---------- utilidades ----------
-    def xy_m(self):
-        lat0 = float(self.lat.mean())
-        return ((self.lon - self.lon.mean()) * 111_320.0 * math.cos(math.radians(lat0)),
-                (self.lat - lat0) * 111_320.0)
+    def metros_a(self, lat: float, lon: float) -> np.ndarray:
+        """Distancia en metros de cada nodo a un punto (misma aproximación plana que usa B)."""
+        kx = 111_320 * math.cos(math.radians(lat))
+        return np.hypot((self.lon - lon) * kx, (self.lat - lat) * 110_540)
 
-    def nodo_mas_cercano(self, lat: float, lon: float) -> int:
-        kx = math.cos(math.radians(lat))
-        return int(np.argmin(((self.lon - lon) * kx) ** 2 + (self.lat - lat) ** 2))
+    def nodos_del_tipo(self, tipo: str) -> np.ndarray:
+        """Nodos que tocan alguna vía por la que ese tipo de vehículo puede pasar."""
+        if tipo not in self._nodos_tipo:
+            ok = np.isfinite(self.segundos[tipo])
+            self._nodos_tipo[tipo] = np.unique(np.concatenate([self.eu[ok], self.ev[ok]]))
+        return self._nodos_tipo[tipo]
+
+    def nodo_de_acceso(self, tipo: str, nodo: int):
+        """Nodo desde el que ese tipo de vehículo atiende un sitio, o None si no tiene acceso."""
+        clave = (tipo, int(nodo))
+        if clave not in self._acceso:
+            cand = self.nodos_del_tipo(tipo)
+            d = self.metros_a(self.lat[nodo], self.lon[nodo])[cand]
+            k = int(d.argmin())
+            self._acceso[clave] = int(cand[k]) if d[k] <= TOLERANCIA_M[tipo] else None
+        return self._acceso[clave]
 
     def matriz(self, tipo: str, cerradas=()) -> csr_matrix:
         seg = self.segundos[tipo]
@@ -159,9 +181,8 @@ class Red:
 
 def ruta_cache() -> Path | None:
     """Busca el grafo de Manizales: variable de entorno, este árbol o la carpeta principal."""
-    candidatas = [os.environ.get("DESPACHOX_GRAFO", ""),
-                  Path(__file__).resolve().parents[1] / "cache" / "manizales.graphml"]
     aqui = Path(__file__).resolve()
+    candidatas = [os.environ.get("DESPACHOX_GRAFO", ""), aqui.parents[1] / "cache" / "manizales.graphml"]
     for padre in aqui.parents:  # si se corre desde un árbol de trabajo, mirar el repositorio principal
         if padre.name == ".claude":
             candidatas.append(padre.parent / "despacho" / "cache" / "manizales.graphml")
@@ -187,16 +208,21 @@ def cargar_red(preferencia: str = "auto") -> Red:
 class Conocimiento:
     """La red tal como la conoce el despacho: sin los cierres ya reportados.
 
-    `sitios` son los nodos del acopio (índice 0) y de los puntos. Mantiene, por tipo de
-    vehículo, la matriz de tiempos entre sitios y los predecesores para reconstruir caminos.
+    `sitios` son los nodos del acopio (índice 0) y de los puntos. Cada tipo de vehículo llega
+    a un sitio por su propio nodo de acceso. Mantiene, por tipo, la matriz de segundos entre
+    sitios y los predecesores para reconstruir caminos.
     """
 
     def __init__(self, red: Red, sitios):
         self.red = red
-        self.sitios = np.asarray(sitios, np.int32)
+        self.sitios = [int(s) for s in sitios]
+        self.nodos = {t: [red.nodo_de_acceso(t, s) for s in self.sitios] for t in TIPOS}
         self.cerradas = {t: set() for t in TIPOS}  # aristas cerradas conocidas, por tipo
         self.version = 0
         self._csr, self._t, self._pred, self._fila = {}, {}, {}, {}
+
+    def nodo_sitio(self, tipo: str, sitio: int):
+        return self.nodos[tipo][sitio]
 
     def agregar_cierre(self, aristas, tipos) -> None:
         for t in tipos:
@@ -212,13 +238,19 @@ class Conocimiento:
         return self._csr[tipo]
 
     def _calcular(self, tipo):
-        d, p = dijkstra(self._matriz(tipo), directed=True, indices=self.sitios,
-                        return_predecessors=True)
-        self._t[tipo] = d[:, self.sitios]
-        self._pred[tipo] = p
+        nodos = self.nodos[tipo]
+        con = [i for i, n in enumerate(nodos) if n is not None]
+        t = np.full((len(nodos), len(nodos)), np.inf)
+        pred = {}
+        if con:
+            d, p = dijkstra(self._matriz(tipo), directed=True, indices=[nodos[i] for i in con],
+                            return_predecessors=True)
+            t[np.ix_(con, con)] = d[:, [nodos[i] for i in con]]
+            pred = {nodos[i]: p[k] for k, i in enumerate(con)}
+        self._t[tipo], self._pred[tipo] = t, pred
 
     def tiempos(self, tipo: str) -> np.ndarray:
-        """Matriz de segundos entre sitios (inf si no hay camino conocido)."""
+        """Matriz de segundos entre sitios (inf si no hay camino conocido o no hay acceso)."""
         if tipo not in self._t:
             self._calcular(tipo)
         return self._t[tipo]
@@ -233,19 +265,44 @@ class Conocimiento:
 
     def tiempos_desde_nodo(self, tipo: str, nodo: int) -> np.ndarray:
         """Segundos desde un nodo cualquiera hasta cada sitio."""
-        return self.desde_nodo(tipo, nodo)[0][self.sitios]
+        d = self.desde_nodo(tipo, nodo)[0]
+        return np.array([d[n] if n is not None else np.inf for n in self.nodos[tipo]])
 
-    def camino(self, tipo: str, origen: int, destino: int):
+    def camino_emergencia(self, tipo: str, origen: int, destino: int):
+        """Camino por cualquier vía de conducción, en cualquier sentido, menos los cierres conocidos."""
+        r = self.red
+        seg = r.segundos_emergencia[tipo]
+        ok = np.ones(r.m, bool)
+        if self.cerradas[tipo]:
+            ok[np.fromiter(self.cerradas[tipo], int)] = False
+        filas = np.concatenate([r.eu[ok], r.ev[ok]]).astype(np.int64)
+        cols = np.concatenate([r.ev[ok], r.eu[ok]]).astype(np.int64)
+        datos = np.concatenate([seg[ok], seg[ok] * FACTOR_EMERGENCIA])
+        orden = np.lexsort((datos, filas * r.n + cols))          # por par, el sentido más rápido
+        clave = (filas * r.n + cols)[orden]
+        primero = np.concatenate([[True], clave[1:] != clave[:-1]])
+        sel = orden[primero]
+        m = csr_matrix((datos[sel], (filas[sel], cols[sel])), shape=(r.n, r.n))
+        pred = dijkstra(m, directed=True, indices=int(origen), return_predecessors=True)[1]
+        if int(origen) != int(destino) and pred[destino] == SIN_CAMINO:
+            return None
+        camino = [int(destino)]
+        while camino[-1] != int(origen):
+            camino.append(int(pred[camino[-1]]))
+        camino.reverse()
+        return camino
+
+    def camino(self, tipo: str, origen: int, destino):
         """Lista de nodos de `origen` a `destino` por la red conocida, o None si no hay."""
+        if destino is None:
+            return None
         origen, destino = int(origen), int(destino)
         if origen == destino:
             return [origen]
-        pos = np.flatnonzero(self.sitios == origen)
-        if len(pos):
-            if tipo not in self._pred:
-                self._calcular(tipo)
-            pred = self._pred[tipo][pos[0]]
-        else:
+        if tipo not in self._pred:
+            self._calcular(tipo)
+        pred = self._pred[tipo].get(origen)
+        if pred is None:
             pred = self.desde_nodo(tipo, origen)[1]
         if pred[destino] == SIN_CAMINO:
             return None

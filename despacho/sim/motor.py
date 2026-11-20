@@ -16,7 +16,7 @@ import time
 from dataclasses import dataclass, field
 
 from .escenario import Escenario
-from .red_sim import Conocimiento
+from .red_sim import FACTOR_EMERGENCIA, Conocimiento
 
 # prioridad de los eventos que ocurren en el mismo instante
 _PRIO = {"PEDIDO": 0, "INICIO": 1, "CONFIRMA": 2, "PLAN": 3, "FIN_TRAMO": 4, "SIGUE": 4, "TANDA": 5, "AVISO": 6}
@@ -38,6 +38,7 @@ class VehSim:
     version: int = 0
     km: float = 0.0
     max_carga: float = 0.0
+    emergencias: int = 0           # veces que salió por vías no aptas para volver al acopio
     traza: list = field(default_factory=list)      # nodos recorridos, para pruebas
 
     def kg_a_bordo(self) -> float:
@@ -93,7 +94,6 @@ class Motor:
         self.red = esc.red
         self.con = Conocimiento(esc.red, esc.sitios)
         self.cierre_de = {a: c for c in esc.cierres for a in c.aristas}
-        self.nodo_punto = {q.id: q.nodo for q in esc.puntos}
         self.ped = {q.id: q for q in esc.pedidos}
         self.estado_ped = {q.id: "futuro" for q in esc.pedidos}
         self.lote = {l.id: l for l in esc.lotes}
@@ -196,28 +196,44 @@ class Motor:
 
     def _mover(self, v, t):
         """Sale hacia la siguiente entrega a bordo o, si no hay, hacia el acopio."""
+        seg = self.red.segundos[v.tipo]
         while True:
             destino = v.a_bordo[0] if v.a_bordo else "acopio"
-            nodo_dest = self.esc.acopio_nodo if destino == "acopio" else self.nodo_punto[self.ped[destino].punto_id]
-            camino = self.con.camino(v.tipo, v.nodo, nodo_dest)
+            sitio = 0 if destino == "acopio" else self.ped[destino].punto_id
+            camino = self.con.camino(v.tipo, v.nodo, self.con.nodo_sitio(v.tipo, sitio))
             if camino is not None:
                 break
-            if destino == "acopio":      # quedó aislado: sale de servicio
+            if destino == "acopio":      # sin regreso por su red: sale por cualquier vía, más lento
+                camino = self.con.camino_emergencia(v.tipo, v.nodo, self.esc.acopio_nodo)
+                if camino is not None:
+                    seg = self.red.segundos_emergencia[v.tipo]
+                    v.emergencias += 1
+                    break
+                # de verdad aislado: sale de servicio y su carga se pierde
                 v.estado, v.tramo = "fuera", None
+                perdidos = v.devolver + v.a_bordo
+                for pid in perdidos:     # los pedidos vuelven a la cola para otro vehículo
+                    v.carga.pop(pid)
+                    self.estado_ped[pid] = "pendiente"
+                v.devolver, v.a_bordo, v.cola = [], [], []
+                if perdidos:
+                    self._avisar("devuelto", t)
                 return
             v.a_bordo.pop(0)             # no hay paso conocido: la carga vuelve al acopio
             v.devolver.append(destino)
             self.inalcanzable.setdefault(destino, set()).add(v.tipo)
         nodos, tiempos, km, tope = [camino[0]], [t], [0.0], None
-        seg = self.red.segundos[v.tipo]
         for a, b in zip(camino, camino[1:]):
-            e = self.red.arista[(a, b)]
+            e, lento = self.red.arista.get((a, b)), 1.0
+            if e is None or seg[e] == float("inf") or e in self.con.cerradas[v.tipo]:
+                # contravía por el otro sentido: solo ocurre en salida de emergencia
+                e, lento = self.red.arista[(b, a)], FACTOR_EMERGENCIA
             c = self.cierre_de.get(e)
             if c is not None and c.t_ocurre <= tiempos[-1] and v.tipo in c.tipos:
                 tope = c                 # se topa el cierre al llegar al nodo `a`
                 break
             nodos.append(b)
-            tiempos.append(tiempos[-1] + float(seg[e]))
+            tiempos.append(tiempos[-1] + float(seg[e]) * lento)
             km.append(km[-1] + float(self.red.largo_m[e]))
         v.tramo = {"nodos": nodos, "tiempos": tiempos, "km": km, "destino": destino, "tope": tope}
         v.estado = "en_ruta"
@@ -237,7 +253,7 @@ class Motor:
             nodos, tiempos = w.tramo["nodos"], w.tramo["tiempos"]
             i = next((k for k, tn in enumerate(tiempos) if tn >= t), len(tiempos) - 1)
             resto = list(zip(nodos[i:], nodos[i + 1:]))
-            pasa = any(self.red.arista[ab] in cerradas for ab in resto)
+            pasa = any(self.red.arista.get(ab, self.red.arista.get(ab[::-1])) in cerradas for ab in resto)
             if pasa or (w.tramo["tope"] is c):
                 self._cortar(w, t)
         return True

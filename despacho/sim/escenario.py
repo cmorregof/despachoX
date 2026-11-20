@@ -23,6 +23,7 @@ class Parametros:
     n_puntos_max: int = 80
     frac_criticos: float = 0.20
     separacion_min_m: float = 250.0
+    radio_km: float = 6.0                  # los puntos quedan a esta distancia del centro, como mucho
     # demanda
     pedidos_por_punto: float = 3.0
     frac_pedidos_inicio: float = 0.40      # pedidos que ya están en cola al empezar
@@ -58,11 +59,13 @@ class Parametros:
     min_tanda: float = 30.0                # cada cuánto se libera una tanda de pedidos
 
 
-# Niveles de carga del sistema: cuántos pedidos hace cada punto en la jornada.
+# Niveles de carga del sistema: cuántos pedidos hace cada punto en la jornada. Se eligieron con
+# semillas de calibración (100 a 111): la política ingenua cumple cerca del 87 %, 70 % y 51 % de
+# los pedidos críticos a tiempo en cada nivel.
 NIVELES_CARGA = {
-    "holgada": {"pedidos_por_punto": 2.0},
+    "holgada": {"pedidos_por_punto": 2.5},
     "media": {"pedidos_por_punto": 3.0},
-    "alta": {"pedidos_por_punto": 4.0},
+    "alta": {"pedidos_por_punto": 3.5},
 }
 
 
@@ -129,16 +132,15 @@ def _puntos(red: Red, acopio: int, n: int, p: Parametros, rng) -> list:
     m = red.matriz("campero")
     ida = dijkstra(m, directed=True, indices=acopio)
     vuelta = dijkstra(m.T.tocsr(), directed=True, indices=acopio)
-    x, y = red.xy_m()
+    al_centro = red.metros_a(*CENTRO_MANIZALES)
     elegidos = []
     for c in rng.permutation(red.n):
         if c == acopio or not np.isfinite(ida[c]) or not np.isfinite(vuelta[c]):
             continue
-        if elegidos:
-            d = np.hypot(x[elegidos] - x[c], y[elegidos] - y[c]).min()
-            if d < p.separacion_min_m:
-                continue
-        if np.hypot(x[acopio] - x[c], y[acopio] - y[c]) < p.separacion_min_m:
+        if al_centro[c] > p.radio_km * 1000:
+            continue
+        d = red.metros_a(red.lat[c], red.lon[c])
+        if d[acopio] < p.separacion_min_m or (elegidos and d[elegidos].min() < p.separacion_min_m):
             continue
         elegidos.append(int(c))
         if len(elegidos) == n:
@@ -204,9 +206,8 @@ def _cierres(red: Red, acopio: int, puntos, n: int, p: Parametros, rng) -> list:
                 if arista is not None:
                     uso[arista] = uso.get(arista, 0) + 1
                 v = u
-    x, y = red.xy_m()
-    lejos = lambda a: np.hypot(x[red.eu[a]] - x[acopio], y[red.eu[a]] - y[acopio]) > p.radio_libre_acopio_m \
-        and np.hypot(x[red.ev[a]] - x[acopio], y[red.ev[a]] - y[acopio]) > p.radio_libre_acopio_m
+    al_acopio = red.metros_a(red.lat[acopio], red.lon[acopio])
+    lejos = lambda a: min(al_acopio[red.eu[a]], al_acopio[red.ev[a]]) > p.radio_libre_acopio_m
     candidatas = [a for a in uso if lejos(a)]
     if not candidatas:
         return []
@@ -231,7 +232,9 @@ def generar(semilla: int, red: Red | str = "auto", p: Parametros | None = None,
         red = cargar_red(red)
     r_tam, r_pun, r_ped, r_lot, r_cie = [np.random.default_rng(s) for s in
                                          np.random.SeedSequence(semilla).spawn(5)]
-    acopio = red.nodo_mas_cercano(*CENTRO_MANIZALES)
+    # el acopio queda sobre una vía apta para camión, lo más cerca posible del centro
+    de_camion = red.nodos_del_tipo("camion")
+    acopio = int(de_camion[red.metros_a(*CENTRO_MANIZALES)[de_camion].argmin()])
     if n_puntos is None:
         n_puntos = int(r_tam.integers(p.n_puntos_min, p.n_puntos_max + 1))
     if n_cierres is None:
