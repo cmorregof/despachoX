@@ -1,5 +1,5 @@
 # Torre de control · Carlos · capitán
-Última actualización: viernes 20 de noviembre de 2026, 16:10
+Última actualización: viernes 20 de noviembre de 2026, 16:55
 
 ## Estado en una frase
 El módulo B corre de punta a punta: semilla cargada, plan en 10 s y recálculo que evita la vía cerrada. Faltan las pruebas (agente en curso) y, esta noche, la simulación.
@@ -9,6 +9,7 @@ El módulo B corre de punta a punta: semilla cargada, plan en 10 s y recálculo 
 - Propuesta de producto para la vertical 04 y horario de las dos jornadas.
 - Prompt del equipo en `CLAUDE.md` y `docs/PROMPT_EQUIPO.md`.
 - Revisión del estado del arte con cinco agentes: síntesis en `docs/ESTADO_DEL_ARTE.md`, informes en `docs/investigacion/`.
+- 16:55 · Datos de Railway reiniciados para la segunda prueba de Jacobo, por SSH y sin redesplegar (`railway ssh` y `python -m despacho.semilla --cargar --reiniciar`). Antes había 20 pedidos asignados, 3 planes y 20 paquetes; quedan 20 pedidos (17 confirmados y 3 nuevos), sin planes, paquetes ni cierres. Respaldo de lo anterior en `/data/respaldo_antes_prueba2.db`.
 
 ## Rol B · despacho (viernes)
 Hecho:

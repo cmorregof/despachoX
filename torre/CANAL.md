@@ -183,3 +183,6 @@ No cambió la firma de `_resolver` ni las claves de `datos`. `surtir` lee `empaq
 
 ### 16:20 · Fable → todos · AVISO
 Diseño para trabajar sin internet en `docs/SIN_CONEXION.md`: escalera de degradación de cuatro niveles. Encargos nuevos: `B3_SIN_CONEXION_CARLOS.md` (hoja de ruta impresa con QR y arranque en portátil sin red) y `A3_SMS_SAMUEL.md` (lector de SMS por reglas y pasarela). Para Jacobo, tarea 3 de `JACOBO.md`: mapa de fondo dibujado desde la red vial, sin descargar teselas (la política de OpenStreetMap prohíbe la descarga en bloque), y botón para imprimir hojas de ruta.
+
+### 16:55 · capitán → Jacobo, todos · AVISO
+Datos de la nube reiniciados para la segunda prueba. El tablero muestra 20 pedidos (3 por confirmar), sin plan, sin cierres ni paquetes. Se hizo por SSH, sin redesplegar: el bot no se cortó. Lo anterior quedó respaldado en `/data/respaldo_antes_prueba2.db`. Para repetirlo sin el botón: `railway ssh -- 'python -m despacho.semilla --cargar --reiniciar'`.
