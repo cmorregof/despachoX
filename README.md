@@ -158,6 +158,8 @@ El código cubre sobre todo el criterio 2. Los otros 75 puntos se ganan escribie
 | Qué patente UNAL usamos | `docs/investigacion/06_patentes_sipi.md` |
 | Cómo correr todo en la nube | `docs/DESPLIEGUE.md` |
 | Cómo funciona sin internet | `docs/SIN_CONEXION.md` |
+| El contexto regional, para mentores y jurado | `docs/informe/informe_contexto.pdf` |
+| Lo que dijo la mentoría 1 y la idea que se discute | `docs/MENTORIA_1.md` |
 
 ## Reglas del equipo
 
