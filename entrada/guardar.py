@@ -107,6 +107,8 @@ def marcar_duplicado(con: sqlite3.Connection, pedido_id: int) -> int | None:
 def pedidos_de(con: sqlite3.Connection, remitente: str, limite: int = 5) -> list[sqlite3.Row]:
     """Los últimos pedidos de un remitente, con el nombre del punto si ya está ubicado."""
     return con.execute(
-        "SELECT p.id, p.creado_en, p.estado, p.familias, p.duplicado_de, t.nombre AS punto "
+        "SELECT p.id, p.creado_en, p.estado, p.familias, p.duplicado_de, t.nombre AS punto, "
+        "(SELECT pa.llegada_estimada FROM paradas pa JOIN planes pl ON pl.id = pa.plan_id "
+        " WHERE pa.pedido_id = p.id AND pl.estado = 'aprobado' ORDER BY pl.id DESC LIMIT 1) AS llegada "
         "FROM pedidos p LEFT JOIN puntos t ON t.id = p.punto_id WHERE p.remitente_hash=? "
         "ORDER BY p.id DESC LIMIT ?", (remitente, limite)).fetchall()

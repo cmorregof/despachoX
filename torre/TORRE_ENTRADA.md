@@ -1,5 +1,5 @@
 # Torre de control · A-entrada · rol A (entrada)
-Última actualización: 2026-11-20 16:30 (hora de Colombia)
+Última actualización: 2026-11-20 17:15 (hora de Colombia)
 
 Desde las 16:05 el módulo lo dirige Samuel con `encargos/A2_BOT_SAMUEL.md`. Se trabaja en la rama `samuel-bot`; Carlos fusiona a `main` a las 6:30 p. m., 11:00 p. m. y 8:00 a. m.
 
@@ -20,13 +20,16 @@ Etapa 1 del encargo A2 hecha en `samuel-bot` y probada con el extractor falso: �
 
 - 16:30 · Encargo A2, etapa 1 (rama `samuel-bot`): `entrada/raciones.py` (raciones por familia iguales a `despacho/semilla.py`, 1 familia cada 4 personas, 1 por bebé, productos para bebés que se conservan); el extractor lee `personas` y `bebes`; el código, no el modelo, los convierte en familias, con respaldo por expresión regular si el modelo no contó; kilos por ración marcados `supuesto` en el JSON de `productos`; tras ubicar el pedido, una sola pregunta «¿Para cuántas familias?» con botones o número escrito, que vence a los dos minutos. `entrada/pruebas/test_enea.py`: el mensaje de La Enea y nueve variantes. `python -m pytest entrada/pruebas -q`: 54 pasan, 1 se omite.
 
+- 17:15 · Encargo A2, etapa 2 (rama `samuel-bot`): `/start` en tres líneas con dos ejemplos que se copian con un toque (HTML `<code>`); notas de voz en `entrada/voz.py` con un servicio compatible con Whisper, apagadas sin `DESPACHOX_VOZ_CLAVE`; `/estado` dice «recibido», «en revisión», «va en camino» (con la llegada del plan aprobado, leída de `paradas`) o «entregado». `entrada/pruebas/test_etapa2.py`. 62 pasan, 1 se omite. El aviso de vuelta (punto 3) espera respuesta en el canal.
+
 ## En curso (qué, hasta dónde llegó, qué falta)
 - Prueba desde un teléfono con el bot real: nadie le ha escrito todavía.
 
 ## Siguiente paso exacto (el comando o el archivo por donde seguir)
-1. Con `.env` (clave de Anthropic): `python -m entrada.extraer "hay 6 bebes sin leche desde ayer en la enea necesitamos urgente"` y revisar que salga `bebes: 6` y `leche`. Si no, el respaldo del código lo cubre, pero hay que anotarlo.
-2. Etapa 2 del encargo A2: `/start` en tres líneas con dos ejemplos (`AYUDA` en `entrada/flujo.py`).
-3. Si Carlos agrega `pedidos.dudas`, el código ya la llena sin cambios.
+1. Con `.env`: medir el extractor real con el mensaje de La Enea (`python -m entrada.extraer "..."`).
+2. Cuando Carlos dé la clave de voz: poner `DESPACHOX_VOZ_CLAVE` en Railway y mandar una nota desde un teléfono.
+3. Si Carlos aprueba la propuesta del aviso de vuelta (canal, 17:15), implementarla en `entrada/`.
+4. Etapa 3: `entrada/carga.py` y `entrada/ESCALA.md`.
 
 ## Decisiones y por qué
 - La conversación vive en `flujo.Mesa`, sin Telegram, y `bot.py` solo traduce. Así el flujo completo se prueba sin red ni token.
@@ -43,12 +46,18 @@ Etapa 1 del encargo A2 hecha en `samuel-bot` y probada con el extractor falso: �
 - Un botón de familias vale aunque hayan pasado los dos minutos (es inequívoco); un número escrito solo dentro de los dos minutos.
 - Las dudas se guardan en `pedidos.dudas` solo si la columna existe; mientras tanto quedan en la respuesta al remitente y en la marca `supuesto` de cada producto.
 
+- Voz: se eligió la interfaz de OpenAI `/audio/transcriptions` porque la ofrecen varios proveedores y no pide dependencias nuevas (`httpx` ya viene con `python-telegram-bot`). El bot muestra lo que escuchó para que la persona pueda corregir.
+- `/estado` lee `paradas` y `planes` solo para mostrar la llegada estimada; no escribe en ellas.
+
 ## Bloqueos y preguntas para el capitán
 - Resuelto 14:56: `.env` creado en la carpeta principal con las dos claves.
 - `lugares/nomenclator.py` tiene el mismo problema del modelo vacío si `DESPACHOX_MODELO_LUGARES=` queda sin valor en `.env`. No lo toqué; dejé la línea comentada en `.env.example`.
 - Observación para `lugares/` (no lo toqué): «bajo prado» escrito exacto no sale como seguro, porque «El Prado» puntúa 0,93 y el margen exigido es 0,08. Sin modelo se ofrecen las dos opciones.
 
 - 16:30 · PREGUNTA en el canal: columna `pedidos.dudas TEXT` (JSON) para que el despachador vea qué completó la mesa.
+
+- 17:15 · PREGUNTA en el canal: clave de un servicio de transcripción (`DESPACHOX_VOZ_CLAVE`).
+- 17:15 · PREGUNTA en el canal: propuesta del aviso de vuelta (tabla `avisos` con consentimiento, borrado al entregar).
 
 ## Observaciones de mentores (textuales, con hora)
 

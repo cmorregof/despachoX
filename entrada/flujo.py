@@ -32,11 +32,21 @@ _NUMERO = re.compile(r"^(?:son|somos|como|unas|unos|para|de|aprox\w*|mas o menos
 ESPERA_FAMILIAS_S = 120     # tras dos minutos sin respuesta el pedido se queda con lo que hay
 _CORTESIA = re.compile(r"^(muchas )?(gracias|ok|okay|vale|listo|bueno|dale|entendido)( gracias| muchas gracias)?$")
 
-AYUDA = ("Soy la mesa de despacho de ayuda alimentaria. Escríbeme con tus palabras:\n"
-         "• qué necesitan y dónde: «Somos 40 familias en San José, no hay arroz ni leche»\n"
-         "• o qué vía está cerrada: «Derrumbe en la vía a Chinchiná, no pasan camiones»\n"
-         "Un despachador revisa cada mensaje. Con /estado ves cómo van tus pedidos.\n"
-         "No escribas nombres, cédulas ni teléfonos: no hacen falta.")
+EJEMPLOS = ("Somos 40 familias en San José, no hay arroz ni leche",
+            "Derrumbe en la vía a Chinchiná, no pasan camiones")
+
+
+def ayuda(con_voz: bool = False) -> str:
+    """Primer mensaje: tres líneas y dos ejemplos. Va en HTML: en Telegram, tocar un <code> lo copia."""
+    como = "Escríbeme o mándame una nota de voz" if con_voz else "Escríbeme"
+    return ("Hola. Aquí se pide comida para tu barrio o se avisa de una vía cerrada.\n"
+            f"{como} con lo que necesitan, para cuántas familias y dónde.\n"
+            "Una persona de la mesa revisa cada mensaje. Con /estado ves cómo va tu pedido.\n\n"
+            "Toca un ejemplo para copiarlo:\n" + "\n".join(f"<code>{e}</code>" for e in EJEMPLOS) +
+            "\n\nNo escribas nombres, cédulas ni teléfonos: no hacen falta.")
+
+
+AYUDA = ayuda()
 NO_ENTENDI = ("No entendí si es un pedido de ayuda o un reporte de vía cerrada. Por ejemplo: «Somos 40 "
               "familias en San José, no hay arroz ni leche» o «Derrumbe en la vía a Chinchiná, no pasan camiones».")
 SIN_LEER = ("Recibí tu mensaje y quedó guardado. No pude leerlo automáticamente, así que un despachador "
@@ -276,15 +286,43 @@ class Mesa:
     def estado(self, chat_id) -> Respuesta:
         filas = guardar.pedidos_de(self.con, hash_remitente(chat_id))
         if not filas:
-            return Respuesta("No tengo pedidos tuyos todavía.")
-        nombres = {"nuevo": "en revisión", "confirmado": "confirmado, esperando ruta", "asignado": "asignado a un vehículo",
-                   "entregado": "entregado", "descartado": "descartado"}
+            return Respuesta("No tengo pedidos tuyos todavía. Escríbeme qué necesitan y dónde.")
         lineas = []
         for f in filas:
-            donde = f["punto"] or "sin lugar confirmado"
-            extra = f" (posible repetido del #{f['duplicado_de']})" if f["duplicado_de"] else ""
-            lineas.append(f"#{f['id']} · {f['creado_en'][11:16]} · {donde} · {nombres.get(f['estado'], f['estado'])}{extra}")
-        return Respuesta("Tus últimos pedidos:\n" + "\n".join(lineas))
+            donde = f"en {f['punto']}" if f["punto"] else "sin lugar confirmado"
+            lineas.append(f"• Pedido #{f['id']}, de las {_hora(f['creado_en'])}, {donde}: {_estado_humano(f)}")
+        return Respuesta("Así van tus pedidos:\n" + "\n".join(lineas))
+
+
+def _hora(iso: str | None) -> str:
+    """«2026-11-20T16:30:00-05:00» -> «4:30 p. m.»"""
+    try:
+        h, m = int(iso[11:13]), iso[14:16]
+    except (TypeError, ValueError, IndexError):
+        return "hora sin dato"
+    return f"{h % 12 or 12}:{m} {'a. m.' if h < 12 else 'p. m.'}"
+
+
+def _estado_humano(f) -> str:
+    """Los estados de la base dichos como los entiende quien pidió: recibido, en revisión, va en
+    camino, entregado."""
+    e = f["estado"]
+    if e == "nuevo":
+        texto = "recibido. Falta que confirmes el lugar" if not f["punto"] else \
+            "recibido. Una persona de la mesa lo está revisando"
+    elif e == "confirmado":
+        texto = "en revisión. Ya lo aceptaron y le están buscando vehículo"
+    elif e == "asignado":
+        texto = "va en camino" + (f", llegada estimada {_hora(f['llegada'])}" if f["llegada"] else "")
+    elif e == "entregado":
+        texto = "entregado"
+    elif e == "descartado":
+        texto = "no se va a despachar. Si todavía lo necesitan, escríbeme de nuevo"
+    else:
+        texto = e
+    if f["duplicado_de"] and e in ("nuevo", "confirmado"):
+        texto += f" (parece el mismo pedido #{f['duplicado_de']}; la mesa lo junta si es así)"
+    return texto
 
 
 def _solo_lugar(x: Extraccion) -> bool:

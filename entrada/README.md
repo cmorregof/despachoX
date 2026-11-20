@@ -37,7 +37,9 @@ Sin `TELEGRAM_BOT_TOKEN` el bot no arranca y lo dice. Sin `ANTHROPIC_API_KEY`, o
 
 Un pedido sin lugar confirmado se queda con `punto_id` vacío. El despachador lo ve en el tablero y lo ubica ahí.
 
-Comandos: `/estado` muestra los últimos pedidos de ese chat; `/start` y `/ayuda` explican cómo escribir.
+Comandos: `/start` y `/ayuda` explican en tres líneas qué hace el bot y dan dos ejemplos que se copian con un toque. `/estado` dice cómo va cada pedido de ese chat: «recibido», «en revisión», «va en camino» (con la llegada estimada del plan aprobado) o «entregado».
+
+**Notas de voz.** Con `DESPACHOX_VOZ_CLAVE` en `.env`, la nota se transcribe con un servicio compatible con Whisper (`entrada/voz.py`), el bot muestra «Escuché: …» ya sin datos personales y sigue el flujo normal. El audio no se guarda. Sin clave, el bot pide escribir. Notas de más de dos minutos se piden más cortas.
 
 ## Archivos
 
@@ -47,6 +49,7 @@ Comandos: `/estado` muestra los últimos pedidos de ese chat; `/start` y `/ayuda
 | `flujo.py` | La conversación: qué se guarda y qué se contesta ante texto, botones y ubicaciones |
 | `extraer.py` | Llamada a Claude Haiku con salida validada por pydantic. Nunca lanza excepción |
 | `raciones.py` | Raciones por familia, conversión de personas y bebés a familias, productos para bebés. El supuesto está escrito arriba |
+| `voz.py` | Transcripción de notas de voz con un servicio externo. Nunca lanza excepción |
 | `guardar.py` | Escritura en `pedidos` y `cierres`, duplicados y consulta de `/estado` |
 | `privacidad.py` | Limpieza del texto y hash con sal del id del chat |
 | `pruebas/` | Quince mensajes de ejemplo, Telegram simulado y pruebas |
@@ -70,7 +73,7 @@ python -m entrada.extraer "somos 40 familias en san jose no hay arroz ni leche"
 
 ## Límites conocidos
 
-- Solo texto. Los mensajes de voz reciben una respuesta que pide escribir.
+- Las notas de voz necesitan la clave de un servicio de transcripción; sin ella se pide escribir.
 - Los reportes pendientes de ubicar se llevan en memoria. Si el bot se reinicia, los botones de los mensajes anteriores siguen funcionando, pero una respuesta en texto libre o un pin ya no se asocian al reporte anterior.
 - `cierres` no tiene `remitente_hash`, así que `/estado` solo muestra pedidos.
 - La consulta a la base y el desempate de lugares con modelo corren en el hilo del bot. Para una demostración con pocos chats alcanza.

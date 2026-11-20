@@ -15,10 +15,15 @@ from telegram import (InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton
                       ReplyKeyboardRemove, Update)
 from telegram.ext import Application, CallbackQueryHandler, CommandHandler, MessageHandler, filters
 
-from entrada.flujo import AYUDA, Mesa, Respuesta
+from entrada import voz
+from entrada.flujo import Mesa, Respuesta, ayuda
 
 log = logging.getLogger("entrada.bot")
 RAIZ = Path(__file__).resolve().parent.parent
+SIN_VOZ = ("Todavía no puedo escuchar notas de voz. Escríbeme qué necesitan, para cuántas familias y dónde, "
+           "o qué vía está cerrada.")
+VOZ_LARGA = "La nota es muy larga. Mándame una de menos de dos minutos, o escríbeme."
+VOZ_FALLO = "No pude escuchar bien la nota. ¿Me la escribes, por favor?"
 SOLO_TEXTO = ("Por ahora solo leo texto. Escríbeme qué necesitan y dónde, o qué vía está cerrada. "
               "Si quieres fijar un lugar, envíame la ubicación con el clip del chat.")
 ERROR = "Tuve un problema al procesar eso. Inténtalo de nuevo en un momento, por favor."
@@ -45,7 +50,7 @@ class Manejadores:
         await mensaje.reply_text(r.texto, reply_markup=marca)
 
     async def inicio(self, update: Update, context) -> None:
-        await update.effective_message.reply_text(AYUDA)
+        await update.effective_message.reply_text(ayuda(voz.disponible()), parse_mode="HTML")
 
     async def estado(self, update: Update, context) -> None:
         await self._enviar(update.effective_message, self.mesa.estado(update.effective_chat.id))
@@ -53,6 +58,28 @@ class Manejadores:
     async def texto(self, update: Update, context) -> None:
         mensaje = update.effective_message
         lectura = await asyncio.to_thread(self.mesa.leer, mensaje.text or "")   # la llamada al modelo
+        for r in self.mesa.atender(update.effective_chat.id, lectura):
+            await self._enviar(mensaje, r)
+
+    async def nota_de_voz(self, update: Update, context) -> None:
+        """Nota de voz: se transcribe, se le muestra a la persona lo que se escuchó y sigue el flujo
+        normal, como si lo hubiera escrito. El audio no se guarda."""
+        mensaje = update.effective_message
+        nota = mensaje.voice or mensaje.audio
+        if not voz.disponible():
+            await mensaje.reply_text(SIN_VOZ)
+            return
+        if (nota.duration or 0) > voz.MAX_SEGUNDOS_AUDIO:
+            await mensaje.reply_text(VOZ_LARGA)
+            return
+        archivo = await nota.get_file()
+        audio = bytes(await archivo.download_as_bytearray())
+        texto = await asyncio.to_thread(voz.transcribir, audio)
+        if not texto:
+            await mensaje.reply_text(VOZ_FALLO)
+            return
+        lectura = await asyncio.to_thread(self.mesa.leer, texto)          # limpia y llama al modelo
+        await mensaje.reply_text(f"Escuché: «{lectura.texto}»")
         for r in self.mesa.atender(update.effective_chat.id, lectura):
             await self._enviar(mensaje, r)
 
@@ -93,6 +120,7 @@ def construir(token: str, mesa: Mesa) -> Application:
     app.add_handler(CallbackQueryHandler(m.boton))
     app.add_handler(MessageHandler(filters.LOCATION, m.ubicacion))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, m.texto))
+    app.add_handler(MessageHandler(filters.VOICE | filters.AUDIO, m.nota_de_voz))
     app.add_handler(MessageHandler(~filters.COMMAND, m.otro))
     app.add_error_handler(m.error)
     return app
@@ -107,6 +135,8 @@ def main() -> int:
     if not token:
         print("Falta TELEGRAM_BOT_TOKEN en .env. Cómo obtenerlo: entrada/README.md", file=sys.stderr)
         return 1
+    if not voz.disponible():
+        log.warning("Sin DESPACHOX_VOZ_CLAVE: las notas de voz reciben una respuesta que pide escribir.")
     if not os.environ.get("ANTHROPIC_API_KEY"):
         log.warning("Sin ANTHROPIC_API_KEY: los mensajes se guardan sin leer y los revisa el despachador.")
     from datos import db

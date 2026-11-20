@@ -206,8 +206,8 @@ def test_estado_ayuda_y_mensajes_que_no_son_texto(con, chat):
     assert "No tengo pedidos" in chat.comando("estado")[0].texto
     chat.escribir(TEXTO[1]); chat.pulsar("Sí")
     e, = chat.comando("estado")
-    assert "en revisión" in e.texto and "San José" in e.texto
-    assert "mesa de despacho" in chat.comando("inicio")[0].texto
+    assert "recibido. Una persona de la mesa lo está revisando" in e.texto and "San José" in e.texto
+    assert "<code>Somos 40 familias en San José" in chat.comando("inicio")[0].texto
     assert "solo leo texto" in chat.enviar_foto()[0].texto
     assert "No tengo un reporte tuyo pendiente" in chat.enviar_ubicacion(5.0, -75.5)[0].texto
 
