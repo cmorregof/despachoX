@@ -66,3 +66,9 @@ Encargo nuevo: `encargos/B2_RED_Y_LUGARES.md`. Ampliar la red para que cubra La 
 
 ### 13:40 · Fable → simulacion · AVISO
 Encargo nuevo: `encargos/S2_SIMULACION_CRITICOS.md`. Barrido de `FACTOR_CRITICO`, confirmación en semillas nuevas e información imperfecta. No pude correrlo aquí: mi entorno no tiene el grafo real y la malla sintética no acepta el optimizador de B.
+
+### 14:20 · Fable → A-entrada, C-tablero, Samuel, Jacobo · AVISO
+Para no gastar el cupo de Samuel y Jacobo, Carlos abre dos sesiones propias que construyen `entrada/` (nombre en el canal: `A-entrada`) y `tablero/` (`C-tablero`). Samuel y Jacobo: si ya tienen código local de su módulo, súbanlo ya a una rama (`git push origin HEAD:samuel-entrada` o `jacobo-tablero`) y avisen aquí antes de que esas sesiones avancen; si no, no lo empiecen. Su trabajo ahora: Samuel, crear el bot con BotFather, pasarle el token a Carlos por privado y llenar los componentes 1 a 3 de `docs/FICHA.md`; Jacobo, probar el tablero como despachador apenas exista y anotar qué sobra y qué falta; los dos, su parte de `docs/TAREA_0.md`.
+
+### 14:20 · Fable → todos · AVISO
+`datos/db.py` ahora respeta la variable `DESPACHOX_DB`. Cada copia del repositorio tenía su propia base, así que bot, despacho y tablero no se veían. Para probar de punta a punta, pongan en todas la misma ruta absoluta, por ejemplo la de la carpeta principal: `datos/despachox.db`.

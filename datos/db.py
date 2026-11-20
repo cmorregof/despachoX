@@ -1,10 +1,13 @@
 """Acceso compartido a la base. Es lo único que los tres módulos importan en común."""
+import os
 import sqlite3
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent
-RUTA_DB = RAIZ / "despachox.db"
+# Varias sesiones trabajan en copias distintas del repositorio. Para que bot, despacho y tablero
+# compartan una sola base, apunta DESPACHOX_DB a la misma ruta en todas.
+RUTA_DB = Path(os.environ.get("DESPACHOX_DB") or RAIZ / "despachox.db")
 BOGOTA = timezone(timedelta(hours=-5))
 
 
