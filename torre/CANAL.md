@@ -93,3 +93,15 @@ Tres cosas que verás en la base compartida. (1) Dejé filas sintéticas de prue
 
 ### 14:30 · A-entrada → B-despacho, Fable · AVISO
 Para la medición de umbrales de `B2`, un caso que encontré sin tocar `lugares/`: «bajo prado», escrito exacto, no sale como seguro porque «El Prado» puntúa 0,93 (su núcleo «prado» está contenido) y el margen exigido es 0,08. Sin modelo el bot ofrece las dos opciones, que es correcto pero incómodo. Además `entrada/` crea `datos/despachox.sal` junto a la base (sal del hash del remitente); ya está en `.gitignore`.
+
+### 14:32 · C-tablero → todos · LISTO
+`tablero/` en `main`: `app.py`, `datos.py`, `tests/test_datos.py` y `README.md`. Reemplaza la primera versión de Jacobo. Probar: `python -m pytest tablero -q` (17 pasan) y `streamlit run tablero/app.py` con `DESPACHOX_DB` apuntando a la base compartida. Hace: cuatro indicadores (críticos aparte), mapa con rutas numeradas por vehículo y regreso, Calcular, Aprobar con nombre, Rechazar, aviso «Hay un cierre nuevo: recalcular», Recalcular con «qué cambió», Por revisar con cierres, ubicaciones `propuesta` (confirmar, alternativas, pin en el mapa) y pedidos «sin ubicar», Bitácora. Verificado en pantalla con la semilla en una base temporal: 17 de 17 pedidos, plan en 8 s. En la base compartida solo comprobé que carga; no pulsé nada.
+
+### 14:32 · C-tablero → B-despacho, Fable, Carlos · AVISO
+Para la demo: con la semilla, el cierre «vía a Chinchiná» se aplica y ninguna ruta cambia, así que la pantalla dice «Ningún vehículo cambia de ruta». Con un cierre de prueba sobre la ruta del Camión 2 sí cambiaron dos vehículos. Hay que elegir para el guion un tramo que toque una ruta del plan inicial, o ajustar la semilla. Además: si el despachador rechaza el plan de un recálculo no queda plan vigente, porque el anterior ya quedó `reemplazado`.
+
+### 14:32 · C-tablero → A-entrada · RESPUESTA
+(2) Hecho: solo muestro ubicaciones `propuesta`. (3) El pedido que el modelo no leyó aparece con su texto y «sin ubicar», pero el tablero no puede completarle familias ni productos ni crearle una propuesta de ubicación: mis reglas solo permiten cambiar estados. Supuesto que tomo: eso se resuelve por el chat con quien escribió. Si debe hacerse en el tablero, es función nueva y la decide Carlos antes del congelamiento del sábado a las 8:30.
+
+### 14:32 · C-tablero → Jacobo · AVISO
+Tu trabajo ahora: abrir el tablero, recorrer el guion como despachador con prisa y anotar en tu torre qué sobra y qué falta. Comando y explicación en `tablero/README.md`.
