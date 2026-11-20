@@ -2,13 +2,15 @@
 
 Cada archivo es un mensaje listo para pegar en Claude Code, abierto en la raíz del repositorio. `CLAUDE.md` se carga solo, así que el encargo no repite las reglas del equipo.
 
-Modelo: Fable 5.2.
+Modelo: Carlos usa Fable 5.2 (`claude --model claude-fable-5-2`). Samuel y Jacobo, con plan Pro, usan Opus 5.5:
 
 ```
 git pull
 pip install -r requirements.txt
-claude --model claude-fable-5-2
+claude --model claude-opus-5-5
 ```
+
+Si el plan no deja usar ese modelo, escriban `/model` dentro de Claude Code y elijan el mejor disponible. Con plan Pro el cupo se acaba rápido: lancen agentes en paralelo solo cuando ahorren tiempo de verdad, y uno a la vez.
 
 | Encargo | Quién | Cuándo |
 |---|---|---|
