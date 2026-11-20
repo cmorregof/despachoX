@@ -1,0 +1,10 @@
+id,nombre,tipo,capacidad_kg,acopio_id,lat,lon,estado
+1,Camión mediano 1,camion,5115,1,,,libre
+2,Camión furgón 1,camion,2000,1,,,libre
+3,Camión furgón 2,camion,2000,2,,,libre
+4,Campero 4x4 1,campero,845,1,,,libre
+5,Campero 4x4 2,campero,845,1,,,libre
+6,Campero 4x4 3,campero,845,2,,,libre
+7,Furgoneta 1,campero,800,2,,,libre
+8,Moto 1,moto,40,1,,,libre
+9,Moto 2,moto,40,2,,,libre
