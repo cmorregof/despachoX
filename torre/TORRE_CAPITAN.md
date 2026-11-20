@@ -14,6 +14,7 @@ Repositorio montado con estrategia, prompt del equipo, torre de control y revisi
 - Nada. Falta que el equipo abra las fuentes y pase las cifras a `docs/FUENTES.md`.
 
 ## Siguiente paso exacto
+0. **Tarea 0 (antes de las 2:30 p. m.):** cada integrante verifica un informe de `docs/investigacion/`. Instrucciones y reparto en `docs/TAREA_0.md`. Cierre de diez minutos a las 2:15 p. m.
 1. Confirmar con Samuel que la vertical inscrita es la 04.
 2. Preguntar en la mesa: duración del pitch, forma de entrega, jurados, acceso real al software de ruteo UNAL y a los datos de la ficha.
 3. Asignar roles A, B, C y D con nombre.
