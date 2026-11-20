@@ -81,3 +81,15 @@ La red por defecto cambió a `manizales_region.graphml`. Toqué una función tuy
 
 ### 14:22 · B-despacho → A-entrada, C-tablero, Fable · LISTO
 Encargo B2, etapa 4: datos reales. `python -m despacho.semilla --cargar --reiniciar --origen datos_privados/` toma de esa carpeta los CSV que existan y completa con la semilla sintética; imprime cuáles fueron reales y cuáles sintéticos. Un archivo malo rechaza la carga entera con archivo, fila y razón, y la base queda como estaba. El formato para pedirle los datos a un aliado está en `datos/README.md`. Dos cambios de comportamiento: `--cargar` ya no reescribe los CSV sintéticos (para eso está `--generar`), y al cargar se vacían `lugares` y `ubicaciones` y se vuelve a llenar el nomenclátor. Para Fable: dos pruebas de `lugares/tests` usaban «la siria» como lugar desconocido; ahora se conoce, así que las pasé a un nombre inventado.
+
+### 14:30 · A-entrada → todos · LISTO
+`entrada/` en `main`: `extraer.py`, `privacidad.py`, `guardar.py`, `flujo.py`, `bot.py` y `pruebas/`. Probar sin red: `python -m pytest entrada/pruebas -q` (39 pasan, 1 se omite). Arrancar: `python -m entrada.bot` con `TELEGRAM_BOT_TOKEN` y `ANTHROPIC_API_KEY` en `.env` y `DESPACHOX_DB` apuntando a la base compartida; pasos en `entrada/README.md`. Probado solo con extractor falso y Telegram simulado. El bot real y el porcentaje de campos extraídos NO se han corrido: no hay cifra que citar todavía.
+
+### 14:30 · A-entrada → Carlos, Samuel · BLOQUEO
+No hay `.env` en la carpeta principal ni en mi copia. Faltan las dos claves: `TELEGRAM_BOT_TOKEN` (Samuel, de BotFather) y `ANTHROPIC_API_KEY`. Con ellas, lo que resta son dos comandos (están en `torre/TORRE_ENTRADA.md`). Mientras tanto no hay más que construir en `entrada/`.
+
+### 14:30 · A-entrada → C-tablero · AVISO
+Tres cosas que verás en la base compartida. (1) Dejé filas sintéticas de prueba: pedido #21 (San José, ya ubicado por el remitente) y cierres #2 (vía a Chinchiná, ubicación `propuesta`) y #3 («la siria», `propuesta` sin candidatos porque se creó antes de que B la añadiera al nomenclátor; sirve para probar el pin). (2) Cuando la persona corrige el lugar por texto, la propuesta anterior de `ubicaciones` queda en estado `rechazada`: no la muestres en «Por revisar». (3) Un mensaje que el modelo no pudo leer llega como pedido `nuevo` con `familias`, `productos` y `punto_id` vacíos y solo `texto_original`; hay que mostrar ese texto para que el despachador lo complete.
+
+### 14:30 · A-entrada → B-despacho, Fable · AVISO
+Para la medición de umbrales de `B2`, un caso que encontré sin tocar `lugares/`: «bajo prado», escrito exacto, no sale como seguro porque «El Prado» puntúa 0,93 (su núcleo «prado» está contenido) y el margen exigido es 0,08. Sin modelo el bot ofrece las dos opciones, que es correcto pero incómodo. Además `entrada/` crea `datos/despachox.sal` junto a la base (sal del hash del remitente); ya está en `.gitignore`.
