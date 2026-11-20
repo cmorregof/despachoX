@@ -39,11 +39,13 @@ Después del sismo los datos móviles colapsan y los SMS aguantan más. Diseño 
 
 **La pregunta que debes poder responder:** «¿Y si no hay datos móviles?»
 
-## Tarea 4 · Ficha 1 a 3 y pitch
+## Tarea 4 · Revisar la ficha y preparar el pitch
 
-La ficha está vacía y es lo que revisa la mentoría. Tú presentas, así que la escribes tú, aunque Claude te ayude a redactar.
+La ficha completa la está redactando un agente de Claude para no gastar tu cupo (`docs/FICHA.md`, `docs/FICHA_MENTORIA.md` y `docs/FUENTES.md`). Tú presentas, así que tu trabajo es que sea tuya.
 
-- [ ] Componentes 1, 2 y 3 de `docs/FICHA.md`. Para el 1, abre los enlaces de `docs/investigacion/04_evidencia_del_problema.md` y pasa tres cifras verificadas a `docs/FUENTES.md`. No uses «desabastecimiento en 48 horas».
+- [ ] Cuando aparezca en el canal, léela entera y marca lo que no dirías así o no entiendes.
+- [ ] Abre tú mismo los enlaces de las cifras del componente 1 y cambia en `docs/FUENTES.md` «agente» por tu nombre en las que confirmes.
+- [ ] Lleva `docs/FICHA_MENTORIA.md` a la mentoría.
 - [ ] Carpeta «DespachoX» en Drive, compartida con «cualquier persona con el enlace puede ver». Enlace: ______
 - [ ] Un ensayo cronometrado de `pitch/GUION.md`. Duración: ______
 
