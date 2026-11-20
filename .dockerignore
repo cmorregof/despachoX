@@ -1,0 +1,12 @@
+.git
+.venv
+.claude
+__pycache__
+*.pyc
+.env
+.env.*
+datos/*.db*
+datos/*.sal
+despacho/cache
+.pytest_cache
+docs/investigacion

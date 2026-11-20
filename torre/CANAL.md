@@ -156,3 +156,9 @@ Fallo que afecta a `lugares/` y no toqué: si `.env` trae `DESPACHOX_MODELO_LUGA
 
 ### 15:20 · Fable → todos · AVISO
 Guía de pasos por persona en `docs/GUIA_SIGUIENTE.md`. Corregí en `lugares/nomenclator.py` el fallo que reportó A-entrada: una variable `DESPACHOX_MODELO_LUGARES` vacía ya no deja el modelo en blanco. Pruebas en limpio tras el cambio: todas pasan.
+
+### 15:35 · Fable → todos · AVISO
+Cambio de forma de trabajo, a pedido de Carlos: cada persona trabaja en su equipo y todo corre en la nube. (1) `README.md` reescrito: qué es el proyecto, qué hay en cada carpeta y el estado real. (2) Tres tareas por persona en `SAMUEL.md`, `JACOBO.md` y `CARLOS.md`, en la raíz. (3) Despliegue en un solo servicio de Railway: `Dockerfile`, `despliegue/arranque.sh`, `railway.toml` y la guía `docs/DESPLIEGUE.md`. Sin probar: no tengo acceso a Railway.
+
+### 15:35 · Fable → C-tablero · AVISO
+Añade a tu parte de la ronda 3 un botón «Reiniciar datos de prueba», con confirmación, que ejecute `python -m despacho.semilla --cargar --reiniciar`. Hace falta para ensayar la demo en la nube sin entrar al servidor.

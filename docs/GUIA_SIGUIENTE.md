@@ -1,5 +1,7 @@
 # Guía de trabajo · viernes 3:15 p. m.
 
+> Las tareas vigentes de cada persona están en `SAMUEL.md`, `JACOBO.md` y `CARLOS.md`, en la raíz. Esta guía conserva el «Paso 0» para correr todo en un solo computador, que ahora es el plan B del despliegue en la nube.
+
 Qué hace cada uno a continuación. La escribe el capitán después de revisar el repositorio y el canal.
 
 ## Estado en cinco líneas
