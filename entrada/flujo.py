@@ -12,12 +12,13 @@ from __future__ import annotations
 import json
 import re
 import sqlite3
+import time
 from dataclasses import dataclass, field
 from typing import Callable
 
 import lugares
-from entrada import guardar
-from entrada.extraer import Extraccion, extraer as extraer_con_modelo
+from entrada import guardar, raciones
+from entrada.extraer import Extraccion, Producto, extraer as extraer_con_modelo
 from entrada.privacidad import hash_remitente, limpiar
 
 TIPOS = {"pedidos": ("barrio", "punto", "sitio", "vereda"), "cierres": ("via", "sitio")}
@@ -26,6 +27,9 @@ QUIEN = "remitente"
 _USAR_MODELO = object()      # por defecto, el desempate de lugares/ con modelo
 _PIN = "pin"                 # nombre del lugar cuando solo hay coordenadas enviadas por chat
 _SI = re.compile(r"^(si|sip|correcto|exacto|eso es|asi es|es ahi|ahi es|afirmativo)( es ahi| es| señor| señora| correcto)?$")
+_NUMERO = re.compile(r"^(?:son|somos|como|unas|unos|para|de|aprox\w*|mas o menos|\s)*(\d{1,4})"
+                     r"\s*(?:familias?|flias?|hogares)?\s*$")
+ESPERA_FAMILIAS_S = 120     # tras dos minutos sin respuesta el pedido se queda con lo que hay
 _CORTESIA = re.compile(r"^(muchas )?(gracias|ok|okay|vale|listo|bueno|dale|entendido)( gracias| muchas gracias)?$")
 
 AYUDA = ("Soy la mesa de despacho de ayuda alimentaria. Escríbeme con tus palabras:\n"
@@ -55,12 +59,16 @@ class Pendiente:
     fila_id: int
     contexto: str
     ubicacion_id: int | None = None     # None: el mensaje no decía dónde
+    preguntar_familias: bool = False    # el mensaje no dijo cuántas familias: se pregunta al ubicar
+    familias_estimadas: int | None = None
 
 
 class Mesa:
     def __init__(self, con: sqlite3.Connection, extraer: Callable[[str], Extraccion] = extraer_con_modelo,
-                 elegir=_USAR_MODELO):
+                 elegir=_USAR_MODELO, reloj: Callable[[], float] = time.monotonic):
         self.con = con
+        self.reloj = reloj
+        self.por_familias: dict[str, tuple[int, float]] = {}    # remitente -> (pedido, vence)
         self.extraer = extraer
         self.elegir = lugares.nomenclator.elegir_con_modelo if elegir is _USAR_MODELO else elegir
         self.pendientes: dict[str, list[Pendiente]] = {}
@@ -77,6 +85,9 @@ class Mesa:
 
     def atender(self, chat_id, x: Extraccion) -> list[Respuesta]:
         rem = hash_remitente(chat_id)
+        n = self._familias_respondidas(rem, x)
+        if n is not None:
+            return [self._fijar_familias(rem, self.por_familias.pop(rem)[0], n, f"{n}")]
         cola = self.pendientes.get(rem) or []
         if cola and (x.tipo == "otro" or _solo_lugar(x)):
             dicho = lugares.normalizar(x.texto)
@@ -100,18 +111,26 @@ class Mesa:
             return [Respuesta(NO_ENTENDI)]
         respuestas = []
         if x.pedido is not None:
-            fila = guardar.guardar_pedido(self.con, x.pedido, x.texto, rem)
-            respuestas.append(self._preguntar(rem, "pedidos", fila, x.pedido.lugar, x, _resumen_pedido(x)))
+            dicho = x.pedido.familias is not None
+            lineas, dudas, estimadas = _completar(x)
+            fila = guardar.guardar_pedido(self.con, x.pedido, x.texto, rem, lineas, dudas)
+            r = self._preguntar(rem, "pedidos", fila, x.pedido.lugar, x, _resumen_pedido(x, lineas, estimadas),
+                                notas=[d for d in dudas if d.startswith("Familias")])
+            self.pendientes[rem][-1].preguntar_familias = not dicho
+            self.pendientes[rem][-1].familias_estimadas = x.pedido.familias if estimadas else None
+            respuestas.append(r)
         if x.cierre is not None:
             fila = guardar.guardar_cierre(self.con, x.cierre, x.texto)
             respuestas.append(self._preguntar(rem, "cierres", fila, x.cierre.lugar, x, _resumen_cierre(x)))
         return respuestas
 
     def _preguntar(self, rem: str, tabla: str, fila: int, lugar: str | None, x: Extraccion,
-                   resumen: str) -> Respuesta:
+                   resumen: str, notas: list[str] | None = None) -> Respuesta:
         p = Pendiente(tabla, fila, x.texto)
         self.pendientes.setdefault(rem, []).append(p)
         cabeza = f"{resumen} Queda en revisión del despachador."
+        if notas:
+            cabeza += "\n" + " ".join(notas)
         dudas = [d for d in x.dudas if d.strip()][:2]
         if dudas:
             cabeza += "\nMe falta saber: " + " ".join(dudas)
@@ -161,6 +180,14 @@ class Mesa:
             return Respuesta("No reconocí ese botón. Escríbeme de nuevo, por favor.")
         if accion == "p":
             return Respuesta(COMO_ENVIAR_PIN, pedir_ubicacion=True)
+        if accion == "f":                   # f:<pedido>:<familias>; vale aunque hayan pasado los dos minutos
+            try:
+                n = int(partes[2])
+            except (IndexError, ValueError):
+                return Respuesta("No reconocí ese botón. Escríbeme de nuevo, por favor.")
+            self.por_familias.pop(rem, None)
+            etiqueta = next((e for e, v in raciones.RANGOS if v == n), str(n))
+            return self._fijar_familias(rem, uid, n, etiqueta)
         u = self.con.execute("SELECT * FROM ubicaciones WHERE id=?", (uid,)).fetchone()
         if u is None or accion not in ("s", "c") or (accion == "s" and u["lugar_id"] is None):
             return Respuesta("No encontré ese reporte. Escríbeme de nuevo, por favor.")
@@ -171,7 +198,7 @@ class Mesa:
         if not lugares.confirmar(self.con, uid, quien=QUIEN, lugar_id=lugar_id):
             return Respuesta("No pude confirmar ese lugar. Envíame la ubicación o escríbeme un barrio cercano.",
                              [("Enviar mi ubicación", f"p:{uid}")])
-        return Respuesta(self._cerrar(rem, u["tabla"], u["fila_id"], uid))
+        return self._cerrar(rem, u["tabla"], u["fila_id"], uid)
 
     # ---------- ubicación de Telegram ----------
 
@@ -187,10 +214,12 @@ class Mesa:
             nombre = f"{_PIN} {lat:.4f}, {lon:.4f}"
             self._resolver(p, nombre, con_modelo=False)
         lugares.corregir_con_pin(self.con, p.ubicacion_id, lat, lon, quien=QUIEN, nombre=nombre)
-        return Respuesta(self._cerrar(rem, p.tabla, p.fila_id, p.ubicacion_id))
+        return self._cerrar(rem, p.tabla, p.fila_id, p.ubicacion_id)
 
-    def _cerrar(self, rem: str, tabla: str, fila_id: int, ubicacion_id: int) -> str:
-        """Texto de cierre tras confirmar, y lo que sigue pendiente de ese chat."""
+    def _cerrar(self, rem: str, tabla: str, fila_id: int, ubicacion_id: int) -> Respuesta:
+        """Texto de cierre tras confirmar, lo que sigue pendiente de ese chat y, si el pedido no
+        dijo cuántas familias, la única pregunta que falta."""
+        este = next((p for p in self.pendientes.get(rem, []) if (p.tabla, p.fila_id) == (tabla, fila_id)), None)
         cola = [p for p in self.pendientes.get(rem, []) if (p.tabla, p.fila_id) != (tabla, fila_id)]
         self.pendientes[rem] = cola
         u = self.con.execute("SELECT u.lat, u.lon, l.nombre FROM ubicaciones u LEFT JOIN lugares l "
@@ -208,7 +237,39 @@ class Mesa:
                      "cambiar las rutas.")
         if cola:
             texto += " Falta ubicar tu otro reporte: usa los botones del mensaje anterior."
-        return texto
+        if este is not None and este.preguntar_familias:
+            self.por_familias[rem] = (fila_id, self.reloj() + ESPERA_FAMILIAS_S)
+            est = este.familias_estimadas
+            botones = [(f"Sí, unas {est}", f"f:{fila_id}:{est}")] if est else []
+            botones += [(e, f"f:{fila_id}:{v}") for e, v in raciones.RANGOS]
+            pregunta = f"¿Para cuántas familias es? Calculé unas {est}." if est else "¿Para cuántas familias es?"
+            return Respuesta(f"{texto}\n\n{pregunta} Toca una opción o escribe el número.", botones)
+        return Respuesta(texto)
+
+    # ---------- ¿para cuántas familias? ----------
+
+    def _familias_respondidas(self, rem: str, x: Extraccion) -> int | None:
+        """Si este chat tiene la pregunta abierta y el mensaje es un número, ese número."""
+        abierta = self.por_familias.get(rem)
+        if abierta is None:
+            return None
+        if self.reloj() > abierta[1]:           # pasaron los dos minutos: queda con lo que había
+            del self.por_familias[rem]
+            return None
+        m = _NUMERO.match(lugares.normalizar(x.texto))
+        if m and 0 < int(m.group(1)) <= 2000:
+            return int(m.group(1))
+        p = x.pedido
+        if p is not None and p.familias and not p.lugar and not p.productos and x.cierre is None:
+            return p.familias
+        return None
+
+    def _fijar_familias(self, rem: str, pedido_id: int, n: int, como: str) -> Respuesta:
+        nota = f"Familias dichas por el remitente al preguntarle: {como} (se guardó {n})."
+        if not guardar.actualizar_familias(self.con, pedido_id, n, nota):
+            return Respuesta("Ese pedido ya está en un plan. Si cambió algo, escríbeme un mensaje nuevo.")
+        return Respuesta(f"Gracias. El pedido #{pedido_id} quedó para {n} familias. El despachador lo "
+                         "revisa y lo programa.")
 
     # ---------- /estado ----------
 
@@ -237,15 +298,40 @@ def _lugar_de(x: Extraccion) -> str | None:
     return x.pedido.lugar if _solo_lugar(x) else None
 
 
-def _resumen_pedido(x: Extraccion) -> str:
+def _completar(x: Extraccion) -> tuple[list[dict], list[str], bool]:
+    """Aplica las reglas de `raciones` a lo que leyó el modelo: conserva productos para bebés,
+    estima familias desde personas o bebés y pone kilos por ración. Devuelve las líneas de
+    productos, las dudas que quedan anotadas y si las familias son estimadas."""
+    p = x.pedido
+    dudas = [d for d in x.dudas if d.strip()]
+    for faltante in raciones.faltantes_para_bebes(x.texto, [q.producto for q in p.productos]):
+        p.productos.append(Producto(producto=faltante, kg=None))
+        dudas.append(f"Se añadió {faltante}: el mensaje lo nombra y es para bebés.")
+    estimadas = False
+    if p.familias is None:
+        personas, bebes = (p.personas, p.bebes) if (p.personas or p.bebes) else raciones.contar_en_texto(x.texto)
+        fam, nota = raciones.familias_desde(personas, bebes)
+        if fam:
+            p.familias, estimadas = fam, True
+            dudas.append(nota)
+        else:
+            dudas.append("Falta el número de familias: se preguntó al remitente.")
+    lineas = [{"producto": raciones.canonico(q.producto), "kg": q.kg} for q in p.productos]
+    dudas += raciones.completar_kilos(lineas, p.familias)
+    return lineas, dudas, estimadas
+
+
+def _resumen_pedido(x: Extraccion, lineas: list[dict] | None = None, estimadas: bool = False) -> str:
     p = x.pedido
     partes = []
     if p.familias:
-        partes.append(f"{p.familias} familias")
+        partes.append(f"{'unas ' if estimadas else ''}{p.familias} familias")
     if p.lugar:
         partes.append(f"en {p.lugar}")
     cabeza = " ".join(partes) or "un pedido de ayuda"
-    productos = [f"{q.producto} ({q.kg:g} kg)" if q.kg else q.producto for q in p.productos]
+    lineas = lineas if lineas is not None else [q.model_dump() for q in p.productos]
+    productos = [f"{q['producto']} ({q['kg']:g} kg{' aprox.' if q.get('supuesto') else ''})" if q.get("kg")
+                 else q["producto"] for q in lineas]
     if productos:
         cabeza += ", " + _lista(productos)
     if p.urgencia == 3:

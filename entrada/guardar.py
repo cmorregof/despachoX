@@ -7,6 +7,7 @@ import sqlite3
 from datetime import datetime, timedelta
 
 from datos import db
+from entrada import raciones
 from entrada.extraer import Cierre, Pedido
 
 VENTANA_DUPLICADO_H = 2
@@ -16,20 +17,55 @@ def _hace(horas: float) -> str:
     return (datetime.now(db.BOGOTA) - timedelta(hours=horas)).isoformat(timespec="seconds")
 
 
-def guardar_pedido(con: sqlite3.Connection, p: Pedido, texto: str, remitente: str) -> int:
-    """Pedido en estado `nuevo`, sin punto. Los kilos solo se guardan si el mensaje los dio para
-    todos los productos; si no, despacho/ los estima por familia."""
-    kilos = [q.kg for q in p.productos]
-    kg = round(sum(kilos), 1) if kilos and all(k is not None for k in kilos) else None
+def _hay_columna(con: sqlite3.Connection, tabla: str, columna: str) -> bool:
+    return any(r[1] == columna for r in con.execute(f"PRAGMA table_info({tabla})"))
+
+
+def _kg_total(lineas: list[dict]) -> float | None:
+    kilos = [q.get("kg") for q in lineas]
+    return round(sum(kilos), 1) if kilos and all(k for k in kilos) else None
+
+
+def guardar_pedido(con: sqlite3.Connection, p: Pedido, texto: str, remitente: str,
+                   lineas: list[dict] | None = None, dudas: list[str] | None = None) -> int:
+    """Pedido en estado `nuevo`, sin punto. `lineas` son los productos ya completados por
+    `raciones` (con la marca `supuesto` donde la mesa puso los kilos). `kg_estimado` solo se llena
+    si todos los productos tienen kilos; si no, despacho/ los estima por familia. Las `dudas` se
+    guardan si la base ya tiene la columna `pedidos.dudas` (pedida por el canal)."""
+    lineas = lineas if lineas is not None else [q.model_dump() for q in p.productos]
     limite = _hace(-p.horas_limite) if p.horas_limite else None
     cur = con.execute(
         "INSERT INTO pedidos(creado_en, familias, kg_estimado, productos, urgencia, limite_en, estado, "
         "texto_original, remitente_hash) VALUES (?,?,?,?,?,?, 'nuevo', ?,?)",
-        (db.ahora(), p.familias, kg,
-         json.dumps([q.model_dump() for q in p.productos], ensure_ascii=False) if p.productos else None,
+        (db.ahora(), p.familias, _kg_total(lineas),
+         json.dumps(lineas, ensure_ascii=False) if lineas else None,
          p.urgencia, limite, texto, remitente))
+    if dudas and _hay_columna(con, "pedidos", "dudas"):
+        con.execute("UPDATE pedidos SET dudas=? WHERE id=?", (json.dumps(dudas, ensure_ascii=False), cur.lastrowid))
     con.commit()
     return cur.lastrowid
+
+
+def actualizar_familias(con: sqlite3.Connection, pedido_id: int, familias: int, nota: str) -> bool:
+    """La persona respondió «¿para cuántas familias?». Recalcula los kilos que puso la mesa (los
+    marcados `supuesto`) y deja la nota. Solo si el pedido aún no está en un plan."""
+    f = con.execute("SELECT productos, estado FROM pedidos WHERE id=?", (pedido_id,)).fetchone()
+    if f is None or f["estado"] not in ("nuevo", "confirmado"):
+        return False
+    try:
+        lineas = json.loads(f["productos"] or "[]")
+    except ValueError:
+        lineas = []
+    notas = raciones.completar_kilos(lineas, familias)
+    con.execute("UPDATE pedidos SET familias=?, productos=?, kg_estimado=? WHERE id=?",
+                (familias, json.dumps(lineas, ensure_ascii=False) if lineas else None, _kg_total(lineas), pedido_id))
+    if _hay_columna(con, "pedidos", "dudas"):
+        previas = con.execute("SELECT dudas FROM pedidos WHERE id=?", (pedido_id,)).fetchone()["dudas"]
+        dudas = [d for d in json.loads(previas or "[]") if not d.startswith(("Falta", "Familias", "Kilos"))]
+        con.execute("UPDATE pedidos SET dudas=? WHERE id=?",
+                    (json.dumps(dudas + [nota] + notas, ensure_ascii=False), pedido_id))
+    con.commit()
+    return True
 
 
 def guardar_cierre(con: sqlite3.Connection, c: Cierre, texto: str) -> int:

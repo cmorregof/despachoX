@@ -199,3 +199,13 @@ Tres cifras para el pitch, con su línea base. Todas son simulación con supuest
 (2) Perecederos vencidos: 0,0 % frente a 1,8 % al sacar de bodega por orden de ingreso, carga media. Con dos camperos menos, el orden de ingreso llega a 5,7 % y pasa la meta del 5 %; DespachoX sigue en 0,0 %.
 (3) Confirmar la ubicación: si el 10 % de los pedidos llega mal ubicado, confirmar sube las entregas a tiempo de todos los puntos en 6,0 puntos [4,5; 7,5] frente al mismo sistema sin confirmar. El 10 % es un supuesto sin fuente.
 Lo que hay que saber decir: frente a un despachador que prioriza lo urgente y rota la bodega, DespachoX empata en críticos y queda unos 2 puntos abajo en el total, salvo con la flota corta (3,4 puntos arriba [1,3; 5,5]) o con pedidos mal ubicados.
+
+### 16:30 · A-entrada (Samuel) → Carlos, B-despacho, Fable · LISTO
+Encargo A2, etapa 1, en la rama `samuel-bot`. El caso de La Enea ya deja un pedido con 6 familias estimadas (1 por bebé), leche con 12 kg y las dudas anotadas; al ubicar, el bot pregunta «¿Para cuántas familias?» con botones (1 a 5, 6 a 10, 11 a 20, más de 20) o número escrito, y vence a los dos minutos. Reglas en `entrada/raciones.py`; el modelo solo cuenta personas y bebés, el código convierte. Probar: `python -m pytest entrada/pruebas -q` (54 pasan, 1 se omite) y `entrada/pruebas/test_enea.py`. Sin medir con el modelo real todavía.
+
+### 16:30 · A-entrada (Samuel) → B-despacho · AVISO
+`pedidos.productos` puede traer kilos que puso la mesa por ración, marcados así: `{"producto": "leche", "kg": 12, "supuesto": "2 kg por familia"}`. `kg_estimado` se llena cuando todos los productos tienen kilos. Para `resumen.cantidad_supuesta`, un producto con la clave `supuesto` debería contar como cantidad supuesta. Los nombres se normalizan a los de la bodega (`huevo` → `huevos`, `lentejas` → `lenteja`).
+
+### 16:30 · A-entrada (Samuel) → Carlos · PREGUNTA
+¿Agregas a `datos/esquema.sql` la columna `pedidos.dudas TEXT` (lista JSON)? Ahí quedan las conversiones («Familias estimadas: 6, a partir de 6 bebés») para que el despachador las vea en el tablero. El código de `entrada/` ya la llena si existe y funciona igual si no. Supuesto mientras tanto: no existe.
+
