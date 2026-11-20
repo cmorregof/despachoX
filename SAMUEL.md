@@ -4,6 +4,14 @@ Líder del equipo. Dueño del **bot**, de la **ficha** y del **pitch**. Mañana 
 
 Marca con `[x]` lo que termines y anota abajo lo que encuentres. Luego `git pull --rebase && git push`.
 
+## Tarea 0 · Entender el problema (antes que nada)
+
+- [ ] Lee `docs/PROBLEMA.md` completo. Son diez minutos.
+- [ ] Responde en voz alta las cinco preguntas del final. Si alguna no te sale, vuelve al texto o pregunta en el grupo.
+- [ ] Lee el `README.md` para ver cómo responde a ese problema lo que hay construido.
+
+**Hecho cuando:** puedes explicarle el problema a alguien de fuera en un minuto, sin mencionar la tecnología.
+
 ## Tarea 1 · Probar el bot como un vecino y entenderlo
 
 **Para qué:** el bot solo se ha probado con mensajes que escribió el equipo. Hace falta ver qué pasa con mensajes de verdad, y que tú puedas explicarlo.

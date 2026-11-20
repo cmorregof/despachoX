@@ -3,7 +3,7 @@
 Equipo 19 · Hackathon UNAL Manizales 2026 · Vertical 04, Logística y abastecimiento.
 Samuel Rosso (líder) · Carlos Orrego · Jacobo Vasco · Nicolás Ramírez · José Manuel Aristizábal
 
-> **Si acabas de llegar:** lee esta página completa (cinco minutos) y luego abre tu archivo de tareas: [`SAMUEL.md`](SAMUEL.md), [`JACOBO.md`](JACOBO.md) o [`CARLOS.md`](CARLOS.md).
+> **Si acabas de llegar:** primero lee [`docs/PROBLEMA.md`](docs/PROBLEMA.md), que explica qué problema resolvemos. Luego esta página, que explica cómo lo resolvemos. Después abre tu archivo de tareas: [`SAMUEL.md`](SAMUEL.md), [`JACOBO.md`](JACOBO.md) o [`CARLOS.md`](CARLOS.md).
 
 ## Qué es, en un párrafo
 
@@ -122,6 +122,7 @@ El código cubre sobre todo el criterio 2. Los otros 75 puntos se ganan escribie
 
 | Si quieres saber… | Lee |
 |---|---|
+| Cuál es el problema que resolvemos | `docs/PROBLEMA.md` |
 | Qué me toca ahora | `SAMUEL.md`, `JACOBO.md`, `CARLOS.md` |
 | Por qué construimos esto y cómo ganar | `docs/ESTRATEGIA.md`, `docs/PLAN_EQUIPO.md` |
 | Qué existe ya en el mundo y qué nos diferencia | `docs/ESTADO_DEL_ARTE.md` |

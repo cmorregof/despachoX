@@ -4,6 +4,14 @@ Capitán. Dueño del **optimizador**, la **simulación**, la **integración** y 
 
 Marca con `[x]` lo que termines. Luego `git pull --rebase && git push`.
 
+## Tarea 0 · Entender el problema (antes que nada)
+
+- [ ] Lee `docs/PROBLEMA.md` completo. Son diez minutos.
+- [ ] Responde en voz alta las cinco preguntas del final. Si alguna no te sale, vuelve al texto o pregunta en el grupo.
+- [ ] Lee el `README.md` para ver cómo responde a ese problema lo que hay construido.
+
+**Hecho cuando:** puedes explicarle el problema a alguien de fuera en un minuto, sin mencionar la tecnología.
+
 ## Tarea 1 · Todo en la nube
 
 **Para qué:** que Samuel y Jacobo prueben desde sus equipos sin depender de un computador, y que la demo tenga una dirección pública.
