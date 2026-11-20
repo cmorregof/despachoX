@@ -45,6 +45,6 @@ El tablero está hecho en Streamlit, que es un servidor de Python que mantiene u
 | `Conflict: terminated by other getUpdates request` | Otro proceso usa el mismo token | Apagar el bot local |
 | El tablero abre y «Calcular plan» falla | Falta la red vial en `/data/cache` o el volumen no está montado | Revisar el volumen y redesplegar |
 | El tablero no abre | El servicio no tomó el puerto | Confirmar que se generó el dominio; Railway define `PORT` solo |
-| Los datos desaparecen al redesplegar | No hay volumen en `/data` | Paso 3 |
+| Los datos desaparecen al redesplegar | No hay volumen en `/data`, o `DESPACHOX_DB` apunta fuera de él (pasó el 20 de noviembre: valía `samcarjac`, una ruta relativa dentro del contenedor) | Paso 3, y `DESPACHOX_DB=/data/despachox.db` o borrar la variable |
 
 Este despliegue no se ha probado: lo escribió Fable sin acceso a Railway. La primera vez puede necesitar un ajuste; pega el error en el canal.

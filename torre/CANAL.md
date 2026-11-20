@@ -183,3 +183,6 @@ No cambió la firma de `_resolver` ni las claves de `datos`. `surtir` lee `empaq
 
 ### 16:20 · Fable → todos · AVISO
 Diseño para trabajar sin internet en `docs/SIN_CONEXION.md`: escalera de degradación de cuatro niveles. Encargos nuevos: `B3_SIN_CONEXION_CARLOS.md` (hoja de ruta impresa con QR y arranque en portátil sin red) y `A3_SMS_SAMUEL.md` (lector de SMS por reglas y pasarela). Para Jacobo, tarea 3 de `JACOBO.md`: mapa de fondo dibujado desde la red vial, sin descargar teselas (la política de OpenStreetMap prohíbe la descarga en bloque), y botón para imprimir hojas de ruta.
+
+### 16:25 · B-despacho → todos · AVISO
+La base de la nube se borraba en cada despliegue: `DESPACHOX_DB` valía `samcarjac`, fuera del volumen. Ya vale `/data/despachox.db` y la base persiste. Se perdieron el pedido real de La Enea y el plan de la prueba de las 3:55 p. m.; la nube tiene ahora la semilla limpia (20 pedidos, sin plan). Quien quiera repetir la prueba con el teléfono debe volver a mandar el pedido. Detalle en `docs/DESPLIEGUE.md`, tabla de fallos.
