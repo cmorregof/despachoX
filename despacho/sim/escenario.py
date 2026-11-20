@@ -57,6 +57,14 @@ class Parametros:
     min_confirmacion: float = 5.0          # del reporte a la confirmación humana del cierre
     min_aprobacion: float = 2.0            # lo que tarda el despachador en aprobar un plan
     min_tanda: float = 30.0                # cada cuánto se libera una tanda de pedidos
+    # información imperfecta (encargo S2): con probabilidad p_error un pedido se registra en un
+    # punto equivocado. Con confirmación de ubicación, el error se corrige antes de despachar y
+    # el pedido entra min_confirma_pedido minutos después. Sin confirmación, el error se descubre
+    # cuando el vehículo llega al punto equivocado.
+    p_error: float = 0.0
+    min_confirma_pedido: float = 5.0
+    # sensibilidad
+    camperos_menos: int = 0                # camperos que se le quitan a la flota (queda al menos uno)
 
 
 # Niveles de carga del sistema: cuántos pedidos hace cada punto en la jornada. Se eligieron con
@@ -121,6 +129,8 @@ class Escenario:
     vehiculos: list
     cierres: list
     p: Parametros
+    u_pedido: list = field(default_factory=list)       # sorteo por pedido: hay error si u < p_error
+    punto_errado: list = field(default_factory=list)   # punto en que se registraría por error
 
     @property
     def sitios(self):
@@ -182,7 +192,10 @@ def _lotes(pedidos, p: Parametros, rng) -> list:
 def _flota(n_puntos: int, p: Parametros) -> list:
     flota = []
     for tipo in TIPOS:
-        for _ in range(max(1, round(n_puntos / p.puntos_por_vehiculo[tipo]))):
+        n = max(1, round(n_puntos / p.puntos_por_vehiculo[tipo]))
+        if tipo == "campero":
+            n = max(1, n - p.camperos_menos)
+        for _ in range(n):
             flota.append(Vehiculo(len(flota) + 1, tipo, p.capacidad_kg[tipo]))
     return flota
 
@@ -230,8 +243,8 @@ def generar(semilla: int, red: Red | str = "auto", p: Parametros | None = None,
     p = p or Parametros()
     if isinstance(red, str):
         red = cargar_red(red)
-    r_tam, r_pun, r_ped, r_lot, r_cie = [np.random.default_rng(s) for s in
-                                         np.random.SeedSequence(semilla).spawn(5)]
+    r_tam, r_pun, r_ped, r_lot, r_cie, r_err = [np.random.default_rng(s) for s in
+                                                np.random.SeedSequence(semilla).spawn(6)]
     # el acopio queda sobre una vía apta para camión, lo más cerca posible del centro
     de_camion = red.nodos_del_tipo("camion")
     acopio = int(de_camion[red.metros_a(*CENTRO_MANIZALES)[de_camion].argmin()])
@@ -241,5 +254,7 @@ def generar(semilla: int, red: Red | str = "auto", p: Parametros | None = None,
         n_cierres = int(r_tam.integers(p.cierres_min, p.cierres_max + 1))
     puntos = _puntos(red, acopio, n_puntos, p, r_pun)
     pedidos = _pedidos(puntos, p, r_ped)
+    u = r_err.random(len(pedidos)).tolist()
+    errado = [int((q.punto_id - 1 + r_err.integers(1, len(puntos))) % len(puntos)) + 1 for q in pedidos]
     return Escenario(semilla, red, acopio, puntos, pedidos, _lotes(pedidos, p, r_lot),
-                     _flota(len(puntos), p), _cierres(red, acopio, puntos, n_cierres, p, r_cie), p)
+                     _flota(len(puntos), p), _cierres(red, acopio, puntos, n_cierres, p, r_cie), p, u, errado)

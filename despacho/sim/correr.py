@@ -12,6 +12,7 @@ import argparse
 import csv
 import datetime as dt
 import math
+import os
 import subprocess
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
@@ -27,7 +28,8 @@ from .red_sim import cargar_red
 
 SEMILLA_BASE = 20261120          # semillas de evaluación: base, base+1, ...
 PARES = [("despachox", "ingenua"), ("despachox", "experta"),
-         ("despachox", "optimiza_una_vez"), ("optimiza_una_vez", "ingenua")]
+         ("despachox", "optimiza_una_vez"), ("optimiza_una_vez", "ingenua"),
+         ("despachox", "despachox_sin_confirmar"), ("despachox_sin_confirmar", "experta")]
 PRINCIPALES = ["a_tiempo_criticos_pct", "perecedero_vencido_pct"]
 
 
@@ -41,8 +43,8 @@ def _optimizador(nombre: str, limite_s: float, red: str = "auto"):
 
 
 def una_corrida(args) -> list:
-    carga, semilla, politicas, red, optimizador, limite_s = args
-    esc = generar(semilla, red, Parametros(**NIVELES_CARGA[carga]))
+    carga, semilla, politicas, red, optimizador, limite_s, extra = args
+    esc = generar(semilla, red, Parametros(**{**NIVELES_CARGA[carga], **extra}))
     filas = []
     for nombre in politicas:
         opt = _optimizador(optimizador, limite_s, red)
@@ -81,7 +83,10 @@ def resumen_md(filas, politicas, meta) -> str:
          f"- Semillas: {meta['n']} por nivel de carga, de {meta['base']} a {meta['base'] + meta['n'] - 1}, "
          "las mismas para todas las políticas.",
          "- Intervalos: t de Student al 95 % sobre la diferencia pareada por semilla.",
-         f"- Llamadas al optimizador que terminaron en error: {sum(f['fallos_optimizador'] for f in filas)}.", ""]
+         f"- Llamadas al optimizador que terminaron en error: {sum(f['fallos_optimizador'] for f in filas)}."]
+    if meta.get("variante"):
+        L.append(f"- Variante: {meta['variante']}.")
+    L.append("")
     for carga in dict.fromkeys(f["carga"] for f in filas):
         sub = [f for f in filas if f["carga"] == carga]
         por = {p: sorted((f for f in sub if f["politica"] == p), key=lambda f: f["semilla"]) for p in politicas}
@@ -134,11 +139,30 @@ def main(argv=None):
     ap.add_argument("--politicas", default=",".join(POLITICAS))
     ap.add_argument("--salida", default=str(Path(__file__).parent / "resultados"))
     ap.add_argument("--procesos", type=int, default=6)
+    ap.add_argument("--factor-critico", type=int, help="FACTOR_CRITICO de despacho/optimizar.py")
+    ap.add_argument("--p-error", type=float, help="probabilidad de que un pedido se registre en otro punto")
+    ap.add_argument("--cierres", type=int, help="número fijo de cierres por jornada")
+    ap.add_argument("--camperos-menos", type=int, help="camperos que se le quitan a la flota")
     a = ap.parse_args(argv)
+
+    extra, variante = {}, []
+    if a.factor_critico is not None:      # los procesos hijos heredan la variable al arrancar
+        os.environ["DESPACHOX_FACTOR_CRITICO"] = str(a.factor_critico)
+        variante.append(f"FACTOR_CRITICO = {a.factor_critico}")
+    if a.p_error is not None:
+        extra["p_error"] = a.p_error
+        variante.append(f"error de ubicación de pedidos p = {a.p_error}")
+    if a.cierres is not None:
+        extra["cierres_min"] = extra["cierres_max"] = a.cierres
+        variante.append(f"{a.cierres} cierres por jornada")
+    if a.camperos_menos is not None:
+        extra["camperos_menos"] = a.camperos_menos
+        variante.append(f"flota con {a.camperos_menos} camperos menos")
 
     cargas = list(NIVELES_CARGA) if a.carga == "todas" else a.carga.split(",")
     politicas = a.politicas.split(",")
-    tareas = [(c, a.base + i, politicas, a.red, a.optimizador, a.limite) for c in cargas for i in range(a.semillas)]
+    tareas = [(c, a.base + i, politicas, a.red, a.optimizador, a.limite, extra)
+              for c in cargas for i in range(a.semillas)]
     if a.procesos > 1:
         with ProcessPoolExecutor(a.procesos) as ex:
             filas = [f for fs in ex.map(una_corrida, tareas) for f in fs]
@@ -159,7 +183,7 @@ def main(argv=None):
         commit = "sin git"
     meta = {"fecha": dt.datetime.now().strftime("%Y-%m-%d %H:%M"), "commit": commit,
             "red": cargar_red(a.red).origen, "optimizador": _optimizador(a.optimizador, a.limite, a.red).nombre,
-            "n": a.semillas, "base": a.base}
+            "n": a.semillas, "base": a.base, "variante": "; ".join(variante)}
     texto = resumen_md(filas, politicas, meta)
     (salida / "resumen.md").write_text(texto + "\n")
     print(texto)

@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import heapq
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 
 from .escenario import Escenario
 from .red_sim import FACTOR_EMERGENCIA, Conocimiento
@@ -67,12 +67,13 @@ class Estado:
     vence_a_bordo: dict            # pedido cargado -> vencimiento más próximo de sus lotes
     inalcanzable: dict             # pedido -> tipos de vehículo que no pudieron llegar
     t_fin: float
+    pedidos: dict                  # pedido -> Pedido tal como está registrado (el punto puede estar errado)
 
     def sitio(self, pedido) -> int:
         return pedido.punto_id
 
     def pedido(self, pid: int):
-        return self.esc.pedidos[pid - 1]
+        return self.pedidos[pid]
 
 
 @dataclass
@@ -86,6 +87,7 @@ class Resultado:
     descubiertos: dict             # cierre -> hora en que se descubrió
     invalidas: int                 # asignaciones que el motor rechazó
     t_fin: float
+    viajes_en_falso: int = 0       # llegadas a un punto equivocado por error de registro
 
 
 class Motor:
@@ -94,7 +96,16 @@ class Motor:
         self.red = esc.red
         self.con = Conocimiento(esc.red, esc.sitios)
         self.cierre_de = {a: c for c in esc.cierres for a in c.aristas}
-        self.ped = {q.id: q for q in esc.pedidos}
+        # copia de los pedidos tal como los registra el despacho; el punto real queda aparte
+        self.ped = {q.id: replace(q) for q in esc.pedidos}
+        self.punto_real = {q.id: q.punto_id for q in esc.pedidos}
+        self.confirma = bool(getattr(politica, "confirma_ubicacion", False))
+        self.con_error = {q.id for q, u in zip(esc.pedidos, esc.u_pedido) if u < self.p.p_error}
+        if not self.confirma:
+            for q, errado in zip(esc.pedidos, esc.punto_errado):
+                if q.id in self.con_error:
+                    self.ped[q.id].punto_id = errado
+        self.viajes_en_falso = 0
         self.estado_ped = {q.id: "futuro" for q in esc.pedidos}
         self.lote = {l.id: l for l in esc.lotes}
         self.inv = {l.id: l.kg for l in esc.lotes}
@@ -113,7 +124,9 @@ class Motor:
 
     def correr(self) -> Resultado:
         for q in self.esc.pedidos:
-            self._push(q.creado, "PEDIDO", q.id)
+            # con confirmación de ubicación, el pedido mal ubicado entra unos minutos después, ya corregido
+            espera = self.p.min_confirma_pedido * 60 if self.confirma and q.id in self.con_error else 0.0
+            self._push(q.creado + espera, "PEDIDO", q.id)
         self._push(0.0, "INICIO")
         k = 1
         while k * self.p.min_tanda * 60 < self.t_fin:
@@ -131,7 +144,7 @@ class Motor:
             getattr(self, "_ev_" + tipo.lower())(t, *datos)
         return Resultado(self.esc, self.pol.nombre, self.entregas, self.kg_valido,
                          list(self.veh.values()), self.recalculos, self.descubiertos,
-                         self.invalidas, self.t_fin)
+                         self.invalidas, self.t_fin, self.viajes_en_falso)
 
     # ---------- eventos ----------
     def _ev_pedido(self, t, pid):
@@ -264,6 +277,16 @@ class Motor:
     # ---------- acopio y entregas ----------
     def _entregar(self, v, t, pid):
         v.a_bordo.remove(pid)
+        if self.ped[pid].punto_id != self.punto_real[pid]:
+            # punto equivocado: nadie recibe. Se corrige el registro y la carga vuelve al acopio.
+            self.ped[pid].punto_id = self.punto_real[pid]
+            self.viajes_en_falso += 1
+            v.devolver.append(pid)
+            v.estado = "sirviendo"
+            v.t_ref = t + self.p.min_servicio * 60
+            v.version += 1
+            self._push(v.t_ref, "SIGUE", v.id, v.version)
+            return
         kg_ok = kg_venc = 0.0
         for lote, kg in v.carga.pop(pid):
             if lote is None or self.lote[lote].vence > t:
@@ -356,11 +379,11 @@ class Motor:
                 vence[pid] = min(vs) if vs else float("inf")
         return Estado(
             t=t, motivo=motivo, esc=self.esc, con=self.con,
-            pendientes=[q for q in self.esc.pedidos if self.estado_ped[q.id] == "pendiente"],
+            pendientes=[self.ped[q.id] for q in self.esc.pedidos if self.estado_ped[q.id] == "pendiente"],
             vehiculos=list(self.veh.values()),
             inventario=[(l.id, self.inv[l.id], l.vence) for l in self.esc.lotes
                         if self.inv[l.id] > 1e-9 and l.vence > t],
-            vence_a_bordo=vence, inalcanzable=self.inalcanzable, t_fin=self.t_fin)
+            vence_a_bordo=vence, inalcanzable=self.inalcanzable, t_fin=self.t_fin, pedidos=self.ped)
 
     def _avisar(self, motivo, t):
         if motivo not in self.pol.disparadores:

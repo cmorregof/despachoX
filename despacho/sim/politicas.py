@@ -300,8 +300,12 @@ class DespachoX:
     regla_lotes = "fefo"
     nombre = "despachox"
     ultimo_fue_optimizador = True
+    confirma_ubicacion = True     # el chat le devuelve la ubicación a quien pide y espera su «sí»
 
-    def __init__(self, optimizador=None):
+    def __init__(self, optimizador=None, confirma_ubicacion: bool = True):
+        self.confirma_ubicacion = confirma_ubicacion
+        if not confirma_ubicacion:
+            self.nombre = "despachox_sin_confirmar"
         self.opt = optimizador or optimizador_por_defecto()
         self._vistos, self._version = set(), -1
         if getattr(self.opt, "un_viaje", False):
@@ -337,6 +341,8 @@ def crear(nombre: str, optimizador=None, max_paradas: int = MAX_PARADAS):
         return OptimizaUnaVez(optimizador, max_paradas)
     if nombre == "despachox":
         return DespachoX(optimizador)
+    if nombre == "despachox_sin_confirmar":   # solo para medir el valor de confirmar la ubicación
+        return DespachoX(optimizador, confirma_ubicacion=False)
     raise ValueError(nombre)
 
 
