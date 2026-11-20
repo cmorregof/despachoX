@@ -1,5 +1,5 @@
 # Torre de control · Carlos · capitán
-Última actualización: viernes 20 de noviembre de 2026, 10:35 a. m.
+Última actualización: viernes 20 de noviembre de 2026, 10:45 a. m.
 
 ## Estado en una frase
 Repositorio montado con estrategia, prompt del equipo, torre de control y revisión del estado del arte; todavía no hay código.
@@ -14,6 +14,7 @@ Repositorio montado con estrategia, prompt del equipo, torre de control y revisi
 - Nada. Falta que el equipo abra las fuentes y pase las cifras a `docs/FUENTES.md`.
 
 ## Siguiente paso exacto
+- **Ahora:** cada uno corre su encargo de `encargos/` en Claude Code con Fable 5.2. Carlos corre además `encargos/0_MAESTRO.md`. Lo primero de B es la semilla, que desbloquea a los otros dos.
 0. **Tarea 0 (antes de las 2:30 p. m.):** cada integrante verifica un informe de `docs/investigacion/`. Instrucciones y reparto en `docs/TAREA_0.md`. Cierre de diez minutos a las 2:15 p. m.
 1. Confirmar con Samuel que la vertical inscrita es la 04.
 2. Preguntar en la mesa: duración del pitch, forma de entrega, jurados, acceso real al software de ruteo UNAL y a los datos de la ficha.
@@ -44,9 +45,9 @@ Repositorio montado con estrategia, prompt del equipo, torre de control y revisi
 ## Roles (viernes, tres personas; detalle en `docs/ROLES_VIERNES.md`)
 | Rol | Quién |
 |---|---|
-| A · Entrada | Jacobo |
+| A · Entrada y D · Ficha | Samuel |
 | B · Despacho y capitán | Carlos |
-| C · Tablero y D · Ficha | Samuel |
+| C · Tablero | Jacobo |
 | Por sumarse | Nicolás y José Manuel |
 
 ## Aporte a la rúbrica

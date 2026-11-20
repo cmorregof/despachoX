@@ -1,0 +1,12 @@
+python-telegram-bot>=21
+anthropic
+pydantic>=2
+python-dotenv
+ortools
+osmnx
+networkx
+streamlit
+streamlit-folium
+folium
+segno
+pytest

@@ -12,3 +12,6 @@ cache/
 *.graphml
 datos_privados/
 datos/*.db
+datos/*.db-wal
+datos/*.db-shm
+despacho/cache/
