@@ -31,13 +31,13 @@ PARES = [("despachox", "ingenua"), ("despachox", "experta"),
 PRINCIPALES = ["a_tiempo_criticos_pct", "perecedero_vencido_pct"]
 
 
-def _optimizador(nombre: str, limite_s: float):
+def _optimizador(nombre: str, limite_s: float, red: str = "auto"):
     if nombre == "provisional":
         return InsercionProvisional(limite_s)
     if nombre == "b":
         from .adaptador_b import OptimizadorB
         return OptimizadorB(limite_s=limite_s)
-    return optimizador_por_defecto(limite_s)
+    return optimizador_por_defecto(limite_s, red)
 
 
 def una_corrida(args) -> list:
@@ -45,9 +45,12 @@ def una_corrida(args) -> list:
     esc = generar(semilla, red, Parametros(**NIVELES_CARGA[carga]))
     filas = []
     for nombre in politicas:
-        r = simular(esc, crear(nombre, _optimizador(optimizador, limite_s)))
+        opt = _optimizador(optimizador, limite_s, red)
+        r = simular(esc, crear(nombre, opt))
+        usa_opt = nombre in ("optimiza_una_vez", "despachox")
         filas.append({"carga": carga, "semilla": semilla, "politica": nombre,
-                      **descripcion_escenario(r), **calcular(r)})
+                      **descripcion_escenario(r), **calcular(r),
+                      "fallos_optimizador": getattr(opt, "fallos", 0) if usa_opt else 0})
     return filas
 
 
@@ -77,7 +80,8 @@ def resumen_md(filas, politicas, meta) -> str:
          f"- Optimizador de `optimiza_una_vez` y `despachox`: {meta['optimizador']}.",
          f"- Semillas: {meta['n']} por nivel de carga, de {meta['base']} a {meta['base'] + meta['n'] - 1}, "
          "las mismas para todas las políticas.",
-         "- Intervalos: t de Student al 95 % sobre la diferencia pareada por semilla.", ""]
+         "- Intervalos: t de Student al 95 % sobre la diferencia pareada por semilla.",
+         f"- Llamadas al optimizador que terminaron en error: {sum(f['fallos_optimizador'] for f in filas)}.", ""]
     for carga in dict.fromkeys(f["carga"] for f in filas):
         sub = [f for f in filas if f["carga"] == carga]
         por = {p: sorted((f for f in sub if f["politica"] == p), key=lambda f: f["semilla"]) for p in politicas}
@@ -153,7 +157,7 @@ def main(argv=None):
     except OSError:
         commit = "sin git"
     meta = {"fecha": dt.datetime.now().strftime("%Y-%m-%d %H:%M"), "commit": commit,
-            "red": cargar_red(a.red).origen, "optimizador": _optimizador(a.optimizador, a.limite).nombre,
+            "red": cargar_red(a.red).origen, "optimizador": _optimizador(a.optimizador, a.limite, a.red).nombre,
             "n": a.semillas, "base": a.base}
     texto = resumen_md(filas, politicas, meta)
     (salida / "resumen.md").write_text(texto + "\n")

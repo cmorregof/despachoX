@@ -94,7 +94,8 @@ class InsercionProvisional:
     por urgencia, más una penalización por kilo perecedero que llegaría vencido, más un cargo
     pequeño por tiempo de llegada y por tiempo de viaje. Admite carga a bordo y varios viajes.
     """
-    nombre = "insercion_provisional"
+    nombre = "heurística de inserción PROVISIONAL (varios viajes por vehículo)"
+    un_viaje = False
     PESO = {1: 1.0, 2: 2.0, 3: 4.0}       # peso del retraso por urgencia
     PEN_KG_VENCIDO = 120.0                # segundos ponderados por kilo perecedero vencido
     PEN_LLEGADA = 0.05                    # cargo por segundo de espera del pedido
@@ -260,13 +261,15 @@ class InsercionProvisional:
                             costo[vid] = antes
 
 
-def optimizador_por_defecto(limite_s: float = 1.0):
-    """El optimizador de B si ya existe y carga; si no, la heurística provisional."""
-    try:
-        from .adaptador_b import OptimizadorB
-        return OptimizadorB(limite_s=limite_s)
-    except Exception:
-        return InsercionProvisional(limite_s=limite_s)
+def optimizador_por_defecto(limite_s: float = 1.0, red: str = "auto"):
+    """El optimizador de B si ya existe y la red es la real; si no, la heurística provisional."""
+    if red != "malla":
+        try:
+            from .adaptador_b import OptimizadorB
+            return OptimizadorB(limite_s=limite_s)
+        except (ImportError, RuntimeError, FileNotFoundError):
+            pass
+    return InsercionProvisional(limite_s=limite_s)
 
 
 # ------------------------------------------------------------------ políticas con optimizador
@@ -301,8 +304,14 @@ class DespachoX:
     def __init__(self, optimizador=None):
         self.opt = optimizador or optimizador_por_defecto()
         self._vistos, self._version = set(), -1
+        if getattr(self.opt, "un_viaje", False):
+            # el optimizador de B planea un viaje por vehículo: hay que volver a llamarlo
+            # cuando un vehículo regresa al acopio o devuelve carga
+            self.disparadores = self.disparadores | {"vehiculo_libre", "devuelto"}
 
     def planificar(self, estado):
+        if estado.motivo in ("vehiculo_libre", "devuelto") and not estado.pendientes:
+            return None
         en_cola = {p for v in estado.vehiculos for p in v.cola if p is not None}
         nuevos = {q.id for q in estado.pendientes} - self._vistos
         sueltos = any(q.id not in en_cola for q in estado.pendientes)

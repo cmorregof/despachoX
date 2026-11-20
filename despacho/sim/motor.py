@@ -104,6 +104,7 @@ class Motor:
         self.inalcanzable = {}
         self.t_fin = self.p.horas_jornada * 3600.0
         self._cola, self._seq, self._en_aviso = [], 0, False
+        self._plan_hasta, self._diferido = -1.0, None     # un plan a la vez espera aprobación
 
     # ---------- cola de eventos ----------
     def _push(self, t, tipo, *datos):
@@ -145,6 +146,8 @@ class Motor:
         self._avisar("tanda", t)
 
     def _ev_aviso(self, t, motivo):
+        if motivo is None:
+            motivo, self._diferido = self._diferido, None
         self._avisar(motivo, t)
 
     def _ev_confirma(self, t, cid):
@@ -362,6 +365,11 @@ class Motor:
     def _avisar(self, motivo, t):
         if motivo not in self.pol.disparadores:
             return
+        if t < self._plan_hasta:         # el despachador revisa un plan a la vez: se atiende al aprobarlo
+            if self._diferido is None:
+                self._push(self._plan_hasta, "AVISO", None)
+            self._diferido = "cierre" if "cierre" in (motivo, self._diferido) else (self._diferido or motivo)
+            return
         if self._en_aviso:               # ya se está planeando: se atiende después, en el mismo instante
             self._push(t, "AVISO", motivo)
             return
@@ -379,6 +387,7 @@ class Motor:
             self.recalculos.append((t, motivo, dt))
         demora = self.pol.demora_s(estado)
         if demora > 0:
+            self._plan_hasta = t + demora
             self._push(t + demora, "PLAN", rutas)
         else:
             self._aplicar(rutas, t)

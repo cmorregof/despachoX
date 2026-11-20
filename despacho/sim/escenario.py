@@ -60,7 +60,7 @@ class Parametros:
 
 
 # Niveles de carga del sistema: cuántos pedidos hace cada punto en la jornada. Se eligieron con
-# semillas de calibración (100 a 111): la política ingenua cumple cerca del 87 %, 70 % y 51 % de
+# semillas de calibración (100 a 111): la política ingenua cumple cerca del 82 %, 63 % y 46 % de
 # los pedidos críticos a tiempo en cada nivel.
 NIVELES_CARGA = {
     "holgada": {"pedidos_por_punto": 2.5},
