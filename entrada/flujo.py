@@ -10,6 +10,7 @@ escriben cuando la persona confirma (lugares.confirmar) o envía su ubicación (
 from __future__ import annotations
 
 import json
+import logging
 import re
 import sqlite3
 import time
@@ -21,6 +22,7 @@ from entrada import guardar, raciones
 from entrada.extraer import Extraccion, Producto, extraer as extraer_con_modelo
 from entrada.privacidad import hash_remitente, limpiar
 
+log = logging.getLogger("entrada.flujo")
 TIPOS = {"pedidos": ("barrio", "punto", "sitio", "vereda"), "cierres": ("via", "sitio")}
 NOMBRE_VEHICULO = {"camion": "camión", "campero": "campero", "moto": "moto"}
 QUIEN = "remitente"
@@ -92,6 +94,17 @@ class Mesa:
 
     def recibir_texto(self, chat_id, texto: str) -> list[Respuesta]:
         return self.atender(chat_id, self.leer(texto))
+
+    def atender_seguro(self, chat_id, x: Extraccion) -> list[Respuesta]:
+        """`atender`, pero si algo falla al guardar o ubicar (base ocupada, error inesperado) el
+        mensaje no se pierde: se deshace lo a medias y se guarda como texto crudo para el despachador."""
+        try:
+            return self.atender(chat_id, x)
+        except Exception as e:
+            log.error("falló al atender un mensaje (%s); se guarda crudo", type(e).__name__)
+            self.con.rollback()
+            guardar.guardar_crudo(self.con, x.texto, hash_remitente(chat_id))
+            return [Respuesta(SIN_LEER)]
 
     def atender(self, chat_id, x: Extraccion) -> list[Respuesta]:
         rem = hash_remitente(chat_id)

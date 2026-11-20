@@ -26,6 +26,7 @@ VOZ_LARGA = "La nota es muy larga. Mándame una de menos de dos minutos, o escr�
 VOZ_FALLO = "No pude escuchar bien la nota. ¿Me la escribes, por favor?"
 SOLO_TEXTO = ("Por ahora solo leo texto. Escríbeme qué necesitan y dónde, o qué vía está cerrada. "
               "Si quieres fijar un lugar, envíame la ubicación con el clip del chat.")
+CONCURRENCIA = int(os.environ.get("DESPACHOX_CONCURRENCIA") or 32)
 ERROR = "Tuve un problema al procesar eso. Inténtalo de nuevo en un momento, por favor."
 
 
@@ -58,7 +59,7 @@ class Manejadores:
     async def texto(self, update: Update, context) -> None:
         mensaje = update.effective_message
         lectura = await asyncio.to_thread(self.mesa.leer, mensaje.text or "")   # la llamada al modelo
-        for r in self.mesa.atender(update.effective_chat.id, lectura):
+        for r in self.mesa.atender_seguro(update.effective_chat.id, lectura):
             await self._enviar(mensaje, r)
 
     async def nota_de_voz(self, update: Update, context) -> None:
@@ -80,7 +81,7 @@ class Manejadores:
             return
         lectura = await asyncio.to_thread(self.mesa.leer, texto)          # limpia y llama al modelo
         await mensaje.reply_text(f"Escuché: «{lectura.texto}»")
-        for r in self.mesa.atender(update.effective_chat.id, lectura):
+        for r in self.mesa.atender_seguro(update.effective_chat.id, lectura):
             await self._enviar(mensaje, r)
 
     async def ubicacion(self, update: Update, context) -> None:
@@ -114,7 +115,9 @@ class Manejadores:
 
 def construir(token: str, mesa: Mesa) -> Application:
     m = Manejadores(mesa)
-    app = Application.builder().token(token).build()
+    # Varios mensajes a la vez: mientras uno espera al modelo, otros avanzan. La base y la memoria
+    # de la conversación solo se tocan en el hilo del bot, así que no hay escrituras simultáneas.
+    app = Application.builder().token(token).concurrent_updates(CONCURRENCIA).build()
     app.add_handler(CommandHandler(["start", "ayuda", "help"], m.inicio))
     app.add_handler(CommandHandler("estado", m.estado))
     app.add_handler(CallbackQueryHandler(m.boton))

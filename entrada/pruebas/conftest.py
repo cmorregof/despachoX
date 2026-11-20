@@ -15,6 +15,13 @@ def _sal(monkeypatch):
     monkeypatch.setenv("DESPACHOX_SAL", "sal-de-prueba")
 
 
+@pytest.fixture(autouse=True)
+def _cliente_nuevo(monkeypatch):
+    """Cada prueba arma su propio cliente de Anthropic (el extractor guarda uno para todo el proceso)."""
+    from entrada import extraer as E
+    monkeypatch.setattr(E, "_cliente_compartido", None)
+
+
 @pytest.fixture
 def con(tmp_path):
     c = db.conectar(tmp_path / "prueba.db")

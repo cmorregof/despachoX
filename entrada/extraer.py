@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import logging
 import os
+import threading
 from typing import Literal
 
 from pydantic import BaseModel, Field
@@ -16,6 +17,14 @@ from pydantic import BaseModel, Field
 log = logging.getLogger("entrada.extraer")
 MODELO = os.environ.get("DESPACHOX_MODELO_ENTRADA") or "claude-haiku-5-5"   # vacío en .env cuenta como ausente
 SEGUNDOS = 8.0          # la meta del encargo es responder en menos de diez segundos
+# Reintentos del SDK: 429, 5xx (529 = sobrecarga) y errores de conexión, con espera creciente y
+# respetando `retry-after`. 2 reintentos = 3 intentos; si fallan los tres, el mensaje se guarda crudo.
+REINTENTOS = 2
+# Precio público por millón de tokens de claude-haiku-5-5 (prompts de hasta 100 000 tokens), en USD.
+PRECIO_ENTRADA_MTOK, PRECIO_SALIDA_MTOK = 0.10, 0.50
+USO = {"llamadas": 0, "fallos": 0, "entrada": 0, "salida": 0}     # lo lee entrada/carga.py
+_candado = threading.Lock()
+_cliente_compartido = None
 Vehiculo = Literal["camion", "campero", "moto"]
 
 
@@ -108,25 +117,46 @@ def crudo(texto: str) -> Extraccion:
     return Extraccion(tipo="otro", texto=texto, fallo=True)
 
 
+def _cliente():
+    """Un solo cliente para todo el proceso: reutiliza las conexiones HTTP entre mensajes."""
+    global _cliente_compartido
+    with _candado:
+        if _cliente_compartido is None:
+            import anthropic
+            _cliente_compartido = anthropic.Anthropic(timeout=SEGUNDOS, max_retries=REINTENTOS)
+        return _cliente_compartido
+
+
+def _anotar(r=None, fallo=False) -> None:
+    with _candado:
+        USO["llamadas"] += 1
+        USO["fallos"] += fallo
+        if r is not None and getattr(r, "usage", None) is not None:
+            USO["entrada"] += r.usage.input_tokens or 0
+            USO["salida"] += r.usage.output_tokens or 0
+
+
 def extraer(texto: str) -> Extraccion:
     """Llama a Claude Haiku y valida con pydantic. No lanza excepción."""
     texto = (texto or "").strip()
     if not texto:
         return Extraccion(tipo="otro", texto=texto)
+    r = None
     try:
-        import anthropic
-        cliente = anthropic.Anthropic(timeout=SEGUNDOS, max_retries=1)
-        r = cliente.messages.parse(
+        r = _cliente().messages.parse(
             model=MODELO, max_tokens=1500, system=INSTRUCCIONES,
             output_config={"effort": "low"},
             messages=[{"role": "user", "content": f"<mensaje>\n{texto}\n</mensaje>"}],
             output_format=Lectura)
         if r.stop_reason != "end_turn" or r.parsed_output is None:
             log.warning("lectura incompleta: %s", r.stop_reason)
+            _anotar(r, fallo=True)
             return crudo(texto)
+        _anotar(r)
         return _normalizar(Extraccion(**r.parsed_output.model_dump(), texto=texto))
-    except Exception as e:                       # sin clave, sin red, límite, respuesta inválida
+    except Exception as e:                       # sin clave, sin red, límite tras 3 intentos, respuesta inválida
         log.warning("no se pudo leer el mensaje (%s)", type(e).__name__)
+        _anotar(r, fallo=True)
         return crudo(texto)
 
 

@@ -50,6 +50,7 @@ Comandos: `/start` y `/ayuda` explican en tres líneas qué hace el bot y dan do
 | `extraer.py` | Llamada a Claude Haiku con salida validada por pydantic. Nunca lanza excepción |
 | `raciones.py` | Raciones por familia, conversión de personas y bebés a familias, productos para bebés. El supuesto está escrito arriba |
 | `voz.py` | Transcripción de notas de voz con un servicio externo. Nunca lanza excepción |
+| `carga.py` | Prueba de carga: N mensajes sintéticos por el camino del bot, con concurrencia configurable. Resultados en `ESCALA.md` |
 | `guardar.py` | Escritura en `pedidos` y `cierres`, duplicados y consulta de `/estado` |
 | `privacidad.py` | Limpieza del texto y hash con sal del id del chat |
 | `pruebas/` | Quince mensajes de ejemplo, Telegram simulado y pruebas |
@@ -76,4 +77,5 @@ python -m entrada.extraer "somos 40 familias en san jose no hay arroz ni leche"
 - Las notas de voz necesitan la clave de un servicio de transcripción; sin ella se pide escribir.
 - Los reportes pendientes de ubicar se llevan en memoria. Si el bot se reinicia, los botones de los mensajes anteriores siguen funcionando, pero una respuesta en texto libre o un pin ya no se asocian al reporte anterior.
 - `cierres` no tiene `remitente_hash`, así que `/estado` solo muestra pedidos.
-- La consulta a la base y el desempate de lugares con modelo corren en el hilo del bot. Para una demostración con pocos chats alcanza.
+- La base y la ubicación de lugares corren en el hilo del bot, uno a la vez; el modelo se llama en paralelo (`DESPACHOX_CONCURRENCIA`, 32 por defecto). La medición está en `ESCALA.md`.
+- Si la API de Anthropic falla, el SDK reintenta dos veces con espera creciente (429, 5xx, red). Si fallan los tres intentos, o si falla la base, el mensaje se guarda como texto crudo para el despachador: no se pierde.
