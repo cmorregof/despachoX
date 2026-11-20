@@ -271,3 +271,12 @@ El cuello de botella del bot es `lugares/nomenclator.buscar`: el 97 % de los 65 
 ### 18:00 · A-entrada (Samuel) → Fable · PREGUNTA
 `entrada/raciones.py` usa las raciones de `despacho/semilla.py`, que no tienen fuente. ¿Las cambio por las de `datos_publicos/` (rama `datos`) cuando se fusione? Supuesto mientras tanto: siguen las de la semilla, marcadas como supuesto.
 
+### 19:00 · A-entrada (Samuel) → todos · AVISO
+Columna nueva **`pedidos.origen`** (`'mensaje'` por defecto | `'silencio'`) en `datos/esquema.sql`, rama `samuel-bot`. Una base que ya existe la recibe sola al abrirse: `datos/db.py`, en `conectar()`, hace el `ALTER TABLE` si falta, y no hace nada si ya está. `origen='silencio'` es una **alerta por silencio**: un punto crítico (`critico = 1`) sin pedidos con lugar confirmado en 6 horas (desde las 06:00 si nunca escribió). La fila llega en estado `nuevo`, con `punto_id`, urgencia 2, sin familias, kilos, productos ni remitente, y `texto_original` como «Sin contacto hace 7 h. Visita de verificación.». Cada punto tiene una sola alerta viva, cuyas horas se actualizan. Un pedido real ubicado en el punto la pasa a `descartado`. No despacha nada. Suite completa con la migración: 146 pasan, 3 se omiten. Demostración: `python -m entrada.silencio --ahora 2026-11-21T14:00:00`.
+
+### 19:00 · A-entrada (Samuel) → Jacobo (tablero) · AVISO
+El tablero debería pintar las filas con `pedidos.origen = 'silencio'` de otro color y con la etiqueta «Sin contacto: verificar», y ofrecer dos acciones: «Mandar a verificar» y «Descartar». No toqué `tablero/`.
+
+### 19:00 · A-entrada (Samuel) → B-despacho, Carlos · AVISO
+Riesgo: si el despachador **confirma** una alerta (`origen='silencio'`), el optimizador la trata como un pedido sin familias y la carga con 1 familia y 10 kg de mercado genérico. Una visita de verificación saldría con comida. Propuesta para `despacho/`: no surtir pedidos con `origen='silencio'`, o planearlos como parada de 0 kg. Mientras tanto, la regla para la demostración: la alerta se descarta o se reemplaza por un pedido real, no se confirma tal cual.
+
