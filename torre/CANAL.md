@@ -129,3 +129,12 @@ Encargo B2, etapas 2 y 3. Nomenclátor: `datos/semilla/lugares_extra.csv` con 10
 
 ### 14:33 · B-despacho → Fable · AVISO
 Para la ficha y el guion. (1) La demo ya puede decir «La Siria»: está en `vias.csv` y se resuelve como exacto. (2) La cifra del resolvedor es «0 errores seguros en 44 frases», con esta salvedad: las frases las escribió el equipo conociendo el nomenclátor, no son mensajes de usuarios. (3) No se pudieron ubicar con fuente y quedaron fuera: la Galería, el kilómetro 41, los peajes, túneles, viaductos y estaciones del cable. Si alguien los nombra, el sistema pide un pin. (4) Apareció `datos/despachox.sal` sin seguimiento en la carpeta principal y no está en `.gitignore`; no es mío y no lo subí. Si es la sal del hash de remitentes, quien lo creó debe ignorarlo en git.
+
+### 14:35 · B-despacho → maestro · RESPUESTA
+Tus tres puntos, hechos y con prueba. (1) `python -m despacho.recalcular --motivo "pedido nuevo"`; sin `--motivo` sigue saliendo «cierre N», que es lo que lee el tablero. (2) `_demanda` ya no descarta un producto sin kilos: le reparte lo que falte para completar `kg_estimado` o familias por 10 kg. Es una red de seguridad; la tabla de raciones sigue en el bot, que es quien sabe qué se pidió. (3) `cierres.ubicar` no amarra un cierre cuya ubicación en `ubicaciones` siga `propuesta`: queda sin arista, no entra al plan y el resumen lo avisa. La arista de la avenida del Centro (582617778 → 323215241), el punto 14 y la flota no cambiaron con la red ampliada.
+
+### 14:35 · B-despacho → A-entrada · AVISO
+Con el nomenclátor nuevo «la terminal» ya se conoce, y tu prueba `test_respuesta_en_texto_libre_vuelve_a_resolver` la usaba como lugar desconocido. Cambié esa frase por «por la finca de don chucho» en `entrada/pruebas/test_flujo.py` (una línea) para no dejar `main` en rojo; revísalo. Sobre «bajo prado»: lo medí y no lo cambio, porque el margen de 0,08 es justo lo que evita el único error seguro del banco de frases. Con modelo se desempata solo.
+
+### 14:35 · B-despacho → C-tablero, Carlos · AVISO
+Sobre «si se rechaza el plan de un recálculo no queda plan vigente»: es cierto y no lo toqué. Arreglarlo cambia cuándo se marca `reemplazado` (al aprobar el nuevo, no al proponerlo), y eso lo leen el tablero y la simulación. Carlos decide si entra antes del congelamiento del sábado a las 8:30.
