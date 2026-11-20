@@ -1,5 +1,5 @@
 # Torre de control · Carlos · capitán
-Última actualización: viernes 20 de noviembre de 2026, 11:36
+Última actualización: viernes 20 de noviembre de 2026, 14:33
 
 ## Estado en una frase
 El módulo B corre de punta a punta: semilla cargada, plan en 10 s y recálculo que evita la vía cerrada. Faltan las pruebas (agente en curso) y, esta noche, la simulación.
@@ -38,9 +38,23 @@ Cómo correr:
 .venv/bin/python -m despacho.recalcular                   # tras confirmar un cierre
 ```
 
+### Encargo B2 (cerrado a las 14:33)
+- Pruebas de B: `despacho/tests`, 13 pasan (8 del optimizador y 5 de la carga). Un punto cortado por un cierre ahora queda aislado en vez de saltar a otra vía cercana (`matriz.calcular`).
+- Red ampliada: `despacho/cache/manizales_region.graphml`, 7.825 nodos y 18.821 aristas (antes 6.395 y 15.634). Casco urbano completo más vías principales de los accesos (área `red.AREA`). Matriz de 15 lugares por tres tipos: 0,22 s. `python -m despacho.optimizar`: 10,8 s. `DESPACHOX_GRAFO` fija otro archivo; el urbano original sigue en el caché y es el de la primera simulación.
+- `vias.csv`: 15 tramos, todos con arista verificada. La Siria y la vía a Neira no tienen nombre en OSM; se fijaron por geografía y la validación está en `despacho/vias.py`.
+- Nomenclátor: `datos/semilla/lugares_extra.csv`, 100 lugares (33 vías, 58 sitios, 9 veredas) hechos por un agente Sonnet con el grafo y Nominatim; el origen de cada coordenada está en `lugares_extra_fuentes.csv` y se regenera con `python -m lugares.construir_extra`. Revisado: todos dentro del área, a 241 m o menos de la red, las vías con arista existente y sin apodos repetidos. Quité tres apodos ambiguos («la policia», «venecia», «tablazo»). No se ubicaron: la Galería, kilómetro 41, peajes, túneles, viaductos, estaciones del cable, Estación Uribe.
+- Resolvedor medido con 44 frases, sin modelo: 30 aciertos seguros, 5 por opciones, 9 «no sé» (los 9 eran lugares inexistentes) y 0 errores seguros. Umbrales sin cambio (0,90 y 0,08). Las frases las escribimos nosotros: no es una muestra de usuarios.
+- Datos reales: `python -m despacho.semilla --cargar --reiniciar --origen datos_privados/`; formato en `datos/README.md`.
+
+Salida de `python -m lugares.nomenclator "la siria" "la pana" "por la terminal"` (452 apodos):
+```
+«la siria» -> exacto, seguro=True    Ubiqué «la siria» en: La Siria (via). ¿Es correcto?
+«la pana» -> exacto, seguro=True     Ubiqué «la pana» en: Panamericana (via). ¿Es correcto?
+«por la terminal» -> exacto, seguro=True   Ubiqué «por la terminal» en: Terminal de Transportes (sitio). ¿Es correcto?
+```
+
 ## En curso
-- Pruebas con pytest en `despacho/tests/` (agente Sonnet).
-- Esta noche: integrar la simulación (rama `simulacion`) y el indicador A25 como riesgo de tramo.
+- Nada de B. Pendiente de otra sesión: encargo S2 de la simulación (barrido de `FACTOR_CRITICO`), que no se ejecutó, y el indicador A25 como riesgo de tramo.
 
 ## Siguiente paso exacto
 - **Ahora:** cada uno corre su encargo de `encargos/` en Claude Code con Fable 5.2. Carlos corre además `encargos/0_MAESTRO.md`. Lo primero de B es la semilla, que desbloquea a los otros dos.
