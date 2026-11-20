@@ -26,7 +26,7 @@ Con el tablero proyectado y el plan aprobado ya en pantalla:
 
 1. «Un líder de barrio pide ayuda por chat.» Se envía el mensaje preparado. Aparece el pedido en el mapa. (15 s)
 2. «El despachador lo confirma y pide un plan.» Clic, rutas dibujadas. (15 s)
-3. **«Ahora necesito a alguien del jurado.»** Se le pasa un teléfono o se muestra un código QR del bot: «Escriba que hay un derrumbe en La Siria.» (20 s)
+3. **«Ahora necesito a alguien del jurado.»** Se le pasa un teléfono o se muestra un código QR del bot: «Escriba que hay un derrumbe en la vía a Chinchiná.» (Solo vías que estén en `datos/semilla/vias.csv`: La Siria y la vía a Neira no están en la red.) (20 s)
 4. El cierre aparece en rojo. El despachador lo confirma. Las rutas cambian. «Ningún camión pasa ya por ahí, y lo que vence primero sigue saliendo primero.» (20 s)
 5. «El sistema propuso. Quien aprobó fue una persona.» (5 s)
 
@@ -41,12 +41,15 @@ Si algo falla: se dice «tenemos el mismo recorrido grabado» y se reproduce el 
 
 ### 5. Qué medimos (20 s) · criterios 2 y 6
 
-> Lo probamos en **[N]** escenarios simulados sobre la red vial real de Manizales, contra un despacho por orden de llegada.
+> Lo probamos en 360 jornadas simuladas sobre la red vial real de Manizales, con 30 semillas por nivel de carga.
 
-- Entregas a tiempo en puntos críticos: **[línea base]** contra **[DespachoX]**.
-- Perecederos vencidos: **[línea base]** contra **[DespachoX]**; la meta del reto es menos del 5 %.
+- Contra un despacho por orden de llegada, las entregas a tiempo en puntos críticos suben 12, 29 y 46 puntos porcentuales con carga holgada, media y alta.
+- Los perecederos vencidos bajan de entre 0,5 % y 3,5 % a 0 %. Eso lo logra la regla de bodega «primero lo que vence primero», no el ruteo.
+- Contra un despachador experto que ya prioriza lo urgente, empatamos en esos indicadores y recorremos entre 47 y 75 km menos por jornada.
 
-> Es una simulación, con sus supuestos escritos. El dato real sale del piloto.
+> Es una simulación, con sus supuestos escritos. No todos los centros de acopio tienen a ese experto un domingo a las tres de la mañana: DespachoX deja esa pericia escrita y disponible para cualquier voluntario. El dato real sale del piloto.
+
+Fuente: `docs/SIMULACION.md` (rama `simulacion`, pull request 1). Decir siempre contra qué línea base es cada cifra.
 
 ### 6. Plan y aliados (25 s) · criterios 4 y 5
 
@@ -73,7 +76,8 @@ Si algo falla: se dice «tenemos el mismo recorrido grabado» y se reproduce el 
 | ¿Qué pasa si la IA entiende mal? | Le responde al remitente lo que entendió y un humano confirma antes de despachar. Medimos el acierto con mensajes mal escritos: **[número]** |
 | ¿Por qué no usar Google Maps o Waze? | Dan una ruta para un carro. No reparten veinte pedidos entre cinco vehículos distintos ni saben qué se vence |
 | ¿Y sin internet? | El mapa y el optimizador corren sin conexión. El pedido se digita a mano |
-| ¿La línea base es justa? | Es lo que hace un despachador con prisa: orden de llegada y vehículo más cercano. Además comparamos contra optimizar una sola vez |
+| ¿La línea base es justa? | Usamos tres. Contra el orden de llegada ganamos por mucho. Contra un experto que prioriza lo urgente empatamos en entregas a tiempo y ahorramos kilómetros. Lo decimos así porque así salió |
+| Entonces, ¿para qué el optimizador si una regla simple empata? | Porque esa regla vive en la cabeza de una persona con experiencia. El sistema la aplica siempre, la combina con cierres viales que llegan por chat, ahorra recorrido y deja registro. Y la simulación no mide el valor de la entrada por chat ni de la trazabilidad |
 | ¿Qué de la UNAL hay aquí? | **[respuesta honesta según lo que quede integrado]** |
 | ¿Quién lo va a usar? | **[aliado con nombre]** |
 | ¿Qué tiene de nuevo? | La integración. Existen herramientas de ruteo, de registro y de reportes; no encontramos una abierta que una el pedido por chat con el despacho y el recálculo |
