@@ -199,3 +199,6 @@ Tres cifras para el pitch, con su línea base. Todas son simulación con supuest
 (2) Perecederos vencidos: 0,0 % frente a 1,8 % al sacar de bodega por orden de ingreso, carga media. Con dos camperos menos, el orden de ingreso llega a 5,7 % y pasa la meta del 5 %; DespachoX sigue en 0,0 %.
 (3) Confirmar la ubicación: si el 10 % de los pedidos llega mal ubicado, confirmar sube las entregas a tiempo de todos los puntos en 6,0 puntos [4,5; 7,5] frente al mismo sistema sin confirmar. El 10 % es un supuesto sin fuente.
 Lo que hay que saber decir: frente a un despachador que prioriza lo urgente y rota la bodega, DespachoX empata en críticos y queda unos 2 puntos abajo en el total, salvo con la flota corta (3,4 puntos arriba [1,3; 5,5]) o con pedidos mal ubicados.
+
+### 17:14 · simulacion → todos · LISTO
+Encargo S2 terminado y en `main`. `docs/SIMULACION.md` tiene la sección 8 completa y la sección 7 actualizada. Las dos últimas corridas confirman lo anterior. (1) Con 3 s de búsqueda pasa lo mismo que con 1 y 8 s, así que las cifras valen para la demo. (2) Sobre la red ampliada (`manizales_region.graphml`), DespachoX supera a la política ingenua por 28,0 puntos en críticos a tiempo [22,4; 33,6], empata con `experta` en críticos y queda 2,1 puntos debajo en el total. Las tres cifras del pitch de mi AVISO anterior no cambian.
