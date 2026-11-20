@@ -1,8 +1,8 @@
 # Torre de control · Carlos · sesión `simulacion` (rol B, medición)
-Última actualización: viernes 20 de noviembre de 2026, 5:00 p. m.
+Última actualización: viernes 20 de noviembre de 2026, 5:20 p. m.
 
 ## Estado en una frase
-Encargo S2 casi completo y en `main`: el factor crítico no alcanza a la línea base `experta`, la confirmación de ubicación sí la supera cuando hay pedidos mal ubicados. Faltan la búsqueda de 3 s y la red ampliada.
+Encargo S2 terminado y en `main`: el factor crítico no alcanza a la línea base `experta`; la confirmación de ubicación y la flota corta sí la superan.
 
 ## Hecho (con el commit o archivo que lo prueba)
 - Primera ronda: pull request 1, fusionado. 360 jornadas, `despacho/sim/resultados/`.
@@ -13,15 +13,17 @@ Encargo S2 casi completo y en `main`: el factor crítico no alcanza a la línea 
   - error de ubicación de pedidos con p 0, 0,1 y 0,2: confirmar sube las entregas a tiempo de todos los puntos 6,0 y 10,7 puntos;
   - 0, 5 y 10 cierres: casi no cambia nada;
   - dos camperos menos: DespachoX supera a `experta` en el total por 3,4 puntos y la ingenua pasa la meta de perecederos (5,7 %);
-  - carga media con 8 s de búsqueda: igual que con 1 s (`despacho/sim/resultados_8s/`).
+  - carga media con 3 y 8 s de búsqueda: igual que con 1 s (`resultados_s2/busqueda_3s/`, `despacho/sim/resultados_8s/`);
+  - carga media sobre `manizales_region.graphml`: mismas conclusiones que en la red urbana (`resultados_s2/red_ampliada/`);
+  - sección 7 de `docs/SIMULACION.md` actualizada.
 - Red del Eje Cafetero (Caldas, Risaralda, Quindío) en `despacho/cache/eje_cafetero.graphml` de este árbol. No está en git (62 MB, carpeta ignorada).
 
 ## En curso (qué, hasta dónde llegó, qué falta)
-- Carga media con 3 s de búsqueda y carga media sobre `manizales_region.graphml`. Terminan hacia las 5:45 p. m.
+- Nada. Encargo S2 terminado: búsqueda de 3 s y red ampliada incluidas (`docs/SIMULACION.md`, 8.7 y 8.8).
 
 ## Siguiente paso exacto (el comando o el archivo por donde seguir)
-- Pasar esas dos corridas a `docs/SIMULACION.md` (secciones 8.6 y 8.7) y actualizar la sección 7.
-- Las corridas del S2 necesitan `DESPACHOX_GRAFO=despacho/cache/manizales.graphml`, porque `red.py` ahora lee `manizales_region.graphml` por defecto.
+- Esperar la decisión de B o Carlos sobre `FACTOR_CRITICO` = 3. Si se aplica, no hace falta repetir nada: la sección 8.3 ya mide el factor 3 en semillas nuevas.
+- Las corridas sobre la red urbana necesitan `DESPACHOX_GRAFO=despacho/cache/manizales.graphml`, porque `red.py` lee `manizales_region.graphml` por defecto.
 
 ## Decisiones y por qué
 - La sesión corre en el árbol `.claude/worktrees/simulacion-completa-e82eb3`, que ya está aislado de la carpeta de B. No se creó `../despachoX-sim`. La rama se publica como `simulacion`.

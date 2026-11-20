@@ -49,4 +49,10 @@ La ficha completa la está redactando un agente de Claude para no gastar tu cupo
 - [ ] Carpeta «DespachoX» en Drive, compartida con «cualquier persona con el enlace puede ver». Enlace: ______
 - [ ] Un ensayo cronometrado de `pitch/GUION.md`. Duración: ______
 
+## Tarea 5 · Enamorarse del problema, con Jacobo (encargo P1)
+
+- [ ] Lee `encargos/P1_PROBLEMA_SAMUEL_JACOBO.md`. Es un encargo para ustedes, no para Claude Code.
+- [ ] Habla esta noche con personas reales (Banco de Alimentos, una líder de junta, un conductor) usando el guion de `docs/MENTORIA_1.md`.
+- [ ] Entrega `docs/PROPUESTA_P1.md` y conversa cinco minutos con Carlos y Fable a las 9:00 p. m.
+
 ## Notas y bloqueos

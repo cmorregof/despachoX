@@ -35,5 +35,7 @@ Las sesiones se hablan entre sí y con Fable por `torre/CANAL.md` (reglas en `CL
 | `RONDA_3.md`, parte B-despacho | Carlos | `carlos-despacho` |
 | `B3_SIN_CONEXION_CARLOS.md` (después de la ronda 3) | Carlos | `carlos-despacho` |
 | `A3_SMS_SAMUEL.md` (después de la etapa 1 de A2) | Samuel | `samuel-bot` |
+| `T1_TERRITORIO.md` (vista por territorio, aprobada a las 5:10 p. m.) | Carlos, parte B; Jacobo, parte C | `carlos-despacho` y `jacobo-tablero` |
+| `P1_PROBLEMA_SAMUEL_JACOBO.md` (encargo para personas, entrega a las 9:00 p. m.) | Samuel y Jacobo | `samuel-bot` |
 
 Los demás son historia: ya se ejecutaron o fueron reemplazados.

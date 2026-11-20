@@ -200,6 +200,27 @@ Tres cifras para el pitch, con su línea base. Todas son simulación con supuest
 (3) Confirmar la ubicación: si el 10 % de los pedidos llega mal ubicado, confirmar sube las entregas a tiempo de todos los puntos en 6,0 puntos [4,5; 7,5] frente al mismo sistema sin confirmar. El 10 % es un supuesto sin fuente.
 Lo que hay que saber decir: frente a un despachador que prioriza lo urgente y rota la bodega, DespachoX empata en críticos y queda unos 2 puntos abajo en el total, salvo con la flota corta (3,4 puntos arriba [1,3; 5,5]) o con pedidos mal ubicados.
 
+### 17:14 · simulacion → todos · LISTO
+Encargo S2 terminado y en `main`. `docs/SIMULACION.md` tiene la sección 8 completa y la sección 7 actualizada. Las dos últimas corridas confirman lo anterior. (1) Con 3 s de búsqueda pasa lo mismo que con 1 y 8 s, así que las cifras valen para la demo. (2) Sobre la red ampliada (`manizales_region.graphml`), DespachoX supera a la política ingenua por 28,0 puntos en críticos a tiempo [22,4; 33,6], empata con `experta` en críticos y queda 2,1 puntos debajo en el total. Las tres cifras del pitch de mi AVISO anterior no cambian.
+
+### 17:18 · Fable → todos · AVISO
+Relevo de coordinación: un chat nuevo del proyecto sigue como Fable (estrategia, ficha, pitch, encargos y canal). Desde las 5:00 p. m. trabajan nueve agentes de investigación y uno de redacción. Sus entregas llegan a la rama `datos` para la fusión de las 11:00 p. m.: datos públicos que reemplazan la semilla (`datos_publicos/`), las patentes 37476 y 33335 a fondo, capacidades UNAL de las nueve sedes, canales sin internet, alternativas y usuarios, lo que dijeron en público los actores de la región y un informe de contexto en LaTeX (`docs/informe/`). Lo que dijo la mentoría 1 y lo que se decidió está en `docs/MENTORIA_1.md`.
+
+### 17:18 · Fable → B-despacho, Jacobo · AVISO
+Encargo nuevo, aprobado por Carlos: `encargos/T1_TERRITORIO.md`. B escribe `despacho/territorio.py`, con el resumen por comuna y vereda y la lista de barrios sin pedidos. Jacobo añade la pestaña «Territorio» que lo muestra. Responde a la pregunta de la mentoría sobre qué prototipo mide el efecto en la región. Entra antes del congelamiento del sábado a las 8:30 a. m. B: avisa aquí cuando la función exista.
+
+### 17:18 · Fable → simulacion · RESPUESTA
+Recibidas las tres cifras de las 16:57. Van a la ficha y al pitch con su línea base, el número de escenarios y la palabra simulación. El cambio de `FACTOR_CRITICO` a 3 lo decide Carlos; recomiendo aplicarlo, porque mejora en promedio el indicador del reto y no empeora nada medible.
+
+### 17:22 · Fable → B-despacho, simulacion · AVISO
+Carlos aprobó `FACTOR_CRITICO = 3` como valor por defecto. B-despacho: cámbialo en `carlos-despacho` para la fusión de las 6:30 p. m., con las pruebas en verde. simulacion: según la sección 8.3 de `docs/SIMULACION.md`, las cifras para el pitch salen de las 30 semillas nuevas con factor 3; confirma aquí cuál factor usó cada una de las tres cifras de las 16:57.
+
+### 17:22 · Fable → Samuel, Jacobo · AVISO
+Encargo para ustedes dos, no para Claude Code: `encargos/P1_PROBLEMA_SAMUEL_JACOBO.md`. La mentoría dijo que la solución puede cambiar y que hay que enamorarse del problema. Esta noche hablen con personas reales, describan un día normal y un día con derrumbe para tres de ellas y propongan qué cambiar. Entrega a las 9:00 p. m. en `docs/PROPUESTA_P1.md`, con cinco minutos de conversación con Carlos y Fable.
+
+### 17:22 · Fable → B-despacho, Carlos · AVISO
+El agente de patentes leyó completa la solicitud de la 37476 (`docs/investigacion/07_patentes_a_fondo.md`, llega en la rama `datos`). Solo se probó en gulupa a 8 °C, y ninguna fuente mide días de vida útil con y sin el empaque, así que el 1,5 de `FACTOR_EMPAQUE_ACTIVO` no tiene respaldo. Lo defendible es una cota inferior de 1,2, solo para fruta en frío: sin empaque, el pico de etileno llega en la semana 5; con 2 % de escualeno o diludina, no hay pico hasta la semana 6 (figuras 1 y 2, folio 18). Propuesta para antes de la fusión de las 6:30 p. m.: valor por defecto 1,2; aplicarlo solo a lotes de fruta en acopios con `tiene_frio=1`, con 1,0 en lo demás; en la semilla, `empaque_activo` solo en fruta del acopio con frío; y una nota que diga «cota inferior medida en gulupa a 8 °C en la solicitud de la patente UNAL 37476; pendiente de datos del ICTA para otros productos». Las pruebas buscan «ICTA» y «37476» en la nota. Decide Carlos.
+
 ### 16:30 · A-entrada (Samuel) → Carlos, B-despacho, Fable · LISTO
 Encargo A2, etapa 1, en la rama `samuel-bot`. El caso de La Enea ya deja un pedido con 6 familias estimadas (1 por bebé), leche con 12 kg y las dudas anotadas; al ubicar, el bot pregunta «¿Para cuántas familias?» con botones (1 a 5, 6 a 10, 11 a 20, más de 20) o número escrito, y vence a los dos minutos. Reglas en `entrada/raciones.py`; el modelo solo cuenta personas y bebés, el código convierte. Probar: `python -m pytest entrada/pruebas -q` (54 pasan, 1 se omite) y `entrada/pruebas/test_enea.py`. Sin medir con el modelo real todavía.
 
