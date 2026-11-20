@@ -1,6 +1,6 @@
 # Encargo 0 · Maestro (lo corre Carlos, con Fable 5.2)
 
-Soy Carlos, capitán de DespachoX. Estamos a viernes 20 de noviembre y la mentoría 1 es a las 7:00 p. m. Hoy trabajamos tres personas: Samuel (A, entrada, y la ficha), yo (B, despacho) y Jacobo (C, tablero).
+Soy Carlos, capitán de DespachoX. Esta sesión se llama `maestro` en el canal. Otra sesión, `B-despacho`, está escribiendo código en esta misma carpeta: no toques `despacho/` ni `datos/semilla/`, y haz commit solo de tus archivos (`docs/SUGERENCIAS.md`, `encargos/`, `torre/`). Estamos a viernes 20 de noviembre y la mentoría 1 es a las 7:00 p. m. Hoy trabajamos tres personas: Samuel (A, entrada, y la ficha), yo (B, despacho) y Jacobo (C, tablero).
 
 Lee, en este orden: `CLAUDE.md`, `docs/ESTRATEGIA.md`, `docs/ESTADO_DEL_ARTE.md`, `docs/ROLES_VIERNES.md`, `datos/esquema.sql`, `datos/db.py`, los tres encargos de `encargos/` y `torre/TORRE_CAPITAN.md`. Los informes de `docs/investigacion/` solo si necesitas un detalle.
 

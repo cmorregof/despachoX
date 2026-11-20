@@ -18,5 +18,8 @@ Si el plan no deja usar ese modelo, escriban `/model` dentro de Claude Code y el
 | `A_ENTRADA_SAMUEL.md` | Samuel | Ya |
 | `B_DESPACHO_CARLOS.md` | Carlos | Ya |
 | `C_TABLERO_JACOBO.md` | Jacobo | Ya |
+| `S_SIMULACION.md` | Carlos, en una sesión aparte | Ya; trabaja en un árbol de trabajo separado |
 
 Los tres encargos de rol se pueden empezar sin esperar al maestro. Si el maestro cambia algo, avisa en `docs/SUGERENCIAS.md` y cada uno hace `git pull`.
+
+Las sesiones se hablan entre sí y con Fable por `torre/CANAL.md` (reglas en `CLAUDE.md`).

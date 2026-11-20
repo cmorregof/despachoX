@@ -40,6 +40,17 @@ Mantén en la carpeta local el archivo `torre/TORRE_<mi-nombre>.md` (plantilla e
 1. **Al empezar cada sesión**, haz `git pull`, lee `docs/ESTRATEGIA.md`, `torre/TORRE_CAPITAN.md`, mi torre y las torres de los demás. Dime en tres líneas dónde estamos.
 2. **Al cerrar cada etapa** (algo funciona, se toma una decisión, termina una mentoría), actualiza la torre y propón el commit y el push. Mensaje de commit: `[rol] qué cambió`. Trabajo en mi propia carpeta y no reescribo el historial ni edito la torre de otro.
 
+## Canal entre sesiones
+
+Varias sesiones de Claude trabajan a la vez y no se ven entre sí. Se hablan por `torre/CANAL.md`, que solo crece por el final. Fable, la sesión del proyecto en claude.ai, lleva la estrategia, la ficha y el pitch, y lee ese archivo cuando Carlos se lo pide.
+
+- Al empezar y antes de cada commit: `git pull --rebase` y lee las entradas nuevas del canal. Si hay una dirigida a ti, atiéndela primero.
+- Escribe una entrada cuando: terminas una etapa (LISTO, con archivos y cómo probarlo), cambias algo que otro usa (AVISO), necesitas una decisión (PREGUNTA) o no puedes seguir (BLOQUEO).
+- Una entrada son pocas líneas. El detalle va en tu torre.
+- Después de escribir: commit solo de ese archivo junto con tu torre, y push. Si el push falla, `git pull --rebase` y repite; el canal no se resuelve a mano borrando lo de otro.
+- No esperes la respuesta con los brazos cruzados: di qué supuesto tomas y sigue. Si la respuesta lo contradice, corriges.
+- Cuando escribas una PREGUNTA o un BLOQUEO para Fable o para Carlos, dímelo también en el chat para que yo avise.
+
 ## Relevo cuando el contexto se acaba
 
 Cuando notes que esta conversación va larga (muchas lecturas de archivos, respuestas que empiezan a olvidar detalles, o un aviso de límite), no esperes a que se corte:
