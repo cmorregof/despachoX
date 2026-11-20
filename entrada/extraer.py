@@ -14,7 +14,7 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 log = logging.getLogger("entrada.extraer")
-MODELO = os.environ.get("DESPACHOX_MODELO_ENTRADA", "claude-haiku-5-5")
+MODELO = os.environ.get("DESPACHOX_MODELO_ENTRADA") or "claude-haiku-5-5"   # vacío en .env cuenta como ausente
 SEGUNDOS = 8.0          # la meta del encargo es responder en menos de diez segundos
 Vehiculo = Literal["camion", "campero", "moto"]
 

@@ -1,10 +1,10 @@
 # Torre de control · A-entrada · rol A (entrada)
-Última actualización: 2026-11-20 14:30 (hora de Colombia)
+Última actualización: 2026-11-20 15:05 (hora de Colombia)
 
 Sesión de Claude Code que lanzó Carlos para adelantar el módulo de Samuel. Samuel no tenía código local de `entrada/`.
 
 ## Estado en una frase
-`entrada/` está completo y probado sin red (extractor falso y Telegram simulado); falta correrlo con el bot real porque no hay `.env` con `TELEGRAM_BOT_TOKEN` ni `ANTHROPIC_API_KEY`.
+`entrada/` está completo, el bot corre con las claves de Carlos y el extractor real acierta 62 de 64 campos en los quince mensajes de ejemplo; falta la prueba desde un teléfono.
 
 ## Hecho (con el commit o archivo que lo prueba)
 - `entrada/extraer.py`: Claude Haiku (`claude-haiku-5-5`) con `messages.parse` a un modelo pydantic; nunca lanza excepción.
@@ -15,8 +15,11 @@ Sesión de Claude Code que lanzó Carlos para adelantar el módulo de Samuel. Sa
 - `entrada/pruebas/`: 15 mensajes sintéticos, simulador de Telegram, 40 pruebas; `python -m pytest entrada/pruebas -q` da 39 pasan y 1 se omite (la medición con el modelo real).
 - Prueba simulada de punta a punta sobre la base compartida (14:23): quedaron el pedido #21 (San José, confirmado por el remitente) y los cierres #2 (vía a Chinchiná, ubicación propuesta) y #3 (la siria, sin candidatos). Son sintéticos.
 
+- 15:00 · Medición con el modelo real (`claude-haiku-5-5`, una corrida): 62 de 64 campos correctos (96,9 %), 0 llamadas fallidas, 26 s para los 15 mensajes. Detalle en `entrada/pruebas/reporte_campos.md`. Los mensajes son sintéticos y los escribió el equipo.
+- 15:00 · Corregido: una variable opcional vacía en `.env` dejaba el modelo en blanco y todo se guardaba sin leer.
+
 ## En curso (qué, hasta dónde llegó, qué falta)
-- Nada a medias. Lo pendiente depende de las claves.
+- Prueba desde un teléfono con el bot real: nadie le ha escrito todavía.
 
 ## Siguiente paso exacto (el comando o el archivo por donde seguir)
 1. Crear `.env` en la carpeta principal con `TELEGRAM_BOT_TOKEN` y `ANTHROPIC_API_KEY`.
@@ -35,7 +38,8 @@ Sesión de Claude Code que lanzó Carlos para adelantar el módulo de Samuel. Sa
 - Con un reporte pendiente de ubicar, un texto que el modelo clasifica como `otro` se toma como respuesta de lugar.
 
 ## Bloqueos y preguntas para el capitán
-- BLOQUEO parcial: no existe `.env` en esta copia ni en `/Users/cmorregof/Personal/despachoX/`. Faltan `TELEGRAM_BOT_TOKEN` y `ANTHROPIC_API_KEY`.
+- Resuelto 14:56: `.env` creado en la carpeta principal con las dos claves.
+- `lugares/nomenclator.py` tiene el mismo problema del modelo vacío si `DESPACHOX_MODELO_LUGARES=` queda sin valor en `.env`. No lo toqué; dejé la línea comentada en `.env.example`.
 - Observación para `lugares/` (no lo toqué): «bajo prado» escrito exacto no sale como seguro, porque «El Prado» puntúa 0,93 y el margen exigido es 0,08. Sin modelo se ofrecen las dos opciones.
 
 ## Observaciones de mentores (textuales, con hora)
@@ -46,5 +50,5 @@ Sesión de Claude Code que lanzó Carlos para adelantar el módulo de Samuel. Sa
 
 ## Aporte a la rúbrica (criterio → evidencia)
 - Criterio 2, prototipo: el flujo chat → base → confirmación de lugar corre y tiene 39 pruebas que pasan. La demo con el teléfono de un jurado depende de las claves.
-- Criterio 3, conocimiento: extracción estructurada con validación y confirmación humana del lugar. El porcentaje de campos correctos está por medir; no hay cifra todavía.
+- Criterio 3, conocimiento: extracción estructurada con validación y confirmación humana del lugar. Medido por nosotros: 62 de 64 campos (96,9 %) en 15 mensajes sintéticos, una corrida (`entrada/pruebas/reporte_campos.md`).
 - Criterio 5, viabilidad: tratamiento de datos personales (Ley 1581) implementado y probado en `test_privacidad.py` y `test_flujo.py`.

@@ -147,3 +147,9 @@ Tercera ronda en `encargos/RONDA_3.md`. Lo urgente es de C: con plan aprobado, �
 
 ### 15:15 · Fable → Samuel, Jacobo · AVISO
 Plan de trabajo en `docs/PLAN_EQUIPO.md`. Lo primero, los tres en el computador de Carlos: correr todo de punta a punta con un teléfono real. Hace falta el token del bot.
+
+### 15:05 · A-entrada → todos · LISTO
+El bot corre con las claves de Carlos (`.env` en la carpeta principal). Extractor real medido: 62 de 64 campos correctos (96,9 %) en los quince mensajes de ejemplo, `claude-haiku-5-5`, una corrida, 0 llamadas fallidas, unos 1,8 s por mensaje. Para citar: son mensajes sintéticos escritos por el equipo, no mensajes reales. Detalle en `entrada/pruebas/reporte_campos.md`. Falta la prueba desde un teléfono. El BLOQUEO de las 14:30 queda resuelto.
+
+### 15:05 · A-entrada → B-despacho, Fable · AVISO
+Fallo que afecta a `lugares/` y no toqué: si `.env` trae `DESPACHOX_MODELO_LUGARES=` sin valor, `os.environ.get(..., "claude-haiku-5-5")` devuelve cadena vacía y el desempate con modelo falla en silencio. En `entrada/` lo corregí con `or`. Dejé las opcionales comentadas en `.env.example`; quien ya copió su `.env` debe comentar esas líneas o borrarlas.
