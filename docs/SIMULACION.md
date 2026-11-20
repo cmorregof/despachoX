@@ -144,3 +144,15 @@ Los cierres se sortean entre los tramos que usan los caminos más cortos del aco
 - **No cubre varios días.** Es una jornada de 14 horas, sin reabastecimiento ni cierres que se levanten.
 
 Una consecuencia para el producto: el modelo del optimizador pondera el retraso por urgencia, pero no premia de forma directa el indicador del reto. Subir el peso de los pedidos de puntos críticos, o darles prioridad estricta, es el cambio más corto para que DespachoX iguale o supere a la política `experta`. No se probó en esta corrida.
+
+## 8. Segunda ronda: peso de los puntos críticos (encargo S2, 20 de noviembre de 2026)
+
+Las secciones 1 a 7 describen la primera corrida y no se modifican. Esta sección añade lo que se midió después.
+
+### 8.1 Regla de elección de `FACTOR_CRITICO`, escrita antes de correr
+
+`despacho/optimizar.py` tiene ahora la constante `FACTOR_CRITICO`, que multiplica el peso del retraso y la penalización por no atender de los pedidos de puntos críticos. Se barre con los valores 1, 3, 10 y 30, en carga media y alta, con las 30 semillas de la primera corrida (20261120 a 20261149) y 1 segundo de búsqueda por llamada.
+
+La regla es esta. Se elige el menor factor con el que `despachox` no es peor que `experta` en dos métricas a la vez, críticos a tiempo y entregas a tiempo de todos los puntos, tanto en carga media como en carga alta. «No es peor» significa que el intervalo de confianza del 95 % de la diferencia pareada `despachox` − `experta` incluye el cero o queda entero del lado favorable. Si ningún factor lo cumple, se reporta así y no se elige ninguno.
+
+El factor elegido se confirma después en 30 semillas nuevas (20261150 a 20261179), que no intervinieron en la elección. Las cifras para el pitch salen de esas semillas.
