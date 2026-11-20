@@ -30,7 +30,7 @@ UMBRAL_SEGURO = 0.90        # desde aquí se propone un solo lugar sin consultar
 UMBRAL_CANDIDATO = 0.55     # por debajo no se ofrece como alternativa
 MARGEN = 0.08               # si el segundo está así de cerca del primero, hay ambigüedad
 MAX_CANDIDATOS = 5
-MODELO = os.environ.get("DESPACHOX_MODELO_LUGARES", "claude-haiku-5-5")
+MODELO = os.environ.get("DESPACHOX_MODELO_LUGARES") or "claude-haiku-5-5"   # vacío en .env cuenta como ausente
 
 # Palabras que acompañan al lugar y no lo distinguen.
 RELLENO = {"el", "la", "los", "las", "de", "del", "en", "por", "a", "al", "barrio", "sector", "via",

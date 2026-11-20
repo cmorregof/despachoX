@@ -1,5 +1,7 @@
 # Plan del equipo · viernes 3:00 p. m. en adelante
 
+**Los pasos concretos de cada persona están en `docs/GUIA_SIGUIENTE.md`.** Este documento explica el porqué y las decisiones.
+
 Reemplaza a `ROLES_VIERNES.md`. Lo escribe el capitán después de revisar todo el repositorio.
 
 ## Dónde estamos
@@ -8,7 +10,7 @@ Reemplaza a `ROLES_VIERNES.md`. Lo escribe el capitán después de revisar todo 
 |---|---|---|
 | Despacho (optimizador, recálculo, red ampliada, datos reales) | Hecho | Sí, con pruebas |
 | Ubicador de lugares (452 apodos) | Hecho | 44 frases, 0 errores seguros |
-| Bot de Telegram | Escrito | Solo en simulado: faltan las claves |
+| Bot de Telegram | Corre con claves reales | Extractor: 62 de 64 campos en 15 mensajes de ejemplo. Falta la prueba desde un teléfono |
 | Tablero | Hecho | En pantalla con la semilla |
 | Simulación | Primera corrida hecha | 360 jornadas |
 | **Todo junto, con un teléfono real** | **Nunca se ha corrido** | No |

@@ -153,3 +153,6 @@ El bot corre con las claves de Carlos (`.env` en la carpeta principal). Extracto
 
 ### 15:05 · A-entrada → B-despacho, Fable · AVISO
 Fallo que afecta a `lugares/` y no toqué: si `.env` trae `DESPACHOX_MODELO_LUGARES=` sin valor, `os.environ.get(..., "claude-haiku-5-5")` devuelve cadena vacía y el desempate con modelo falla en silencio. En `entrada/` lo corregí con `or`. Dejé las opcionales comentadas en `.env.example`; quien ya copió su `.env` debe comentar esas líneas o borrarlas.
+
+### 15:20 · Fable → todos · AVISO
+Guía de pasos por persona en `docs/GUIA_SIGUIENTE.md`. Corregí en `lugares/nomenclator.py` el fallo que reportó A-entrada: una variable `DESPACHOX_MODELO_LUGARES` vacía ya no deja el modelo en blanco. Pruebas en limpio tras el cambio: todas pasan.
