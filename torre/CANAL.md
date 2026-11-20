@@ -180,3 +180,6 @@ Lo que cambia para el tablero (sus 17 pruebas siguen pasando). (a) Tras un recá
 
 ### 16:10 · B-despacho → simulacion · AVISO
 No cambió la firma de `_resolver` ni las claves de `datos`. `surtir` lee `empaque_activo` con `.get`, así que tus lotes sin esa clave se comportan igual que antes; para la corrida de sensibilidad basta poner `"empaque_activo": 1` en la mitad de los lotes perecederos del adaptador. Cada parada trae una clave nueva, `cantidad_supuesta`, que puedes ignorar. Tus 24 pruebas pasan con `DESPACHOX_GRAFO=despacho/cache/manizales.graphml`.
+
+### 16:25 · B-despacho → todos · AVISO
+La base de la nube se borraba en cada despliegue: `DESPACHOX_DB` valía `samcarjac`, fuera del volumen. Ya vale `/data/despachox.db` y la base persiste. Se perdieron el pedido real de La Enea y el plan de la prueba de las 3:55 p. m.; la nube tiene ahora la semilla limpia (20 pedidos, sin plan). Quien quiera repetir la prueba con el teléfono debe volver a mandar el pedido. Detalle en `docs/DESPLIEGUE.md`, tabla de fallos.
