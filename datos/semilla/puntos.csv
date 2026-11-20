@@ -1,0 +1,16 @@
+id,nombre,barrio,comuna,lat,lon,critico
+1,Punto de entrega Altos de Capri,Altos de Capri,Ciudadela del Norte,5.076978,-75.502473,0
+2,Albergue temporal Arrayanes,Arrayanes,La Fuente,5.05946,-75.510847,1
+3,Comedor comunitario Belén,Belén,Palogrande,5.061158,-75.492582,0
+4,Punto de entrega Betania,Betania,Universitaria,5.05538,-75.497439,0
+5,Albergue temporal Camilo Torres,Camilo Torres,Universitaria,5.052934,-75.504169,0
+6,Punto de entrega Caminos de la Cumbre,Caminos de la Cumbre,Ecoturística Cerro de Oro,5.066687,-75.476714,0
+7,Punto de entrega Campoamor,Campoamor,Cumanday,5.064365,-75.512861,0
+8,Albergue temporal Campohermoso,Campohermoso,Atardeceres,5.074364,-75.521669,1
+9,Salón comunal El Carmen,El Carmen,La Macarena,5.060144,-75.519132,0
+10,Comedor comunitario La Rambla,La Rambla,Palogrande,5.058894,-75.48588,0
+11,Punto de entrega Las Americas,Las Americas,Cumanday,5.071974,-75.52222,0
+12,Comedor comunitario Los Cedros,Los Cedros,La Estación,5.069761,-75.500587,0
+13,Albergue temporal San Jorge,San Jorge,La Estación,5.065826,-75.499456,1
+14,Salón comunal San José,San José,San José,5.07203,-75.514881,0
+15,Albergue temporal Velez,Velez,La Fuente,5.064533,-75.504428,0
