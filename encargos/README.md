@@ -25,3 +25,15 @@ Los tres encargos de rol se pueden empezar sin esperar al maestro. Si el maestro
 | `S2_SIMULACION_CRITICOS.md` | Carlos, sesión simulacion | Segunda ronda: barrido del factor de puntos críticos |
 
 Las sesiones se hablan entre sí y con Fable por `torre/CANAL.md` (reglas en `CLAUDE.md`).
+
+## Vigentes desde las 4:00 p. m.
+
+| Encargo | Quién | Rama |
+|---|---|---|
+| `A2_BOT_SAMUEL.md` | Samuel | `samuel-bot` |
+| `C2_TABLERO_JACOBO.md` | Jacobo | `jacobo-tablero` |
+| `RONDA_3.md`, parte B-despacho | Carlos | `carlos-despacho` |
+| `B3_SIN_CONEXION_CARLOS.md` (después de la ronda 3) | Carlos | `carlos-despacho` |
+| `A3_SMS_SAMUEL.md` (después de la etapa 1 de A2) | Samuel | `samuel-bot` |
+
+Los demás son historia: ya se ejecutaron o fueron reemplazados.

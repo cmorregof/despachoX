@@ -47,6 +47,11 @@ PESO_RETRASO = {1: 1, 2: 3, 3: 10}                # costo por segundo de retraso
 FACTOR_CRITICO = max(1, int(os.environ.get("DESPACHOX_FACTOR_CRITICO", "1")))
 PENAL_SIN_ATENDER = 20_000_000                    # por nivel de urgencia
 PENAL_KG_PERECEDERO = 20_000                      # extra por kilo perecedero que se quedaría
+# Empaque captador de etileno (patente UNAL, certificado 37476). Un lote perecedero con
+# `empaque_activo=1` dura más: el tiempo que le queda hasta `vence_en` se multiplica por este
+# factor. Es un supuesto nuestro, no un dato medido; se barre con DESPACHOX_FACTOR_EMPAQUE.
+FACTOR_EMPAQUE_ACTIVO = max(1.0, float(os.environ.get("DESPACHOX_FACTOR_EMPAQUE") or 1.5))
+NOTA_EMPAQUE = "supuesto, pendiente de datos del ICTA; patente UNAL 37476"
 
 
 @dataclass
@@ -76,14 +81,38 @@ def _fecha(texto: str | None) -> datetime | None:
     return d if d.tzinfo else d.replace(tzinfo=db.BOGOTA)
 
 
-def _demanda(p: dict) -> list[dict]:
+def _demanda(p: dict, notas: list[str] | None = None) -> list[dict]:
     """Líneas pedidas: [{producto, kg}]. Sin detalle, un mercado genérico por kilos.
 
     Un producto que llega sin kilos no se descarta: se reparte entre ellos lo que falte para
     completar `kg_estimado` (o familias × KG_POR_FAMILIA). Así quien pidió leche recibe leche.
+    Si `notas` es una lista, se le añade por qué la cantidad es supuesta (vacía si no lo es).
     """
-    total = float(p["kg_estimado"] or (p["familias"] or 1) * KG_POR_FAMILIA)
-    con_kg, sin_kg = [], []
+    lineas = _demanda_lineas(p)
+    if notas is not None:
+        notas.extend(_por_que_supuesta(p, lineas))
+    return lineas
+
+
+def _por_que_supuesta(p: dict, lineas: list[dict]) -> list[str]:
+    """Qué completó la red de seguridad de `_demanda`. Vacía si todo lo dijo quien pidió."""
+    declarados = [l for l in _productos(p) if l["kg"] > 0]
+    if lineas and len(declarados) == len(lineas):
+        return []                          # cada producto trae sus kilos
+    notas = []
+    if not p["kg_estimado"]:
+        if p["familias"]:
+            notas.append(f"kilos estimados con {KG_POR_FAMILIA:g} kg por familia")
+        else:
+            notas.append(f"sin kilos ni familias: se supuso 1 familia, {KG_POR_FAMILIA:g} kg")
+    if any(l["producto"] for l in lineas) and len(declarados) < len(lineas):
+        notas.append("kilos repartidos entre productos que no los traían")
+    return notas
+
+
+def _productos(p: dict) -> list[dict]:
+    """Productos del pedido como [{producto, kg}] con kg=0 si no los trae. Tolera JSON malo."""
+    salida = []
     try:
         for l in json.loads(p["productos"] or "[]"):
             l = {"producto": l} if isinstance(l, str) else l
@@ -94,9 +123,17 @@ def _demanda(p: dict) -> list[dict]:
                 kg = float(l.get("kg") or 0)
             except (TypeError, ValueError):
                 kg = 0.0
-            (con_kg if kg > 0 else sin_kg).append({"producto": nombre, "kg": kg})
+            salida.append({"producto": nombre, "kg": max(0.0, kg)})
     except (TypeError, ValueError, AttributeError):
-        con_kg, sin_kg = [], []
+        return []
+    return salida
+
+
+def _demanda_lineas(p: dict) -> list[dict]:
+    total = float(p["kg_estimado"] or (p["familias"] or 1) * KG_POR_FAMILIA)
+    con_kg, sin_kg = [], []
+    for l in _productos(p):
+        (con_kg if l["kg"] > 0 else sin_kg).append(l)
     if sin_kg:
         resto = total - sum(l["kg"] for l in con_kg)
         if resto <= 0:                       # los kilos declarados ya cubren el total
@@ -115,6 +152,14 @@ def _sirve(lote: dict, producto: str | None) -> bool:
     return a == b or a in b or b in a
 
 
+def vence_efectivo(lote: dict, ahora: datetime) -> datetime | None:
+    """Vencimiento que usa el modelo. Con empaque activo, el tiempo restante se alarga por el factor."""
+    vence = _fecha(lote.get("vence_en"))
+    if vence is None or not lote.get("perecedero") or not lote.get("empaque_activo") or vence <= ahora:
+        return vence
+    return ahora + (vence - ahora) * FACTOR_EMPAQUE_ACTIVO
+
+
 def surtir(pedidos: list[dict], lotes: list[dict], ahora: datetime, acopios_de: dict,
            segundos_a: dict, existencias: dict[int, float] | None = None) -> dict[int, Surtido]:
     """Asigna lotes a pedidos: primero el pedido más urgente, primero el lote que vence primero.
@@ -125,7 +170,8 @@ def surtir(pedidos: list[dict], lotes: list[dict], ahora: datetime, acopios_de: 
     """
     queda = existencias if existencias is not None else {l["id"]: float(l["kg"]) for l in lotes}
     lejos = datetime.max.replace(tzinfo=db.BOGOTA)
-    orden_lotes = sorted(lotes, key=lambda l: (_fecha(l["vence_en"]) or lejos, l["id"]))
+    vence_de = {l["id"]: vence_efectivo(l, ahora) for l in lotes}
+    orden_lotes = sorted(lotes, key=lambda l: (vence_de[l["id"]] or lejos, l["id"]))
     resultado: dict[int, Surtido] = {}
 
     def intento(p: dict, acopio_id: int, comprometer: bool) -> Surtido:
@@ -139,7 +185,7 @@ def surtir(pedidos: list[dict], lotes: list[dict], ahora: datetime, acopios_de: 
                     break
                 if l["acopio_id"] != acopio_id or local.get(l["id"], 0) <= 1e-9 or not _sirve(l, linea["producto"]):
                     continue
-                vence = _fecha(l["vence_en"])
+                vence = vence_de[l["id"]]
                 if l["perecedero"] and vence is not None and vence <= llegada:
                     continue
                 toma = min(falta, local[l["id"]])
@@ -289,7 +335,10 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
         duro = None
         if s.vence is not None:
             duro = int((s.vence - ahora).total_seconds()) - MARGEN_VENCIMIENTO_S
+        notas: list[str] = []
+        _demanda(p, notas)
         nodos_pedido.append({"p": p, "s": s, "permitidos": permitidos, "urg": urg, "limite": limite,
+                             "supuesta": "; ".join(notas) or None,
                              "factor": FACTOR_CRITICO if puntos[p["punto_id"]]["critico"] else 1,
                              "blando": max(0, int((limite - ahora).total_seconds())), "duro": duro})
     if not nodos_pedido:
@@ -369,7 +418,8 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
                 "vehiculo_id": v["id"], "orden": orden, "punto_id": x["p"]["punto_id"],
                 "pedido_id": x["p"]["id"], "kg": round(x["s"].kg, 3),
                 "llegada_estimada": (ahora + timedelta(seconds=llegada_s)).isoformat(timespec="seconds"),
-                "geometria": m.geometria(g, previo, claves[n]), "retraso_s": retraso})
+                "geometria": m.geometria(g, previo, claves[n]), "retraso_s": retraso,
+                "cantidad_supuesta": x["supuesta"]})
             previo = claves[n]
         if orden:
             por_vehiculo.append({
@@ -389,6 +439,11 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
         sin_atender.append({"pedido_id": x["p"]["id"], "punto_id": x["p"]["punto_id"], "motivo": motivo})
 
     hechos = [x for x in nodos_pedido if x["p"]["id"] in atendidos]
+    supuestas = {str(x["p"]["id"]): x["supuesta"] for x in hechos if x["supuesta"]}
+    for x in hechos:
+        if x["supuesta"]:
+            avisos.append(f"pedido {x['p']['id']} ({puntos[x['p']['punto_id']]['nombre']}): cantidad supuesta, "
+                          f"{round(x['s'].kg, 1):g} kg; {x['supuesta']}. Confirmar con quien pidió.")
     resumen = {
         "vacio": not paradas,
         "calculado_para": ahora.isoformat(timespec="seconds"),
@@ -400,6 +455,7 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
         "retraso_total_s": retraso_total,
         "criticos": {"paradas": criticos_total, "a_tiempo": criticos_a_tiempo},
         "sin_atender": sin_atender,
+        "cantidad_supuesta": supuestas,
         "faltantes": [{"pedido_id": x["p"]["id"], **f} for x in hechos for f in x["s"].faltantes],
         "surtido": {str(x["p"]["id"]): [{k: l[k] for k in ("lote_id", "producto", "kg")}
                                         for l in x["s"].lineas] for x in hechos},
@@ -413,6 +469,8 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
                       "horizonte_s": HORIZONTE_S, "kg_por_familia": KG_POR_FAMILIA,
                       "limite_por_urgencia_h": LIMITE_POR_URGENCIA_H, "peso_retraso": PESO_RETRASO,
                       "factor_critico": FACTOR_CRITICO,
+                      "factor_empaque_activo": FACTOR_EMPAQUE_ACTIVO,
+                      "factor_empaque_activo_nota": NOTA_EMPAQUE,
                       "factor_tiempo": mod_matriz.FACTOR_TIEMPO, "un_viaje_por_vehiculo": True},
     }
     if not paradas:
@@ -445,22 +503,23 @@ def planificar(con: sqlite3.Connection | None = None, motivo: str = "inicial",
                ahora: datetime | None = None) -> int:
     """Calcula y escribe un plan `propuesto`. Devuelve su id. No lanza excepciones.
 
-    recalculo=False: planea los pedidos `confirmado` con los vehículos libres y reemplaza
-                     propuestas anteriores. No toca un plan ya aprobado.
-    recalculo=True:  reemplaza el plan vigente (aprobado o propuesto) y vuelve a planear también
-                     los pedidos `asignado`; lo que va a bordo de un vehículo en ruta se queda en él.
+    recalculo=False: planea los pedidos `confirmado` con los vehículos libres.
+    recalculo=True:  vuelve a planear también los pedidos `asignado`; lo que va a bordo de un
+                     vehículo en ruta se queda en él.
+    En los dos casos las propuestas anteriores pasan a `reemplazado`. El plan aprobado sigue
+    vigente hasta que el despachador apruebe el nuevo (`aprobar`); si rechaza la propuesta, el
+    aprobado no se pierde. `resumen.reemplaza_a` nombra igual el aprobado que se quiere sustituir.
     """
     inicio = time.perf_counter()
     propia = con is None
     con = con or db.conectar()
-    reemplazar: list[int] = []
+    reemplazar: list[int] = []      # propuestas que dejan de valer ya
+    sustituye: list[int] = []       # lo que el plan nuevo reemplazaría si se aprueba
     try:
         sincronizar_aprobados(con)
         vigente = _plan_vigente(con)
-        if recalculo and vigente is not None:
-            reemplazar = [vigente]
-        reemplazar += [r["id"] for r in con.execute("SELECT id FROM planes WHERE estado='propuesto'")
-                       if r["id"] not in reemplazar]
+        reemplazar = [r["id"] for r in con.execute("SELECT id FROM planes WHERE estado='propuesto' ORDER BY id DESC")]
+        sustituye = ([vigente] if recalculo and vigente is not None and vigente not in reemplazar else []) + reemplazar
         if g is None:
             from despacho import red
             g = red.cargar()
@@ -481,7 +540,7 @@ def planificar(con: sqlite3.Connection | None = None, motivo: str = "inicial",
             "vacio": True, "motivo_vacio": f"error interno: {type(e).__name__}: {e}",
             "pedidos_atendidos": 0, "sin_atender": [], "avisos": []}}
     resultado["resumen"]["motivo"] = motivo
-    resultado["resumen"]["reemplaza_a"] = reemplazar
+    resultado["resumen"]["reemplaza_a"] = sustituye
     try:
         plan_id = _escribir(con, motivo, resultado, time.perf_counter() - inicio, reemplazar)
     except sqlite3.Error:
@@ -494,16 +553,25 @@ def planificar(con: sqlite3.Connection | None = None, motivo: str = "inicial",
 
 
 def aprobar(con: sqlite3.Connection, plan_id: int, quien: str = "despachador") -> bool:
-    """Para el tablero o la línea de órdenes: un humano aprueba el plan y sus pedidos pasan a `asignado`."""
+    """Para el tablero o la línea de órdenes: un humano aprueba el plan y sus pedidos pasan a `asignado`.
+
+    Solo aquí el aprobado anterior pasa a `reemplazado`, y solo aquí nacen los paquetes (`en_ruta`).
+    """
+    from despacho import paquetes
+
     r = con.execute("SELECT estado FROM planes WHERE id=?", (plan_id,)).fetchone()
     if r is None or r["estado"] != "propuesto":
         return False
+    previo = con.execute("SELECT id FROM planes WHERE estado='aprobado' ORDER BY id DESC LIMIT 1").fetchone()
     with con:
         con.execute("UPDATE planes SET estado='reemplazado' WHERE estado='aprobado'")
         con.execute("UPDATE planes SET estado='aprobado', aprobado_por=?, aprobado_en=? WHERE id=?",
                     (quien, db.ahora(), plan_id))
     sincronizar_aprobados(con)
-    db.anotar(con, quien, "aprobar plan", f"plan {plan_id}")
+    codigos = paquetes.crear_para_plan(con, plan_id, previo["id"] if previo else None)
+    db.anotar(con, quien, "aprobar plan",
+              f"plan {plan_id}" + (f", reemplaza al plan {previo['id']}" if previo else "")
+              + f"; {len(codigos)} paquetes en ruta")
     return True
 
 

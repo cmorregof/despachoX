@@ -22,8 +22,9 @@ El tablero está hecho en Streamlit, que es un servidor de Python que mantiene u
    - `ANTHROPIC_API_KEY`
    - `TELEGRAM_BOT_TOKEN`
    - `DESPACHOX_SAL`: cualquier cadena larga al azar. Fija el hash de los remitentes entre reinicios.
+   - `PORT=8080`, para que el tablero escuche en el mismo puerto que se le indica al dominio.
    - No hace falta definir `DESPACHOX_DB` ni `DESPACHOX_GRAFO`: por defecto apuntan a `/data`.
-5. **Settings → Networking → Generate Domain.** Esa dirección es el tablero.
+5. **Settings → Networking → Generate Domain.** Pide el puerto: `8080`, el mismo de la variable `PORT`. Esa dirección es el tablero.
 6. Mira los registros. Deben aparecer, en orden: red vial, datos de prueba, «Bot en marcha» y la dirección de Streamlit.
 7. Prueba: escríbele al bot desde el teléfono y mira el pedido aparecer en el tablero.
 

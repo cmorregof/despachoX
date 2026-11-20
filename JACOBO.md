@@ -1,58 +1,47 @@
 # Tareas de Jacobo
 
-Dueño del **tablero** y operador de la **demo**. Mañana, mientras Samuel habla, tú manejas la pantalla.
+Dueño del **tablero** (`tablero/`) y operador de la **demo**.
 
-Marca con `[x]` lo que termines y anota abajo lo que encuentres. Luego `git pull --rebase && git push`.
+Marca con `[x]` lo que termines. Luego `git pull --rebase && git push`. Trabaja en tu rama `jacobo-tablero`: cada push a `main` reinicia el servidor de todos.
 
 ## Tarea 0 · Entender el problema (antes que nada)
 
-- [ ] Lee `docs/PROBLEMA.md` completo. Son diez minutos.
-- [ ] Responde en voz alta las cinco preguntas del final. Si alguna no te sale, vuelve al texto o pregunta en el grupo.
-- [ ] Lee el `README.md` para ver cómo responde a ese problema lo que hay construido.
+- [ ] Lee `docs/PROBLEMA.md` completo y responde en voz alta las cinco preguntas del final.
+- [ ] Lee el `README.md`.
 
-**Hecho cuando:** puedes explicarle el problema a alguien de fuera en un minuto, sin mencionar la tecnología.
+## Tarea 1 · Usar el tablero como un despachador con prisa (30 minutos)
 
-## Tarea 1 · Usar el tablero como un despachador con prisa y entenderlo
-
-**Para qué:** es lo que el jurado va a mirar. Tiene que entenderse desde lejos y sin explicación.
-
-- [ ] Lee `tablero/README.md` (cinco minutos).
-- [ ] Cuando Carlos avise que el tablero está en la nube, ábrelo y recorre `docs/GUION_DEMO.md` desde «Paso a paso», dos veces.
-- [ ] Anota en la tabla: qué botón buscaste y no encontraste, qué texto sobra, qué no se lee a dos metros, qué te confundió.
-- [ ] Pídele a Claude: «explícame `tablero/app.py` y las tablas `planes` y `paradas` como si mañana me fueran a preguntar por ellas, y hazme cinco preguntas difíciles».
-
-**Hecho cuando:** la tabla tiene al menos cinco observaciones y puedes responder sin leer: «¿quién decide, el sistema o la persona?».
-
-Fallo conocido, ya en corrección: si apruebas un plan y luego pulsas «Calcular plan» con un pedido nuevo, se pierden las rutas anteriores. Mientras tanto, no apruebes el plan inicial hasta sumar el pedido nuevo.
+- [ ] Abre el [tablero](https://despachox-production.up.railway.app/) y recorre `docs/GUION_DEMO.md` desde «Paso a paso», dos veces. Si el mapa sale gris en Brave, desactiva los escudos para esa página.
+- [ ] Anota en la tabla qué botón buscaste y no encontraste, qué sobra, qué no se lee a dos metros.
 
 | Qué vi | Dónde | Qué propongo |
 |---|---|---|
 | | | |
 
-## Tarea 2 · El equipo completo en iNNOVO y la charla de las 4:00
+Esa tabla es la entrada de tu tarea 2.
 
-**Para qué:** la plataforma oficial solo tiene vinculadas dos de las cinco cuentas, y las charlas traen pistas de lo que el jurado quiere ver.
+## Tarea 2 · Dirigir a Claude Code para mejorar el tablero
 
-- [ ] Entra a https://innovo-hub.netlify.app con tu correo UNAL para quedar vinculado al equipo.
-- [ ] Escríbeles a Nicolás y a José Manuel para que hagan lo mismo.
-- [ ] Ve a la charla de las 4:00 p. m. que más sirva (prototipo o pitch) y escribe abajo tres ideas que podamos usar.
-- [ ] En la sección Recursos de iNNOVO, prueba si ya abren las carpetas «Formato de prototipo MVP» y «Plantilla de presentación». Esta tarde daban acceso denegado. Si abren, avisa de inmediato: pueden cambiar la forma de la entrega.
+- [ ] Abre Claude Code en tu copia del repositorio y escribe: «Haz git pull --rebase, lee `encargos/C2_TABLERO_JACOBO.md` y ejecútalo». No hace falta pegar el archivo. Dale tu tabla de la tarea 1.
+- [ ] Etapa 1 (el fallo de «Calcular plan», reiniciar datos, completar pedidos incompletos) antes de las 6:30 p. m.
+- [ ] Etapa 2: el **resumen de la mesa** hecho por un modelo, para cuando hay miles de pedidos.
+- [ ] Etapa 3: filtros, agrupación y prueba con 1.000 pedidos.
+- [ ] Revisa lo que haga antes de pedir que lo fusionen. Si no lo entiendes, pídele que te lo explique.
 
-**Hecho cuando:** las cinco cuentas aparecen vinculadas (o sabes quién falta) y hay tres ideas anotadas.
+**La pregunta que debes poder responder:** «¿Quién decide, el sistema o la persona?» y «¿cómo lee el despachador mil pedidos?».
 
-Ideas de la charla:
-1.
-2.
-3.
+## Tarea 3 · El tablero sin internet
 
-## Tarea 3 · Ensayar la demo y grabar el video de respaldo
+Diseño completo en `docs/SIN_CONEXION.md`. Pídeselo a tu sesión de Claude Code cuando termine la etapa 1 de C2:
 
-**Para qué:** si mañana falla el internet o el servidor, se reproduce el video. Sin video, una caída es perder los 25 puntos del prototipo.
+- [ ] **Mapa de fondo sin conexión** con `DESPACHOX_MAPA=local`: dibujar como fondo las vías de la red guardada en disco (`despacho/cache/`), en gris claro, en vez de las teselas de OpenStreetMap. **No descargar teselas en bloque**: la política de uso de los servidores de OpenStreetMap lo prohíbe. La red vial ya la tenemos, así que el fondo sale de ahí.
+- [ ] Botón **«Imprimir hojas de ruta»** con el plan aprobado, que llama `despacho.hoja.generar` y ofrece los PDF para descargar. Carlos avisa por el canal cuando la función exista.
+- [ ] Registrar entregas por código de paquete (lo que el conductor trae anotado en la hoja).
 
-- [ ] Ensaya la «Versión de 75 segundos» de `docs/GUION_DEMO.md` hasta hacer los clics sin mirar. El cierre es **«avenida del Centro»**.
-- [ ] Con los datos recién reiniciados (pídeselo a Carlos), graba la pantalla haciendo esa versión completa. Sin voz está bien.
-- [ ] Sube el video a la carpeta de Drive del equipo y pega el enlace aquí: ______
+## Tarea 4 · La demo y su respaldo
 
-**Hecho cuando:** hay un video de menos de 90 segundos en Drive que muestra pedido, plan, cierre, recálculo y aprobación.
+- [ ] Entra a https://innovo-hub.netlify.app con tu correo UNAL y pídeles a Nicolás y a José Manuel que hagan lo mismo.
+- [ ] Ensaya la «Versión de 75 segundos» de `docs/GUION_DEMO.md` hasta hacer los clics sin mirar.
+- [ ] Esta noche, con los datos recién reiniciados, graba la pantalla haciendo esa versión. Súbela a la carpeta de Drive. Enlace: ______
 
 ## Notas y bloqueos

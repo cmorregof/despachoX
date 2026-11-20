@@ -162,3 +162,24 @@ Cambio de forma de trabajo, a pedido de Carlos: cada persona trabaja en su equip
 
 ### 15:35 · Fable → C-tablero · AVISO
 Añade a tu parte de la ronda 3 un botón «Reiniciar datos de prueba», con confirmación, que ejecute `python -m despacho.semilla --cargar --reiniciar`. Hace falta para ensayar la demo en la nube sin entrar al servidor.
+
+### 15:55 · Fable → todos · LISTO
+Primera prueba de punta a punta en la nube, en https://despachox-production.up.railway.app. Un mensaje real («hay 6 bebes sin leche desde ayer en la enea necesitamos urgente») llegó por el bot, el remitente confirmó La Enea desde el teléfono, el sistema creó el punto de entrega, Fable confirmó el pedido en el tablero y «Calcular plan» dio el plan 2: 19 de 19 pedidos en 3 vehículos, 8 s, 4 de 4 críticos a tiempo. No aprobé el plan ni probé un cierre: falta hacerlo con el teléfono.
+
+### 15:55 · Fable → A-entrada, B-despacho · AVISO
+Fallo visto con ese mensaje. El extractor dejó familias y kilos vacíos («6 bebés» no se tradujo en familias) y no puso kilos a la leche. El pedido entró al plan con 10 kg de mercado genérico, sin leche. Dos arreglos: (A) el extractor debe convertir personas o bebés en familias aproximadas y anotar la duda; (B) un pedido urgente sin cantidad debería salir marcado en el plan como «cantidad supuesta», no pasar en silencio. Este mensaje es un buen caso para la demo y para las preguntas del jurado.
+
+### 16:05 · Fable → todos · AVISO
+Cambio de dueños. `entrada/` lo dirige Samuel con `encargos/A2_BOT_SAMUEL.md` (rama `samuel-bot`); `tablero/` lo dirige Jacobo con `encargos/C2_TABLERO_JACOBO.md` (rama `jacobo-tablero`), que incluye un resumen de la mesa hecho por Opus 5.5. La parte de C de la ronda 3 queda dentro de C2. Carlos sigue con `despacho/` en la rama `carlos-despacho`. Nadie sube directo a `main`: cada push a `main` reinicia el servidor. Carlos fusiona a las 6:30 p. m., 11:00 p. m. y 8:00 a. m.
+
+### 16:10 · B-despacho → todos · LISTO
+Ronda 3 de B en la rama `carlos-despacho` (sin fusionar). (1) `empaque_activo` ya cuenta: un lote perecedero con empaque dura más (tiempo restante × 1,5, `DESPACHOX_FACTOR_EMPAQUE`), declarado en `resumen.supuestos` como «supuesto, pendiente de datos del ICTA; patente UNAL 37476». (2) Trazabilidad: `aprobar` crea un paquete `en_ruta` por parada con código `DX-XXXX`; `python -m despacho.paquetes` los lista y `--entregar CODIGO` cierra paquete y pedido con anotación en la bitácora. (3) Un pedido cuya cantidad completó el optimizador sale en `resumen.cantidad_supuesta` y como aviso. (4) El aprobado solo pasa a `reemplazado` al aprobar el nuevo. Probar: `python -m pytest despacho/tests -q` (25 pasan). Detalle en `torre/TORRE_CAPITAN.md`.
+
+### 16:10 · B-despacho → C-tablero, Jacobo · AVISO
+Lo que cambia para el tablero (sus 17 pruebas siguen pasando). (a) Tras un recálculo hay a la vez un plan `aprobado` y uno `propuesto`; `plan_actual` ya muestra el propuesto y `reemplaza_a` sigue nombrando el aprobado. Si el despachador rechaza la propuesta, el aprobado sigue vigente. (b) Para la pestaña «Entregas»: `despacho.paquetes.listar(con)` devuelve código, estado, vehículo, orden, punto, kilos y lote del plan aprobado; el botón llama `despacho.paquetes.entregar(con, codigo, quien)` o `python -m despacho.paquetes --entregar CODIGO --quien NOMBRE`. (c) «Cantidad supuesta»: está en `plan.resumen["cantidad_supuesta"]` (`{"21": "motivo"}`) y ya sale en los avisos que muestras. (d) Al aprobar, un pedido del plan anterior que el nuevo deja fuera vuelve a `confirmado`.
+
+### 16:10 · B-despacho → simulacion · AVISO
+No cambió la firma de `_resolver` ni las claves de `datos`. `surtir` lee `empaque_activo` con `.get`, así que tus lotes sin esa clave se comportan igual que antes; para la corrida de sensibilidad basta poner `"empaque_activo": 1` en la mitad de los lotes perecederos del adaptador. Cada parada trae una clave nueva, `cantidad_supuesta`, que puedes ignorar. Tus 24 pruebas pasan con `DESPACHOX_GRAFO=despacho/cache/manizales.graphml`.
+
+### 16:20 · Fable → todos · AVISO
+Diseño para trabajar sin internet en `docs/SIN_CONEXION.md`: escalera de degradación de cuatro niveles. Encargos nuevos: `B3_SIN_CONEXION_CARLOS.md` (hoja de ruta impresa con QR y arranque en portátil sin red) y `A3_SMS_SAMUEL.md` (lector de SMS por reglas y pasarela). Para Jacobo, tarea 3 de `JACOBO.md`: mapa de fondo dibujado desde la red vial, sin descargar teselas (la política de OpenStreetMap prohíbe la descarga en bloque), y botón para imprimir hojas de ruta.

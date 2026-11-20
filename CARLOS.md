@@ -1,58 +1,57 @@
 # Tareas de Carlos
 
-Capitán. Dueño del **optimizador**, la **simulación**, la **integración** y las sesiones de Claude Code.
+Capitán. Dueño del **optimizador** (`despacho/`), la **simulación**, la **integración** y la nube.
 
-Marca con `[x]` lo que termines. Luego `git pull --rebase && git push`.
+Marca con `[x]` lo que termines.
 
-## Tarea 0 · Entender el problema (antes que nada)
+## Hecho
 
-- [ ] Lee `docs/PROBLEMA.md` completo. Son diez minutos.
-- [ ] Responde en voz alta las cinco preguntas del final. Si alguna no te sale, vuelve al texto o pregunta en el grupo.
-- [ ] Lee el `README.md` para ver cómo responde a ese problema lo que hay construido.
+- [x] Todo en la nube: bot y tablero en Railway desde las 3:45 p. m. Primer pedido real de punta a punta.
 
-**Hecho cuando:** puedes explicarle el problema a alguien de fuera en un minuto, sin mencionar la tecnología.
+## Tarea 1 · Integrar sin romper la nube
 
-## Tarea 1 · Todo en la nube
+Samuel y Jacobo trabajan en ramas. Tú eres el único que fusiona a `main`.
 
-**Para qué:** que Samuel y Jacobo prueben desde sus equipos sin depender de un computador, y que la demo tenga una dirección pública.
+- [ ] Desactiva el despliegue automático en Railway o acepta que cada fusión reinicia el bot unos segundos.
+- [ ] Fusiona a horas fijas: **6:30 p. m.** (antes de la mentoría de las 7:00), **11:00 p. m.** y **8:00 a. m.** (antes del congelamiento). Antes de fusionar: pruebas completas en verde.
+- [ ] Detén tus sesiones de Claude Code `A-entrada` y `C-tablero`: ahora esos módulos los dirigen Samuel y Jacobo, y dos sesiones en el mismo módulo se pisan.
+- [ ] Después de cada fusión, recorre el guion de demo en la nube.
 
-- [ ] Sigue `docs/DESPLIEGUE.md`. Va todo en un solo servicio de Railway (bot, tablero y optimizador). Vercel no sirve aquí: el tablero es Streamlit, un servidor de Python con conexión abierta, y además los tres comparten un archivo SQLite.
-- [ ] Antes de desplegar, sube la red vial al repositorio (paso 1 de esa guía). Evita que el arranque dependa de OpenStreetMap.
-- [ ] Volumen en `/data`, variables `ANTHROPIC_API_KEY`, `TELEGRAM_BOT_TOKEN` y `DESPACHOX_SAL`, y dominio público.
-- [ ] Apaga el bot local: Telegram solo admite un proceso por token.
-- [ ] Pega en el README, sección «Cómo probarlo», el nombre del bot y la dirección del tablero. Avisa a Samuel y a Jacobo.
+## Tarea 2 · Tu parte técnica
 
-**Hecho cuando:** un mensaje enviado desde el teléfono de Samuel aparece en el tablero abierto en el computador de Jacobo.
-
-## Tarea 2 · Tercera ronda de las sesiones
-
-**Para qué:** corregir el fallo del tablero y cerrar lo que la rúbrica pide y todavía no existe.
-
-El mismo mensaje en las sesiones de tablero, despacho y simulación, en ese orden:
+En tu sesión `B-despacho`:
 
 ```
-Haz git pull --rebase, lee las entradas nuevas de torre/CANAL.md y ejecuta tu parte de encargos/RONDA_3.md.
+Haz git pull --rebase, lee las entradas nuevas de torre/CANAL.md y ejecuta la parte de B-despacho de encargos/RONDA_3.md. Trabaja en la rama carlos-despacho.
 ```
 
-- [ ] Tablero: «Calcular plan» recalcula cuando ya hay un plan aprobado; botón de punto crítico; pestaña «Entregas»; **botón para reiniciar los datos de prueba** (añádelo al pedir la ronda: hace falta para ensayar en la nube).
-- [ ] Despacho: el optimizador lee `empaque_activo`; se crean paquetes al aprobar; el plan anterior se reemplaza al aprobar el nuevo.
-- [ ] Simulación: barrido del peso de puntos críticos y confirmación en semillas nuevas.
-- [ ] Revisar lo que suban antes de darlo por bueno. Tras cada cambio en `main`, Railway redespliega.
+- [ ] El optimizador lee `empaque_activo` (patente UNAL 37476 como supuesto declarado).
+- [ ] Trazabilidad mínima: paquetes con código al aprobar un plan.
+- [ ] El plan anterior pasa a `reemplazado` al aprobar el nuevo.
+- [ ] Un pedido urgente con cantidad supuesta sale marcado en el plan.
+- [ ] Prueba en la nube el paso que falta: un cierre en la avenida del Centro por el bot, recalcular y aprobar.
 
-**Hecho cuando:** las pruebas pasan, la demo del guion funciona en la nube con el plan ya aprobado, y `docs/SIMULACION.md` tiene el resultado del barrido.
+## Tarea 3 · Despacho sin conexión
 
-## Tarea 3 · Las conversaciones que nadie más puede tener
+Cuando tu sesión termine la ronda 3:
 
-**Para qué:** son los puntos de los criterios 3 y 5, y siguen en cero desde la mañana.
+```
+Haz git pull --rebase, lee las entradas nuevas de torre/CANAL.md y ejecuta encargos/B3_SIN_CONEXION_CARLOS.md. Sigue en la rama carlos-despacho.
+```
 
-- [ ] **Mesa de organización:**
-  - que compartan las carpetas del kit (formato de prototipo MVP y plantilla de presentación);
-  - franja de mentoría de DespachoX: 5:00 o 7:00 p. m.;
-  - si la preselección escoge por vertical o por puntaje global, y cuánto dura el pitch.
-- [ ] **Fernando Bernal:** la anualidad 2026 de la patente 37476 no figura pagada en la SIC. ¿La pagan dentro del plazo de gracia? ¿Qué se necesita para usarla en un piloto?
-- [ ] **Un profesor de logística de la Sede:** quince minutos para revisar la formulación. Nombre y fecha: ______
-- [ ] **Un usuario real** (Banco de Alimentos, Cruz Roja, Defensa Civil o gestión del riesgo): cómo decidieron a dónde mandar primero, qué se dañó, qué no supieron a tiempo. Permiso para citarlo. Nombre y cargo: ______
+- [ ] Hoja de ruta impresa por vehículo, con un QR por paquete.
+- [ ] Arranque completo en un portátil con el wifi apagado.
+- [ ] Diapositiva de la escalera de degradación (`docs/SIN_CONEXION.md`) para el pitch.
+- [ ] Caminar hasta un equipo de la vertical de energía y conectividad y proponer «su red, nuestra mesa de despacho» para el plan de 30 a 90 días.
 
-**Hecho cuando:** hay al menos un nombre real en la tabla de aliados de `docs/FICHA_4_5_6_BORRADOR.md` y sabemos la duración del pitch.
+## Tarea 4 · Lo que solo tú puedes hacer
+
+Los criterios 3 y 5 (30 puntos) siguen en cero, y dependen de personas.
+
+- [ ] **Mesa de organización:** carpetas del kit (formato de prototipo MVP y plantilla), franja de mentoría (5:00 o 7:00 p. m.), cómo se escoge en la preselección y cuánto dura el pitch.
+- [ ] **Fernando Bernal:** anualidad 2026 de la patente 37476 y qué se necesita para usarla en un piloto.
+- [ ] **Un profesor de logística de la Sede:** quince minutos. Nombre: ______
+- [ ] **Un usuario real** (Banco de Alimentos, Cruz Roja, Defensa Civil o gestión del riesgo). Nombre y cargo: ______
+- [ ] Mostrarle el bot y el tablero en vivo a ese usuario. Una frase suya vale más que cualquier función.
 
 ## Notas y bloqueos
