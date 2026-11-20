@@ -108,7 +108,8 @@ def resumen_md(filas, politicas, meta) -> str:
         for a, b in PARES:
             if a not in por or b not in por:
                 continue
-            for m in PRINCIPALES + ["demanda_no_atendida_pct", "llegada_media_h", "km"]:
+            for m in PRINCIPALES + ["a_tiempo_todos_pct", "demanda_no_atendida_pct", "llegada_media_h",
+                      "peor_punto_h", "km"]:
                 d = [fa[m] - fb[m] for fa, fb in zip(por[a], por[b])]
                 media, lo, hi, n = ic95(d)
                 signo = 1 if METRICAS[m][1] else -1

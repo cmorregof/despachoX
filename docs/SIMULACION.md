@@ -1,6 +1,6 @@
 # Simulación: cuánto mejora DespachoX frente a un despacho sin optimizador
 
-Estado: **BORRADOR**. El diseño y los supuestos están completos. La sección 5 no tiene todavía resultados citables.
+Estado: resultados de la corrida del 20 de noviembre de 2026, sin revisar todavía por el equipo.
 
 Código en `despacho/sim/`. Se reproduce con `python -m despacho.sim.correr --carga todas`.
 
@@ -55,7 +55,57 @@ Cada nivel de carga se corre con 30 semillas (20261120 a 20261149), las mismas p
 
 ## 5. Resultados
 
-Pendiente. La tabla se copiará tal como salga de `despacho/sim/resultados/resumen.md`.
+Corrida del 20 de noviembre de 2026, commit `d33dd27`: 30 semillas por nivel de carga, 360 jornadas simuladas en total. Ninguna llamada al optimizador terminó en error. La tabla completa, con todas las métricas y todas las comparaciones, está en `despacho/sim/resultados/resumen.md`, y los datos por semilla en `despacho/sim/resultados/resultados.csv`. Las cifras de abajo se copiaron de ahí sin cambios.
+
+Los escenarios tienen en promedio 56 puntos, 8,3 vehículos y 5,0 cierres. La carga holgada son 111 pedidos y 35,3 t, la media 138 pedidos y 44,1 t, y la alta 166 pedidos y 52,8 t.
+
+### Medias por política (desviación estándar entre semillas)
+
+| Carga | Métrica | `ingenua` | `experta` | `optimiza_una_vez` | `despachox` |
+|---|---|---:|---:|---:|---:|
+| Holgada | Críticos a tiempo (%) | 87,7 (12,2) | 99,5 (1,8) | 93,0 (8,3) | 99,7 (1,2) |
+| Holgada | Perecederos vencidos (%) | 0,5 (1,0) | 0,0 (0,0) | 0,0 (0,0) | 0,0 (0,0) |
+| Holgada | A tiempo, todos los puntos (%) | 96,4 (3,0) | 99,3 (1,2) | 98,0 (2,1) | 99,3 (1,7) |
+| Holgada | Espera en el punto peor atendido (h) | 4,06 (0,93) | 5,13 (1,45) | 4,00 (1,27) | 4,99 (1,46) |
+| Holgada | Kilómetros de la flota | 703,8 (241,5) | 707,9 (240,9) | 677,5 (227,9) | 632,8 (208,4) |
+| Media | Críticos a tiempo (%) | 69,1 (15,7) | 98,5 (2,6) | 80,6 (14,0) | 98,1 (3,1) |
+| Media | Perecederos vencidos (%) | 1,8 (1,9) | 0,0 (0,0) | 0,0 (0,0) | 0,0 (0,0) |
+| Media | A tiempo, todos los puntos (%) | 89,4 (5,9) | 95,6 (5,3) | 93,5 (4,5) | 93,8 (5,8) |
+| Media | Espera en el punto peor atendido (h) | 5,00 (1,13) | 7,09 (1,88) | 4,88 (0,94) | 7,27 (1,78) |
+| Media | Kilómetros de la flota | 836,5 (304,2) | 834,3 (297,9) | 802,6 (282,6) | 778,9 (269,0) |
+| Alta | Críticos a tiempo (%) | 49,6 (17,5) | 97,6 (3,7) | 60,1 (17,6) | 95,9 (4,2) |
+| Alta | Perecederos vencidos (%) | 3,5 (2,4) | 0,0 (0,0) | 0,0 (0,0) | 0,0 (0,0) |
+| Alta | A tiempo, todos los puntos (%) | 78,3 (9,3) | 85,9 (8,2) | 82,3 (9,1) | 83,7 (7,1) |
+| Alta | Espera en el punto peor atendido (h) | 5,83 (1,24) | 9,12 (1,76) | 5,80 (1,26) | 10,08 (1,34) |
+| Alta | Kilómetros de la flota | 1004,9 (360,9) | 1000,3 (361,3) | 976,3 (340,3) | 953,6 (325,3) |
+
+El optimizador tardó entre 1,20 y 1,31 segundos por llamada en promedio, con un máximo medio de 1,45 segundos, y `despachox` lo llamó entre 55 y 82 veces por jornada. El límite de búsqueda fue de 1 segundo.
+
+### Diferencias pareadas de DespachoX (puntos porcentuales o kilómetros, con IC del 95 %)
+
+| Comparación | Indicador | Holgada | Media | Alta |
+|---|---|---|---|---|
+| `despachox` − `ingenua` | Críticos a tiempo | 12,0 [7,5; 16,5] | 28,9 [23,2; 34,7] | 46,3 [40,0; 52,6] |
+| `despachox` − `ingenua` | Perecederos vencidos | −0,5 [−0,9; −0,1] | −1,8 [−2,6; −1,1] | −3,5 [−4,4; −2,6] |
+| `despachox` − `ingenua` | A tiempo, todos los puntos | 2,9 [2,1; 3,7] | 4,4 [3,1; 5,7] | 5,4 [4,0; 6,8] |
+| `despachox` − `ingenua` | Espera en el punto peor atendido (h) | 0,93 [0,52; 1,35] | 2,27 [1,61; 2,94] | 4,25 [3,67; 4,84] |
+| `despachox` − `experta` | Críticos a tiempo | 0,2 [−0,6; 1,1] | −0,5 [−1,8; 0,9] | −1,8 [−3,6; 0,0] |
+| `despachox` − `experta` | Perecederos vencidos | 0,0 [0,0; 0,0] | 0,0 [0,0; 0,0] | 0,0 [0,0; 0,0] |
+| `despachox` − `experta` | A tiempo, todos los puntos | −0,1 [−0,5; 0,4] | −1,8 [−2,7; −1,0] | −2,2 [−3,7; −0,8] |
+| `despachox` − `experta` | Kilómetros de la flota | −75,1 [−92,8; −57,4] | −55,5 [−73,1; −37,9] | −46,7 [−72,2; −21,2] |
+| `despachox` − `optimiza_una_vez` | Críticos a tiempo | 6,7 [3,7; 9,7] | 17,5 [12,4; 22,5] | 35,7 [29,5; 42,0] |
+
+### Lectura
+
+**Frente al despacho por orden de llegada, DespachoX gana con claridad en puntos críticos.** La diferencia es de 12, 29 y 46 puntos porcentuales según la carga, y el intervalo nunca toca el cero. En carga alta DespachoX fue mejor en las 30 semillas.
+
+**Frente a un despachador con oficio, DespachoX no gana en los indicadores del reto.** La política `experta` empata con DespachoX en puntos críticos en carga holgada y media. En carga alta queda 1,8 puntos por encima, con un intervalo que llega justo al cero. En entregas a tiempo de todos los puntos, `experta` es mejor en carga media y alta, por 1,8 y 2,2 puntos, y ahí el intervalo sí excluye el cero. Lo que DespachoX le gana a `experta` son kilómetros: entre 47 y 75 km menos por jornada, del 5 % al 11 % del recorrido.
+
+**El desperdicio de perecederos lo resuelve la regla de bodega, no el ruteo.** Toda política que saca primero lo que vence primero queda en 0,0 %. La política ingenua, que saca por orden de ingreso, pierde 0,5 %, 1,8 % y 3,5 %. Incluso ella queda en promedio por debajo del 5 % de la meta del reto en estos escenarios.
+
+**Recalcular aporta.** Con el mismo optimizador, recalcular sube los críticos a tiempo en 7, 18 y 36 puntos frente a planear una sola vez. Esa comparación tiene una salvedad: `optimiza_una_vez` atiende con la regla ingenua todo lo que llega después del plan inicial, de modo que la diferencia mezcla el efecto de recalcular con el de priorizar los pedidos nuevos.
+
+**La prioridad tiene un costo en equidad.** DespachoX y `experta` hacen esperar más al punto peor atendido que la política ingenua: 2,3 horas más en carga media y 4,3 horas más en carga alta, en el caso de DespachoX. Atender primero lo crítico deja para el final a los puntos de baja urgencia.
 
 ## 6. Supuestos
 
@@ -84,4 +134,13 @@ Los cierres se sortean entre los tramos que usan los caminos más cortos del aco
 
 ## 7. Lo que esta simulación no prueba
 
-Pendiente de redactar con los resultados a la vista.
+- **No prueba que DespachoX supere a un buen despachador humano.** Los resultados dicen lo contrario para los dos indicadores del reto: una regla simple de prioridad y de rotación de bodega los iguala. La ventaja medida de DespachoX frente a esa regla está en los kilómetros.
+- **No mide el valor de la entrada por chat ni de la trazabilidad.** Todas las políticas reciben los pedidos y los cierres ya estructurados y sin errores. Si la parte de DespachoX que más ayuda es que el despachador sepa a tiempo qué se pidió, dónde está cerrado y qué se entregó, esta simulación no lo ve.
+- **No valida los supuestos.** Las velocidades, los tiempos de carga y de entrega, los plazos por urgencia, la flota, la demanda y los cierres son nuestros. Ningún dato viene de una operación real del Banco de Alimentos ni de los organismos de socorro.
+- **No dice cuál es la carga real.** Los tres niveles de carga se eligieron para que la línea base no quedara ni holgada ni colapsada. La magnitud de la ventaja depende mucho de ese nivel: va de 12 a 46 puntos.
+- **No representa bien los perecederos.** Hay un solo acopio, tanto inventario perecedero como demanda y lotes que vencen entre 6 y 48 horas. Con donaciones que excedan la demanda, cadena de frío o vencimientos más cortos el desperdicio sería otro.
+- **No evalúa el optimizador con su configuración de la demo.** Aquí busca 1 segundo por llamada y en la demo busca hasta 8. Con más tiempo de búsqueda el resultado de DespachoX podría mejorar, y no se midió cuánto.
+- **No incluye errores humanos ni del modelo de lenguaje.** El despachador aprueba siempre en 2 minutos, los conductores siguen el plan y todo cierre reportado es cierto.
+- **No cubre varios días.** Es una jornada de 14 horas, sin reabastecimiento ni cierres que se levanten.
+
+Una consecuencia para el producto: el modelo del optimizador pondera el retraso por urgencia, pero no premia de forma directa el indicador del reto. Subir el peso de los pedidos de puntos críticos, o darles prioridad estricta, es el cambio más corto para que DespachoX iguale o supere a la política `experta`. No se probó en esta corrida.
