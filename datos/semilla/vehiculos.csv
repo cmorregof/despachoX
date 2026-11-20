@@ -1,0 +1,6 @@
+id,nombre,tipo,capacidad_kg,acopio_id,lat,lon,estado
+1,Camión 1,camion,3000,1,5.037138,-75.439679,libre
+2,Camión 2,camion,2000,2,5.077405,-75.521797,libre
+3,Campero 1,campero,600,1,5.037138,-75.439679,libre
+4,Campero 2,campero,600,2,5.077405,-75.521797,libre
+5,Moto 1,moto,40,2,5.077405,-75.521797,libre

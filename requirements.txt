@@ -5,6 +5,7 @@ python-dotenv
 ortools
 osmnx
 networkx
+scipy
 streamlit
 streamlit-folium
 folium
