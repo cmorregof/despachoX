@@ -51,9 +51,16 @@ Comandos: `/start` y `/ayuda` explican en tres líneas qué hace el bot y dan do
 | `raciones.py` | Raciones por familia, conversión de personas y bebés a familias, productos para bebés. El supuesto está escrito arriba |
 | `voz.py` | Transcripción de notas de voz con un servicio externo. Nunca lanza excepción |
 | `carga.py` | Prueba de carga: N mensajes sintéticos por el camino del bot, con concurrencia configurable. Resultados en `ESCALA.md` |
+| `silencio.py` | Alerta por silencio: un punto crítico sin pedidos en 6 horas recibe una fila `origen='silencio'` para que el despachador decida si manda a verificar. `python -m entrada.silencio` |
 | `guardar.py` | Escritura en `pedidos` y `cierres`, duplicados y consulta de `/estado` |
 | `privacidad.py` | Limpieza del texto y hash con sal del id del chat |
 | `pruebas/` | Quince mensajes de ejemplo, Telegram simulado y pruebas |
+
+## Alerta por silencio
+
+Un barrio que no escribe no debe desaparecer de la lista. Cada 10 minutos, el bot revisa los puntos con `critico = 1`. Si uno lleva 6 horas sin un pedido con lugar confirmado (contadas desde las 06:00 si nunca escribió), deja en `pedidos` una fila con `origen='silencio'`, estado `nuevo`, urgencia 2 y el texto «Sin contacto hace 7 h. Visita de verificación.». No trae familias, kilos ni remitente. Cada punto tiene a lo sumo una alerta viva: la revisión siguiente actualiza sus horas. Cuando llega un pedido real con lugar confirmado en ese punto, la alerta pasa a `descartado`, y las dos cosas quedan en la bitácora. Umbral, inicio de jornada e intervalo: `DESPACHOX_SILENCIO_HORAS`, `DESPACHOX_JORNADA_INICIO` y `DESPACHOX_SILENCIO_MIN`. Son supuestos del equipo, declarados en la cabecera de `silencio.py`. Para la demostración: `python -m entrada.silencio --ahora 2026-11-21T14:00:00`.
+
+Esto no despacha nada. El despachador ve la fila y decide si manda a verificar o la descarta.
 
 ## Privacidad (Ley 1581)
 

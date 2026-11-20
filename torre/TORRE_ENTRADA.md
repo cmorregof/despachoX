@@ -1,5 +1,5 @@
 # Torre de control · A-entrada · rol A (entrada)
-Última actualización: 2026-11-20 18:00 (hora de Colombia)
+Última actualización: 2026-11-20 19:00 (hora de Colombia)
 
 Desde las 16:05 el módulo lo dirige Samuel con `encargos/A2_BOT_SAMUEL.md`. Se trabaja en la rama `samuel-bot`; Carlos fusiona a `main` a las 6:30 p. m., 11:00 p. m. y 8:00 a. m.
 
@@ -23,6 +23,8 @@ Etapa 1 del encargo A2 hecha en `samuel-bot` y probada con el extractor falso: �
 - 17:15 · Encargo A2, etapa 2 (rama `samuel-bot`): `/start` en tres líneas con dos ejemplos que se copian con un toque (HTML `<code>`); notas de voz en `entrada/voz.py` con un servicio compatible con Whisper, apagadas sin `DESPACHOX_VOZ_CLAVE`; `/estado` dice «recibido», «en revisión», «va en camino» (con la llegada del plan aprobado, leída de `paradas`) o «entregado». `entrada/pruebas/test_etapa2.py`. 62 pasan, 1 se omite. El aviso de vuelta (punto 3) espera respuesta en el canal.
 
 - 18:00 · Encargo A2, etapa 3 (rama `samuel-bot`): `entrada/carga.py` y `entrada/ESCALA.md`. Medido con extractor falso (1,8 s de media): 5.000 mensajes a la vez, 914 por minuto, 0 errores, 0 perdidos; con 5 % de fallos de la API, 59 guardados crudos y 0 perdidos. Cuello de botella: `lugares/nomenclator.buscar` (97 % de 65 ms por mensaje en el hilo del bot). Cambios: un solo cliente de Anthropic con 2 reintentos del SDK, `concurrent_updates(32)`, `Mesa.atender_seguro` guarda crudo si falla la base. Falta la corrida de 100 con el modelo real (sin clave aquí). 66 pasan, 1 se omite.
+
+- 19:00 · Alerta por silencio, pedida por Samuel (rama `samuel-bot`): columna `pedidos.origen` ('mensaje' | 'silencio') en `datos/esquema.sql`, con migración idempotente en `datos/db.py` (`_migrar`); `entrada/silencio.py` (umbral 6 h, jornada desde las 06:00, solo puntos críticos, una alerta viva por punto, urgencia 2, sin familias ni kilos); un pedido real ubicado en el punto la descarta; reloj en el bot cada 10 minutos; `python -m entrada.silencio`. `entrada/pruebas/test_silencio.py`: 8 pruebas. Suite completa del repositorio: 146 pasan, 3 se omiten.
 
 ## En curso (qué, hasta dónde llegó, qué falta)
 - Prueba desde un teléfono con el bot real: nadie le ha escrito todavía.
@@ -53,6 +55,11 @@ Etapa 1 del encargo A2 hecha en `samuel-bot` y probada con el extractor falso: �
 
 - Reintentos: se usa el del SDK (`max_retries=2`, espera creciente, respeta `retry-after`) en vez de escribir uno propio.
 - No se tocó `lugares/` aunque es el cuello de botella: se avisó por el canal con el perfil.
+
+- `datos/esquema.sql` y `datos/db.py` los tocó entrada/ por decisión de Samuel como líder, aunque el encargo A2 decía pedir columnas por el canal. Se avisó.
+- La alerta solo cuenta un pedido con lugar confirmado como contacto: un mensaje sin lugar no se sabe de qué punto es.
+- Una alerta de un punto que nunca escribió no se descarta sola al empezar la jornada siguiente; solo la descarta un mensaje posterior o el despachador.
+- No se agregó `pedidos.dudas`: no hubo confirmación.
 
 ## Bloqueos y preguntas para el capitán
 - Resuelto 14:56: `.env` creado en la carpeta principal con las dos claves.

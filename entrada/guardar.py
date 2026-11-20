@@ -95,7 +95,7 @@ def marcar_duplicado(con: sqlite3.Connection, pedido_id: int) -> int | None:
         return None
     previo = con.execute(
         "SELECT id FROM pedidos WHERE punto_id=? AND id<>? AND creado_en>=? AND duplicado_de IS NULL "
-        "AND estado IN ('nuevo','confirmado','asignado') ORDER BY id LIMIT 1",
+        "AND origen='mensaje' AND estado IN ('nuevo','confirmado','asignado') ORDER BY id LIMIT 1",
         (p["punto_id"], pedido_id, _hace(VENTANA_DUPLICADO_H))).fetchone()
     if previo is None:
         return None

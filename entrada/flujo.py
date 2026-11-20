@@ -18,7 +18,7 @@ from dataclasses import dataclass, field
 from typing import Callable
 
 import lugares
-from entrada import guardar, raciones
+from entrada import guardar, raciones, silencio
 from entrada.extraer import Extraccion, Producto, extraer as extraer_con_modelo
 from entrada.privacidad import hash_remitente, limpiar
 
@@ -252,6 +252,8 @@ class Mesa:
         if tabla == "pedidos":
             texto = f"Listo, el pedido #{fila_id} quedó ubicado en {donde}. El despachador lo revisa y lo programa."
             previo = guardar.marcar_duplicado(self.con, fila_id)
+            punto = self.con.execute("SELECT punto_id FROM pedidos WHERE id=?", (fila_id,)).fetchone()
+            silencio.apagar(self.con, punto["punto_id"] if punto else None)     # el punto ya habló
             if previo:
                 texto += (f" Ya había un pedido reciente de ese punto (#{previo}); el despachador decide si "
                           "es el mismo.")

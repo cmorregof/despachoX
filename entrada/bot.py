@@ -15,7 +15,7 @@ from telegram import (InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton
                       ReplyKeyboardRemove, Update)
 from telegram.ext import Application, CallbackQueryHandler, CommandHandler, MessageHandler, filters
 
-from entrada import voz
+from entrada import silencio, voz
 from entrada.flujo import Mesa, Respuesta, ayuda
 
 log = logging.getLogger("entrada.bot")
@@ -113,11 +113,31 @@ class Manejadores:
                 pass
 
 
+async def vigilar_silencio(mesa: Mesa, cada_s: float | None = None, vueltas: int | None = None) -> None:
+    """El reloj de la alerta por silencio: revisa al arrancar y luego cada `cada_s`. Corre en el hilo
+    del bot, el mismo que usa la base, así que no compite con los mensajes por la conexión."""
+    cada_s = silencio.CADA_MIN * 60 if cada_s is None else cada_s
+    n = 0
+    while vueltas is None or n < vueltas:
+        try:
+            h = silencio.revisar(mesa.con)
+            if h["creadas"] or h["descartadas"]:
+                log.info("silencio: %d alertas nuevas, %d descartadas", len(h["creadas"]), len(h["descartadas"]))
+        except Exception as e:                  # una revisión fallida no tumba el bot
+            log.error("falló la revisión de silencio (%s)", type(e).__name__)
+        n += 1
+        if vueltas is None or n < vueltas:
+            await asyncio.sleep(cada_s)
+
+
 def construir(token: str, mesa: Mesa) -> Application:
     m = Manejadores(mesa)
+
+    async def al_arrancar(app: Application) -> None:
+        app.create_task(vigilar_silencio(mesa))
     # Varios mensajes a la vez: mientras uno espera al modelo, otros avanzan. La base y la memoria
     # de la conversación solo se tocan en el hilo del bot, así que no hay escrituras simultáneas.
-    app = Application.builder().token(token).concurrent_updates(CONCURRENCIA).build()
+    app = Application.builder().token(token).concurrent_updates(CONCURRENCIA).post_init(al_arrancar).build()
     app.add_handler(CommandHandler(["start", "ayuda", "help"], m.inicio))
     app.add_handler(CommandHandler("estado", m.estado))
     app.add_handler(CallbackQueryHandler(m.boton))
