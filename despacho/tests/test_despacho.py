@@ -143,3 +143,29 @@ def test_perecedero_que_vence_antes_de_llegar_no_se_despacha(mundo, con, grafo, 
     assert 2 not in lotes_usados
     assert 1 in [x["pedido_id"] for x in r["sin_atender"]]
     assert r["pedidos_atendidos"] == 1
+
+
+def test_producto_sin_kilos_no_se_vuelve_mercado_generico():
+    p = {"productos": '[{"producto": "leche"}, {"producto": "arroz", "kg": 20}]', "kg_estimado": 50, "familias": 5}
+    assert optimizar._demanda(p) == [{"producto": "arroz", "kg": 20.0}, {"producto": "leche", "kg": 30.0}]
+    p = {"productos": '["leche", "pan"]', "kg_estimado": None, "familias": 4}
+    assert optimizar._demanda(p) == [{"producto": "leche", "kg": 20.0}, {"producto": "pan", "kg": 20.0}]
+    p = {"productos": None, "kg_estimado": None, "familias": 3}
+    assert optimizar._demanda(p) == [{"producto": None, "kg": 30.0}]
+
+
+def test_cierre_con_ubicacion_sin_confirmar_no_entra_al_plan(mundo, con, grafo, ahora):
+    from datos import db
+    from despacho import cierres
+    con.execute("INSERT INTO cierres(id, creado_en, lugar, lat, lon, estado) VALUES (50, ?, 'un sitio', 5.062, -75.498, 'confirmado')",
+                (db.ahora(),))
+    con.execute("INSERT INTO ubicaciones(creado_en, tabla, fila_id, texto, estado) VALUES (?, 'cierres', 50, 'un sitio', 'propuesta')",
+                (db.ahora(),))
+    con.commit()
+    avisos = cierres.ubicar(con, grafo)
+    assert any("cierre 50" in a and "sin confirmar" in a for a in avisos)
+    assert con.execute("SELECT osm_u FROM cierres WHERE id=50").fetchone()[0] is None
+    con.execute("UPDATE ubicaciones SET estado='confirmada' WHERE fila_id=50")
+    con.commit()
+    cierres.ubicar(con, grafo)
+    assert con.execute("SELECT osm_u FROM cierres WHERE id=50").fetchone()[0] is not None

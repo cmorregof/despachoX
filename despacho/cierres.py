@@ -34,7 +34,13 @@ def ubicar(con: sqlite3.Connection, g: nx.MultiDiGraph) -> list[str]:
     vias = vias_conocidas()
     filas = con.execute("SELECT * FROM cierres WHERE estado != 'levantado' "
                         "AND (osm_u IS NULL OR osm_v IS NULL)").fetchall()
+    pendientes = {r["fila_id"] for r in con.execute(
+        "SELECT fila_id FROM ubicaciones u WHERE tabla='cierres' AND estado='propuesta' AND NOT EXISTS "
+        "(SELECT 1 FROM ubicaciones c WHERE c.tabla='cierres' AND c.fila_id=u.fila_id AND c.estado='confirmada')")}
     for c in filas:
+        if c["id"] in pendientes:        # nadie ha confirmado dónde es: no entra al plan
+            avisos.append(f"cierre {c['id']}: su ubicación sigue sin confirmar; no se aplicó")
+            continue
         arista = None
         lugar = normalizar(c["lugar"])
         if lugar:

@@ -111,7 +111,7 @@ def test_respuesta_en_texto_libre_vuelve_a_resolver(con, mesa):
     estados = [f["estado"] for f in con.execute("SELECT estado FROM ubicaciones ORDER BY id")]
     assert estados == ["rechazada", "propuesta"]
     assert "¿Cuál es?" in chat.escribir("si")[0].texto                      # no hay una sola propuesta que aceptar
-    r3, = chat.escribir("no, es más abajo, por la terminal")                # no está en el nomenclátor
+    r3, = chat.escribir("no, es más abajo, por la finca de don chucho")              # no está en el nomenclátor
     assert "No conozco" in r3.texto and [t for t, _ in r3.botones] == ["Enviar mi ubicación"]
     assert "sin lugar confirmado" in chat.escribir("gracias")[0].texto
     r4, = chat.escribir("queda en chipre")

@@ -77,16 +77,35 @@ def _fecha(texto: str | None) -> datetime | None:
 
 
 def _demanda(p: dict) -> list[dict]:
-    """Líneas pedidas: [{producto, kg}]. Sin detalle, un mercado genérico por kilos."""
+    """Líneas pedidas: [{producto, kg}]. Sin detalle, un mercado genérico por kilos.
+
+    Un producto que llega sin kilos no se descarta: se reparte entre ellos lo que falte para
+    completar `kg_estimado` (o familias × KG_POR_FAMILIA). Así quien pidió leche recibe leche.
+    """
+    total = float(p["kg_estimado"] or (p["familias"] or 1) * KG_POR_FAMILIA)
+    con_kg, sin_kg = [], []
     try:
-        lineas = [{"producto": str(l["producto"]), "kg": float(l["kg"])}
-                  for l in json.loads(p["productos"] or "[]") if float(l.get("kg") or 0) > 0]
-    except (TypeError, ValueError, KeyError, AttributeError):
-        lineas = []
-    if lineas:
-        return lineas
-    kg = p["kg_estimado"] or (p["familias"] or 1) * KG_POR_FAMILIA
-    return [{"producto": None, "kg": float(kg)}]
+        for l in json.loads(p["productos"] or "[]"):
+            l = {"producto": l} if isinstance(l, str) else l
+            nombre = str(l.get("producto") or "").strip()
+            if not nombre:
+                continue
+            try:
+                kg = float(l.get("kg") or 0)
+            except (TypeError, ValueError):
+                kg = 0.0
+            (con_kg if kg > 0 else sin_kg).append({"producto": nombre, "kg": kg})
+    except (TypeError, ValueError, AttributeError):
+        con_kg, sin_kg = [], []
+    if sin_kg:
+        resto = total - sum(l["kg"] for l in con_kg)
+        if resto <= 0:                       # los kilos declarados ya cubren el total
+            resto = KG_POR_FAMILIA * (p["familias"] or 1) * len(sin_kg) / (len(con_kg) + len(sin_kg))
+        for l in sin_kg:
+            l["kg"] = round(resto / len(sin_kg), 3)
+    if con_kg or sin_kg:
+        return con_kg + sin_kg
+    return [{"producto": None, "kg": total}]
 
 
 def _sirve(lote: dict, producto: str | None) -> bool:
