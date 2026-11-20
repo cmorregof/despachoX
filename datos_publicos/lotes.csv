@@ -1,0 +1,29 @@
+id,acopio_id,producto,kg,perecedero,vence_en_horas,empaque_activo
+1,1,aceite,103.1,0,,0
+2,2,aceite,55.5,0,,0
+3,1,arroz,1093.4,0,,0
+4,2,arroz,588.8,0,,0
+5,1,compota,24.0,0,,0
+6,2,compota,12.9,0,,0
+7,1,frijol,125.7,0,,0
+8,2,frijol,67.7,0,,0
+9,1,harina de maíz,373.9,0,,0
+10,2,harina de maíz,201.3,0,,0
+11,1,leche,285.3,0,,0
+12,2,leche,153.6,0,,0
+13,1,leche de fórmula,2.7,0,,0
+14,2,leche de fórmula,1.5,0,,0
+15,1,lenteja,120.5,0,,0
+16,2,lenteja,64.9,0,,0
+17,1,panela,60.8,0,,0
+18,2,panela,32.8,0,,0
+19,1,pasta,364.5,0,,0
+20,2,pasta,196.3,0,,0
+21,1,sal,20.4,0,,0
+22,2,sal,11.0,0,,0
+23,1,fruta,72.5,1,72,0
+24,2,fruta,39.0,1,72,0
+25,1,huevos,132.7,1,360,0
+26,2,huevos,71.5,1,360,0
+27,1,verdura,26.2,1,96,0
+28,2,verdura,14.1,1,96,0
