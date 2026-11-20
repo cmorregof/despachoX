@@ -1,0 +1,146 @@
+# Simulación: cuánto mejora DespachoX frente a un despacho sin optimizador
+
+Estado: resultados de la corrida del 20 de noviembre de 2026, sin revisar todavía por el equipo.
+
+Código en `despacho/sim/`. Se reproduce con `python -m despacho.sim.correr --carga todas`.
+
+## 1. Qué pregunta responde
+
+La ficha del reto fija dos indicadores: el porcentaje de entregas a tiempo en puntos críticos y el desperdicio de perecederos, que debe quedar por debajo del 5 %. La simulación mide esos dos indicadores para cuatro formas de despachar la misma jornada, con los mismos pedidos, la misma flota y los mismos cierres viales. La diferencia entre ellas es lo que se le puede atribuir a DespachoX.
+
+## 2. Diseño
+
+**Red.** El grafo de conducción de Manizales y Villamaría de OpenStreetMap, el mismo archivo que usa el optimizador (`despacho/cache/manizales.graphml`). La simulación aplica las velocidades y las reglas de acceso de `despacho/red.py` y `despacho/matriz.py`, de modo que el plan y la jornada simulada describen la misma ciudad. Una prueba compara las dos matrices de tiempos y falla si difieren en más de un segundo.
+
+**Escenario.** Cada semilla genera una jornada completa:
+
+- Entre 30 y 80 puntos de entrega sobre nodos de la red, a 6 km del centro como máximo y separados al menos 250 m. El 20 % son críticos.
+- Un acopio, sobre la vía apta para camión más cercana a la plaza de Bolívar.
+- Pedidos: el 40 % ya está en cola al empezar y el resto llega en momentos uniformes durante las primeras 8 horas. Cada pedido atiende entre 3 y 50 familias, a 12 kg por familia, y entre el 20 % y el 50 % de su peso es perecedero.
+- Urgencia y plazo: los puntos críticos piden con urgencia 3 el 80 % de las veces. El plazo de entrega es de 3 horas para urgencia 3, 5 horas para urgencia 2 y 8 horas para urgencia 1.
+- Inventario perecedero: tantos kilos como piden los pedidos, en lotes de 100 a 400 kg que vencen entre 6 y 48 horas después del inicio.
+- Flota mixta: un camión de 3.000 kg por cada 30 puntos, un campero de 700 kg por cada 15 y una moto de 60 kg por cada 20.
+- Cierres: entre 3 y 8 tramos cerrados por jornada, en los dos sentidos. El 30 % existe desde la hora cero y los demás ocurren durante las primeras 8 horas. Cada cierre bloquea siempre al camión, al campero con probabilidad 0,7 y a la moto con probabilidad 0,3. No se levantan durante la jornada.
+
+**Cómo se conoce un cierre.** Nadie lo sabe hasta que un vehículo intenta pasar. El conductor pierde 3 minutos, reporta y se desvía. El reporte desvía también a los vehículos que iban hacia ese tramo, en todas las políticas. El despacho confirma el cierre 5 minutos después del reporte.
+
+**Motor.** Simulador de eventos discretos. Los vehículos avanzan tramo a tramo por la red verdadera, mientras que los caminos se calculan con la red conocida, que no incluye los cierres sin reportar. El motor impone tres reglas a cualquier política: ningún vehículo carga más que su capacidad, un kilo perecedero que llega después del vencimiento de su lote no cuenta como entregado, y un cierre desconocido no cambia ninguna ruta. Las tres están cubiertas por pruebas en `despacho/sim/tests/`.
+
+**Jornada.** La simulación se corta a las 14 horas. Lo que no se entregó para entonces cuenta como no entregado.
+
+## 3. Políticas comparadas
+
+| Política | Qué hace |
+|---|---|
+| `ingenua` | Atiende por orden de llegada. Al pedido más antiguo le asigna el vehículo libre que llega más rápido y lo llena con los siguientes pedidos de la cola. El conductor ordena sus entregas por vecino más cercano. Saca los lotes de bodega por orden de ingreso. Se desvía solo al toparse un cierre. |
+| `experta` | La ingenua con dos reglas de un despachador con oficio: atiende primero lo más urgente y saca de bodega primero lo que vence primero. |
+| `optimiza_una_vez` | El optimizador planea al inicio con los pedidos que hay y no vuelve a calcular. Lo demás se atiende con la regla ingenua. |
+| `despachox` | El optimizador planea al inicio y recalcula con cada cierre confirmado, con cada tanda de pedidos (cada 30 minutos) y cada vez que un vehículo vuelve al acopio. |
+
+La política `experta` no estaba en el encargo. Se añadió porque un despachador real no ignora la urgencia, y porque la literatura muestra que una política intuitiva puede quedar cerca del óptimo (Cook y Lodree, 2017). La comparación de `optimiza_una_vez` con `despachox` aísla lo que aporta recalcular.
+
+**El optimizador** es el de `despacho/optimizar.py`: OR-Tools con capacidad, una red por tipo de vehículo, ventana dura hasta el vencimiento del perecedero, retraso ponderado por urgencia y penalización por pedido sin atender. La simulación llama a su modelo con un límite de búsqueda de 1 segundo por llamada. El modelo planea un viaje por vehículo y solo asigna pedidos nuevos a los vehículos que están en el acopio, por eso `despachox` lo vuelve a llamar cuando un vehículo regresa.
+
+**Ventajas que se le dieron a la línea base.** Decide al instante, mientras que cada plan del optimizador espera 2 minutos la aprobación del despachador y solo se revisa un plan a la vez. Ve cada pedido apenas llega, mientras que `despachox` lo ve en la siguiente tanda o cuando regresa un vehículo. Sus conductores reciben el aviso de cada cierre igual que los de DespachoX. Su tope de paradas por viaje se eligió con semillas de calibración, distintas de las de evaluación, y se dejó en el valor que mejor le fue, que es no tener tope.
+
+## 4. Métricas y estadística
+
+- **Entregas a tiempo en puntos críticos:** pedidos de puntos críticos entregados antes de su hora límite, sobre el total de pedidos de puntos críticos. Un pedido sin entregar cuenta como tarde.
+- **Perecederos vencidos:** kilos de lotes que vencen dentro de la jornada y no se entregaron antes de vencer, sobre el total de kilos perecederos en bodega. Incluye lo que venció en bodega, a bordo o al llegar tarde.
+- Además: entregas a tiempo en todos los puntos, pedidos entregados, kilos que no llegaron en buen estado, tiempo medio y máximo del pedido a la entrega, espera media en el punto peor atendido, kilómetros de la flota y segundos de cada llamada al optimizador.
+
+Cada nivel de carga se corre con 30 semillas (20261120 a 20261149), las mismas para todas las políticas. Se reporta la diferencia pareada por semilla con su intervalo de confianza del 95 % (t de Student, 29 grados de libertad) y el número de semillas en que cada política gana, empata o pierde.
+
+**Niveles de carga.** La demanda se fija en 2, 2,5 o 3 pedidos por punto en la jornada (carga holgada, media y alta). Los niveles se eligieron con las semillas de calibración 100 a 111, mirando solo a la política ingenua: cumple cerca del 86 %, el 74 % y el 52 % de los pedidos críticos a tiempo. Con una demanda menor todas las políticas entregan casi todo a tiempo y la comparación no mide nada.
+
+## 5. Resultados
+
+Corrida del 20 de noviembre de 2026, commit `d33dd27`: 30 semillas por nivel de carga, 360 jornadas simuladas en total. Ninguna llamada al optimizador terminó en error. La tabla completa, con todas las métricas y todas las comparaciones, está en `despacho/sim/resultados/resumen.md`, y los datos por semilla en `despacho/sim/resultados/resultados.csv`. Las cifras de abajo se copiaron de ahí sin cambios.
+
+Los escenarios tienen en promedio 56 puntos, 8,3 vehículos y 5,0 cierres. La carga holgada son 111 pedidos y 35,3 t, la media 138 pedidos y 44,1 t, y la alta 166 pedidos y 52,8 t.
+
+### Medias por política (desviación estándar entre semillas)
+
+| Carga | Métrica | `ingenua` | `experta` | `optimiza_una_vez` | `despachox` |
+|---|---|---:|---:|---:|---:|
+| Holgada | Críticos a tiempo (%) | 87,7 (12,2) | 99,5 (1,8) | 93,0 (8,3) | 99,7 (1,2) |
+| Holgada | Perecederos vencidos (%) | 0,5 (1,0) | 0,0 (0,0) | 0,0 (0,0) | 0,0 (0,0) |
+| Holgada | A tiempo, todos los puntos (%) | 96,4 (3,0) | 99,3 (1,2) | 98,0 (2,1) | 99,3 (1,7) |
+| Holgada | Espera en el punto peor atendido (h) | 4,06 (0,93) | 5,13 (1,45) | 4,00 (1,27) | 4,99 (1,46) |
+| Holgada | Kilómetros de la flota | 703,8 (241,5) | 707,9 (240,9) | 677,5 (227,9) | 632,8 (208,4) |
+| Media | Críticos a tiempo (%) | 69,1 (15,7) | 98,5 (2,6) | 80,6 (14,0) | 98,1 (3,1) |
+| Media | Perecederos vencidos (%) | 1,8 (1,9) | 0,0 (0,0) | 0,0 (0,0) | 0,0 (0,0) |
+| Media | A tiempo, todos los puntos (%) | 89,4 (5,9) | 95,6 (5,3) | 93,5 (4,5) | 93,8 (5,8) |
+| Media | Espera en el punto peor atendido (h) | 5,00 (1,13) | 7,09 (1,88) | 4,88 (0,94) | 7,27 (1,78) |
+| Media | Kilómetros de la flota | 836,5 (304,2) | 834,3 (297,9) | 802,6 (282,6) | 778,9 (269,0) |
+| Alta | Críticos a tiempo (%) | 49,6 (17,5) | 97,6 (3,7) | 60,1 (17,6) | 95,9 (4,2) |
+| Alta | Perecederos vencidos (%) | 3,5 (2,4) | 0,0 (0,0) | 0,0 (0,0) | 0,0 (0,0) |
+| Alta | A tiempo, todos los puntos (%) | 78,3 (9,3) | 85,9 (8,2) | 82,3 (9,1) | 83,7 (7,1) |
+| Alta | Espera en el punto peor atendido (h) | 5,83 (1,24) | 9,12 (1,76) | 5,80 (1,26) | 10,08 (1,34) |
+| Alta | Kilómetros de la flota | 1004,9 (360,9) | 1000,3 (361,3) | 976,3 (340,3) | 953,6 (325,3) |
+
+El optimizador tardó entre 1,20 y 1,31 segundos por llamada en promedio, con un máximo medio de 1,45 segundos, y `despachox` lo llamó entre 55 y 82 veces por jornada. El límite de búsqueda fue de 1 segundo.
+
+### Diferencias pareadas de DespachoX (puntos porcentuales o kilómetros, con IC del 95 %)
+
+| Comparación | Indicador | Holgada | Media | Alta |
+|---|---|---|---|---|
+| `despachox` − `ingenua` | Críticos a tiempo | 12,0 [7,5; 16,5] | 28,9 [23,2; 34,7] | 46,3 [40,0; 52,6] |
+| `despachox` − `ingenua` | Perecederos vencidos | −0,5 [−0,9; −0,1] | −1,8 [−2,6; −1,1] | −3,5 [−4,4; −2,6] |
+| `despachox` − `ingenua` | A tiempo, todos los puntos | 2,9 [2,1; 3,7] | 4,4 [3,1; 5,7] | 5,4 [4,0; 6,8] |
+| `despachox` − `ingenua` | Espera en el punto peor atendido (h) | 0,93 [0,52; 1,35] | 2,27 [1,61; 2,94] | 4,25 [3,67; 4,84] |
+| `despachox` − `experta` | Críticos a tiempo | 0,2 [−0,6; 1,1] | −0,5 [−1,8; 0,9] | −1,8 [−3,6; 0,0] |
+| `despachox` − `experta` | Perecederos vencidos | 0,0 [0,0; 0,0] | 0,0 [0,0; 0,0] | 0,0 [0,0; 0,0] |
+| `despachox` − `experta` | A tiempo, todos los puntos | −0,1 [−0,5; 0,4] | −1,8 [−2,7; −1,0] | −2,2 [−3,7; −0,8] |
+| `despachox` − `experta` | Kilómetros de la flota | −75,1 [−92,8; −57,4] | −55,5 [−73,1; −37,9] | −46,7 [−72,2; −21,2] |
+| `despachox` − `optimiza_una_vez` | Críticos a tiempo | 6,7 [3,7; 9,7] | 17,5 [12,4; 22,5] | 35,7 [29,5; 42,0] |
+
+### Lectura
+
+**Frente al despacho por orden de llegada, DespachoX gana con claridad en puntos críticos.** La diferencia es de 12, 29 y 46 puntos porcentuales según la carga, y el intervalo nunca toca el cero. En carga alta DespachoX fue mejor en las 30 semillas.
+
+**Frente a un despachador con oficio, DespachoX no gana en los indicadores del reto.** La política `experta` empata con DespachoX en puntos críticos en carga holgada y media. En carga alta queda 1,8 puntos por encima, con un intervalo que llega justo al cero. En entregas a tiempo de todos los puntos, `experta` es mejor en carga media y alta, por 1,8 y 2,2 puntos, y ahí el intervalo sí excluye el cero. Lo que DespachoX le gana a `experta` son kilómetros: entre 47 y 75 km menos por jornada, del 5 % al 11 % del recorrido.
+
+**El desperdicio de perecederos lo resuelve la regla de bodega, no el ruteo.** Toda política que saca primero lo que vence primero queda en 0,0 %. La política ingenua, que saca por orden de ingreso, pierde 0,5 %, 1,8 % y 3,5 %. Incluso ella queda en promedio por debajo del 5 % de la meta del reto en estos escenarios.
+
+**Recalcular aporta.** Con el mismo optimizador, recalcular sube los críticos a tiempo en 7, 18 y 36 puntos frente a planear una sola vez. Esa comparación tiene una salvedad: `optimiza_una_vez` atiende con la regla ingenua todo lo que llega después del plan inicial, de modo que la diferencia mezcla el efecto de recalcular con el de priorizar los pedidos nuevos.
+
+**La prioridad tiene un costo en equidad.** DespachoX y `experta` hacen esperar más al punto peor atendido que la política ingenua: 2,3 horas más en carga media y 4,3 horas más en carga alta, en el caso de DespachoX. Atender primero lo crítico deja para el final a los puntos de baja urgencia.
+
+## 6. Supuestos
+
+Todos son supuestos nuestros, no datos medidos, salvo el trazado de la red vial.
+
+| Supuesto | Valor |
+|---|---|
+| Velocidad por tipo de vía | La de `despacho/red.py`: 40 km/h en vía primaria, 35 en secundaria, 30 en terciaria, 20 en residencial, o el `maxspeed` de OpenStreetMap si existe |
+| Factor por vehículo | Camión 1,25 veces el tiempo base, campero 1,0, moto 0,9 |
+| Acceso del camión | No entra a vías residenciales ni de servicio. Atiende un punto si hay una vía apta a 300 m o menos |
+| Vehículo sin regreso por su red | Sale por cualquier vía de conducción, también en contravía, al doble del tiempo |
+| Vehículo sin ningún regreso | Sale de servicio, su carga se pierde y sus pedidos vuelven a la cola |
+| Tiempo de carga en el acopio | 10 minutos por viaje |
+| Tiempo por entrega | 10 minutos, igual que en el optimizador |
+| Tiempo perdido al toparse un cierre | 3 minutos |
+| Confirmación humana de un cierre | 5 minutos |
+| Aprobación humana de un plan | 2 minutos, un plan a la vez |
+| Tanda de pedidos | cada 30 minutos |
+| Extracción de pedidos y cierres por el modelo de lenguaje | sin errores |
+| Pedidos | no se parten entre vehículos |
+| Inventario no perecedero | ilimitado |
+| Acopios | uno solo |
+| Demanda, flota, inventario y cierres | sintéticos |
+
+Los cierres se sortean entre los tramos que usan los caminos más cortos del acopio a los puntos, con probabilidad proporcional al número de caminos que pasan por cada uno. Se hizo así porque un cierre en una calle que ningún vehículo usa no pone a prueba a ninguna política. La consecuencia es que los cierres de la simulación estorban más que cierres sorteados al azar sobre toda la red.
+
+## 7. Lo que esta simulación no prueba
+
+- **No prueba que DespachoX supere a un buen despachador humano.** Los resultados dicen lo contrario para los dos indicadores del reto: una regla simple de prioridad y de rotación de bodega los iguala. La ventaja medida de DespachoX frente a esa regla está en los kilómetros.
+- **No mide el valor de la entrada por chat ni de la trazabilidad.** Todas las políticas reciben los pedidos y los cierres ya estructurados y sin errores. Si la parte de DespachoX que más ayuda es que el despachador sepa a tiempo qué se pidió, dónde está cerrado y qué se entregó, esta simulación no lo ve.
+- **No valida los supuestos.** Las velocidades, los tiempos de carga y de entrega, los plazos por urgencia, la flota, la demanda y los cierres son nuestros. Ningún dato viene de una operación real del Banco de Alimentos ni de los organismos de socorro.
+- **No dice cuál es la carga real.** Los tres niveles de carga se eligieron para que la línea base no quedara ni holgada ni colapsada. La magnitud de la ventaja depende mucho de ese nivel: va de 12 a 46 puntos.
+- **No representa bien los perecederos.** Hay un solo acopio, tanto inventario perecedero como demanda y lotes que vencen entre 6 y 48 horas. Con donaciones que excedan la demanda, cadena de frío o vencimientos más cortos el desperdicio sería otro.
+- **No evalúa el optimizador con su configuración de la demo.** Aquí busca 1 segundo por llamada y en la demo busca hasta 8. Con más tiempo de búsqueda el resultado de DespachoX podría mejorar, y no se midió cuánto.
+- **No incluye errores humanos ni del modelo de lenguaje.** El despachador aprueba siempre en 2 minutos, los conductores siguen el plan y todo cierre reportado es cierto.
+- **No cubre varios días.** Es una jornada de 14 horas, sin reabastecimiento ni cierres que se levanten.
+
+Una consecuencia para el producto: el modelo del optimizador pondera el retraso por urgencia, pero no premia de forma directa el indicador del reto. Subir el peso de los pedidos de puntos críticos, o darles prioridad estricta, es el cambio más corto para que DespachoX iguale o supere a la política `experta`. No se probó en esta corrida.
