@@ -1,5 +1,5 @@
 # Torre de control · Carlos · capitán
-Última actualización: viernes 20 de noviembre de 2026, 8:20 a. m.
+Última actualización: viernes 20 de noviembre de 2026, 10:35 a. m.
 
 ## Estado en una frase
 Repositorio montado con estrategia, prompt del equipo, torre de control y revisión del estado del arte; todavía no hay código.
@@ -21,6 +21,9 @@ Repositorio montado con estrategia, prompt del equipo, torre de control y revisi
 4. A las 2:30 p. m.: esqueleto de punta a punta (pedido por chat → ruta en el mapa).
 
 ## Decisiones y por qué
+- La organización permite programar antes de las 2:00 p. m. (lo confirmó Carlos). Se empieza ya.
+- Hoy trabajan tres: se recortan voz y QR, y la simulación se corre después de la mentoría.
+- Los módulos se comunican solo por SQLite (`datos/esquema.sql`).
 - Usuario principal: ABACO y el Banco de Alimentos. Es quien ya opera desde Manizales y ya dijo en prensa que su reto es el transporte.
 - No repetir «desabastecimiento en 48 horas» como hecho: no tiene fuente para este sismo.
 - Capacidad UNAL principal: indicador A25 del IDEA como riesgo de tramo. Segunda: patente del empaque captador de etileno, como supuesto de vida útil.
@@ -38,14 +41,13 @@ Repositorio montado con estrategia, prompt del equipo, torre de control y revisi
 ## Observaciones de mentores
 (vacío hasta la mentoría 1, viernes 7:00 p. m.)
 
-## Roles
+## Roles (viernes, tres personas; detalle en `docs/ROLES_VIERNES.md`)
 | Rol | Quién |
 |---|---|
-| A · Entrada | por asignar |
-| B · Optimización y medición | por asignar (ingeniero industrial + Carlos) |
-| C · Tablero | por asignar |
-| D · Ficha y pitch | por asignar |
-| Capitán | Carlos |
+| A · Entrada | Jacobo |
+| B · Despacho y capitán | Carlos |
+| C · Tablero y D · Ficha | Samuel |
+| Por sumarse | Nicolás y José Manuel |
 
 ## Aporte a la rúbrica
 | Criterio | Evidencia hoy | Falta |

@@ -12,7 +12,7 @@ Samuel Rosso (líder) · Carlos Orrego · Nicolás Ramírez · Jacobo Vasco · J
 
 ## Por dónde empezar
 
-**Hoy, antes de las 2:30 p. m.: `docs/TAREA_0.md`.**
+**Hoy: `docs/ROLES_VIERNES.md` dice quién hace qué. El contrato de datos está en `datos/esquema.sql`.**
 
 1. Lee `docs/ESTRATEGIA.md`: qué pide la hackathon, la rúbrica, qué construimos y el horario.
 2. Abre Claude en esta carpeta. `CLAUDE.md` ya trae las instrucciones del equipo. Si usas el chat web, copia `docs/PROMPT_EQUIPO.md` en las instrucciones de tu proyecto.
