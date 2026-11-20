@@ -1,9 +1,10 @@
 """Datos de prueba en `datos/semilla/`. Todo es sintético y sale de una semilla fija.
 
 Uso:
-    python -m despacho.semilla                 # escribe los CSV (barrios solo si falta)
-    python -m despacho.semilla --cargar        # además crea la base y la llena
+    python -m despacho.semilla                 # escribe los CSV sintéticos (barrios solo si falta)
+    python -m despacho.semilla --cargar        # crea la base y la llena con los CSV que ya existen
     python -m despacho.semilla --cargar --reiniciar   # borra lo que haya en la base antes de llenar
+    python -m despacho.semilla --cargar --reiniciar --origen datos_privados/   # datos reales
     python -m despacho.semilla --barrios       # vuelve a bajar los barrios de OpenStreetMap
 
 Los barrios y sus comunas vienen de OpenStreetMap. Los puntos, acopios, vehículos, lotes y
@@ -190,53 +191,240 @@ def generar() -> None:
                             "empaque_activo"], lotes)
 
 
-def cargar(reiniciar: bool = False, con=None) -> dict[str, int]:
-    """Crea la base (si no existe) y la llena con la semilla. Devuelve filas por tabla."""
+ARCHIVOS = ("puntos.csv", "acopios.csv", "vehiculos.csv", "lotes.csv", "pedidos.csv")
+OBLIGATORIAS = {
+    "puntos.csv": ("id", "nombre", "lat", "lon"),
+    "acopios.csv": ("id", "nombre", "lat", "lon"),
+    "vehiculos.csv": ("id", "tipo", "capacidad_kg", "acopio_id"),
+    "lotes.csv": ("id", "acopio_id", "producto", "kg"),
+    "pedidos.csv": ("id", "punto_id"),
+}
+TIPOS_VEHICULO = ("camion", "campero", "moto", "a_pie")
+ESTADOS_VEHICULO = ("libre", "en_ruta", "fuera")
+ESTADOS_PEDIDO = ("nuevo", "confirmado", "asignado", "entregado", "descartado")
+
+
+class ArchivoMalo(Exception):
+    """Un CSV no pasa la validación. El mensaje dice archivo, fila y razón."""
+
+
+def _validar(archivo: str, filas: list[dict], ahora: datetime) -> list[dict]:
+    """Devuelve las filas listas para insertar o lanza ArchivoMalo con todas las razones."""
+    errores: list[str] = []
+    oeste, sur, este, norte = red.AREA
+    if not filas:
+        raise ArchivoMalo(f"{archivo}: no tiene filas")
+    faltan = [c for c in OBLIGATORIAS[archivo] if c not in filas[0]]
+    if faltan:
+        raise ArchivoMalo(f"{archivo}: faltan las columnas {', '.join(faltan)}")
+    vistos, limpias = set(), []
+
+    for n, crudo in enumerate(filas, start=2):          # la fila 1 es la cabecera
+        r = {k: (v or "").strip() for k, v in crudo.items() if k}
+        mal = lambda razon: errores.append(f"{archivo}, fila {n}: {razon}")
+
+        def entero(campo, minimo=None, opcional=False, defecto=None):
+            if not r.get(campo):
+                if not opcional:
+                    mal(f"falta `{campo}`")
+                return defecto
+            try:
+                v = int(float(r[campo]))
+            except ValueError:
+                mal(f"`{campo}` no es un número entero: «{r[campo]}»")
+                return defecto
+            if minimo is not None and v < minimo:
+                mal(f"`{campo}` debe ser al menos {minimo}: «{r[campo]}»")
+            return v
+
+        def real(campo, positivo=False, opcional=False):
+            if not r.get(campo):
+                if not opcional:
+                    mal(f"falta `{campo}`")
+                return None
+            try:
+                v = float(r[campo].replace(",", "."))
+            except ValueError:
+                mal(f"`{campo}` no es un número: «{r[campo]}»")
+                return None
+            if positivo and v <= 0:
+                mal(f"`{campo}` debe ser mayor que cero: «{r[campo]}»")
+            return v
+
+        def coordenadas(opcional=False):
+            lat, lon = real("lat", opcional=opcional), real("lon", opcional=opcional)
+            if lat is not None and lon is not None and not (sur <= lat <= norte and oeste <= lon <= este):
+                mal(f"coordenadas fuera del área de la red ({lat}, {lon}); lat entre {sur} y {norte}, "
+                    f"lon entre {oeste} y {este}. ¿Están invertidas?")
+            return lat, lon
+
+        def fecha(absoluta, relativa, factor_h, opcional=True):
+            """Acepta una fecha ISO 8601 en `absoluta` o un tiempo relativo a la carga en `relativa`."""
+            if r.get(absoluta):
+                try:
+                    d = datetime.fromisoformat(r[absoluta])
+                except ValueError:
+                    mal(f"`{absoluta}` no es una fecha legible (use 2026-11-21T14:30): «{r[absoluta]}»")
+                    return None
+                return (d if d.tzinfo else d.replace(tzinfo=db.BOGOTA)).isoformat(timespec="seconds")
+            if r.get(relativa):
+                try:
+                    return (ahora + timedelta(hours=float(r[relativa]) * factor_h)).isoformat(timespec="seconds")
+                except ValueError:
+                    mal(f"`{relativa}` no es un número: «{r[relativa]}»")
+                    return None
+            if not opcional:
+                mal(f"falta `{absoluta}` (o `{relativa}`)")
+            return None
+
+        ident = entero("id", minimo=1)
+        if ident in vistos:
+            mal(f"`id` repetido: {ident}")
+        vistos.add(ident)
+        if archivo == "puntos.csv":
+            lat, lon = coordenadas()
+            if not r.get("nombre"):
+                mal("falta `nombre`")
+            limpias.append((ident, r.get("nombre"), r.get("barrio") or None, r.get("comuna") or None, lat, lon,
+                            entero("critico", opcional=True, defecto=0)))
+        elif archivo == "acopios.csv":
+            lat, lon = coordenadas()
+            if not r.get("nombre"):
+                mal("falta `nombre`")
+            limpias.append((ident, r.get("nombre"), lat, lon, entero("tiene_frio", opcional=True, defecto=0)))
+        elif archivo == "vehiculos.csv":
+            if r.get("tipo") not in TIPOS_VEHICULO:
+                mal(f"`tipo` desconocido: «{r.get('tipo')}». Valen: {', '.join(TIPOS_VEHICULO)}")
+            estado = r.get("estado") or "libre"
+            if estado not in ESTADOS_VEHICULO:
+                mal(f"`estado` desconocido: «{estado}». Valen: {', '.join(ESTADOS_VEHICULO)}")
+            lat, lon = coordenadas(opcional=True)
+            limpias.append([ident, r.get("nombre") or f"Vehículo {ident}", r.get("tipo"),
+                            real("capacidad_kg", positivo=True), entero("acopio_id", minimo=1), lat, lon, estado])
+        elif archivo == "lotes.csv":
+            if not r.get("producto"):
+                mal("falta `producto`")
+            perecedero = entero("perecedero", opcional=True, defecto=0)
+            vence = fecha("vence_en", "vence_en_horas", 1.0)
+            if perecedero and vence is None and not any("vence" in e and f"fila {n}:" in e for e in errores):
+                mal("un lote perecedero necesita `vence_en` o `vence_en_horas`")
+            limpias.append((ident, entero("acopio_id", minimo=1), r.get("producto"), real("kg", positivo=True),
+                            perecedero, vence, entero("empaque_activo", opcional=True, defecto=0)))
+        elif archivo == "pedidos.csv":
+            urgencia = entero("urgencia", opcional=True, defecto=2)
+            if urgencia not in (1, 2, 3):
+                mal(f"`urgencia` debe ser 1, 2 o 3: «{r.get('urgencia')}»")
+            estado = r.get("estado") or "nuevo"
+            if estado not in ESTADOS_PEDIDO:
+                mal(f"`estado` desconocido: «{estado}». Valen: {', '.join(ESTADOS_PEDIDO)}")
+            productos = r.get("productos") or None
+            if productos:
+                try:
+                    lineas = json.loads(productos)
+                    if not all(float(l["kg"]) > 0 and str(l["producto"]) for l in lineas):
+                        raise ValueError
+                except (ValueError, TypeError, KeyError):
+                    mal('`productos` debe ser JSON como [{"producto": "arroz", "kg": 20}] con kilos positivos')
+            kg = real("kg_estimado", positivo=True, opcional=True)
+            familias = entero("familias", minimo=1, opcional=True)
+            if not productos and kg is None and familias is None:
+                mal("el pedido necesita `productos`, `kg_estimado` o `familias`")
+            creado = fecha("creado_en", "creado_hace_min", -1 / 60) or ahora.isoformat(timespec="seconds")
+            limpias.append((ident, creado, entero("punto_id", minimo=1), familias, kg, productos, urgencia,
+                            fecha("limite_en", "limite_en_horas", 1.0), estado, r.get("texto_original") or None))
+    if errores:
+        raise ArchivoMalo("\n".join(errores))
+    return limpias
+
+
+def cargar(reiniciar: bool = False, con=None, origen: Path | str | None = None) -> dict:
+    """Crea la base (si no existe) y la llena. Con `origen`, cada CSV se toma de esa carpeta si
+    existe y de la semilla sintética si no. Un archivo malo detiene la carga sin tocar la base."""
     con = con or db.conectar()
     hay = sum(con.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0] for t in TABLAS)
     if hay and not reiniciar:
-        raise SystemExit("La base ya tiene datos. Usa --reiniciar para borrarlos y cargar la semilla.")
+        raise SystemExit("La base ya tiene datos. Usa --reiniciar para borrarlos y cargar de nuevo.")
     ahora = datetime.now(db.BOGOTA).replace(microsecond=0)
-    iso = lambda horas: (ahora + timedelta(hours=float(horas))).isoformat(timespec="seconds")
+    origen = Path(origen) if origen else None
+    if origen is not None and not origen.is_dir():
+        raise SystemExit(f"No existe la carpeta {origen}")
+    datos, fuente, errores = {}, {}, []
+    for archivo in ARCHIVOS:
+        real = origen is not None and (origen / archivo).is_file()
+        ruta = (origen if real else DIR) / archivo
+        fuente[archivo] = "real" if real else "sintético"
+        try:
+            with open(ruta, encoding="utf-8-sig", newline="") as f:
+                datos[archivo] = _validar(archivo, list(csv.DictReader(f)), ahora)
+        except ArchivoMalo as e:
+            errores.append(f"[{ruta}]\n{e}")
+        except (OSError, UnicodeDecodeError, csv.Error) as e:
+            errores.append(f"[{ruta}]\n{archivo}: no se pudo leer ({e}). Debe ser CSV en UTF-8.")
+    if not errores:      # referencias entre archivos, que es donde falla una mezcla de real y sintético
+        acopios = {a[0]: a for a in datos["acopios.csv"]}
+        puntos = {p[0] for p in datos["puntos.csv"]}
+        for v in datos["vehiculos.csv"]:
+            if v[4] not in acopios:
+                errores.append(f"vehiculos.csv ({fuente['vehiculos.csv']}), id {v[0]}: `acopio_id` {v[4]} no "
+                               f"existe en acopios.csv ({fuente['acopios.csv']})")
+            elif v[5] is None or v[6] is None:           # sin posición: está en su acopio
+                v[5], v[6] = acopios[v[4]][2], acopios[v[4]][3]
+        for l in datos["lotes.csv"]:
+            if l[1] not in acopios:
+                errores.append(f"lotes.csv ({fuente['lotes.csv']}), id {l[0]}: `acopio_id` {l[1]} no existe "
+                               f"en acopios.csv ({fuente['acopios.csv']})")
+        for p in datos["pedidos.csv"]:
+            if p[2] not in puntos:
+                errores.append(f"pedidos.csv ({fuente['pedidos.csv']}), id {p[0]}: `punto_id` {p[2]} no existe "
+                               f"en puntos.csv ({fuente['puntos.csv']})")
+    if errores:
+        raise SystemExit("Carga rechazada; la base no se tocó.\n" + "\n".join(errores))
     with con:
-        for t in TABLAS:
+        for t in ("ubicaciones", "lugares") + TABLAS:
             con.execute(f"DELETE FROM {t}")
         con.executemany("INSERT INTO puntos(id,nombre,barrio,comuna,lat,lon,critico) VALUES (?,?,?,?,?,?,?)",
-                        [(r["id"], r["nombre"], r["barrio"], r["comuna"], r["lat"], r["lon"], r["critico"])
-                         for r in _leer("puntos.csv")])
-        con.executemany("INSERT INTO acopios(id,nombre,lat,lon,tiene_frio) VALUES (?,?,?,?,?)",
-                        [(r["id"], r["nombre"], r["lat"], r["lon"], r["tiene_frio"]) for r in _leer("acopios.csv")])
+                        datos["puntos.csv"])
+        con.executemany("INSERT INTO acopios(id,nombre,lat,lon,tiene_frio) VALUES (?,?,?,?,?)", datos["acopios.csv"])
         con.executemany("INSERT INTO vehiculos(id,nombre,tipo,capacidad_kg,acopio_id,lat,lon,estado) "
-                        "VALUES (?,?,?,?,?,?,?,?)",
-                        [(r["id"], r["nombre"], r["tipo"], r["capacidad_kg"], r["acopio_id"], r["lat"],
-                          r["lon"], r["estado"]) for r in _leer("vehiculos.csv")])
+                        "VALUES (?,?,?,?,?,?,?,?)", datos["vehiculos.csv"])
         con.executemany("INSERT INTO lotes(id,acopio_id,producto,kg,perecedero,vence_en,empaque_activo) "
-                        "VALUES (?,?,?,?,?,?,?)",
-                        [(r["id"], r["acopio_id"], r["producto"], r["kg"], r["perecedero"],
-                          iso(r["vence_en_horas"]) if r["vence_en_horas"] else None, r["empaque_activo"])
-                         for r in _leer("lotes.csv")])
+                        "VALUES (?,?,?,?,?,?,?)", datos["lotes.csv"])
         con.executemany("INSERT INTO pedidos(id,creado_en,punto_id,familias,kg_estimado,productos,urgencia,"
-                        "limite_en,estado,texto_original) VALUES (?,?,?,?,?,?,?,?,?,?)",
-                        [(r["id"], iso(-float(r["creado_hace_min"]) / 60), r["punto_id"], r["familias"],
-                          r["kg_estimado"], r["productos"], r["urgencia"], iso(r["limite_en_horas"]),
-                          r["estado"], r["texto_original"]) for r in _leer("pedidos.csv")])
-    db.anotar(con, "semilla", "cargar semilla", f"semilla {SEMILLA}")
-    return {t: con.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0]
-            for t in ("puntos", "acopios", "vehiculos", "lotes", "pedidos")}
+                        "limite_en,estado,texto_original) VALUES (?,?,?,?,?,?,?,?,?,?)", datos["pedidos.csv"])
+    reales = [a for a in ARCHIVOS if fuente[a] == "real"]
+    db.anotar(con, "semilla", "cargar datos",
+              f"reales: {', '.join(reales) or 'ninguno'}; sintéticos: "
+              f"{', '.join(a for a in ARCHIVOS if fuente[a] != 'real') or 'ninguno'}")
+    lugares_n = None
+    try:                 # el nomenclátor depende de los puntos recién cargados
+        import lugares
+        lugares_n = lugares.cargar_semilla(con)
+    except Exception as e:  # noqa: BLE001
+        print(f"aviso: no se pudo recargar el nomenclátor ({type(e).__name__}: {e})", file=sys.stderr)
+    return {"filas": {a[:-4]: len(datos[a]) for a in ARCHIVOS}, "origen": fuente, "lugares": lugares_n}
 
 
 def main(argv: list[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(description="Genera la semilla sintética y, si se pide, la carga en la base.")
+    ap = argparse.ArgumentParser(description="Genera la semilla sintética y carga la base, con datos "
+                                             "sintéticos o con los CSV reales de otra carpeta.")
     ap.add_argument("--cargar", action="store_true", help="crea la base y la llena")
     ap.add_argument("--reiniciar", action="store_true", help="borra los datos que haya antes de cargar")
+    ap.add_argument("--origen", metavar="CARPETA", help="carpeta con CSV reales (p. ej. datos_privados/); "
+                    "lo que falte se completa con la semilla sintética")
+    ap.add_argument("--generar", action="store_true", help="vuelve a escribir los CSV sintéticos")
     ap.add_argument("--barrios", action="store_true", help="vuelve a bajar barrios.csv de OpenStreetMap")
     args = ap.parse_args(argv)
     if args.barrios or not (DIR / "barrios.csv").exists():
         print(f"barrios.csv: {barrios()} barrios", file=sys.stderr)
-    generar()
-    print(f"CSV escritos en {DIR}", file=sys.stderr)
+    if args.generar or not args.cargar or not all((DIR / a).exists() for a in ARCHIVOS):
+        generar()
+        print(f"CSV sintéticos escritos en {DIR}", file=sys.stderr)
     if args.cargar:
-        print(cargar(args.reiniciar))
+        r = cargar(args.reiniciar, origen=args.origen)
+        for archivo in ARCHIVOS:
+            print(f"{archivo:14} {r['origen'][archivo]:10} {r['filas'][archivo[:-4]]:4} filas")
+        if r["lugares"] is not None:
+            print(f"nomenclátor    {r['lugares']} apodos")
     return 0
 
 
