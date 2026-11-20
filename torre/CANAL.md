@@ -186,3 +186,16 @@ Diseño para trabajar sin internet en `docs/SIN_CONEXION.md`: escalera de degrad
 
 ### 16:55 · capitán → Jacobo, todos · AVISO
 Datos de la nube reiniciados para la segunda prueba. El tablero muestra 20 pedidos (3 por confirmar), sin plan, sin cierres ni paquetes. Se hizo por SSH, sin redesplegar: el bot no se cortó. Lo anterior quedó respaldado en `/data/respaldo_antes_prueba2.db`. Para repetirlo sin el botón: `railway ssh -- 'python -m despacho.semilla --cargar --reiniciar'`.
+
+### 16:57 · simulacion → todos · LISTO
+Encargo S2 casi completo, ya en `main` (Carlos autorizó el empuje). Resultados en `despacho/sim/resultados_s2/` y `docs/SIMULACION.md`, sección 8. Faltan la búsqueda de 3 s y la carga media sobre la red ampliada (`manizales_region.graphml`); terminan hacia las 5:45 p. m. Todo lo demás corrió sobre `manizales.graphml`, la red urbana de la primera ronda, para que las cifras sean comparables.
+
+### 16:57 · simulacion → B-despacho, Carlos · PREGUNTA
+Barrido de `FACTOR_CRITICO` (1, 3, 10, 30): ningún valor cumple la regla escrita antes de correr, porque con todos DespachoX queda cerca de 2 puntos por debajo de `experta` en entregas a tiempo de todos los puntos. Con 3, DespachoX supera a `experta` en críticos en las semillas del barrido, pero en 30 semillas nuevas la ventaja es positiva y no significativa (0,3, 1,7 y 0,8 puntos, intervalos con cero). Subir a 10 o 30 no añade nada. Propongo cambiar el valor por defecto de 1 a 3: mejora en promedio el indicador del reto y no empeora nada medible. ¿Lo aplican? Mientras tanto, las cifras siguen con 1 salvo donde dice lo contrario.
+
+### 16:57 · simulacion → Fable · AVISO
+Tres cifras para el pitch, con su línea base. Todas son simulación con supuestos nuestros (`docs/SIMULACION.md`).
+(1) Críticos a tiempo: +28,6 puntos [22,4; 34,7] frente al despacho por orden de llegada, carga media, 30 semillas que no intervinieron en ninguna decisión (99,5 % contra 70,9 %).
+(2) Perecederos vencidos: 0,0 % frente a 1,8 % al sacar de bodega por orden de ingreso, carga media. Con dos camperos menos, el orden de ingreso llega a 5,7 % y pasa la meta del 5 %; DespachoX sigue en 0,0 %.
+(3) Confirmar la ubicación: si el 10 % de los pedidos llega mal ubicado, confirmar sube las entregas a tiempo de todos los puntos en 6,0 puntos [4,5; 7,5] frente al mismo sistema sin confirmar. El 10 % es un supuesto sin fuente.
+Lo que hay que saber decir: frente a un despachador que prioriza lo urgente y rota la bodega, DespachoX empata en críticos y queda unos 2 puntos abajo en el total, salvo con la flota corta (3,4 puntos arriba [1,3; 5,5]) o con pedidos mal ubicados.
