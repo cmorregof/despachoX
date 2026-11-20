@@ -25,7 +25,7 @@ Criterio de parada honesto: si en la reconstrucción en frío DespachoX no mejor
 
 - Todo el sistema corre en un portátil: Python, SQLite, red vial de OpenStreetMap en disco y un optimizador abierto (OR-Tools). No requiere infraestructura nueva del aliado.
 - El usuario final no instala nada: escribe por un chat que ya usa.
-- Si falla internet o el modelo de lenguaje, el pedido entra como texto y el despachador lo digita. El mapa y el optimizador siguen funcionando sin conexión.
+- Si falla internet o el modelo de lenguaje, el pedido entra como texto y el despachador lo digita. El optimizador sigue funcionando sin conexión; el fondo del mapa necesita red.
 
 ### Factibilidad operativa
 
@@ -50,7 +50,7 @@ Criterio de parada honesto: si en la reconstrucción en frío DespachoX no mejor
 | El aliado no adopta la herramienta | Operación en sombra antes de pedir ningún cambio de proceso |
 | Datos personales | No se guardan nombres ni teléfonos; el remitente queda como un código. Ley 1581 de 2012 |
 | Dependencia de un proveedor de IA | La extracción es un módulo aislado; se puede cambiar de modelo o digitar a mano |
-| Uso de una patente sin condiciones claras | Ninguna patente entra al prototipo; se evalúa en el piloto con la oficina de propiedad intelectual |
+| Uso de una patente sin condiciones claras | La patente del empaque entra al prototipo solo como un parámetro supuesto del modelo. Su uso real se acuerda en el piloto con la oficina de propiedad intelectual |
 
 ### Aliados y padrinos
 
@@ -82,6 +82,6 @@ La rúbrica pide beneficiarios, resultados, magnitud e indicadores verificables.
 | Desperdicio de perecederos | Kilos de perecederos vencidos antes de entregarse, sobre kilos perecederos despachables | **[simulación]** | Menos del 5 % (meta de la ficha del reto) | Igual |
 | Tiempo de recálculo | Segundos entre confirmar un cierre vial y tener un plan nuevo | No aplica: hoy se hace por teléfono | Menos de 30 segundos | Medición directa en el prototipo |
 | Trazabilidad | Paquetes con confirmación de entrega registrada, sobre paquetes despachados | **[por preguntar al aliado]** | Más del 90 % en el simulacro | Bitácora del sistema |
-| Equidad | Tiempo de llegada al punto peor atendido | **[simulación]** | Menor que la línea base | Simulación |
+| Equidad (costo conocido) | Tiempo de espera en el punto peor atendido | Medido en simulación | Sin meta: priorizar lo crítico lo aumenta entre 0,9 y 4,3 horas según la carga. Se reporta y se vigila | Simulación |
 
 Regla del equipo: los números de la simulación se presentan como simulación, con sus supuestos y el número de escenarios. No se presentan como resultados de campo.

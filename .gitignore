@@ -16,3 +16,4 @@ datos/*.db-wal
 datos/*.db-shm
 despacho/cache/
 datos/*.sal
+datos/*.sal

@@ -26,8 +26,8 @@ Con el tablero proyectado y el plan aprobado ya en pantalla:
 
 1. «Un líder de barrio pide ayuda por chat.» Se envía el mensaje preparado. Aparece el pedido en el mapa. (15 s)
 2. «El despachador lo confirma y pide un plan.» Clic, rutas dibujadas. (15 s)
-3. **«Ahora necesito a alguien del jurado.»** Se le pasa un teléfono o se muestra un código QR del bot: «Escriba que hay un derrumbe en la vía a Chinchiná.» (Solo vías que estén en `datos/semilla/vias.csv`: La Siria y la vía a Neira no están en la red.) (20 s)
-4. El cierre aparece en rojo. El despachador lo confirma. Las rutas cambian. «Ningún camión pasa ya por ahí, y lo que vence primero sigue saliendo primero.» (20 s)
+3. **«Ahora necesito a alguien del jurado.»** Se le pasa un teléfono o se muestra un código QR del bot: «Escriba que hay un derrumbe en la avenida del Centro.» (Es el tramo que sí cambia rutas con la semilla; ver `docs/GUION_DEMO.md`. La Siria ya se reconoce y sirve para las preguntas.) (20 s)
+4. El cierre aparece en rojo. El despachador lo confirma. Las rutas cambian. «El camión ya no entra a San José, así que el sistema manda el campero.» (20 s)
 5. «El sistema propuso. Quien aprobó fue una persona.» (5 s)
 
 Si algo falla: se dice «tenemos el mismo recorrido grabado» y se reproduce el video. No se depura en vivo.
@@ -36,7 +36,7 @@ Si algo falla: se dice «tenemos el mismo recorrido grabado» y se reproduce el 
 
 > Tres piezas. Un modelo de lenguaje que solo lee y ordena el mensaje. Un optimizador de rutas para flota mixta que prioriza por vencimiento. Y una regla: decide el despachador.
 
-- Capacidad UNAL: **[indicador de lluvia acumulada del IDEA, que penaliza los tramos de ladera en alerta, si queda integrado]**.
+- Capacidad UNAL: la patente colombiana 37476 de la Universidad Nacional, un empaque que captura etileno y retarda la maduración. El modelo trata distinto el vencimiento de un lote con ese empaque, como supuesto declarado, y el piloto propone medirlo con la UNAL. **[decir «vigente» solo si Fernando Bernal confirma la anualidad 2026]**
 - Asesoría: **[profesor de la Sede que revisó la formulación, si se consigue]**.
 
 ### 5. Qué medimos (20 s) · criterios 2 y 6
@@ -45,7 +45,7 @@ Si algo falla: se dice «tenemos el mismo recorrido grabado» y se reproduce el 
 
 - Contra un despacho por orden de llegada, las entregas a tiempo en puntos críticos suben 12, 29 y 46 puntos porcentuales con carga holgada, media y alta.
 - Los perecederos vencidos bajan de entre 0,5 % y 3,5 % a 0 %. Eso lo logra la regla de bodega «primero lo que vence primero», no el ruteo.
-- Contra un despachador experto que ya prioriza lo urgente, empatamos en esos indicadores y recorremos entre 47 y 75 km menos por jornada.
+- Contra un despachador experto que ya prioriza lo urgente, empatamos en puntos críticos y recorremos entre 47 y 75 km menos por jornada. En entregas a tiempo de todos los puntos quedamos 1,8 y 2,2 puntos por debajo con carga media y alta: se dice si preguntan.
 
 > Es una simulación, con sus supuestos escritos. No todos los centros de acopio tienen a ese experto un domingo a las tres de la mañana: DespachoX deja esa pericia escrita y disponible para cualquier voluntario. El dato real sale del piloto.
 
@@ -55,7 +55,7 @@ Fuente: `docs/SIMULACION.md`. Estas cifras son de la primera corrida; el encargo
 
 > En 30 días reconstruimos los despachos de agosto con **[aliado]** y comparamos. En 60, un simulacro con un comité barrial y vehículos reales. En 90, operación junto al despachador y decisión de adopción.
 
-- Corre en un portátil, sin conexión si hace falta. Leer un mensaje cuesta fracciones de centavo.
+- Corre en un portátil. El optimizador no necesita internet; el fondo del mapa sí. Leer un mensaje cuesta fracciones de centavo.
 - No guarda nombres ni teléfonos.
 
 ### 7. Cierre (10 s)
@@ -75,8 +75,8 @@ Fuente: `docs/SIMULACION.md`. Estas cifras son de la primera corrida; el encargo
 |---|---|
 | ¿Qué pasa si la IA entiende mal? | Le responde al remitente lo que entendió y un humano confirma antes de despachar. Medimos el acierto con mensajes mal escritos: **[número]** |
 | ¿Por qué no usar Google Maps o Waze? | Dan una ruta para un carro. No reparten veinte pedidos entre cinco vehículos distintos ni saben qué se vence |
-| ¿Y sin internet? | El mapa y el optimizador corren sin conexión. El pedido se digita a mano |
-| ¿La línea base es justa? | Usamos tres. Contra el orden de llegada ganamos por mucho. Contra un experto que prioriza lo urgente empatamos en entregas a tiempo y ahorramos kilómetros. Lo decimos así porque así salió |
+| ¿Y sin internet? | El optimizador y la red vial corren sin conexión. El fondo del mapa y el chat necesitan red; sin ella, el pedido se digita en el tablero |
+| ¿La línea base es justa? | Usamos tres. Contra el orden de llegada ganamos por mucho. Contra un experto que prioriza lo urgente empatamos en puntos críticos, quedamos unos 2 puntos por debajo en el total y ahorramos kilómetros. Lo decimos así porque así salió |
 | Entonces, ¿para qué el optimizador si una regla simple empata? | Porque esa regla vive en la cabeza de una persona con experiencia. El sistema la aplica siempre, la combina con cierres viales que llegan por chat, ahorra recorrido y deja registro. Y la simulación no mide el valor de la entrada por chat ni de la trazabilidad |
 | ¿Qué de la UNAL hay aquí? | **[respuesta honesta según lo que quede integrado]** |
 | ¿Quién lo va a usar? | **[aliado con nombre]** |

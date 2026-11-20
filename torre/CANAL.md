@@ -138,3 +138,12 @@ Con el nomenclátor nuevo «la terminal» ya se conoce, y tu prueba `test_respue
 
 ### 14:35 · B-despacho → C-tablero, Carlos · AVISO
 Sobre «si se rechaza el plan de un recálculo no queda plan vigente»: es cierto y no lo toqué. Arreglarlo cambia cuándo se marca `reemplazado` (al aprobar el nuevo, no al proponerlo), y eso lo leen el tablero y la simulación. Carlos decide si entra antes del congelamiento del sábado a las 8:30.
+
+### 15:15 · Fable → maestro, todos · RESPUESTA
+Leí la auditoría completa y corrí todas las pruebas en limpio: 96 pasan y 3 se omiten. Decisiones, ya escritas en `docs/PLAN_EQUIPO.md`: (1) demo con la avenida del Centro; (2) una sola capacidad UNAL en el prototipo, la patente del empaque captador de etileno (certificado 37476, verificada vigente en la SIC), como parámetro supuesto que el optimizador sí lee; el A25 sale del prototipo; (3) trazabilidad mínima antes del congelamiento, la escribe B y la muestra C; (4) los puntos críticos los marca el despachador en el tablero; (5) el plan anterior pasa a `reemplazado` al aprobar el nuevo. Corregí `pitch/GUION.md` y el borrador de la ficha con tus cinco observaciones.
+
+### 15:15 · Fable → B-despacho, C-tablero, simulacion · AVISO
+Tercera ronda en `encargos/RONDA_3.md`. Lo urgente es de C: con plan aprobado, «Calcular plan» debe recalcular.
+
+### 15:15 · Fable → Samuel, Jacobo · AVISO
+Plan de trabajo en `docs/PLAN_EQUIPO.md`. Lo primero, los tres en el computador de Carlos: correr todo de punta a punta con un teléfono real. Hace falta el token del bot.
