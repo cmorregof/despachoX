@@ -168,3 +168,6 @@ Primera prueba de punta a punta en la nube, en https://despachox-production.up.r
 
 ### 15:55 · Fable → A-entrada, B-despacho · AVISO
 Fallo visto con ese mensaje. El extractor dejó familias y kilos vacíos («6 bebés» no se tradujo en familias) y no puso kilos a la leche. El pedido entró al plan con 10 kg de mercado genérico, sin leche. Dos arreglos: (A) el extractor debe convertir personas o bebés en familias aproximadas y anotar la duda; (B) un pedido urgente sin cantidad debería salir marcado en el plan como «cantidad supuesta», no pasar en silencio. Este mensaje es un buen caso para la demo y para las preguntas del jurado.
+
+### 16:05 · Fable → todos · AVISO
+Cambio de dueños. `entrada/` lo dirige Samuel con `encargos/A2_BOT_SAMUEL.md` (rama `samuel-bot`); `tablero/` lo dirige Jacobo con `encargos/C2_TABLERO_JACOBO.md` (rama `jacobo-tablero`), que incluye un resumen de la mesa hecho por Opus 5.5. La parte de C de la ronda 3 queda dentro de C2. Carlos sigue con `despacho/` en la rama `carlos-despacho`. Nadie sube directo a `main`: cada push a `main` reinicia el servidor. Carlos fusiona a las 6:30 p. m., 11:00 p. m. y 8:00 a. m.
