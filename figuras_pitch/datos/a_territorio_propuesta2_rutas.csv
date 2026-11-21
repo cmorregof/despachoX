@@ -1,0 +1,6 @@
+lugar,lat,lon,origen_coordenada,km_por_la_red,metros_a_la_via,metros_al_nodo_mas_cercano,km_hasta_el_nodo_mas_cercano
+Assbasalud Clínica San Cayetano,5.073819,-75.493978,"datos_publicos/puntos.csv, id 7",2.442,17,25,2.429
+CDI El Caribe,5.073692,-75.497414,"datos_publicos/puntos.csv, id 15",2.69,13,16,2.681
+CDI San Sebastián,5.086183,-75.490241,"datos_publicos/puntos.csv, id 27",4.084,0,23,4.062
+CISCO Bosques del Norte,5.080773,-75.488286,"datos_publicos/puntos.csv, id 36",3.355,19,29,3.338
+Alto Bonito,5.114141,-75.509807,"datos_publicos/puntos.csv, id 46",8.772,2,10,8.761

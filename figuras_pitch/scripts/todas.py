@@ -43,6 +43,7 @@ def main():
     pasos = [
         ["mapa_territorios.py"],
         ["mapa_territorios.py", "--solo", "1"],
+        ["mapa_territorios.py", "--solo", "2"],
         ["cuello_despacho.py"],
         ["regla_arquitectura.py"],
         ["cierres_sin_sismo.py"],
