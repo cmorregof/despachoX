@@ -468,6 +468,9 @@ Several assumptions favour every policy. Every reported closure is real, confirm
 \section{Results}\label{sec:results}
 
 % How to fill: despacho/sim/correr.py writes resultados.csv and resumen.md in the output folder of the run.
+% Fast path: nice -n 19 /home/claude/venv-dx/bin/python -I docs/manuscrito/llenar_resultados.py <run>/resultados.csv \
+%   --commit <hash> > docs/manuscrito/resultados_tablas.tex ; then replace Tables tab:scen, tab:means and tab:diff
+%   below by \input{resultados_tablas}. The script mirrors correr.py (tested on the first-round CSV in /tmp, not kept).
 % Table tab:scen <- the line "Escenarios: ..." of each load level in resumen.md.
 % Table tab:means <- "Media por política (desviación estándar entre semillas)" of each load level.
 % Table tab:diff <- the paired differences with IC 95 % and the win/tie/loss counts.
