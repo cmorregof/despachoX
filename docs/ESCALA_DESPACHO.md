@@ -140,9 +140,11 @@ Lo que queda es pintar: 15.170 botones sin grupos, y en los dos casos el mapa co
 
 Capturas del tablero en el navegador integrado de la sesión, con la misma base de 15.000 pedidos. Sin grupos, el navegador tardó unos 30 segundos en pasar del esqueleto a la página, porque recibe 7.584 tarjetas con dos botones cada una y la página se vuelve a calcular cada 5 segundos. Con grupos, la página apareció en menos de 10 segundos.
 
-| Sin grupos: 7.584 tarjetas | Con grupos: 138 tarjetas |
-|---|---|
-| ![](capturas/escala_15000_sin_grupos.jpg) | ![](capturas/escala_15000_con_grupos.jpg) |
+En la primera pantalla las dos versiones se parecen: mismos indicadores, mismo mapa, y solo cambia el número de «Por revisar». La diferencia es el largo de esa columna. Medido en el navegador con grupos: 138 tarjetas ocupan 54.270 px, 71 pantallas de 768 px. Sin grupos, a unos 350 px por tarjeta, 7.584 tarjetas serían unas 3.460 pantallas (**extrapolado**: el navegador solo alcanzó a dibujar 55 tarjetas en 70 s, porque la mesa se recalcula cada 5 s y nunca termina de pintar).
+
+![](capturas/escala_15000_comparacion.png)
+
+Capturas completas: `capturas/escala_15000_sin_grupos.jpg` y `capturas/escala_15000_con_grupos.jpg`.
 
 ## Qué haría falta
 
