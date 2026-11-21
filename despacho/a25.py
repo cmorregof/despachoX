@@ -6,9 +6,9 @@ de Gestión del Riesgo de Manizales le fijó tres niveles de alerta: amarilla de
 naranja desde 300 mm y roja desde 400 mm (IDEA, Boletín Ambiental 145, marzo de 2018, tabla 2).
 El reporte del IDEA de 2020 llama a los niveles «amarilla o baja», «naranja o media» y «roja o
 alta». Ninguno de los dos documentos dice en palabras si la suma incluye el día del reporte, y
-por eso lo comprobamos con los números del reporte de 2020. Allí el A25 de la estación Chec-Uribe
-del 25 al 31 de enero de 2020 es la suma de ese día y los 24 anteriores, en los siete días (prueba
-en `despacho/tests/test_a25.py`). Detalle y enlaces en `docs/A25.md`.
+por eso lo comprobamos con los números del reporte de 2020. Allí los 36 A25 de la estación
+Chec-Uribe del 25 de enero al 29 de febrero de 2020 son la suma de ese día y los 24 anteriores
+(prueba en `despacho/tests/test_a25.py`). Detalle y enlaces en `docs/A25.md`.
 
 Cómo lo usa DespachoX. A cada tramo con nombre (`lugares` de tipo vía, o `datos/semilla/vias.csv`)
 se le asigna la estación más cercana de `datos_publicos/estaciones_a25.csv`, igual que los
@@ -125,7 +125,7 @@ def ventana(serie_diaria: Mapping[date, float | None], fecha: date) -> Ventana:
 def a25(serie_diaria: Mapping[date, float | None], fecha: date) -> float:
     """Lluvia acumulada (mm) de los 25 días que terminan en `fecha`, incluida `fecha`.
 
-    Así lo calcula el IDEA (comprobado con su reporte de 2020; ver el encabezado del módulo).
+    Así lo calcula el IDEA (36 valores de su reporte de 2020; ver el encabezado del módulo).
     Redondeado a 0,1 mm, la resolución de los reportes del IDEA. Los días sin dato cuentan 0,
     de modo que el resultado es una cota inferior; si ningún día tiene dato devuelve NaN.
     Use `ventana()` para saber cuántos días faltaron.

@@ -33,16 +33,26 @@ def test_a25_suma_el_dia_y_los_24_anteriores():
 
 
 def test_a25_reproduce_el_reporte_del_idea_de_2020():
-    """Estación Chec-Uribe, enero de 2020, del reporte «SAT Deslizamientos-Registro lluvias diarias y
-    A25 2020» del IDEA (leído con un extractor automático el 2026-11-20; abrir el PDF para confirmar).
-    El IDEA publica el A25 del 25 al 31 de enero: con la lluvia del 1 al 31 se reproduce si la
-    ventana incluye el día del reporte. Si no lo incluyera, el 21 de enero no podría subir 20 mm."""
+    """Estación Chec-Uribe, enero y febrero de 2020, del reporte «SAT Deslizamientos-Registro lluvias
+    diarias y A25 2020» del IDEA (leído con un extractor automático el 2026-11-20; abrir el PDF para
+    confirmar). Con la lluvia diaria desde el 1 de enero se reproducen los 36 A25 publicados del 25
+    de enero al 29 de febrero si la ventana incluye el día del reporte. Sin el día no cuadra: el 21
+    de enero el A25 sube 20 mm, que es la lluvia de ese mismo día."""
     lluvia_enero = [5.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.8, 0.0,
                     0.0, 0.0, 0.0, 0.8, 20.0, 16.6, 0.0, 1.2, 1.6, 14.8, 4.4, 2.6, 0.0, 0.0, 0.0]
-    a25_idea = {25: 46.0, 26: 55.8, 27: 60.2, 28: 62.8, 29: 62.8, 30: 62.8, 31: 62.8}
+    lluvia_febrero = [0.0, 0.6, 0.0, 0.0, 0.0, 0.0, 0.0, 0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.4,
+                      0.0, 0.0, 0.0, 16.0, 0.0, 53.8, 0.0, 5.8, 2.0, 16.2, 0.0, 0.0, 0.0]
+    a25_enero = {25: 46.0, 26: 55.8, 27: 60.2, 28: 62.8, 29: 62.8, 30: 62.8, 31: 62.8}
+    a25_febrero = [62.8, 63.4, 63.4, 63.4, 63.4, 63.4, 63.4, 63.6, 62.8, 62.8, 62.8, 62.8, 62.8, 62.0, 42.0,
+                   29.8, 29.8, 28.6, 27.0, 28.2, 23.8, 75.0, 75.0, 80.8, 82.8, 99.0, 98.4, 98.4, 98.4]
     serie = {date(2020, 1, d): mm for d, mm in enumerate(lluvia_enero, start=1)}
-    for dia, esperado in a25_idea.items():
-        assert a25.a25(serie, date(2020, 1, dia)) == esperado, dia
+    serie.update({date(2020, 2, d): mm for d, mm in enumerate(lluvia_febrero, start=1)})
+    esperado = {date(2020, 1, d): v for d, v in a25_enero.items()}
+    esperado.update({date(2020, 2, d): v for d, v in enumerate(a25_febrero, start=1)})
+    assert len(esperado) == 36
+    for dia, valor in esperado.items():
+        assert a25.a25(serie, dia) == valor, dia
+        assert a25.ventana(serie, dia).completo
 
 
 @pytest.mark.parametrize("valor, esperado", [
