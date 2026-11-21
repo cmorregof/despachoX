@@ -435,8 +435,7 @@ def tabla_variantes(metricas: dict[str, dict], claves: list[str], campos: list[t
                 f1 = m["productos"]["f1"]
                 celdas.append(_pct(f1) + " %" if f1 is not None else "no aplica")
             else:
-                x = m.get(campo)
-                celdas.append(f"{x['aciertos']}/{x['n']} ({_pct(x['proporcion'])} %)" if x and x["n"] else "no aplica")
+                celdas.append(_celda(m.get(campo)))
         filas.append(f"| {k.split(':', 1)[1]} | {m['mensajes']} | " + " | ".join(celdas) + " |")
     return "\n".join(filas)
 

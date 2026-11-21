@@ -103,9 +103,9 @@ def main(argv: list[str] | None = None) -> int:
     from evaluacion.lector import evaluar as EV
     conjunto = EV.cargar_conjunto()
     n = min(a.max, TOPE_LLAMADAS, len(conjunto))
-    lo, hi = (n * c for c in COSTO_POR_MENSAJE_USD)
+    lo, hi = (f"{n * c:.2f}".replace(".", ",") for c in COSTO_POR_MENSAJE_USD)
     print(f"Haría {n} llamadas al modelo (tope duro {TOPE_LLAMADAS}). Costo estimado con los supuestos de "
-          f"entrada/ESCALA.md: entre {lo:.2f} y {hi:.2f} USD.")
+          f"entrada/ESCALA.md: entre {lo} y {hi} USD.")
     if not os.environ.get("ANTHROPIC_API_KEY"):
         print("Sin ANTHROPIC_API_KEY: no se mide. Ponla en .env o en el entorno.")
         return 2

@@ -32,7 +32,7 @@ En todas las variantes el conteo va en familias (50 %), personas (30 %), niños 
 - *Conteo*: familias, personas y bebés, cada uno igual al oro. *Productos*: el conjunto de nombres de bodega, con precisión, exhaustividad y F1 sumadas sobre todos los mensajes. *Cantidades*: los kilos de cada producto que el oro trae con kilos.
 - *Abstención*: si al oro le falta el lugar, el conteo o los productos, el lector debe dejar el campo vacío.
 - *Dos pedidos*: la lectura se compara con el pedido de oro que mejor le empareja, y el otro cuenta como perdido. `Extraccion` tiene un solo pedido, así que con el esquema actual la detección no puede pasar de cero.
-- *Mensaje sin ningún error*: todos los campos bien y el lugar en acierto seguro.
+- *Mensaje sin ningún error*: todos los campos bien. El lugar debe quedar en acierto seguro, vacío si el mensaje no lo dice, o sin compromiso si es ambiguo o desconocido.
 
 ## Campo por campo
 
@@ -90,7 +90,7 @@ Celdas: aciertos/n (porcentaje; intervalo de Wilson al 95 %). Las tablas complet
 
 El formato enseñado por SMS sale bien en todo lo que depende del lector: tipo, lugar extraído, conteo y productos en 30 de 30. Los 7 que no quedan sin errores son lugares que el resolvedor deja por opciones, como Bajo Prado frente a El Prado o un albergue frente a su barrio. La voz es la variante más difícil, con 13 de 60 sin errores. Con 30 mensajes por variante los intervalos son anchos; por ejemplo, los de limpio y sin tildes se traslapan, así que esa diferencia no muestra que escribir bien empeore la lectura.
 
-**Tiempo.** Leer un mensaje toma 0,94 ms de mediana (p95 1,96 ms) y resolver su lugar sin modelo 31,5 ms (p95 70,3 ms). Lo medimos en un Mac arm64 (Darwin 25.5.0) con Python 3.12.13, sin red, sobre los 330 mensajes.
+**Tiempo.** Leer un mensaje toma 1,00 ms de mediana (p95 2,08 ms) y resolver su lugar sin modelo 34,3 ms (p95 75,6 ms). Lo medimos en un Mac arm64 (Darwin 25.5.0) con Python 3.12.13, sin red, sobre los 330 mensajes. Otra corrida de la misma noche dio 0,94 ms y 31,5 ms. De una vez a otra, la lectura varía menos de una décima de milisegundo y el lugar unos 3 ms.
 
 ## Errores típicos, con ejemplos del conjunto
 
@@ -118,7 +118,7 @@ El formato enseñado por SMS sale bien en todo lo que depende del lector: tipo, 
 
 No editamos `entrada/` ni `lugares/`. Cada arreglo se puede medir otra vez con `python -m evaluacion.lector.evaluar`; no adelantamos cifras.
 
-1. `entrada/sms.py:108-119`. Elegir el tramo de lugar por su puntaje en el nomenclátor (`lugares.nomenclator.buscar`) en vez de por su largo, y sumar a `RELLENO` las fórmulas de cortesía y los verbos que más se cuelan (dios, les, pague, bendiga, quedamos, atentos, mil, muchas, necesitan, pide, comite, afan, podemos).
+1. `entrada/sms.py:108-119`. Elegir el tramo de lugar por su puntaje en el nomenclátor (`lugares.nomenclator.buscar`) en vez de por su largo, y sumar a `RELLENO` las fórmulas de cortesía y los verbos que más se cuelan (dios, les, pague, quedamos, atentos, mil, muchas, necesitan, pide, comite, afan, podemos).
 2. `entrada/sms.py:168-185`. Leer números en palabras, de «uno» a «novecientos noventa y nueve», antes de clasificar.
 3. `entrada/sms.py:40-41` y `46`. Añadir «pers», «abuelitos», «adultos mayores» y «embarazadas» a `PERSONAS`, y revisar `VULNERABLES` para todas las palabras, no solo para las de `BEBES | PERSONAS` (línea 188).
 4. `entrada/sms.py:101-104` o `entrada/raciones.py`, `SINONIMOS`. Igualar s, z y c, b y v, y ll e y antes de comparar productos, o poner «arros», «aseite» y «poyo» como sinónimos.
@@ -127,7 +127,7 @@ No editamos `entrada/` ni `lugares/`. Cada arreglo se puede medir otra vez con `
 7. `entrada/sms.py:190-191` y `202-208`. Una regla mínima de negación: «no es urgente» no sube la urgencia, y un producto después de «no necesitamos» o «ya nos llegó» no se pide.
 8. `entrada/sms.py:225-232`. Dejar como `otro`, para el despachador, los mensajes que cancelan («cancelen»), agradecen una entrega («ya recibimos») o preguntan («cuando llega», «?»), en vez de crear un pedido nuevo.
 9. `entrada/extraer.py:57-75`. `Extraccion` tiene un solo pedido. Mientras tanto, el lector puede anotar en `dudas` que parece haber dos pedidos, para que el despachador los separe.
-10. **Probable error, sin verificar.** `entrada/flujo.py:102-107`: con el modelo activo, `Mesa.leer` solo usa las reglas si el modelo falla, y `Lectura` (`entrada/extraer.py:57-65`) no tiene campo para el código de entrega. Si es así, un «ENTREGADO DX-…» escrito por Telegram con clave recibiría «No entendí». No lo pudimos comprobar sin clave. La propuesta es que `Mesa.leer` pruebe primero `leer_sms` y devuelva su lectura si trae `entregado`.
+10. **Probable error, sin verificar.** `entrada/flujo.py:102-107`. Con el modelo activo, `Mesa.leer` solo usa las reglas si el modelo falla, y `Lectura` (`entrada/extraer.py:57-65`) no tiene campo para el código de entrega. Si es así, un «ENTREGADO DX-…» escrito por Telegram con clave recibiría «No entendí». No lo pudimos comprobar sin clave. La propuesta es que `Mesa.leer` pruebe primero `leer_sms` y devuelva su lectura si trae `entregado`.
 11. **Para fusionar `samuel-bot`.** Corrimos el mismo conjunto contra `origin/samuel-bot` (commit 8bb5313), que amplía el catálogo con atún, azúcar, café, pasta, sal, chocolate y papa. El difícil d28 («atun, azucar y cafe») pasa a salir bien. En cambio, «café» rompe el barrio Villa Café: g101, g296 y g298 salían bien y ahora dan el lugar «villa» y un café que nadie pidió. Los generados sin errores bajan de 151 a 148 y los difíciles suben de 11 a 12. Conviene que una palabra que forma parte de un lugar conocido no se lea como producto.
 12. **Para quien lleva `lugares/`.** En `buscar()` (`lugares/nomenclator.py:116-119`), fusionar los candidatos que comparten `punto_id`. Así el barrio y su albergue dejarían de competir entre sí, que es lo que pasa en 19 de los 43 pedidos por opciones.
 
@@ -141,16 +141,16 @@ No se midió. Esta noche no había `ANTHROPIC_API_KEY` y no se llamó a la API. 
 
 ## Cómo medirlo con mensajes reales en el piloto
 
-1. **Consentimiento.** El bot y la respuesta por SMS avisan que los mensajes, sin datos personales, se usan para medir la lectura, con un texto de tratamiento de datos que revise el aliado (Ley 1581 de 2012). Quien no quiera, responde NO y su mensaje queda fuera de la muestra.
-2. **Muestra.** En los primeros 30 días, 200 mensajes al azar entre los que lleguen, por partes iguales entre texto de chat, notas de voz transcritas y SMS. Con 200 mensajes, el intervalo de Wilson de una proporción cercana al 50 % mide unos 7 puntos hacia cada lado.
+1. **Consentimiento.** El bot y la respuesta por SMS avisan que los mensajes, sin datos personales, se usan para medir la lectura, con un texto de tratamiento de datos que revise el aliado (Ley 1581 de 2012). Quien no quiera puede pedirlo, y sus mensajes quedan fuera de la muestra.
+2. **Muestra.** En los primeros 30 días, 210 mensajes al azar entre los que lleguen, 70 por canal (texto de chat, notas de voz transcritas y SMS). Con 210 mensajes, el intervalo de Wilson de una proporción cercana al 50 % mide unos 7 puntos hacia cada lado, y unos 11 con los 70 de un canal.
 3. **Anonimización.** `privacidad.limpiar` y una revisión a mano antes de etiquetar. Los textos se quedan en el equipo del aliado y no entran al repositorio; al repositorio solo llegan las cifras.
 4. **Oro.** Dos personas del Banco o de la UGR etiquetan cada mensaje por separado, con los campos de `conjunto.jsonl` y sin ver la lectura del sistema. Una tercera resuelve los desacuerdos, y se reporta cuánto coincidieron las dos primeras.
 5. **Corrida.** `python -m evaluacion.lector.evaluar --conjunto <archivo> --salida <carpeta>`, con las dos rutas fuera del repositorio, y `medir_modelo.py` para el modelo. Se reporta la misma tabla por canal, junto a esta cifra sintética.
 
 ## Para el pitch (por aprobar)
 
-- «Probamos el lector sin internet con 330 mensajes sintéticos escritos como escriben los comités. Encontró el 97 % de los productos pedidos y no ubicó con seguridad ningún pedido en un lugar equivocado.» **Por aprobar.**
-- «Donde más se equivoca es en las notas de voz y en los mensajes con dos pedidos, y por eso una persona revisa cada pedido antes de despachar.» **Por aprobar.**
+- «Probamos el lector sin internet con 330 mensajes sintéticos que imitan cómo escriben los comités. Encontró el 97 % de los productos pedidos y no ubicó con seguridad ningún pedido en un lugar equivocado.» **Por aprobar.**
+- «Donde más se equivoca es en las notas de voz y en los mensajes con dos pedidos. Por eso el lugar lo confirma una persona y el despachador aprueba cada plan antes de despachar.» **Por aprobar.**
 
 ## Cómo reproducir
 

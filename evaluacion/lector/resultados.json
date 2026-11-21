@@ -8074,20 +8074,20 @@
  "tiempos_ms": {
   "lectura": {
    "n": 330,
-   "mediana": 0.9413545003553736,
-   "p95": 1.9647499993880047,
-   "max": 6.228958000065177,
-   "total": 341.2804260133271
+   "mediana": 1.0046670004157932,
+   "p95": 2.0784169992111856,
+   "max": 6.140208999568131,
+   "total": 362.5142450000567
   },
   "lugar": {
    "n": 318,
-   "mediana": 31.514916499872925,
-   "p95": 70.34283299981325,
-   "max": 163.99770799944235,
-   "total": 11325.403790015116
+   "mediana": 34.279458000128216,
+   "p95": 75.55675000003248,
+   "max": 178.54962499950489,
+   "total": 12195.870545981961
   }
  },
- "fecha": "2026-11-21T00:30:06-05:00",
+ "fecha": "2026-11-21T00:37:16-05:00",
  "lector": "entrada.sms.leer_sms tras entrada.privacidad.limpiar (Mesa.leer con DESPACHOX_SIN_RED=1); lugar con lugares.resolver, elegir=None",
  "maquina": "Darwin 25.5.0 arm64, Python 3.12.13",
  "conjunto": {
