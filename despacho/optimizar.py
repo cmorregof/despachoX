@@ -42,9 +42,11 @@ LIMITE_POR_URGENCIA_H = {3: 4, 2: 12, 1: 24}      # si el pedido no trae `limite
 PESO_RETRASO = {1: 1, 2: 3, 3: 10}                # costo por segundo de retraso
 # Los pedidos de puntos críticos (albergues, comedores) pesan más en el retraso y en quedar
 # sin atender: es lo que mide el indicador del reto. 1 = sin trato especial. El valor por
-# defecto lo elige la simulación (docs/SIMULACION.md) y se puede barrer con la variable
-# de entorno DESPACHOX_FACTOR_CRITICO. Queda en 1 hasta que la simulación elija el valor.
-FACTOR_CRITICO = max(1, int(os.environ.get("DESPACHOX_FACTOR_CRITICO", "1")))
+# defecto es 3: en el barrido de la simulación (docs/SIMULACION.md, sección 8) mejora en promedio
+# los críticos a tiempo y no empeora nada medible; en 30 semillas nuevas la ventaja sobre la regla
+# experta es positiva pero no significativa. Lo aprobó Carlos el 20 de noviembre a las 5:22 p. m.
+# Se barre con la variable de entorno DESPACHOX_FACTOR_CRITICO.
+FACTOR_CRITICO = max(1, int(os.environ.get("DESPACHOX_FACTOR_CRITICO") or 3))
 PENAL_SIN_ATENDER = 20_000_000                    # por nivel de urgencia
 PENAL_KG_PERECEDERO = 20_000                      # extra por kilo perecedero que se quedaría
 # Empaque captador de etileno (patente UNAL, certificado 37476). Un lote perecedero con
@@ -96,10 +98,14 @@ def _demanda(p: dict, notas: list[str] | None = None) -> list[dict]:
 
 def _por_que_supuesta(p: dict, lineas: list[dict]) -> list[str]:
     """Qué completó la red de seguridad de `_demanda`. Vacía si todo lo dijo quien pidió."""
-    declarados = [l for l in _productos(p) if l["kg"] > 0]
+    productos = _productos(p)
+    declarados = [l for l in productos if l["kg"] > 0 and not l.get("supuesto")]
+    por_racion = [f"{l['producto']}: {l['supuesto']}" for l in productos if l["kg"] > 0 and l.get("supuesto")]
     if lineas and len(declarados) == len(lineas):
-        return []                          # cada producto trae sus kilos
-    notas = []
+        return []                          # cada producto trae sus kilos, dichos por quien pidió
+    notas = [f"kilos por ración ({', '.join(por_racion)})"] if por_racion else []
+    if por_racion and len(declarados) + len(por_racion) == len(lineas):
+        return notas
     if not p["kg_estimado"]:
         if p["familias"]:
             notas.append(f"kilos estimados con {KG_POR_FAMILIA:g} kg por familia")
@@ -123,7 +129,10 @@ def _productos(p: dict) -> list[dict]:
                 kg = float(l.get("kg") or 0)
             except (TypeError, ValueError):
                 kg = 0.0
-            salida.append({"producto": nombre, "kg": max(0.0, kg)})
+            fila = {"producto": nombre, "kg": max(0.0, kg)}
+            if l.get("supuesto"):                    # kilos que puso la mesa por ración (entrada/raciones.py)
+                fila["supuesto"] = str(l["supuesto"])
+            salida.append(fila)
     except (TypeError, ValueError, AttributeError):
         return []
     return salida
@@ -133,7 +142,7 @@ def _demanda_lineas(p: dict) -> list[dict]:
     total = float(p["kg_estimado"] or (p["familias"] or 1) * KG_POR_FAMILIA)
     con_kg, sin_kg = [], []
     for l in _productos(p):
-        (con_kg if l["kg"] > 0 else sin_kg).append(l)
+        (con_kg if l["kg"] > 0 else sin_kg).append({"producto": l["producto"], "kg": l["kg"]})
     if sin_kg:
         resto = total - sum(l["kg"] for l in con_kg)
         if resto <= 0:                       # los kilos declarados ya cubren el total
@@ -143,6 +152,12 @@ def _demanda_lineas(p: dict) -> list[dict]:
     if con_kg or sin_kg:
         return con_kg + sin_kg
     return [{"producto": None, "kg": total}]
+
+
+def es_visita(p: dict) -> bool:
+    """Alerta por silencio (`origen='silencio'`) que el despachador confirmó: se va a verificar
+    con una parada sin carga, no se surte comida. La alerta la crea entrada/silencio.py."""
+    return p.get("origen") == "silencio"
 
 
 def _sirve(lote: dict, producto: str | None) -> bool:
@@ -309,7 +324,9 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
     existencias = {l["id"]: float(l["kg"]) for l in datos["lotes"]}
     todos_acopios = {p["id"]: list(acopios) for p in datos["ya_asignados"]}
     surtir(datos["ya_asignados"], datos["lotes"], ahora, todos_acopios, {}, existencias)  # ya comprometido
-    surtido = surtir(pedidos, datos["lotes"], ahora, acopios_de, segundos_a, existencias)
+    surtido = surtir([p for p in pedidos if not es_visita(p)], datos["lotes"], ahora, acopios_de,
+                     segundos_a, existencias)
+    surtido.update({p["id"]: Surtido() for p in pedidos if es_visita(p)})
 
     # --- Qué pedidos entran al modelo ---
     nodos_pedido: list[dict] = []
@@ -319,11 +336,12 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
         if not acopios_de[p["id"]]:
             sin_atender.append({**base, "motivo": "punto aislado: ningún vehículo disponible llega"})
             continue
-        if s.kg <= 0:
+        visita = es_visita(p)
+        if s.kg <= 0 and not visita:
             sin_atender.append({**base, "motivo": "sin inventario para este pedido"})
             continue
         permitidos = [k for k, v in enumerate(flota)
-                      if v["acopio_id"] == s.acopio_id and s.kg <= v["capacidad_kg"]
+                      if (visita or v["acopio_id"] == s.acopio_id) and s.kg <= v["capacidad_kg"]
                       and (bloqueos.get(p["id"]) == v["id"] if p["id"] in bloqueos
                            else v["estado"] != "en_ruta" and llega(v, p))]
         if not permitidos:
@@ -336,9 +354,10 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
         if s.vence is not None:
             duro = int((s.vence - ahora).total_seconds()) - MARGEN_VENCIMIENTO_S
         notas: list[str] = []
-        _demanda(p, notas)
+        if not visita:
+            _demanda(p, notas)
         nodos_pedido.append({"p": p, "s": s, "permitidos": permitidos, "urg": urg, "limite": limite,
-                             "supuesta": "; ".join(notas) or None,
+                             "supuesta": "; ".join(notas) or None, "visita": visita,
                              "factor": FACTOR_CRITICO if puntos[p["punto_id"]]["critico"] else 1,
                              "blando": max(0, int((limite - ahora).total_seconds())), "duro": duro})
     if not nodos_pedido:
@@ -411,7 +430,7 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
             atendidos.add(x["p"]["id"])
             retraso = max(0, llegada_s - x["blando"])
             retraso_total += retraso
-            if puntos[x["p"]["punto_id"]]["critico"]:
+            if puntos[x["p"]["punto_id"]]["critico"] and not x["visita"]:   # una visita no es una entrega
                 criticos_total += 1
                 criticos_a_tiempo += retraso == 0
             paradas.append({
@@ -419,7 +438,7 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
                 "pedido_id": x["p"]["id"], "kg": round(x["s"].kg, 3),
                 "llegada_estimada": (ahora + timedelta(seconds=llegada_s)).isoformat(timespec="seconds"),
                 "geometria": m.geometria(g, previo, claves[n]), "retraso_s": retraso,
-                "cantidad_supuesta": x["supuesta"]})
+                "cantidad_supuesta": x["supuesta"], "visita": x["visita"]})
             previo = claves[n]
         if orden:
             por_vehiculo.append({
@@ -441,6 +460,9 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
     hechos = [x for x in nodos_pedido if x["p"]["id"] in atendidos]
     supuestas = {str(x["p"]["id"]): x["supuesta"] for x in hechos if x["supuesta"]}
     for x in hechos:
+        if x["visita"]:
+            avisos.append(f"pedido {x['p']['id']} ({puntos[x['p']['punto_id']]['nombre']}): alerta por silencio, "
+                          "parada de verificación sin carga.")
         if x["supuesta"]:
             avisos.append(f"pedido {x['p']['id']} ({puntos[x['p']['punto_id']]['nombre']}): cantidad supuesta, "
                           f"{round(x['s'].kg, 1):g} kg; {x['supuesta']}. Confirmar con quien pidió.")
@@ -456,6 +478,7 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
         "criticos": {"paradas": criticos_total, "a_tiempo": criticos_a_tiempo},
         "sin_atender": sin_atender,
         "cantidad_supuesta": supuestas,
+        "visitas": [x["p"]["id"] for x in hechos if x["visita"]],
         "faltantes": [{"pedido_id": x["p"]["id"], **f} for x in hechos for f in x["s"].faltantes],
         "surtido": {str(x["p"]["id"]): [{k: l[k] for k in ("lote_id", "producto", "kg")}
                                         for l in x["s"].lineas] for x in hechos},

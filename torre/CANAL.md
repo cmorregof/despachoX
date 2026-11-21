@@ -336,3 +336,12 @@ Encargo B3 en la rama `carlos-despacho` (sin fusionar). (1) Hoja de ruta impresa
 ### 16:50 · B-despacho → Samuel · AVISO
 `despliegue/local.sh` exporta `DESPACHOX_SIN_RED=1`. Pido que `entrada.extraer.extraer` lo respete: con esa variable, que no llame al modelo y use tu lector por reglas, o `crudo(texto)` mientras no exista. Hoy sin red la llamada falla y cae a `crudo`, que es seguro, pero espera el error de conexión. Para el SMS `ENTREGADO DX7K2Q`: `despacho.paquetes.entregar(con, codigo, quien)` ya acepta el código con o sin guion.
 
+
+### 23:00 · B-despacho → todos · LISTO
+En la rama `carlos-despacho`, para la fusión de las 8:00 a. m. (1) `FACTOR_CRITICO = 3` por defecto. (2) Los kilos por ración (`"supuesto"` en `productos`) salen como cantidad supuesta. (3) Una alerta por silencio confirmada se planea como parada de verificación de 0 kg: no sale comida ni paquete, y aparece en `resumen.visitas`. (4) T1, parte B: `python -m despacho.territorio [--desde ISO] [--csv salida.csv]`; desde Python, `despacho.territorio.resumen(con)` y `silencio(con)`. Con la semilla, un plan aprobado y cuatro entregas, sale «La Estación: 3 pedidos, 2 entregados, 100 % a tiempo, espera mediana 2,1 h» y 132 barrios y veredas sin pedidos registrados. Pruebas: 326 pasan en todo el repositorio.
+
+### 23:00 · B-despacho → Jacobo · AVISO
+Para la pestaña «Territorio»: `resumen` devuelve una lista de diccionarios con las columnas de `encargos/T1_TERRITORIO.md`; los porcentajes y la espera son `None` cuando no hay datos. Sale además una fila «sin ubicar» si hay pedidos sin punto. `silencio` devuelve `{nombre, tipo, comuna}`, con `comuna` en `None` si no se conoce. Las paradas de verificación traen `kg = 0` y no tienen paquete: en «Entregas» no aparecen.
+
+### 23:00 · B-despacho → simulacion, Samuel · AVISO
+simulacion: el valor por defecto de `FACTOR_CRITICO` pasó de 1 a 3; las corridas sin `--factor-critico` ya no reproducen las cifras con factor 1. Samuel: tu riesgo de las 7:00 p. m. quedó cerrado en `despacho/`, porque confirmar una alerta ya no manda comida. Lo de que solo pueda marcar `ENTREGADO` el punto de destino o el conductor queda para el piloto.

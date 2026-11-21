@@ -56,7 +56,9 @@ def crear_para_plan(con: sqlite3.Connection, plan_id: int, anterior: int | None 
         surtido = (json.loads(fila["resumen"] or "{}") if fila else {}).get("surtido") or {}
     except (TypeError, ValueError, AttributeError):
         surtido = {}
+    # Una parada sin kilos es una visita de verificación (alerta por silencio): no lleva paquete.
     paradas = con.execute("SELECT pedido_id, kg FROM paradas WHERE plan_id=? AND pedido_id IS NOT NULL "
+                          "AND COALESCE(kg, 0) > 0 "
                           "ORDER BY vehiculo_id, orden", (plan_id,)).fetchall()
     codigos = []
     with con:

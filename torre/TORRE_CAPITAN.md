@@ -1,5 +1,5 @@
 # Torre de control · Carlos · capitán
-Última actualización: viernes 20 de noviembre de 2026, 22:50
+Última actualización: viernes 20 de noviembre de 2026, 23:00
 
 ## Estado en una frase
 El módulo B corre de punta a punta: semilla cargada, plan en 10 s y recálculo que evita la vía cerrada. Faltan las pruebas (agente en curso) y, esta noche, la simulación.
@@ -78,6 +78,15 @@ Pruebas: `despacho/tests` 25 pasan (12 nuevas en `test_ronda3.py`); simulación 
    - **Pendiente para Carlos:** la prueba con el wifi apagado de verdad, en el portátil de la demo.
 4. Pruebas: `despacho/tests/test_hoja.py`, 9. Incluye que cada QR del PDF decodifica a su código de `paquetes` y que la generación falla si toca un socket. Dependencias nuevas: `fpdf2`; para las pruebas, `pypdfium2` y `zxing-cpp`. No hay Docker en este computador: no construí la imagen. Sí comprobé con `uv pip compile` que todo `requirements.txt` resuelve con ruedas binarias para Linux y Python 3.12, que es la base del `Dockerfile`.
    - El `.venv` compartido de la carpeta principal no tiene `fpdf2`: instalarlo me fue bloqueado. Trabajé con un `.venv` propio en el worktree. Para correr la hoja desde la carpeta principal: `.venv/bin/pip install -r requirements.txt`.
+
+### Pendientes de la noche (23:00, rama `carlos-despacho`, sin fusionar)
+- `FACTOR_CRITICO` vale 3 por defecto (aprobado a las 5:22 p. m.). La simulación sin `--factor-critico` ahora corre con 3.
+- Un producto con la clave `supuesto` (kilos que pone el bot por ración) cuenta como cantidad supuesta: «kilos por ración (leche: 2 kg por familia)».
+- Una alerta por silencio confirmada (`pedidos.origen='silencio'`) entra al plan como parada de verificación de 0 kg: no gasta inventario, no lleva paquete, no cuenta como entrega a un crítico y sale en `resumen.visitas` y en los avisos.
+- T1, parte B: `despacho/territorio.py` con `resumen()` y `silencio()`, más línea de órdenes y CSV. Comuna de los barrios: la de `puntos` y, si no, `datos/semilla/barrios.csv`. Dos decisiones mías: las alertas por silencio no cuentan como pedidos, y los pedidos sin punto salen en una fila «sin ubicar». Con la semilla, un plan aprobado y cuatro entregas: diez comunas y 132 barrios y veredas sin pedidos registrados.
+- Uní a esta rama el B3 que otra sesión había subido a `carlos-despacho` (hoja de ruta con QR). Trae `fpdf2`, `pypdfium2` y `zxing-cpp`; los instalé en `.venv`.
+- Pruebas: 326 pasan y 1 se omite en todo el repositorio.
+- Sin hacer: el empaque a 1,2 solo para fruta en frío, porque quedó como «decide Carlos», y a las 22:30 la capacidad UNAL pasó a ser el A25.
 
 ## En curso
 - Nada de B. Pendiente de otra sesión: encargo S2 de la simulación (barrido de `FACTOR_CRITICO`), que no se ejecutó, y el indicador A25 como riesgo de tramo.
