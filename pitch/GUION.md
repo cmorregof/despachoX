@@ -108,9 +108,9 @@ Si la corrida nueva no da una subida clara frente al orden de llegada, la frase 
 
 **Habla:** Voz 2. **Pantalla:** diapositiva 7, la línea de tiempo del piloto y el mapa del territorio.
 
-> El piloto es para la recuperación del territorio. Dura 90 días en la rutina del Banco, con la Unidad de Gestión del Riesgo, en La Macarena y El Tablazo. Así la capacidad queda en Manizales y se usa entre desastres. Al final suma, tramo por tramo, la alerta de lluvia A25 del IDEA de la UNAL.
+> El piloto es para la recuperación del territorio. Dura 90 días en la rutina del Banco, con la Unidad de Gestión del Riesgo, en Ciudadela del Norte y El Manantial. Así la capacidad queda en Manizales y se usa entre desastres. Al final suma, tramo por tramo, la alerta de lluvia A25 del IDEA de la UNAL.
 
-- **Territorio.** La Macarena y El Tablazo es la propuesta 1 de `docs/PILOTO_TERRITORIOS.md`: una comuna y un corregimiento sobre la misma ruta. Al final decide el Banco [DECIDE CARLOS].
+- **Territorio.** Ciudadela del Norte y El Manantial es la propuesta 2 de `docs/PILOTO_TERRITORIOS.md`, y Carlos la eligió el 21 de noviembre a las 6:10 a. m. Es la comuna más poblada, con 58.776 habitantes (ASIS 2023). Además, el PMA recorrió con la Alcaldía las veredas con más daño para identificar necesidades de seguridad alimentaria, y en esa nota hablan las juntas de Alto del Guamo y Alto Bonito (Alcaldía, 20 de agosto). Al final decide el Banco. Con el nombre nuevo, el bloque pasa de 56 a 57 palabras, unos 0,4 s más, y el ensayo cronometrado dice si cabe en sus 22 segundos.
 - **A25.** La rama `a25` lo trae al optimizador con lluvia sintética y apagado por defecto. Encendido, encarece los tramos en alerta naranja o roja y nunca los cierra (`despacho/a25.py` en esa rama). Si Carlos la fusiona antes de las 8:30 a. m., la última frase pasa a ser «La alerta de lluvia A25 del IDEA de la UNAL ya está en el código, por ahora con lluvia de prueba». Si no, queda como está, porque entra en los días 60 a 90 (`docs/FICHA_CORTA.md`, componente 3).
 - **Visita al Banco.** Si hubo conversación el sábado y la persona dio permiso, esta frase reemplaza a «Así la capacidad queda...»: «Esta mañana se lo mostramos a [cargo] del Banco, que nos dijo: «[frase textual]».» Sin permiso o sin conversación, no se menciona.
 
@@ -175,14 +175,14 @@ Sirve para un turno de un minuto, una presentación rápida en Conecta+ o un pas
 | 0:00 a 0:16 | «Después del sismo, la comida llegó a la región. Lo que se atascó fue despacharla. Seis días después, los bancos de alimentos tenían 404 toneladas en acopio y 157 en camino, y habían entregado 41*.» |
 | 0:16 a 0:20 | «Y en Manizales las vías se cierran también sin sismo.» |
 | 0:20 a 0:41 | «DespachoX es una mesa de despacho para el Banco Arquidiocesano de Alimentos. Comedores, hogares y juntas piden por chat o SMS, y los conductores reportan los derrumbes. El optimizador reparte entre camión, campero y moto, saca primero lo que vence primero y recalcula si se cierra una vía. El despachador aprueba cada plan.» |
-| 0:41 a 0:58 | «El piloto de 90 días entra a la rutina del Banco en La Macarena y El Tablazo, con la Unidad de Gestión del Riesgo y el A25 del IDEA de la UNAL. Todo se mide contra la línea base del propio Banco.» |
+| 0:41 a 0:58 | «El piloto de 90 días entra a la rutina del Banco en Ciudadela del Norte y El Manantial, con la Unidad de Gestión del Riesgo y el A25 del IDEA de la UNAL. Todo se mide contra la línea base del propio Banco.» |
 | 0:58 a 1:00 | «Somos DespachoX.» |
 
 ## Decisiones para Carlos
 
 1. **Duración.** Se asumió tres minutos. Hay que preguntar en la mesa a las 8:30 a. m.
 2. **Voces.** Quién es Voz 1 y quién es Voz 2.
-3. **Territorio.** La Macarena y El Tablazo, como recomienda `docs/PILOTO_TERRITORIOS.md`, o una de las otras dos propuestas.
+3. **Territorio.** Decidido el 21 de noviembre a las 6:10 a. m. El piloto va en Ciudadela del Norte y El Manantial, la propuesta 2 de `docs/PILOTO_TERRITORIOS.md`. Las propuestas 1 y 3 quedan como alternativas.
 4. **Despachador con oficio.** Si la comparación se dice en voz alta en el bloque 6 o queda solo en pantalla. Depende de la mentoría 2 y del resultado nuevo.
 5. **A25.** Si entra al código antes del congelamiento, cambia la última frase del bloque 7.
 6. **Nombre.** DespachoX o Convite, que propusieron Jacobo y Samuel a las 11:30 p. m. El bloque 8 trae la variante.

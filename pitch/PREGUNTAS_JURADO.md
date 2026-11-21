@@ -122,11 +122,13 @@ DespachoX entra 90 días a la operación diaria del Banco en una comuna y una ve
 
 *Respaldo.* `docs/PLAN_30_90.md`, secciones 1 y 5; `docs/MENTORIA_1.md`, «En discusión: el piloto».
 
-**18. ¿Por qué La Macarena y El Tablazo?**
+**18. ¿Por qué Ciudadela del Norte y El Manantial?**
 
-La Patria reporta daños en El Carmen y pone a Bajo Tablazo entre los puntos rurales más afectados por el sismo [F]. Sus accesos se caen también sin sismo, con derrumbes registrados por INVÍAS en 2017 y 2019 y unas 150 familias incomunicadas en la vereda Java en marzo de 2025, según un habitante que es delegado de la Junta Administradora Local [F]. Además, tres CDI a unos 3 km del Banco y Bajo Tablazo a 9,3 km quedan en un solo corredor [M], aunque al final el Banco elige el territorio donde ya tenga más organizaciones.
+Ciudadela del Norte es la comuna más poblada, con 58.776 habitantes según el ASIS de 2023, y el PMA ya recorrió con la Alcaldía las veredas con más daño para identificar necesidades de seguridad alimentaria [F]. El sismo dejó cuatro viviendas con pérdida total en Pueblo Hondo, y en la vía a Neira el registro de Maracas de enero de 2023 dice que no hay ruta alterna [F]. Además, dos CDI, un centro de salud y un CISCO quedan a entre 2,4 y 4,1 km del Banco, y Alto Bonito a 8,8 km [M], aunque al final el Banco elige el territorio donde ya tenga más organizaciones.
 
-*Respaldo.* `docs/PILOTO_TERRITORIOS.md`, propuesta 1 y recomendación.
+*Respaldo.* `docs/PILOTO_TERRITORIOS.md`, propuesta 2 y recomendación; decisión de Carlos del 21 de noviembre a las 6:10 a. m.; `figuras_pitch/png/a_territorio_propuesta2.png`.
+
+*Nota para quien responde.* Si preguntan por La Macarena y El Tablazo, la propuesta 1 pone comuna y vereda sobre una sola ruta, y en la 2 la ruta a Alto Bonito sale por la comuna San José [M]. Se eligió la 2 porque el PMA ya levantó necesidades allí y las juntas de Alto del Guamo y Alto Bonito hablaron en la nota de la Alcaldía del 20 de agosto [F].
 
 **19. ¿Qué pasa si la solución cambia? (mentoría 1)**
 
@@ -190,9 +192,9 @@ El bot no lee el nombre, el usuario ni el teléfono de la cuenta, y el remitente
 
 **28. ¿A cuántas personas beneficia?**
 
-Todavía no lo sabemos para el territorio del piloto, y se mide en los días 0 a 15 con el catálogo de puntos del Banco. Como escala, al cierre de agosto ABACO reportaba más de 2.000 toneladas para más de 9.470 familias en 36 municipios y comunidades, y La Macarena, la comuna que recomendamos, tiene 42.063 habitantes según el ASIS de 2023 [F]. Los beneficiarios directos son el despachador, los voluntarios y las juntas, y los finales son quienes comen en comedores, hogares, albergues y veredas.
+Todavía no lo sabemos para el territorio del piloto, y se mide en los días 0 a 15 con el catálogo de puntos del Banco. Como escala, al cierre de agosto ABACO reportaba más de 2.000 toneladas para más de 9.470 familias en 36 municipios y comunidades, y Ciudadela del Norte, la comuna del piloto, tiene 58.776 habitantes según el ASIS de 2023 [F]. Los beneficiarios directos son el despachador, los voluntarios y las juntas, y los finales son quienes comen en comedores, hogares, albergues y veredas.
 
-*Respaldo.* `docs/FICHA.md`, componente 6; `docs/PILOTO_TERRITORIOS.md`, propuesta 1.
+*Respaldo.* `docs/FICHA.md`, componente 6; `docs/PILOTO_TERRITORIOS.md`, propuesta 2.
 
 **29. ¿Qué metas ponen a los dos indicadores del reto?**
 

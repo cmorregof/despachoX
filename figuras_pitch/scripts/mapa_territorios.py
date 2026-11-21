@@ -1,15 +1,19 @@
 """Figura (a): las tres propuestas de territorio para el piloto, con puntos críticos, acopios y rutas por la red.
 
-Uso: python figuras_pitch/scripts/mapa_territorios.py [--fuente FAMILIA] [--salida CARPETA] [--solo 1]
+Uso: python figuras_pitch/scripts/mapa_territorios.py [--fuente FAMILIA] [--salida CARPETA] [--solo 1|2]
 Lee  despacho/cache/manizales_region.graphml (o despliegue/grafo/manizales_region.graphml si no está),
      figuras_pitch/datos/limites_osm.geojson (sale de despacho/cache/admin_osm.pkl con extraer_limites.py),
      datos_publicos/puntos.csv, datos_publicos/acopios.csv y datos/semilla/lugares_extra.csv (Bajo Tablazo).
 Escribe <salida>/png/a_territorios_piloto.png, <salida>/svg/a_territorios_piloto.svg y las distancias en
 <salida>/datos/a_territorios_rutas.csv.
 
-Con --solo 1 dibuja solo la propuesta 1, la recomendada, para la diapositiva del piloto: el corredor del Banco a los
-tres CDI de La Macarena y a Bajo Tablazo. Escribe a_territorio_propuesta1 (PNG y SVG) y sus distancias en
-<salida>/datos/a_territorio_propuesta1_rutas.csv.
+Con --solo 1 dibuja solo la propuesta 1: el corredor del Banco a los tres CDI de La Macarena y a Bajo Tablazo.
+Escribe a_territorio_propuesta1 (PNG y SVG) y sus distancias en <salida>/datos/a_territorio_propuesta1_rutas.csv.
+
+Con --solo 2 dibuja solo la propuesta 2, la que eligió Carlos el 21 de noviembre para el piloto: las rutas del Banco
+a los cuatro puntos del catálogo en Ciudadela del Norte (dos CDI, un centro de salud y un CISCO) y a Alto Bonito, en
+El Manantial. Escribe a_territorio_propuesta2 (PNG y SVG) y sus distancias en
+<salida>/datos/a_territorio_propuesta2_rutas.csv.
 
 Adaptada de docs/informe/figuras/scripts/mapa_manizales.py, sin editar ese archivo. Sin teselas de internet: el
 fondo es la red vial del equipo y los límites de OpenStreetMap.
@@ -45,13 +49,12 @@ from shapely.ops import substring, unary_union
 import estilo as e
 
 NOMBRE = "a_territorios_piloto"
-NOMBRE_SOLO = "a_territorio_propuesta1"
+NOMBRE_SOLO = {1: "a_territorio_propuesta1", 2: "a_territorio_propuesta2"}
 GRAFOS = [e.RAIZ / "despacho" / "cache" / "manizales_region.graphml",
           e.RAIZ / "despliegue" / "grafo" / "manizales_region.graphml"]
 LIMITES = e.CARPETA / "datos" / "limites_osm.geojson"
 # Recuadro del mapa (oeste, sur, este, norte), cuadrado en grados.
 RECUADRO = (-75.586, 4.996, -75.456, 5.126)
-RECUADRO_SOLO = (-75.552, 5.0145, -75.485, 5.0815)
 GRIS_PUNTO = "#B9B4C0"
 # Posición a mano de algunos números, si la automática no sirve (vacío: todas son automáticas).
 AJUSTE_INSIGNIA = {}
@@ -66,14 +69,33 @@ DOC_PILOTO = e.RAIZ / "docs" / "PILOTO_TERRITORIOS.md"
 
 PROPUESTAS = [
     {"n": 1, "color": e.TINTA, "comuna": "La Macarena", "corregimiento": "El Tablazo (Corredor Agroturístico)",
-     "titulo": "La Macarena y El Tablazo", "nota": "Recomendada. Tres CDI y la vereda en un corredor.",
+     "titulo": "La Macarena y El Tablazo", "nota": "Tres CDI y la vereda en un corredor.",
      "rural": "Bajo Tablazo"},
     {"n": 2, "color": e.AMBAR, "comuna": "Ciudadela del Norte", "corregimiento": "El Manantial",
-     "titulo": "Ciudadela del Norte y El Manantial", "nota": "La comuna más poblada.", "rural": "Alto Bonito"},
+     "titulo": "Ciudadela del Norte y El Manantial", "nota": "Elegida por el equipo. La comuna más poblada.",
+     "rural": "Alto Bonito"},
     {"n": 3, "color": e.CENIZA, "comuna": "Atardeceres", "corregimiento": None,
      "titulo": "Atardeceres y Kilómetro 41", "nota": "Probaría las alertas de lluvia A25 del IDEA (UNAL).",
      "rural": "La Aurora"},
 ]
+
+# Figuras de una sola propuesta (--solo). La 1 conserva el recuadro, los rótulos y las posiciones con que se hizo.
+# «criticos»: si se dibujan solo los puntos críticos de la comuna (la 1) o todos los del catálogo (la 2, porque
+# docs/PILOTO_TERRITORIOS.md cuenta el CISCO, que no es crítico). Los desplazamientos van en grados.
+SOLO = {
+    1: {"recuadro": (-75.552, 5.0145, -75.485, 5.0815), "criticos": True, "grupo": "CDI",
+        "leyenda": "CDI de La Macarena", "titulo": "La Macarena\ny El Tablazo",
+        "rotulos": ("comuna\nLa Macarena", "corregimiento\nEl Tablazo"),
+        "via_rural": "por el mismo corredor", "banco": (0.0, 0.0028, "center", "bottom"),
+        "grupo_arriba": True, "rural": (0.0030, 0.0, "left", "center"), "leyenda_loc": "lower right",
+        "y_subtitulo": 215},
+    2: {"recuadro": (-75.540, 5.050, -75.466, 5.124), "criticos": False, "grupo": "puntos",
+        "leyenda": "CDI, centro de salud y CISCO", "titulo": "Ciudadela del Norte\ny El Manantial",
+        "rotulos": ("comuna\nCiudadela del Norte", "corregimiento\nEl Manantial"),
+        "via_rural": "por la comuna San José", "banco": (0.0, -0.0028, "center", "top"),
+        "grupo_arriba": True, "rural": (-0.0030, 0.0, "right", "center"), "leyenda_loc": "upper right",
+        "y_subtitulo": 228, "leyenda_primero": True},
+}
 
 
 def leer_csv(ruta):
@@ -338,7 +360,7 @@ def sello_y_avisos(fig, nombre, faltan, x0, y_px):
     return avisos, s
 
 
-def cerrar_mapa(ax, recuadro, convenciones):
+def cerrar_mapa(ax, recuadro, convenciones, loc="lower right"):
     o, s, este, n = recuadro
     ax.set_xlim(o, este)
     ax.set_ylim(s, n)
@@ -350,7 +372,7 @@ def cerrar_mapa(ax, recuadro, convenciones):
     for borde in ax.spines.values():
         borde.set_color(e.CENIZA)
         borde.set_linewidth(1.5)
-    ley = ax.legend(handles=[c for c, _ in convenciones], labels=[t for _, t in convenciones], loc="lower right",
+    ley = ax.legend(handles=[c for c, _ in convenciones], labels=[t for _, t in convenciones], loc=loc,
                     fontsize=e.pt(26), frameon=True, borderpad=0.6, handletextpad=0.5, labelspacing=0.4,
                     handler_map={tuple: HandlerTuple(ndivide=None, pad=0.3)})
     ley.get_frame().set_edgecolor(e.CENIZA)
@@ -479,13 +501,17 @@ def mapa_tres(fig, args, red, aristas, limites, puntos, acopios, banco, rurales)
     return e.guardar(fig, NOMBRE, args.salida, avisos_extra=avisos)
 
 
-def mapa_propuesta1(fig, args, red, aristas, limites, puntos, acopios, banco, rurales):
-    """Solo la propuesta 1: el Banco, los tres CDI de La Macarena y Bajo Tablazo sobre un mismo corredor."""
-    p = PROPUESTAS[0]
-    cdi = [q for q in puntos if q["comuna"] == p["comuna"] and q["critico"].strip() == "1"]
+def mapa_propuesta(fig, args, red, aristas, limites, puntos, acopios, banco, rurales, numero):
+    """Una sola propuesta: el Banco, los puntos de su comuna y su lugar rural, con las rutas por la red.
+
+    La 1 dibuja los tres CDI de La Macarena y Bajo Tablazo sobre un mismo corredor. La 2 dibuja los cuatro puntos del
+    catálogo en Ciudadela del Norte y Alto Bonito, cuya ruta sale por la comuna San José.
+    """
+    p, cfg, nombre_fig = PROPUESTAS[numero - 1], SOLO[numero], NOMBRE_SOLO[numero]
+    cdi = [q for q in puntos if q["comuna"] == p["comuna"] and (q["critico"].strip() == "1" or not cfg["criticos"])]
     filas, km_cdi, lineas = [], [], []
-    ax = base_del_mapa(fig, aristas, limites, RECUADRO_SOLO)
-    o, s, este, n = RECUADRO_SOLO
+    ax = base_del_mapa(fig, aristas, limites, cfg["recuadro"])
+    o, s, este, n = cfg["recuadro"]
     for nombre in (p["comuna"], p["corregimiento"]):
         territorio(ax, limites, nombre, p["color"])
     for q in cdi:
@@ -501,7 +527,7 @@ def mapa_propuesta1(fig, args, red, aristas, limites, puntos, acopios, banco, ru
     lineas.append(ruta_en_mapa(ax, ruta, la, lo, p["color"]))
     filas.append(fila_de_ruta(p["rural"], la, lo, origen, ruta))
     informar(p["rural"], ruta)
-    escribir_rutas(Path(args.salida) / "datos" / f"{NOMBRE_SOLO}_rutas.csv", filas)
+    escribir_rutas(Path(args.salida) / "datos" / f"{nombre_fig}_rutas.csv", filas)
 
     otros = [q for q in puntos if q["critico"].strip() == "1" and q not in cdi]
     for q in otros:
@@ -514,15 +540,31 @@ def mapa_propuesta1(fig, args, red, aristas, limites, puntos, acopios, banco, ru
         ax.scatter(float(a["lon"]), float(a["lat"]), s=620 if a["id"] == "1" else 300, marker="s", color=e.TEXTO,
                    edgecolor="white", linewidth=2.5, zorder=8)
     bx, by = float(banco["lon"]), float(banco["lat"])
-    ax.text(bx, by + 0.0028, "Banco", fontsize=e.pt(34), fontweight="bold", color=e.TEXTO, zorder=9, ha="center",
-            va="bottom", path_effects=halo(8))
+    dx, dy, ha, va = cfg["banco"]
+    ax.text(bx + dx, by + dy, "Banco", fontsize=e.pt(34), fontweight="bold", color=e.TEXTO, zorder=9, ha=ha,
+            va=va, path_effects=halo(8))
     rango = f"{e.miles(min(km_cdi), 1)} a {e.miles(max(km_cdi), 1)} km"
     cx = np.mean([float(q["lon"]) for q in cdi])
-    cy = max(float(q["lat"]) for q in cdi)
-    ax.text(cx, cy + 0.0028, f"{len(cdi)} CDI\n{rango}", fontsize=e.pt(30), fontweight="bold", color=p["color"],
-            ha="center", va="bottom", zorder=9, linespacing=1.05, path_effects=halo(8))
-    ax.text(lo + 0.0030, la, f"{p['rural']}\n{e.miles(km_rural, 1)} km", fontsize=e.pt(30), fontweight="bold",
-            color=p["color"], ha="left", va="center", zorder=9, linespacing=1.05, path_effects=halo(8))
+    if cfg["grupo_arriba"]:
+        cy, va = max(float(q["lat"]) for q in cdi) + 0.0028, "bottom"
+    else:
+        cy, va = min(float(q["lat"]) for q in cdi) - 0.0028, "top"
+    ax.text(cx, cy, f"{len(cdi)} {cfg['grupo']}\n{rango}", fontsize=e.pt(30), fontweight="bold", color=p["color"],
+            ha="center", va=va, zorder=9, linespacing=1.05, path_effects=halo(8))
+    dx, dy, ha, va = cfg["rural"]
+    ax.text(lo + dx, la + dy, f"{p['rural']}\n{e.miles(km_rural, 1)} km", fontsize=e.pt(30), fontweight="bold",
+            color=p["color"], ha=ha, va=va, zorder=9, linespacing=1.05, path_effects=halo(8))
+
+    convenciones = [
+        (punto(p["color"]), cfg["leyenda"]),
+        (punto(GRIS_PUNTO, 11), "Otro punto crítico"),
+        (ACOPIO, "Acopio"),
+        (Line2D([], [], color=p["color"], linewidth=ANCHO_RUTA), "Ruta más corta por la red"),
+    ]
+    # Con «leyenda_primero», la leyenda se dibuja antes que los nombres de la comuna y del corregimiento, para que
+    # ninguno quede debajo de ella con una letra más ancha. La 1 conserva el orden con que se hizo.
+    if cfg.get("leyenda_primero"):
+        cerrar_mapa(ax, cfg["recuadro"], convenciones, loc=cfg["leyenda_loc"])
 
     # Nombre de la comuna y del corregimiento, en una caja libre de rutas, puntos y otros rótulos.
     marco = box(o, s, este, n).buffer(-0.002)
@@ -532,10 +574,13 @@ def mapa_propuesta1(fig, args, red, aristas, limites, puntos, acopios, banco, ru
     for t in ax.texts:
         c = t.get_window_extent(fig.canvas.get_renderer()).transformed(ax.transData.inverted())
         ocupado.append(box(c.x0, c.y0, c.x1, c.y1))
+    if cfg.get("leyenda_primero"):
+        c = ax.get_legend().get_window_extent(fig.canvas.get_renderer()).transformed(ax.transData.inverted())
+        ocupado.append(box(c.x0, c.y0, c.x1, c.y1))
     obstaculos = unary_union([l.buffer(14 * grado_px) for l in lineas] +
                              [Point(float(q["lon"]), float(q["lat"])).buffer(14 * grado_px) for q in cdi + otros] +
                              [Point(lo, la).buffer(20 * grado_px), Point(bx, by).buffer(24 * grado_px)] + ocupado)
-    for nombre, rotulo in ((p["comuna"], "comuna\nLa Macarena"), (p["corregimiento"], "corregimiento\nEl Tablazo")):
+    for nombre, rotulo in zip((p["comuna"], p["corregimiento"]), cfg["rotulos"]):
         forma = limites[limites["nombre"] == nombre].geometry.iloc[0].intersection(marco)
         t = ax.text(0, 0, rotulo, fontsize=e.pt(28), color=p["color"], ha="center", va="center", zorder=9,
                     linespacing=1.05, path_effects=halo(8))
@@ -550,36 +595,34 @@ def mapa_propuesta1(fig, args, red, aristas, limites, puntos, acopios, banco, ru
         obstaculos = obstaculos.union(box(sitio[0] - caja.width * grado_px / 2, sitio[1] - caja.height * grado_px / 2,
                                           sitio[0] + caja.width * grado_px / 2, sitio[1] + caja.height * grado_px / 2))
 
-    cerrar_mapa(ax, RECUADRO_SOLO, [
-        (punto(p["color"]), "CDI de La Macarena"),
-        (punto(GRIS_PUNTO, 11), "Otro punto crítico"),
-        (ACOPIO, "Acopio"),
-        (Line2D([], [], color=p["color"], linewidth=ANCHO_RUTA), "Ruta más corta por la red"),
-    ])
+    if not cfg.get("leyenda_primero"):
+        cerrar_mapa(ax, cfg["recuadro"], convenciones, loc=cfg["leyenda_loc"])
 
     x0 = 1110 / e.ANCHO_PX
-    fig.text(x0, arriba(55), "La Macarena\ny El Tablazo", fontsize=e.pt(58), fontweight="bold", color=e.TEXTO,
+    fig.text(x0, arriba(55), cfg["titulo"], fontsize=e.pt(58), fontweight="bold", color=e.TEXTO,
              va="top", linespacing=1.05)
-    fig.text(x0, arriba(215), "La propuesta 1 para el piloto.\nDecide el Banco.", fontsize=e.pt(28),
-             color=e.CENIZA, va="top", linespacing=1.25)
-    for y, cifra, texto in ((340, rango, f"del Banco a los {len(cdi)} CDI de la comuna"),
-                            (500, f"{e.miles(km_rural, 1)} km", f"del Banco a {p['rural']},\npor el mismo corredor")):
+    fig.text(x0, arriba(cfg["y_subtitulo"]), f"La propuesta {numero} para el piloto.\nDecide el Banco.",
+             fontsize=e.pt(28), color=e.CENIZA, va="top", linespacing=1.25)
+    for y, cifra, texto in ((340, rango, f"del Banco a los {len(cdi)} {cfg['grupo']} de la comuna"),
+                            (500, f"{e.miles(km_rural, 1)} km", f"del Banco a {p['rural']},\n{cfg['via_rural']}")):
         fig.text(x0, arriba(y), cifra, fontsize=e.pt(56), fontweight="bold", color=p["color"], va="top")
         fig.text(x0, arriba(y + 78), texto, fontsize=e.pt(30), color=e.TEXTO, va="top", linespacing=1.2)
-    cifras = [(p["n"], "los CDI", e.miles(min(km_cdi), 1)), (p["n"], "los CDI", e.miles(max(km_cdi), 1)),
+    que = f"los {cfg['grupo']}"
+    cifras = [(p["n"], que, e.miles(min(km_cdi), 1)), (p["n"], que, e.miles(max(km_cdi), 1)),
               (p["n"], p["rural"], e.miles(km_rural, 1))]
-    avisos, _ = sello_y_avisos(fig, NOMBRE_SOLO, por_confirmar(cifras), x0, 700)
-    e.pie(fig, "Fuente: docs/PILOTO_TERRITORIOS.md, propuesta 1 (20 nov 2026). Rutas y distancias: cálculo "
+    avisos, _ = sello_y_avisos(fig, nombre_fig, por_confirmar(cifras), x0, 700)
+    e.pie(fig, f"Fuente: docs/PILOTO_TERRITORIOS.md, propuesta {numero} (20 nov 2026). Rutas y distancias: cálculo "
                "nuestro sobre la red vial del equipo, hasta el punto de la vía más cercano a cada lugar."
                f"{frase_sin_via({p['rural']: ruta})} Mapa base © colaboradores de OpenStreetMap (ODbL).",
           x=x0, y=0.02, ancho=60)
-    return e.guardar(fig, NOMBRE_SOLO, args.salida, avisos_extra=avisos)
+    return e.guardar(fig, nombre_fig, args.salida, avisos_extra=avisos)
 
 
 def main():
     p = e.argumentos(__doc__.splitlines()[0])
-    p.add_argument("--solo", type=int, choices=[1], default=None,
-                   help="dibujar solo la propuesta 1, la recomendada (a_territorio_propuesta1)")
+    p.add_argument("--solo", type=int, choices=sorted(SOLO), default=None,
+                   help="dibujar solo una propuesta: 1 (a_territorio_propuesta1) o 2, la elegida para el piloto "
+                        "(a_territorio_propuesta2)")
     args = p.parse_args()
     familia = e.configurar_fuente(args.fuente)
     ruta_grafo = next((g for g in GRAFOS if g.exists()), None)
@@ -592,8 +635,8 @@ def main():
     limites = gpd.read_file(LIMITES)
     puntos = leer_csv(e.RAIZ / "datos_publicos" / "puntos.csv")
     print(f"fuente tipográfica: {familia}; grafo: {ruta_grafo.relative_to(e.RAIZ)} ({red.G.number_of_nodes()} nodos)")
-    dibujar = mapa_propuesta1 if args.solo == 1 else mapa_tres
-    e.terminar(dibujar(e.lienzo(), args, red, aristas, limites, puntos, acopios, banco, lugares_rurales()))
+    datos = (e.lienzo(), args, red, aristas, limites, puntos, acopios, banco, lugares_rurales())
+    e.terminar(mapa_propuesta(*datos, args.solo) if args.solo else mapa_tres(*datos))
 
 
 if __name__ == "__main__":
