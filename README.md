@@ -5,7 +5,7 @@ Samuel Rosso (líder) · Carlos Orrego · Jacobo Vasco · Nicolás Ramírez · J
 
 ## Para el jurado
 
-**Qué es.** DespachoX es una mesa de despacho de ayuda alimentaria para el Banco Arquidiocesano de Alimentos de Manizales y los organismos de socorro. Las organizaciones y las juntas piden por chat o por SMS, y los conductores reportan por el mismo canal las vías cerradas. Un optimizador propone las rutas de una flota mixta con lo que hay en bodega y lo que vence primero, y las recalcula cuando se cierra un tramo. Cada paquete lleva un código hasta que alguien confirma la entrega. El despachador aprueba cada plan con su nombre.
+**Qué es.** DespachoX es una mesa de despacho de ayuda alimentaria pensada para el Banco Arquidiocesano de Alimentos de Manizales y los organismos de socorro. Las organizaciones y las juntas piden por chat o por SMS, y los conductores reportan por el mismo canal las vías cerradas. Un optimizador propone las rutas de una flota mixta con lo que hay en bodega y lo que vence primero, y las recalcula cuando se cierra un tramo. Cada paquete lleva un código hasta que alguien confirma la entrega. El despachador aprueba cada plan con su nombre.
 
 **La regla de arquitectura.** El modelo de lenguaje lee y estructura los mensajes. El optimizador y las reglas calculan. El despachador decide, y el modelo nunca asigna una ruta ni despacha nada.
 

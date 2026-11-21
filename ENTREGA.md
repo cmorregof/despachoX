@@ -24,9 +24,9 @@ Todo va en una sola carpeta de Drive, llamada «DespachoX · Equipo 19 · Vertic
 
 | # | Qué | Sale de | Antes de subir | Prepara | Revisa |
 |---|---|---|---|---|---|
-| 1 | Ficha de los seis componentes, en PDF | `docs/FICHA_CORTA.md` | Quitar los corchetes pendientes, como «[por definir con el Banco]» y «[Video de respaldo: por grabar.]». Poner los números nuevos de la simulación donde vaya un [SIM]. Dejar «por verificar» en toda cifra que Samuel no haya abierto | Samuel | Carlos |
-| 2 | Anexo técnico de la ficha, en PDF, sin la nota interna | `docs/FICHA.md` | Borrar la línea que empieza con «Nota interna, se borra antes de cargar» (hoy es la línea 6) y los corchetes pendientes, como «[Pendiente: lo graba Jacobo…]». Las mismas reglas de cifras de la fila 1 | Samuel | Carlos |
-| 3 | Informe corto, en PDF | `docs/informe/informe_corto.pdf` | Si cambia alguna cifra, recompilar con `docs/informe/compilar.sh`. Las fuentes tipográficas Ancízar no están en el repositorio, así que solo compila el computador de Carlos | Carlos | Samuel |
+| 1 | Ficha de los seis componentes, en PDF | `docs/FICHA_CORTA.md` | Quitar los corchetes pendientes, como «[por definir con el Banco]» y «[Video de respaldo: por grabar.]». Poner los números nuevos de la simulación donde vaya un [SIM]. Dejar «por verificar» en toda cifra que Samuel no haya abierto. Revisar las frases de las discrepancias D3, D7, D12, D15, D16 y D18 de `docs/FUENTES.md`, que están en este archivo | Samuel | Carlos |
+| 2 | Anexo técnico de la ficha, en PDF, sin la nota interna | `docs/FICHA.md` | Borrar la línea que empieza con «Nota interna, se borra antes de cargar» (hoy es la línea 6) y los corchetes pendientes, como «[Pendiente: lo graba Jacobo…]». Las mismas reglas de cifras de la fila 1. Aquí tocan las discrepancias D3, D7, D8, D9, D12, D14, D15, D16, D18, D19, D21 y D24 | Samuel | Carlos |
+| 3 | Informe corto, en PDF | `docs/informe/informe_corto.pdf` | Si cambia alguna cifra, recompilar con `docs/informe/compilar.sh`. Las fuentes tipográficas Ancízar no están en el repositorio, así que solo compila el computador de Carlos. El PDF de hoy trae frases de las discrepancias D3, D7, D8, D9, D10, D11, D14, D18, D21 y D24 | Carlos | Samuel |
 | 4 | Enlace al video de respaldo | Lo graba Jacobo con `docs/GUION_DEMO.md` | Subirlo a la misma carpeta, o como video no listado, y abrirlo sin sesión | Jacobo | Carlos |
 | 5 | Enlace al repositorio | https://github.com/cmorregof/despachoX | Que la sección «Para el jurado» siga arriba en `README.md`. Que `main` tenga lo fusionado en la mañana. Que `git ls-files` no muestre ningún `.env` ni clave (el `.env.example` sí va, con los valores vacíos) | Carlos | Jacobo |
 | 6 | Enlace al tablero y al bot | https://despachox-production.up.railway.app/ y https://t.me/despachox_bot | Abrir el tablero desde un celular con datos móviles. Antes de la demo, pulsar «Reiniciar datos de prueba» en el tablero de la nube, como pide el relevo de Fable | Jacobo | Samuel |
@@ -61,6 +61,7 @@ pandoc /tmp/ficha_anexo.md -o DespachoX_ficha_anexo.pdf --pdf-engine=lualatex -V
 
 - [ ] Ningún PDF trae «Nota interna», «[por definir», «[Pendiente», «[Video» ni «[SIM]».
 - [ ] Cada cifra de la ficha está en `docs/FUENTES.md`, y la que nadie abrió sigue diciendo «por verificar».
+- [ ] Las frases con discrepancia en `docs/FUENTES.md` quedaron corregidas por Carlos o Fable, o se quitaron.
 - [ ] Las cifras de la simulación son las de la corrida nueva, con su línea base, el número de escenarios y los supuestos.
 - [ ] Ningún documento trae nombres, teléfonos ni direcciones exactas de personas afectadas (Ley 1581 de 2012).
 - [ ] Los seis elementos abren sin sesión de Google, en incógnito y en un celular con datos móviles.
