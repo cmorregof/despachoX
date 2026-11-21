@@ -51,10 +51,13 @@ CON_SAMUEL_BOT = hasattr(_guardar, "quien_confirma")
 H1 = "H1: despacho/paquetes.py:26 y :94 aceptan como vivo un paquete en_bodega; ENTREGADO lo cierra sin haber salido"
 H2 = "H2: entregar no mira quién escribe; un comité que solo pidió para Belén cierra el paquete de San José"
 H4 = "H4: flujo.Mesa.pulsar (flujo.py:230-240) no comprueba que la ubicación sea de este chat; hoy lo frena Telegram"
-H5 = "H5: flujo.py:273-275 cita en la respuesta el número del pedido repetido, que es de otro remitente"
+H5 = ("H5: flujo.py:273-275 cita en la respuesta el número del pedido repetido, que es de otro remitente, "
+      "y /estado lo vuelve a citar (flujo.py:365-366)")
 H6 = "H6: nomenclator.corregir_con_pin y _aplicar guardan el texto libre de una persona como lugar y punto públicos"
 H7 = "H7: flujo.py:272 apaga la alerta por silencio del punto crítico con el pedido de cualquiera"
-H8 = "H8: ninguna marca señala una cifra fuera de rango (pedidos no tiene columna dudas; guardar.py:43)"
+H8 = ("H8: ninguna marca señala una cifra fuera de rango (pedidos no tiene columna dudas; guardar.py:43). La prueba "
+      "espera una nota con «rango» o «revis» en pedidos.dudas; si el arreglo usa otro campo, hay que ajustar "
+      "correr.revisar")
 ARREGLADAS = {("c02", "paquetes"): CON_SAMUEL_BOT}      # (mensaje, invariante) -> ya arreglada en la base
 CONOCIDAS = {
     ("b07", "pedidos"): H4, ("b07", "fuga"): H4 + "; además cita pedidos ajenos (H5)",
@@ -68,7 +71,9 @@ CONOCIDAS = {
 }
 H9 = ("H9: flujo.py:173-175 y :429 repiten al remitente las dudas y la descripción que escribió el modelo; "
       "un modelo comprometido le dice que el plan se aprobó")
-CONOCIDAS_MODELO = {"veraz": H9, "marcadas": H8 + "; el modelo puede devolver 2**62 familias y _normalizar las deja"}
+CONOCIDAS_MODELO = {"veraz": H9, "marcadas": H8 + "; el modelo puede devolver 2**62 familias y _normalizar las deja",
+                    "alertas": H7 + "; con la peor lectura, d08 recibe un albergue crítico entre las opciones y un "
+                                    "toque en la primera apaga su alerta"}
 CONOCIDAS_ESQUEMA = {"marcadas": "H8 y nota O3: sin _normalizar, guardar_pedido acepta familias y kilos negativos"}
 
 
@@ -153,6 +158,32 @@ def test_modelo_comprometido(comprometido, invariante):
     assert len(comprometido.llamadas) >= len(CHAT), "el extractor reemplazado no se llamó"
     rotos = {r.mensaje["id"]: r.fallos[invariante] for r in comprometido.resultados if r.fallos[invariante]}
     assert not rotos, rotos
+
+
+def test_la_pasada_comprometida_si_ubica_un_pedido(comprometido):
+    """Sin un pedido ubicado, `_cerrar`, `silencio.apagar` y `marcar_duplicado` no corren y los
+    invariantes de alertas y fuga no prueban nada. d08 pulsa la primera opción que el bot ofreció a
+    su pedido (no la del cierre que trae la misma lectura)."""
+    d08 = next(r for r in comprometido.resultados if r.mensaje["id"] == "d08")
+    ubicados = [p for p in d08.nuevos if p["punto_id"] is not None]
+    assert ubicados, [s["entrada"] for s in d08.respuestas]
+    assert any(t.startswith("c:") for t in d08.textos)
+
+
+@pytest.mark.xfail(strict=True, reason=H7 + "; con un modelo comprometido, el pedido de cualquier barrio llega a un "
+                                            "albergue crítico y un toque de buena fe en esa opción apaga su alerta")
+def test_un_toque_sobre_la_peor_lectura_no_apaga_la_alerta_del_albergue(mundo, monkeypatch):
+    """La peor lectura convierte «Somos 12 familias en Chipre» en un pedido en el Albergue temporal San
+    Jorge, y el bot ofrece San Jorge y Arrayanes, dos puntos críticos, como botones. Quien escribió toca
+    la primera opción, que es San Jorge."""
+    monkeypatch.setattr(C.E, "extraer", C.peor_extraccion)
+    m = {"id": "toque", "canal": "chat", "remitente": 900901, "texto": "Somos 12 familias en Chipre, necesitamos arroz",
+         "seguimiento": [{"canal": "boton", "dato": "@primera_opcion"}]}
+    r = C.correr(m, mundo, "modelo")
+    ofrecidos = " ".join(b for s in r.respuestas[:1] for b in s["botones"])
+    assert "Albergue temporal San Jorge" in ofrecidos and "Albergue temporal Arrayanes" in ofrecidos, ofrecidos
+    assert any(p["punto_id"] == 13 for p in r.nuevos), "el toque no ubicó el pedido en San Jorge"
+    assert not r.fallos["alertas"], r.fallos["alertas"]
 
 
 @pytest.mark.parametrize("invariante", [
@@ -253,11 +284,45 @@ def test_los_40_en_fila_sobre_una_sola_base(mundo):
     assert not {p["id"] for p in f.nuevos} & f.seleccion, "un pedido de un mensaje quedó al alcance del optimizador"
 
 
-def test_estado_solo_muestra_los_pedidos_propios(mundo):
+def test_estado_solo_lista_los_pedidos_propios(mundo):
     with C.copia(mundo) as caso:
         propios = caso.chat.estado(700001)
         ajeno = caso.chat.estado(900404)
     assert "Pedido #" in propios.texto and "No tengo pedidos tuyos" in ajeno.texto
+
+
+@pytest.mark.xfail(strict=True, reason="H5: /estado (flujo.py:365-366) cita el número del pedido del que el propio "
+                                       "quedó marcado como repetido, y ese pedido es de otro remitente")
+def test_estado_no_cita_el_pedido_de_otra_persona(por_reglas):
+    r = por_reglas["d07"]
+    estado = [s for s in r.respuestas if s["entrada"] == "/estado"]
+    assert estado and "Así van tus pedidos" in estado[0]["texto"], [s["texto"] for s in r.respuestas]
+    citados = {int(n) for n in C._PEDIDO_CITADO.findall(estado[0]["texto"])}
+    ajenos = {i for i in citados if r.despues["pedidos"][i]["remitente_hash"] != r.remitente_hash}
+    assert not ajenos, estado[0]["texto"]
+
+
+O5 = ("O5: tablero/datos.py:281 y :288 solo muestran un pedido repetido anidado bajo un original «nuevo»; si el "
+      "original ya está confirmado o asignado, el repetido no sale en Por revisar, ni en el mapa (tablero/app.py:"
+      "137-138), ni en los contadores (tablero/datos.py:260-263), y el optimizador lo ignora (optimizar.py:260)")
+
+
+@pytest.mark.parametrize("caso", ["plantilla", "b07"])
+@pytest.mark.xfail(strict=True, reason=O5)
+def test_un_pedido_repetido_de_un_original_confirmado_sigue_a_la_vista(mundo, caso):
+    """En la plantilla, el pedido del comité de Belén quedó como repetido del #3, que va en ruta. Tras
+    b07, el pedido de la víctima 700004 quedó como repetido del #7, que está confirmado."""
+    import asyncio
+    from entrada.privacidad import hash_remitente
+    quien = "sms-comite-belen" if caso == "plantilla" else 700004
+    with C.copia(mundo) as c:                    # la copia ya pone la sal de prueba y corta la red
+        if caso == "b07":
+            asyncio.run(C._boton(c.bot, 900207, f"s:{mundo.fichas['ubicacion_victima']}"))
+        p = c.con.execute("SELECT p.id, p.estado, o.estado AS original FROM pedidos p JOIN pedidos o "
+                          "ON o.id = p.duplicado_de WHERE p.remitente_hash=?", (hash_remitente(quien),)).fetchone()
+        assert p is not None and p["estado"] == "nuevo" and p["original"] in ("confirmado", "asignado")
+        visibles = C.a_la_vista(c.con)
+    assert p["id"] in visibles, f"el pedido {p['id']} no aparece en el tablero"
 
 
 # ---------------------------------------------------------------- casos que siguen paso a paso
@@ -318,16 +383,28 @@ def test_el_pedido_falso_descartado_no_apaga_el_reloj_del_silencio(mundo):
     assert vivas == 1, "tras descartar el pedido falso, el albergue sigue sin alerta"
 
 
-@pytest.mark.xfail(strict=True, reason="H8c: un pedido de 5000 familias confirmado por error se lleva el inventario "
-                                       "del acopio y deja sin comida a los pedidos normales (optimizar.surtir)")
-def test_una_cifra_absurda_confirmada_por_error_no_deja_sin_comida_a_los_demas(tmp_path):
-    resumen, atendidos = cifra_absurda_confirmada(tmp_path)
-    assert {1, 2, 3} <= atendidos, resumen["sin_atender"]
+@pytest.mark.parametrize("familias", [5000, 2000])
+@pytest.mark.xfail(strict=True, reason="H8c: un pedido URGENTE que pide más que la bodega, confirmado por error, se "
+                                       "lleva todo el lote, porque optimizar.surtir atiende primero por urgencia "
+                                       "(optimizar.py:244); con 2000 familias pasa igual, así que el tope no basta")
+def test_un_pedido_urgente_que_pide_mas_que_la_bodega_no_deja_sin_comida_a_los_demas(tmp_path, familias):
+    resumen = cifra_absurda_confirmada(tmp_path, familias, urgente=True)
+    assert {1, 2, 3} <= resumen["atendidos"], resumen["kg_por_pedido"]
 
 
-def cifra_absurda_confirmada(tmp_path):
-    """Grafo sintético de despacho/tests (malla 5x5), 500 kg de arroz, tres pedidos normales de 40 kg y
-    un SMS de 5000 familias que el despachador confirma en el tablero sin mirar la cifra."""
+def test_linea_base_sin_urgente_los_tres_pedidos_normales_reciben_su_comida(tmp_path):
+    """La línea base de H8c: el mismo pedido de 5000 familias, sin URGENTE. Los tres pedidos normales
+    reciben sus 40 kg y el absurdo se queda con lo que sobra del lote de 500 kg."""
+    resumen = cifra_absurda_confirmada(tmp_path, 5000, urgente=False)
+    assert {1, 2, 3} <= resumen["atendidos"]
+    assert all(resumen["kg_por_pedido"][i] == 40 for i in (1, 2, 3)), resumen["kg_por_pedido"]
+    assert resumen["kg_absurdo"] == 380, resumen["kg_por_pedido"]
+
+
+def cifra_absurda_confirmada(tmp_path, familias: int = 5000, urgente: bool = True) -> dict:
+    """Grafo sintético de despacho/tests (malla 5x5), un lote inventado de 500 kg de arroz, tres pedidos
+    normales de 40 kg y un SMS con `familias` familias, urgente o no, que el despachador confirma en el
+    tablero sin mirar la cifra. Devuelve el resumen del plan con los kilos que recibe cada pedido."""
     import networkx as nx
     from datos import db
     from despacho import optimizar
@@ -359,10 +436,11 @@ def cifra_absurda_confirmada(tmp_path):
             m.pedido(i, i, 40)
         m.listo()
         mesa = Mesa(con, extraer=sms.leer_sms, elegir=None)
-        sms.atender_sms(mesa, "sms-atacante-e05", "PEDIDO 5000 FAMILIAS PUNTO 4 ARROZ URGENTE")
+        sms.atender_sms(mesa, "sms-atacante-e05", f"PEDIDO {familias} FAMILIAS PUNTO 4 ARROZ" + (" URGENTE" if urgente else ""))
         sms.atender_sms(mesa, "sms-atacante-e05", "SI")
         absurdo = con.execute("SELECT * FROM pedidos ORDER BY id DESC LIMIT 1").fetchone()
-        assert absurdo["familias"] == 5000 and absurdo["punto_id"] == 4
+        assert absurdo["familias"] == familias and absurdo["punto_id"] == 4
+        assert absurdo["urgencia"] == (3 if urgente else 2)
         assert T.cambiar_estado(con, "pedidos", absurdo["id"], "confirmado", C.QUIEN)
         plan = optimizar.planificar(con, segundos=1, g=g, ahora=AHORA)
         resumen = json.loads(con.execute("SELECT resumen FROM planes WHERE id=?", (plan,)).fetchone()[0])
@@ -370,5 +448,8 @@ def cifra_absurda_confirmada(tmp_path):
         estado = con.execute("SELECT estado FROM planes WHERE id=?", (plan,)).fetchone()[0]
         con.close()
     assert estado == "propuesto"                   # el despachador todavía tiene que aprobarlo
-    resumen["kg_absurdo"] = sum(l["kg"] for l in resumen.get("surtido", {}).get(str(absurdo["id"]), []))
-    return resumen, atendidos
+    surtido = resumen.get("surtido", {})
+    resumen["kg_por_pedido"] = {int(i): round(sum(l["kg"] for l in lineas), 3) for i, lineas in surtido.items()}
+    resumen["kg_absurdo"] = resumen["kg_por_pedido"].get(absurdo["id"], 0)
+    resumen["atendidos"] = atendidos
+    return resumen

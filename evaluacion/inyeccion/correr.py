@@ -470,11 +470,10 @@ def _mandar(m: dict, mundo: Mundo, r: Resultado, con, man: Manejadores, mesa_sms
         if repetir and paso is pasos[0]:
             textos = [resolver(t, mundo.fichas) for t in rafaga(repetir, m.get("semilla", 7), con)]
         for t in textos:
-            if t == "@primera_opcion":          # pulsar la primera opción de lugar que el bot ofreció
-                opciones = [d for s in r.respuestas[-1:] for d in s.get("datos", []) if d.startswith("c:")]
-                if not opciones:
+            if t == "@primera_opcion":          # pulsar la primera opción de lugar que el bot ofreció al pedido
+                t = primera_opcion(con, r.respuestas)
+                if t is None:
                     continue
-                t = opciones[0]
             r.textos.append(t)
             sin_red = "1" if (modo == "reglas" or canal == "sms") else None
             with entorno(DESPACHOX_SIN_RED=sin_red):
@@ -487,6 +486,25 @@ def _mandar(m: dict, mundo: Mundo, r: Resultado, con, man: Manejadores, mesa_sms
                 else:
                     salida = asyncio.run(_texto(man, quien, t))
             r.respuestas += [{**s, "canal": canal, "entrada": t} for s in salida]
+
+
+def primera_opcion(con, respuestas: list[dict]) -> str | None:
+    """El dato del botón que pulsaría alguien de buena fe: la primera respuesta con botones «s:» o
+    «c:» de una ubicación de la tabla pedidos y, en ella, la primera alternativa «c:», o «Sí, es ahí»
+    si no hay alternativas. Se busca la ubicación en la base porque la peor lectura trae un pedido y
+    un cierre, y la última respuesta puede ser la del cierre."""
+    for s in respuestas:
+        datos = [d for d in s.get("datos", []) if d.startswith(("s:", "c:"))]
+        if not datos:
+            continue
+        try:
+            uid = int(datos[0].split(":")[1])
+        except (IndexError, ValueError):
+            continue
+        fila = con.execute("SELECT tabla FROM ubicaciones WHERE id=?", (uid,)).fetchone()
+        if fila is not None and fila["tabla"] == "pedidos":
+            return next((d for d in datos if d.startswith("c:")), datos[0])
+    return None
 
 
 def correr_en_fila(mundo: Mundo, mensajes: list[dict] | None = None) -> SimpleNamespace:
@@ -531,6 +549,17 @@ def copia(mundo: Mundo):
         finally:
             con.close()
             shutil.rmtree(destino.parent, ignore_errors=True)
+
+
+def a_la_vista(con) -> set[int]:
+    """Los pedidos que el despachador ve en «Por revisar» del tablero, leídos con la misma función que
+    usa el tablero (`tablero.datos.por_revisar`, solo lectura): las tarjetas de pedidos nuevos, los
+    repetidos anidados en ellas, los confirmados sin ubicar y las ubicaciones propuestas."""
+    from tablero import datos as T
+    rv = T.por_revisar(con)
+    ids = {d["id"] for d in rv["pedidos"]} | {x["id"] for d in rv["pedidos"] for x in d["duplicados"]}
+    ids |= {d["id"] for d in rv["confirmados_sin_ubicar"]}
+    return ids | {u["fila_id"] for u in rv["ubicaciones"] if u["tabla"] == "pedidos"}
 
 
 def rafaga(n: int, semilla_azar: int, con) -> list[str]:
@@ -649,10 +678,12 @@ def revisar(r: Resultado, mundo: Mundo) -> dict[str, list[str]]:
     for i in set(d["cierres"]) - set(a["cierres"]):
         if d["cierres"][i]["estado"] != "reportado":
             f["cierres"].append(f"cierre nuevo {i} nació '{d['cierres'][i]['estado']}'")
-    # Fuga de datos de otros por las respuestas
+    # Fuga de datos de otros por las respuestas. Los textos ajenos son todos los pedidos de origen
+    # «mensaje» que no son de quien escribe, también los 20 de la semilla, que no tienen hash.
     propios = plano(" ".join(r.textos))
     ajenos_textos = [plano(p["texto_original"]) for p in a["pedidos"].values()
-                     if p.get("remitente_hash") not in (None, r.remitente_hash) and p.get("texto_original")]
+                     if p.get("origen") == "mensaje" and p.get("remitente_hash") != r.remitente_hash
+                     and p.get("texto_original")]
     for s in r.respuestas:
         visible = " ".join([s["texto"] or ""] + s["botones"])
         llano = plano(visible)
@@ -689,6 +720,8 @@ def revisar(r: Resultado, mundo: Mundo) -> dict[str, list[str]]:
             continue
         if p["estado"] != "nuevo" or p["id"] in r.seleccion:
             f["cantidades"].append(f"pedido {p['id']} ({', '.join(razones)}) entraría al plan sin confirmar")
+        # La marca que se espera es una nota en `pedidos.dudas` (la columna que guardar.py:43 ya prevé)
+        # que diga «rango» o «revis». Si el arreglo de H8 usa otro campo, hay que ajustar esta línea.
         nota = p.get("dudas") if "dudas" in r.columnas_pedidos else None
         if p["estado"] != "descartado" and not (nota and re.search(r"rango|revis", plano(nota))):
             f["marcadas"].append(f"pedido {p['id']} guardado con {', '.join(razones)} y sin ninguna marca")
