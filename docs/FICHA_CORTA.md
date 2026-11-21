@@ -9,9 +9,9 @@ El anexo técnico, con todas las cifras, supuestos y riesgos, está en `docs/FIC
 
 **El problema.** Después del sismo, la comida donada llegó a la región y se atascó en el despacho. Según las fuentes que revisó el equipo, ninguna herramienta en uso une el pedido de cada barrio o vereda, el vehículo, la vía abierta y la confirmación de entrega.
 
-**La evidencia.** En Manizales, el censo del 24 de agosto contó 8.240 damnificados (Noticias RCN; por verificar). La red de bancos de alimentos, ABACO, hizo de la ciudad uno de sus principales puntos de acopio (Noticias RCN; por verificar). Al sexto día tenía 404.587 kg en acopio y había entregado 41.163 kg en todo el país (Portafolio; por verificar). En Manizales la comida se repartió por listas. Para recibir mercados había que llevar el formato azul de Bomberos, y la Cruz Roja Seccional Caldas entregó los kits por turnos (Alcaldía; por verificar). La Gobernación dejó los kits en su centro logístico, donde los recogieron los vehículos de cada municipio (Gobernación; por verificar).
+**La evidencia.** En Manizales, el censo del 24 de agosto contó 8.240 damnificados (Noticias RCN; por verificar). La red de bancos de alimentos, ABACO, hizo de la ciudad uno de sus principales puntos de acopio (Noticias RCN; por verificar). Según Portafolio, el 16 de agosto la red tenía 404.587 kg en acopio y 157.164 kg en tránsito, y había entregado 41.163 kg (por verificar). En Manizales la comida se repartió por listas. Para recibir mercados había que llevar el formato azul de Bomberos, y los kits se entregaron por turnos en la sede de la Cruz Roja Seccional Caldas (Alcaldía; por verificar). La Gobernación dejó los kits en su centro logístico, donde los recogieron los vehículos de cada municipio (Gobernación; por verificar).
 
-**Las vías.** El 12 de agosto seguían cerradas la vía Pereira–Chinchiná, entre los kilómetros 22 y 24, y la salida a Fresno por el Alto de Letras (Semana; por verificar). Las vías se cierran también sin sismo. La salida a Letras suma 87 registros de cierre por deslizamiento o derrumbe entre 2017 y 2026, aunque un mismo derrumbe puede tener varios registros (INVÍAS; por verificar). Además, el registro oficial del cierre Pereira–Chinchiná apareció 9 horas y 46 minutos después del sismo (cálculo nuestro; por verificar).
+**Las vías.** El 12 de agosto seguían cerradas la vía Pereira–Chinchiná, entre los kilómetros 22 y 24, y la vía Manizales–Fresno en Herveo, entre los kilómetros 36+800 y 40+300 (Semana; por verificar). Las vías se cierran también sin sismo. La salida a Letras suma 87 registros de cierre por deslizamiento o derrumbe entre 2017 y 2026, y 4 de ellos son del sismo. Un mismo derrumbe puede tener varios registros (INVÍAS y prensa; cálculo nuestro; por verificar). Además, el registro oficial del cierre Pereira–Chinchiná apareció 9 horas y 46 minutos después del sismo (cálculo nuestro; por verificar).
 
 **Lo que existe no despacha.** El Registro Único de Damnificados cerró el 4 de septiembre y dejó por fuera a familias rurales dispersas (Vanguardia; por verificar). La Cruz Roja registra hogares con AccessRC y KoboCollect, y el sistema SUMA de la OPS lleva inventario y entregas. ABACO recauda y le reporta al donante. Ninguna de estas piezas asigna pedidos a vehículos ni recalcula rutas.
 
@@ -106,7 +106,7 @@ El anexo técnico, con todas las cifras, supuestos y riesgos, está en `docs/FIC
 |---|---|---|---|
 | Entregas a tiempo en puntos críticos | La del Banco. En simulación, con carga media y 30 jornadas por política, 53,6 % por orden de llegada y 94,6 % con un despachador con oficio | Igual o mayor que la del Banco | Bitácora y código de cada entrega |
 | Desperdicio de perecederos | Kilos vencidos del registro del Banco | Menos del 5 % | Inventario con vencimientos |
-| Kilos entregados sobre kilos en acopio | La del Banco. Al sexto día del sismo, 41.163 frente a 404.587 kg | Mayor que la línea base | Inventario y confirmaciones |
+| Kilos entregados sobre kilos en acopio | La del Banco. Según Portafolio (16 ago), 41.163 kg entregados frente a 404.587 kg en acopio y 157.164 kg en tránsito | Mayor que la línea base | Inventario y confirmaciones |
 | Kilómetros con la misma flota | Odómetro del día en paralelo | Menos que la forma actual | Odómetro o GPS |
 | Entregas confirmadas | Por preguntar al Banco | Más del 90 % | Bitácora |
 | Espera del punto peor atendido | En simulación, con 30 jornadas por política, 1,95 a 3,82 horas más que por orden de llegada, según la carga | Sin meta. Se vigila | Tabla por territorio |
@@ -116,7 +116,7 @@ El anexo técnico, con todas las cifras, supuestos y riesgos, está en `docs/FIC
 | Cifra | Fuente | Estado |
 |---|---|---|
 | 8.240 damnificados; uno de los principales acopios | Noticias RCN, 10 y 24 ago 2026 | Por verificar |
-| 404.587 y 41.163 kg al sexto día; 2.000 t para 9.470 familias | Portafolio, 16 ago y 21 sep 2026 | Por verificar |
+| 404.587 kg en acopio, 157.164 kg en tránsito y 41.163 kg entregados (16 ago); más de 2.000 t para más de 9.470 familias | Portafolio, 16 ago y 21 sep 2026 | Por verificar |
 | 204 juntas; calamidad hasta agosto de 2027 | Alcaldía de Manizales | Por verificar |
 | Cierres del 12 de agosto | Semana, 12 ago 2026 | Por verificar |
 | 87 registros en Letras; 9 h 46 min | INVÍAS, registro #767, y prensa | Por verificar |
