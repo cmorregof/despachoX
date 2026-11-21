@@ -1,0 +1,16 @@
+# Tema del tablero Convite: paleta del informe (tinta, ámbar, crema, ceniza) y una sola tipografía.
+# La tipografía es la sans-serif del sistema: legible y sin depender de internet en la demo.
+[theme]
+base = "light"
+primaryColor = "#4F4086"                 # tinta
+backgroundColor = "#FBF7EF"              # crema muy clara
+secondaryBackgroundColor = "#F3E6C8"     # crema suave
+textColor = "#2E2A36"
+borderColor = "#E4D6B8"
+font = "sans-serif"
+headingFont = "sans-serif"
+baseRadius = "14px"
+showWidgetBorder = true
+dataframeBorderColor = "#EFE4CC"
+dataframeHeaderBackgroundColor = "#F6EEDB"
+dataframeHeaderTextColor = "#6E6878"     # ceniza: encabezados discretos

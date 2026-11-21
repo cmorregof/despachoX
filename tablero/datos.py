@@ -19,8 +19,20 @@ from pathlib import Path
 import lugares
 from datos import db
 
+try:            # parte B de encargos/T1_TERRITORIO.md; si no ha llegado, la pestaña lo dice
+    from despacho import territorio as _territorio
+except Exception:  # noqa: BLE001 - cualquier fallo de importación deja la pestaña en «pendiente»
+    _territorio = None
+
 RAIZ = Path(__file__).resolve().parent.parent
 HORAS_VENCE_PRONTO = 12
+# Meta de críticos a tiempo: la misma de la ficha de puntualidad, que se marca en alerta por debajo
+# del 100 %. No hay otra meta numérica en el código ni en CLAUDE.md.
+META_CRITICOS_PCT = 100
+ORIGEN_SILENCIO = "silencio"
+# decisión sobre una alerta por silencio -> (estado nuevo del pedido, acción en la bitácora)
+ACCIONES_SILENCIO = {"verificar": ("confirmado", "mandar a verificar"),
+                     "descartar": ("descartado", "descartar alerta por silencio")}
 # Solo se usa si el plan no trae sus supuestos; es el mismo valor de despacho/optimizar.py.
 LIMITE_POR_URGENCIA_H = {3: 4, 2: 12, 1: 24}
 
@@ -257,10 +269,15 @@ def cambios_del_recalculo(con: sqlite3.Connection, p: dict | None) -> dict | Non
 def indicadores(con: sqlite3.Connection, p: dict | None = None, ahora: datetime | None = None) -> dict:
     ahora = _ahora(ahora)
     tope = ahora + timedelta(hours=HORAS_VENCE_PRONTO)
+    # Las alertas por silencio no son pedidos de comida: se cuentan aparte, como «sin contacto».
     pendientes = con.execute("SELECT COUNT(*) FROM pedidos WHERE estado IN ('nuevo','confirmado') "
-                             "AND duplicado_de IS NULL").fetchone()[0]
+                             "AND duplicado_de IS NULL AND COALESCE(origen, 'mensaje') != ?",
+                             (ORIGEN_SILENCIO,)).fetchone()[0]
     por_confirmar = con.execute("SELECT COUNT(*) FROM pedidos WHERE estado='nuevo' "
-                                "AND duplicado_de IS NULL").fetchone()[0]
+                                "AND duplicado_de IS NULL AND COALESCE(origen, 'mensaje') != ?",
+                                (ORIGEN_SILENCIO,)).fetchone()[0]
+    sin_contacto = con.execute("SELECT COUNT(*) FROM pedidos WHERE estado IN ('nuevo','confirmado') "
+                               "AND origen = ?", (ORIGEN_SILENCIO,)).fetchone()[0]
     kg = 0.0
     for lote in filas(con, "SELECT kg, vence_en FROM lotes WHERE perecedero=1 AND vence_en IS NOT NULL"):
         vence = _fecha(lote["vence_en"])
@@ -269,6 +286,7 @@ def indicadores(con: sqlite3.Connection, p: dict | None = None, ahora: datetime 
     activos = con.execute("SELECT COUNT(*) FROM cierres WHERE estado='confirmado'").fetchone()[0]
     reportados = con.execute("SELECT COUNT(*) FROM cierres WHERE estado='reportado'").fetchone()[0]
     return {"pedidos_pendientes": pendientes, "pedidos_por_confirmar": por_confirmar,
+            "sin_contacto": sin_contacto,
             "kg_vencen_pronto": round(kg, 1), "cierres_activos": activos,
             "cierres_reportados": reportados, "puntualidad": puntualidad(con, p)}
 
@@ -278,8 +296,15 @@ def indicadores(con: sqlite3.Connection, p: dict | None = None, ahora: datetime 
 def por_revisar(con: sqlite3.Connection) -> dict:
     """Lo que espera una decisión del despachador: pedidos nuevos, cierres reportados y ubicaciones."""
     puntos = {r["id"]: r for r in filas(con, "SELECT * FROM puntos")}
-    pedidos = filas(con, "SELECT * FROM pedidos WHERE estado='nuevo' AND duplicado_de IS NULL "
-                         "ORDER BY urgencia DESC, id")
+    todos = filas(con, "SELECT * FROM pedidos WHERE estado='nuevo' AND duplicado_de IS NULL "
+                       "ORDER BY urgencia DESC, id")
+    # Las alertas por silencio (entrada/silencio.py) no son pedidos de comida: van aparte.
+    silencio = [d for d in todos if d.get("origen") == ORIGEN_SILENCIO]
+    pedidos = [d for d in todos if d.get("origen") != ORIGEN_SILENCIO]
+    for d in silencio:
+        pu = puntos.get(d["punto_id"])
+        d["punto"] = pu["nombre"] if pu else None
+        d["critico"] = int(pu["critico"] or 0) if pu else 0
     for d in pedidos:
         pu = puntos.get(d["punto_id"])
         d["punto"] = pu["nombre"] if pu else None
@@ -300,7 +325,7 @@ def por_revisar(con: sqlite3.Connection) -> dict:
                              (u["fila_id"],)).fetchone() if u["tabla"] in ("pedidos", "cierres") else None
         u["texto_completo"] = origen["texto_original"] if origen else None
     return {"pedidos": pedidos, "confirmados_sin_ubicar": sin_ubicar, "cierres": cierres,
-            "ubicaciones": ubicaciones}
+            "ubicaciones": ubicaciones, "silencio": silencio}
 
 
 # ---------- cambios de estado ----------
@@ -324,6 +349,26 @@ def cambiar_estado(con: sqlite3.Connection, tabla: str, fila_id: int, estado: st
     return True
 
 
+def decidir_silencio(con: sqlite3.Connection, pedido_id: int, decision: str, quien: str) -> bool:
+    """El despachador decide sobre una alerta por silencio. False si no aplica.
+
+    «verificar»: el pedido pasa a 'confirmado'; despacho/optimizar.py lo lista en `resumen.verificar`
+    como visita sin comida. «descartar»: pasa a 'descartado'. No toca familias ni kilos.
+    """
+    if decision not in ACCIONES_SILENCIO:
+        return False
+    actual = con.execute("SELECT estado, origen, punto_id FROM pedidos WHERE id=?", (pedido_id,)).fetchone()
+    if actual is None or actual["origen"] != ORIGEN_SILENCIO or actual["estado"] != "nuevo":
+        return False
+    estado, accion = ACCIONES_SILENCIO[decision]
+    if estado == "confirmado" and actual["punto_id"] is None:
+        return False
+    con.execute("UPDATE pedidos SET estado=? WHERE id=? AND origen=?", (estado, pedido_id, ORIGEN_SILENCIO))
+    con.commit()
+    db.anotar(con, quien or "despachador", accion, f"pedidos {pedido_id} -> {estado}")
+    return True
+
+
 def confirmar_ubicacion(con: sqlite3.Connection, ubicacion_id: int, quien: str = "despachador",
                         lugar_id: int | None = None) -> bool:
     ok = lugares.confirmar(con, ubicacion_id, quien=quien, lugar_id=lugar_id)
@@ -336,6 +381,50 @@ def corregir_ubicacion(con: sqlite3.Connection, ubicacion_id: int, lat: float, l
     ok = lugares.corregir_con_pin(con, ubicacion_id, lat, lon, quien="despachador")
     con.commit()
     return ok
+
+
+# ---------- territorio (encargos/T1_TERRITORIO.md, parte C) ----------
+
+def _orden_territorio(f: dict) -> tuple:
+    """Peor atendidos arriba: menor % de críticos a tiempo; sin críticos evaluados, al final."""
+    pct = f.get("pct_criticos_a_tiempo")
+    general = f.get("pct_a_tiempo")
+    return (pct is None, pct if pct is not None else 0.0,
+            general is None, general if general is not None else 0.0,
+            -(f.get("pendiente_mas_viejo_h") or 0.0), str(f.get("territorio") or ""))
+
+
+def territorio(con: sqlite3.Connection, ahora: datetime | None = None, modulo=None) -> dict:
+    """Resumen por comuna y lugares sin pedidos registrados, leídos de despacho.territorio.
+
+    Devuelve {"disponible": False} si la parte B no está. Nunca trae texto_original ni remitente_hash:
+    solo pasan las columnas declaradas por despacho.territorio.
+    """
+    m = _territorio if modulo is None else modulo
+    if m is None:
+        return {"disponible": False, "tabla": [], "sin_pedidos": [], "columnas": ()}
+    columnas = tuple(m.COLUMNAS)
+    tabla = [{c: f.get(c) for c in columnas} for f in m.resumen(con, ahora=_ahora(ahora))]
+    for f in tabla:
+        pct = f.get("pct_criticos_a_tiempo")
+        f["bajo_meta"] = pct is not None and pct < META_CRITICOS_PCT
+    tabla.sort(key=_orden_territorio)
+    cols_sil = tuple(getattr(m, "COLUMNAS_SILENCIO", ("nombre", "tipo", "comuna", "estado")))
+    sin_pedidos = [{c: s.get(c) for c in cols_sil} for s in m.silencio(con)]
+    return {"disponible": True, "tabla": tabla, "sin_pedidos": sin_pedidos, "columnas": columnas,
+            "columnas_sin_pedidos": cols_sil, "meta": META_CRITICOS_PCT}
+
+
+def territorio_csv(datos_territorio: dict) -> bytes:
+    """La tabla por territorio en CSV (UTF-8 con BOM para que Excel lea las tildes)."""
+    import csv
+    import io
+    columnas = datos_territorio.get("columnas") or ()
+    buf = io.StringIO()
+    w = csv.DictWriter(buf, fieldnames=list(columnas), extrasaction="ignore")
+    w.writeheader()
+    w.writerows(datos_territorio.get("tabla") or [])
+    return ("﻿" + buf.getvalue()).encode("utf-8")
 
 
 # ---------- bitácora ----------
@@ -373,6 +462,32 @@ def ejecutar_despacho(modulo: str, *args: str, correr=subprocess.run, espera_s: 
     if r.returncode != 0 or plan_id < 0:
         return Corrida(False, None, error or "despacho terminó con error")
     return Corrida(True, plan_id)
+
+
+SEMILLA = ("despacho.semilla", "--cargar", "--reiniciar")
+ESPERA_SEMILLA_S = 300
+
+
+def reiniciar_datos_prueba(con: sqlite3.Connection, quien: str, correr=subprocess.run,
+                           espera_s: int = ESPERA_SEMILLA_S) -> Corrida:
+    """Borra los datos de la base y carga la semilla (`python -m despacho.semilla --cargar --reiniciar`).
+
+    El proceso hereda DESPACHOX_DB, así que reinicia la misma base que mira el tablero. La entrada de
+    la bitácora se escribe después, para que el reinicio no la borre.
+    """
+    try:
+        r = correr([sys.executable, "-m", *SEMILLA], cwd=RAIZ, capture_output=True, text=True,
+                   timeout=espera_s)
+    except subprocess.TimeoutExpired:
+        return Corrida(False, None, f"despacho.semilla no respondió en {espera_s} s")
+    except OSError as e:
+        return Corrida(False, None, f"no se pudo ejecutar despacho.semilla: {e}")
+    if r.returncode != 0:
+        error = ((r.stderr or "").strip().splitlines() or ["despacho.semilla terminó con error"])[-1]
+        return Corrida(False, None, error)
+    db.anotar(con, (quien or "").strip() or "despachador", "reiniciar datos de prueba",
+              "despacho.semilla --cargar --reiniciar")
+    return Corrida(True, None)
 
 
 def calcular_plan() -> Corrida:
