@@ -41,10 +41,11 @@ KG_POR_FAMILIA = 10.0            # si el pedido no trae kilos
 LIMITE_POR_URGENCIA_H = {3: 4, 2: 12, 1: 24}      # si el pedido no trae `limite_en`
 PESO_RETRASO = {1: 1, 2: 3, 3: 10}                # costo por segundo de retraso
 # Los pedidos de puntos críticos (albergues, comedores) pesan más en el retraso y en quedar
-# sin atender: es lo que mide el indicador del reto. 1 = sin trato especial. El valor por
-# defecto lo elige la simulación (docs/SIMULACION.md) y se puede barrer con la variable
-# de entorno DESPACHOX_FACTOR_CRITICO. Queda en 1 hasta que la simulación elija el valor.
-FACTOR_CRITICO = max(1, int(os.environ.get("DESPACHOX_FACTOR_CRITICO", "1")))
+# sin atender: es lo que mide el indicador del reto. 1 = sin trato especial. El 3 por defecto
+# lo propuso la simulación (barrido de 1, 3, 10 y 30 en docs/SIMULACION.md, sección 8; canal,
+# 16:57) y lo aprobó Carlos el viernes 20: mejora en promedio los críticos a tiempo y no
+# empeora nada medido. Se barre con la variable de entorno DESPACHOX_FACTOR_CRITICO.
+FACTOR_CRITICO = max(1, int(os.environ.get("DESPACHOX_FACTOR_CRITICO") or 3))
 PENAL_SIN_ATENDER = 20_000_000                    # por nivel de urgencia
 PENAL_KG_PERECEDERO = 20_000                      # extra por kilo perecedero que se quedaría
 # Empaque captador de etileno (patente UNAL, certificado 37476). Un lote perecedero con
