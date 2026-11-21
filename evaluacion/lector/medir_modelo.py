@@ -130,7 +130,8 @@ def main(argv: list[str] | None = None) -> int:
     E = _sin_reintentos()
     res, contador = medir(conjunto, E.extraer, n)
     uso = dict(E.USO)
-    costo = uso["entrada"] / 1e6 * E.PRECIO_ENTRADA_MTOK + uso["salida"] / 1e6 * E.PRECIO_SALIDA_MTOK
+    pe, ps = E.PRECIO_ENTRADA_MTOK or 0.0, E.PRECIO_SALIDA_MTOK or 0.0     # None si el modelo no tiene precio registrado
+    costo = uso["entrada"] / 1e6 * pe + uso["salida"] / 1e6 * ps
     res.update({
         "fecha": datetime.now().astimezone().isoformat(timespec="seconds"),
         "lector": f"entrada.extraer.extraer con {E.MODELO}, sin reintentos, y reglas si falla (Mesa.leer con red); "

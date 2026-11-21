@@ -184,14 +184,17 @@ def informe(r: dict, extractor: str, fallos: float, latencia: float) -> str:
                       f"guardadas {guardadas})")
     if extractor == "real":
         u = E.USO
-        costo = u["entrada"] / 1e6 * E.PRECIO_ENTRADA_MTOK + u["salida"] / 1e6 * E.PRECIO_SALIDA_MTOK
         lineas += [
             f"Llamadas al modelo: {u['llamadas']} · fallidas tras reintentos: {u['fallos']}",
             f"Tokens: {u['entrada']:,} de entrada y {u['salida']:,} de salida "
             f"({u['entrada'] / max(1, u['llamadas']):.0f} y {u['salida'] / max(1, u['llamadas']):.0f} por llamada)",
-            f"Costo de la corrida: {costo:.4f} USD · por cada 10 000 mensajes: {costo / r['n'] * 10_000:.2f} USD "
-            f"(precio público {E.PRECIO_ENTRADA_MTOK:g} / {E.PRECIO_SALIDA_MTOK:g} USD por millón de tokens)",
         ]
+        if E.PRECIO_ENTRADA_MTOK is not None:
+            costo = u["entrada"] / 1e6 * E.PRECIO_ENTRADA_MTOK + u["salida"] / 1e6 * E.PRECIO_SALIDA_MTOK
+            lineas.append(f"Costo de la corrida: {costo:.4f} USD · por cada 10 000 mensajes: {costo / r['n'] * 10_000:.2f} USD "
+                          f"(precio público {E.PRECIO_ENTRADA_MTOK:g} / {E.PRECIO_SALIDA_MTOK:g} USD por millón de tokens)")
+        else:
+            lineas.append(f"Costo: sin precio registrado para {E.MODELO}; se reportan solo los tokens")
     return "\n".join(lineas)
 
 
@@ -208,7 +211,7 @@ def main(argv=None) -> int:
     a = ap.parse_args(argv)
     if a.extractor == "real":
         from dotenv import load_dotenv
-        load_dotenv(db.RAIZ.parent / ".env")
+        load_dotenv(db.ruta_env())
         import os
         if not os.environ.get("ANTHROPIC_API_KEY"):
             print("Falta ANTHROPIC_API_KEY en .env para el extractor real.", file=sys.stderr)

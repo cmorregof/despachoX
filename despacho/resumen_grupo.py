@@ -31,8 +31,8 @@ TOPE_RESUMEN = 600
 TOPE_RESUMEN_MESA = 2500
 TOPE_GRUPOS_MESA = 300
 A_LA_VEZ = 8                     # llamadas al modelo en paralelo
-# Precio público de claude-haiku-5-5 por millón de tokens (entrada/extraer.py); solo para estimar.
-PRECIO_ENTRADA_MTOK, PRECIO_SALIDA_MTOK = 0.10, 0.50
+# Opus lee los grupos y la mesa (decisión de Carlos, 21 nov 12:40). Se cambia con DESPACHOX_MODELO_RESUMEN.
+MODELO = os.environ.get("DESPACHOX_MODELO_RESUMEN") or "claude-opus-5-5"
 USO = {"llamadas": 0, "fallos": 0, "entrada": 0, "salida": 0}
 SISTEMA = ("Usted ayuda al despachador de una mesa de ayuda alimentaria después de un sismo en Manizales. "
            "Solo lee y resume lo que dicen los pedidos. No decide prioridades, rutas ni cantidades: los "
@@ -115,26 +115,24 @@ def resumir(grupo, extractor: Callable[[str], str], puntos: dict | None = None) 
 
 
 def extractor_modelo(max_tokens: int = 500) -> Callable[[str], str]:
-    """Devuelve un extractor que llama a Claude con `entrada.extraer.MODELO` y cuenta tokens en `USO`.
+    """Devuelve un extractor que llama a Claude con `MODELO` (Opus) y cuenta tokens en `USO`.
 
     Lee ANTHROPIC_API_KEY del entorno o del `.env` de la raíz del repositorio. Si la llamada falla,
     devuelve cadena vacía (no se guarda resumen) y lo cuenta como fallo. Importa `anthropic` al usarse.
     """
     from dotenv import load_dotenv
-    load_dotenv(db.RAIZ.parent / ".env")
-    try:
-        from entrada.extraer import MODELO as modelo
-    except Exception:  # noqa: BLE001 - sin el módulo de entrada se usa el mismo valor por defecto
-        modelo = "claude-haiku-5-5"
+    load_dotenv(db.ruta_env())
+    modelo = MODELO
     import anthropic
-    cliente = anthropic.Anthropic(timeout=60, max_retries=2)
+    cliente = anthropic.Anthropic(timeout=120, max_retries=2)
 
     def extraer(texto: str) -> str:
         try:
             r = cliente.messages.create(model=modelo, max_tokens=max_tokens, system=SISTEMA,
+                                        output_config={"effort": "low"},
                                         messages=[{"role": "user", "content": texto}])
         except Exception as e:  # noqa: BLE001 - sin clave, sin red o límite: el grupo queda sin resumen
-            print(f"aviso: el modelo no respondió ({type(e).__name__})", file=sys.stderr)
+            print(f"aviso: el modelo no respondió ({type(e).__name__}: {str(e)[:160]})", file=sys.stderr)
             USO["llamadas"] += 1
             USO["fallos"] += 1
             return ""
@@ -252,12 +250,13 @@ def resumir_mesa_completa(con: sqlite3.Connection, falso: bool = False, todos: b
     if falso:
         extractor, modelo = extractor_falso, "falso"
     else:
-        from entrada.extraer import MODELO
         extractor, modelo = extractor_modelo(), MODELO
     n = resumir_y_guardar(con, grupos, extractor, modelo, solo_faltantes=not todos, puntos=puntos, a_la_vez=a_la_vez)
     mesa = resumir_mesa(con, grupos, extractor_modelo(max_tokens=1200) if not falso else extractor, modelo, puntos,
                         solo_faltante=not todos)
-    costo = USO["entrada"] / 1e6 * PRECIO_ENTRADA_MTOK + USO["salida"] / 1e6 * PRECIO_SALIDA_MTOK
+    from entrada.extraer import PRECIOS_MTOK
+    pe, ps = PRECIOS_MTOK.get(modelo, (0.0, 0.0))
+    costo = USO["entrada"] / 1e6 * pe + USO["salida"] / 1e6 * ps
     return {"grupos": len(grupos), "resumidos": n, "mesa": mesa, "modelo": modelo,
             "segundos": round(time.perf_counter() - t0, 1), "llamadas": USO["llamadas"], "fallos": USO["fallos"],
             "tokens_entrada": USO["entrada"], "tokens_salida": USO["salida"], "costo_usd": round(costo, 4)}
