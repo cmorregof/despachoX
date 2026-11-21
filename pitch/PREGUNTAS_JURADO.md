@@ -36,9 +36,9 @@ La usa quien despacha en el Banco Arquidiocesano de Alimentos de Manizales, que 
 
 **5. ¿Hay evidencia de comida perdida o vencida en Manizales?**
 
-No hay una cifra pública de comida dañada o vencida en Manizales ni en Caldas, así que no la damos [F]. Lo documentado es que el albergue del Coliseo Mayor dejó de recibir perecederos el 11 de agosto, y que a escala nacional ABACO pidió no donarlos por falta de refrigeración [F]. La línea base de desperdicio sale del inventario del Banco en los días 0 a 15 del piloto.
+No hay una cifra pública de comida dañada o vencida en Manizales ni en Caldas, así que no la damos [F]. Lo documentado es que desde el 11 de agosto el punto oficial de donaciones de la Alcaldía, en el Coliseo Menor, no recibía perecederos, y que a escala nacional ABACO pidió no donarlos por falta de refrigeración [F]. La línea base de desperdicio sale del inventario del Banco en los días 0 a 15 del piloto.
 
-*Respaldo.* `docs/investigacion/11_voz_publica_actores.md`, sección 2.4; `docs/investigacion/10_problema_usuarios_alternativas.md`, sección 3; `docs/PLAN_30_90.md`, día 15.
+*Respaldo.* `docs/investigacion/11_voz_publica_actores.md`, sección 2.4; `docs/investigacion/10_problema_usuarios_alternativas.md`, sección 3; `docs/PLAN_30_90.md`, día 15. El comunicado de la Alcaldía del 11 de agosto pone los perecederos bajo «No se recibe» en el punto del Coliseo Menor (`docs/FUENTES.md`, rama `fuentes-noche`, D10). Lo de ABACO es de la gerente de logística de la red, en Noticias RCN del 12 de agosto, y todavía no tiene fila en `docs/FUENTES.md`.
 
 ## Criterio 2 · Prototipo de solución (25 puntos)
 
