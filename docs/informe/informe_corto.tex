@@ -1,6 +1,6 @@
-% Informe de contexto regional de DespachoX, versión corta (máximo 5 páginas).
-% Estilo adaptado de prometeo.sty (tesis de Carlos): Ancízar Serif, paleta Sanzo Wada 214, polyglossia.
-% Compilar desde docs/informe/:  latexmk -lualatex informe_corto.tex
+% Informe de contexto regional de Convite (antes DespachoX), versión corta (máximo 6 páginas).
+% Estilo adaptado de prometeo.sty (tesis de Carlos): Ancízar Serif, paleta verde de Convite, polyglossia.
+% Compilar desde docs/informe/:  latexmk -xelatex -interaction=nonstopmode informe_corto.tex
 % El documento de trabajo completo es informe_contexto.tex (versión 0.1).
 
 \documentclass[11pt,letterpaper,parskip=half-]{scrartcl}
@@ -31,15 +31,18 @@
 % ----------------------------------------------------------------------------- página
 \usepackage[letterpaper, top=2.0cm, bottom=1.9cm, left=2.6cm, right=2.6cm, headsep=0.7cm, footskip=1.0cm]{geometry}
 
-% ----------------------------------------------------------------------------- color (Sanzo Wada, combinación 214)
+% ----------------------------------------------------------------------------- color (identidad verde de Convite)
+% Se conservan los nombres de la paleta anterior: tinta = verde monte, ambar = maíz, crema = niebla, ceniza = piedra.
+% El maíz no pinta texto pequeño; solo filetes, bordes, números de sección y marcas gráficas.
 \usepackage{xcolor}
-\definecolor{tinta}{HTML}{4F4086}
-\definecolor{ambar}{HTML}{A36752}
-\definecolor{crema}{HTML}{EBD3A2}
-\definecolor{ceniza}{HTML}{6E6878}
-\colorlet{noche}{tinta!78!black}
-\colorlet{papel}{crema!22!white}
-\colorlet{hielo}{tinta!6!white}
+\definecolor{tinta}{HTML}{1F5C4A}
+\definecolor{ambar}{HTML}{D9982B}
+\definecolor{crema}{HTML}{E4EADB}
+\definecolor{ceniza}{HTML}{5C6A62}
+\definecolor{cal}{HTML}{F6F4EA}
+\definecolor{noche}{HTML}{1C2A24}
+\colorlet{papel}{cal}
+\colorlet{hielo}{crema!55!white}
 \AtBeginDocument{\color{noche}}
 \gappto\captionsspanish{\renewcommand{\tablename}{Tabla}}
 
@@ -85,12 +88,12 @@
 \tcbset{enhanced,breakable,boxrule=0pt,arc=0pt,outer arc=0pt,left=9pt,right=9pt,top=5pt,bottom=5pt,
   fonttitle=\normalfont\scshape\small,before skip=6pt,after skip=6pt}
 \newtcolorbox{propuesta}{colback=papel,colframe=ambar,borderline west={2pt}{0pt}{ambar},
-  coltitle=ambar,title={Propuesta en discusión},attach title to upper={\par\smallskip}}
+  coltitle=tinta,title={Propuesta en discusión},attach title to upper={\par\smallskip}}
 \newtcolorbox{resumen}{colback=hielo,colframe=tinta,borderline west={2pt}{0pt}{tinta},before upper={\setlength{\parskip}{0.3em}}}
 
 % ----------------------------------------------------------------------------- marcas y citas
 \newcommand{\marca}[1]{\textcolor{ceniza}{\footnotesize[#1]}}   % [E] evidencia, [I] inferencia, [H] hipótesis
-\newcommand{\pv}{\textcolor{ambar}{\textsc{por verificar}}}
+\newcommand{\pv}{\textcolor{tinta}{\textsc{por verificar}}}
 \newcommand{\cf}[1]{\textcolor{tinta}{[\ref{#1}]}}                % cita a la lista numerada de fuentes
 \newcommand{\cff}[2]{\textcolor{tinta}{[\ref{#1}, \ref{#2}]}}
 % Hora de compilación. Con LuaLaTeX la calcula Lua en hora de Colombia; con XeLaTeX usa \time (compilar con TZ=America/Bogota).
@@ -108,13 +111,16 @@
 \thispagestyle{empty}
 
 % ----------------------------------------------------------------------------- bloque de título
-{\small\scshape\color{ceniza} Hackathon UNAL Manizales 2026 · Vertical 04, logística y abastecimiento · Equipo 19\par}
+\noindent\begin{minipage}[b]{0.72\linewidth}{\small\scshape\color{ceniza} Hackathon UNAL Manizales 2026 · Vertical 04, logística y abastecimiento · Equipo 19\par}\end{minipage}\hfill
+\begin{minipage}[b]{0.24\linewidth}\raggedleft\includegraphics[height=1.15cm]{figuras/convite_logo_transparente.png}\end{minipage}\par
 \vspace{0.35\baselineskip}
 {\displayfont\fontsize{23}{27}\selectfont\color{tinta} Manizales después del sismo:\\ llevar la comida a cada barrio y vereda\par}
 \vspace{0.3\baselineskip}
 {\large\itshape Informe de contexto regional de Convite (antes DespachoX). Versión corta para leer y mostrar\par}
 \vspace{0.15\baselineskip}
 {\color{ambar}\rule{\linewidth}{0.6pt}\par}
+\vspace{0.15\baselineskip}
+\noindent\includegraphics[width=\linewidth]{figuras/hero_convite_franja.jpg}\par
 {\small\color{ceniza} Sábado 21 de noviembre de 2026, compilado a las {\ancizarlining\horacompilacion}, hora de Colombia. El documento de trabajo completo es la versión 0.1. Marcas: \marca{E} evidencia de la fuente citada, \marca{I} inferencia nuestra, \marca{H} hipótesis por validar, \marca{M} medido por nosotros.\par}
 \vspace{0.2\baselineskip}
 
@@ -123,7 +129,7 @@
 
 Hoy hay piezas sueltas. El Registro Único de Damnificados dice quién es damnificado, la Cruz Roja registra hogares, el sistema SUMA de la OPS lleva inventario y entregas, y la red de bancos recauda y le reporta al donante. Ninguna decide qué se manda, a quién, en qué vehículo y por qué vía. Esa pieza es la que propone Convite.
 
-En noviembre la agenda pública de Manizales es la vivienda, y en ciudades con comercio abierto el PMA y la Cruz Roja prefieren el efectivo. Por eso proponemos, todavía en discusión, un piloto en la rutina del Banco de Alimentos como nodo regional. Las juntas de acción comunal pedirían y confirmarían, y la próxima temporada de lluvias sería la prueba. Ninguna cifra de este informe ha sido verificada todavía por una persona del equipo.
+En noviembre la agenda pública de Manizales es la vivienda, y en ciudades con comercio abierto el PMA y la Cruz Roja prefieren el efectivo. Por eso proponemos, todavía en discusión, un piloto en la rutina del Banco de Alimentos como nodo regional. Las juntas de acción comunal pedirían y confirmarían, y la próxima temporada de lluvias sería la prueba. Ninguna cifra de fuentes externas de este informe ha sido verificada todavía por una persona del equipo. Las cifras de simulación, en cambio, las medimos nosotros \marca{M}.
 \end{resumen}
 
 % ----------------------------------------------------------------------------- 1
@@ -171,7 +177,7 @@ En noviembre la conversación pública es otra, y la agenda de la Alcaldía es l
 \begin{figure}[ht]
 \centering
 \input{figuras/piezas_sueltas.tex}
-\caption{Las piezas que existen y la que falta. Los recuadros morados son herramientas en uso, cada una con su dueño y su fin. El recuadro ámbar es el despacho, que hoy nadie cubre. Lo elaboramos a partir de la investigación 10 del equipo.}
+\caption{Las piezas que existen y la que falta. Los recuadros verdes son herramientas en uso, cada una con su dueño y su fin. El recuadro de borde amarillo es el despacho, que hoy nadie cubre. Lo elaboramos a partir de la investigación 10 del equipo.}
 \label{fig:piezas}
 \end{figure}
 
@@ -209,12 +215,25 @@ Propuesta del capitán y del coordinador, hecha con inferencias de las investiga
 \item \textbf{Marco oficial.} Según el informe que la Unidad de Gestión del Riesgo presentó al Concejo el 16 de octubre, Manizales mantiene la calamidad pública hasta el 9 de agosto de 2027, con un plan de acción específico \cf{f:alcnov}. Un piloto de 90 días cabe dentro de ese marco.
 \item \textbf{Temporada de lluvias.} La temporada sería la prueba de esfuerzo. En febrero de 2026 la ciudad declaró alerta amarilla por más de 200~mm de lluvia en menos de 25 días \cf{f:lluvia}. Ese es el umbral del amarillo del indicador A25 del IDEA de la UNAL, que pasa a naranja desde 300~mm y a rojo desde 400~mm \cf{f:a25}. El A25 ya está en el código como capa de riesgo por tramo, con lluvia de prueba, y en el piloto entraría con datos del IDEA.
 \item \textbf{Juntas que piden y confirman.} Cada junta pediría por su barrio o su vereda sin que se le exija el RUD, y confirmaría cada entrega con el código QR del paquete. Con esas confirmaciones el donante tendría el reporte que ABACO ya le promete \cf{f:donahoy}.
-\item \textbf{Exportación a SUMA.} Las recepciones y las entregas saldrían en un formato compatible con SUMA, para encajar con el sistema nacional de gestión del riesgo \cf{f:suma}.
-\item \textbf{Fases.} Días 0 a 15, acuerdo y línea base. Días 15 a 30, reconstrucción en frío de un mes. Días 30 a 60, un día normal de reparto en paralelo. Días 60 a 90, simulacro con la UGR, A25 por tramo y decisión escrita del Banco.
+\item \textbf{SUMA, más adelante.} Una posibilidad, sin fecha y fuera de los 90 días, es que las recepciones y las entregas salgan en un formato compatible con SUMA, el sistema que Colombia adoptó por norma \cf{f:suma}.
+\item \textbf{Fases.} Días 0 a 15, acuerdo y línea base. Días 15 a 30, reconstrucción en frío de un mes. Días 30 a 60, un día normal de reparto en paralelo. Días 60 a 90, simulacro con la UGR, A25 por tramo y decisión escrita del Banco. El territorio crece a la par, una zona cada 30 días (sección~\ref{sec:zona}).
 \end{itemize}
 \end{propuesta}
 
 % ----------------------------------------------------------------------------- 6
+\section{Dónde empieza el piloto}\label{sec:zona}
+
+El piloto empieza en una comuna y un corregimiento del norte de la ciudad. Carlos lo decidió el 21 de noviembre, entre tres propuestas con evidencia del sismo.
+
+\paragraph{Ciudadela del Norte} Es la comuna más poblada de Manizales, con 58.776 habitantes \cf{f:asis}. Después del sismo, la Alcaldía reportó intervenciones en San Sebastián y Bosques del Norte \cf{f:alcnorte}. En el catálogo del equipo tiene dos CDI, un centro de salud y un CISCO, a entre 2,4 y 4,1~km del Banco por la red vial \marca{M}.
+
+\paragraph{El Manantial} Es el corregimiento vecino. En Pueblo Hondo, cuatro viviendas tuvieron pérdida total, y el PMA recorrió con la Alcaldía las veredas con más daño para identificar necesidades de seguridad alimentaria. En esa nota hablan las juntas de Alto del Guamo y Alto Bonito \cf{f:alcnorte}. Alto Bonito tiene Centro Vida \cf{f:grupos} y queda a 8,8~km del Banco \marca{M}. Su ruta sale por la comuna San José, así que las entregas rurales no comparten corredor con las urbanas \marca{M}. La vía a Neira, además, tuvo cinco derrumbes o deslizamientos registrados entre 2017 y 2023, y el registro de Maracas dice que no hay ruta alterna \cf{f:invias}. OpenStreetMap pone Pueblo Hondo en Neira, mientras la Alcaldía lo pone en El Manantial.
+
+\paragraph{Por qué empezar ahí} Es la comuna con más habitantes, el PMA ya levantó necesidades en sus veredas y sus juntas hablaron en público \marca{I}. Si el PMA comparte su levantamiento de agosto, nos serviría de línea base de necesidad \marca{H}.
+
+\paragraph{Cómo crece} Cada 30 días se suma una zona. Del día 0 al 30, Ciudadela del Norte y El Manantial reciben el acuerdo, la línea base y la reconstrucción en frío. El día 30 se suman La Macarena y El Tablazo, y el reparto en paralelo corre en las dos zonas. El día 60 se suman Atardeceres y Kilómetro 41, y el simulacro con la UGR y el A25 por tramo se hacen con las tres. Cada zona nueva entra solo si la anterior cumplió su criterio de validación y si el Banco lo confirma. Si no, el piloto sigue en las zonas que ya tiene.
+
+% ----------------------------------------------------------------------------- 7
 \section{Lo que no sabemos y a quién preguntar}\label{sec:nosabemos}
 
 \begin{itemize}[leftmargin=1.2em]
@@ -253,6 +272,10 @@ Consultadas el 20 de noviembre de 2026 a través de los informes de investigaci�
 \item\label{f:donahoy} ABACO, plataforma de donación Colombia 2026, \href{https://donahoy.abaco.org.co/colombia2026}{donahoy.abaco.org.co}.
 \item\label{f:lluvia} Noticias RCN, 16 feb 2026, \href{https://www.noticiasrcn.com/colombia/declaran-alerta-amarilla-en-manizales-por-lluvias-extremas-992470}{noticiasrcn.com}.
 \item\label{f:a25} IDEA-UNAL, registro de lluvias diarias y A25, 2020, \href{https://idea.manizales.unal.edu.co/publicaciones/reportes_meteorologicos/red_manizales/niveles_de_alerta/reportes2020/SAT%20Deslizamientos-Registro%20lluvias%20diarias%20y%20A25%202020.pdf}{idea.manizales.unal.edu.co}.
+\item\label{f:asis} Secretaría de Salud de Manizales, ASIS 2023, tablas 26 a 38, \href{https://salud.manizales.gov.co/wp-content/uploads/2024/07/ASIS_MANIZALES_2023.pdf}{salud.manizales.gov.co}. El enlace dio error 404 el 21 nov.
+\item\label{f:alcnorte} Alcaldía de Manizales, boletines del \href{https://centrodeinformacion.manizales.gov.co/manizales-continua-con-la-evaluacion-de-viviendas-y-prepara-el-plan-de-retorno-tras-el-sismo/}{15}, \href{https://centrodeinformacion.manizales.gov.co/alcaldia-de-manizales-y-programa-mundial-de-alimentos-recorren-la-zona-rural-para-identificar-afectaciones-tras-el-sismo/}{20} y \href{https://centrodeinformacion.manizales.gov.co/alcaldia-de-manizales-acompana-a-familias-afectadas-por-el-sismo-en-pueblo-hondo/}{27 de agosto de 2026} (centrodeinformacion.manizales.gov.co).
+\item\label{f:grupos} Alcaldía de Manizales, Desarrollo Social, grupos de interés, 2025, \href{https://manizales.gov.co/wp-content/uploads/2025/08/GRUPOS-DE-INTERES.pdf}{manizales.gov.co}.
+\item\label{f:invias} INVÍAS, registro de eventos \#767, vía Manizales–Neira, 2017 a 2023, \href{https://hermes2.invias.gov.co/server/rest/services/N_767/Consulta767/FeatureServer/0/query?where=objectid%20IN%20%28285482,449685,1363400,1799896,3680182%29&outFields=*&f=json}{hermes2.invias.gov.co}.
 \end{enumerate}
 \end{multicols}
 }

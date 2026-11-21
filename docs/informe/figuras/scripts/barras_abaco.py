@@ -15,7 +15,7 @@ from matplotlib import font_manager
 
 INFORME = Path(__file__).resolve().parents[2]
 SALIDA = INFORME / "figuras" / "barras_abaco.pdf"
-TINTA, AMBAR, CREMA, CENIZA = "#4F4086", "#A36752", "#EBD3A2", "#6E6878"
+TINTA, AMBAR, CREMA, CENIZA = "#1F5C4A", "#D9982B", "#E4EADB", "#5C6A62"
 
 for ttf in (INFORME / "fuentes").glob("AncizarSerif-*.ttf"):
     font_manager.fontManager.addfont(str(ttf))
@@ -33,7 +33,7 @@ fig, ax = plt.subplots(figsize=(6.3, 1.32))
 y = list(range(len(datos)))[::-1]
 ax.barh(y, [d[1] for d in datos], color=[d[2] for d in datos], height=0.66)
 for yi, (rotulo, kg, color) in zip(y, datos):
-    ax.text(kg + 6_000, yi, f"{miles(kg)} kg", va="center", ha="left", fontsize=8.5, color=color)
+    ax.text(kg + 6_000, yi, f"{miles(kg)} kg", va="center", ha="left", fontsize=8.5, color=(TINTA if color == AMBAR else color))
 ax.set_yticks(y)
 ax.set_yticklabels([d[0] for d in datos], fontsize=8.5)
 ax.set_xlim(0, 480_000)
@@ -46,7 +46,7 @@ for lado in ("left", "bottom"):
     ax.spines[lado].set_linewidth(0.6)
 ax.tick_params(axis="both", colors=CENIZA, length=2)
 for etiqueta in ax.get_yticklabels():
-    etiqueta.set_color("#2E2550")
+    etiqueta.set_color("#1C2A24")
 fig.tight_layout(pad=0.3)
 fig.savefig(SALIDA)
 print(f"escrito {SALIDA}")

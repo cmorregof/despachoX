@@ -21,8 +21,8 @@ INFORME = RAIZ / "docs" / "informe"
 FUENTES = INFORME / "fuentes"
 SALIDA = INFORME / "figuras" / "mapa_manizales.pdf"
 
-TINTA, AMBAR, CREMA, CENIZA = "#4F4086", "#A36752", "#EBD3A2", "#6E6878"
-GRIS_RED = "#CFCCD3"
+TINTA, AMBAR, CREMA, CENIZA = "#1F5C4A", "#D9982B", "#E4EADB", "#5C6A62"
+GRIS_RED = "#D3D8D0"
 
 for ttf in FUENTES.glob("AncizarSerif-*.ttf"):
     font_manager.fontManager.addfont(str(ttf))
