@@ -78,7 +78,13 @@ Todavía no sabemos cómo despacha hoy el Banco, y por eso el piloto lo mide con
 
 *Respaldo.* `docs/SIMULACION.md`, secciones 3 y 9; `docs/PLAN_30_90.md`, días 15 y 30.
 
-*Nota para quien responde.* No presentes como resultado la ventaja en críticos frente al despachador con oficio. Esa corrida cambia a la vez la red y la velocidad, y todavía no llega la corrida que separa los dos efectos (`docs/SIMULACION.md`, sección 9.3). Además, la simulación no mide el valor de saber qué se pidió, dónde está cerrado y qué se entregó (`docs/SUGERENCIAS.md`, sección 4).
+*Nota para quien responde.* La ventaja en críticos frente al despachador con oficio se presenta solo con carga alta y con esta frase: «En simulación, con carga alta y 30 jornadas por política, Convite entrega a tiempo entre 2,8 y 6,5 puntos más de pedidos críticos que un despachador con oficio, según la velocidad que se suponga en las vías.» Son 2,8 [0,8; 4,7] puntos con las velocidades del modelo y 6,5 [4,4; 8,7] con las de la tesis, en la misma red y con las mismas semillas (`docs/SIMULACION.md`, sección 9.3). No digas que con carga alta la ventaja sale de la velocidad y no de la red. Con la red urbana era 0,8 y con la ampliada es 2,8, y esas dos cifras no están pareadas. Además, la simulación no mide el valor de saber qué se pidió, dónde está cerrado y qué se entregó (`docs/SUGERENCIAS.md`, sección 4).
+
+*Si preguntan «si una regla simple empata, ¿qué aporta el optimizador?».* Con viajes cortos y carga holgada o media, la regla simple empata con Convite en críticos a tiempo. Lo medimos y lo decimos. Aun así, en simulación Convite recorre de 42,2 a 56,0 km menos por jornada que esa regla, con 30 jornadas por política en cada carga. Además, cuando los viajes se alargan, la regla pierde más. Con carga media, la ventaja de Convite aparece solo con las velocidades de la tesis UNAL, 3,7 [1,7; 5,7] puntos, y sale de la velocidad, porque el cambio pareado por semilla es 2,8 [0,9; 4,6]. Con carga alta y esas velocidades, la regla baja 3,8 puntos en críticos a tiempo y Convite no cambia de forma medible, así que la ventaja de Convite crece 3,7 puntos en esa carga. Con carga holgada no podemos afirmar ese cambio, que es 1,2 [−0,2; 2,7]. Esa regla la escribimos nosotros, con toda la información a la vista. En una operación real alguien tendría que aplicarla a mano y rehacer las rutas con cada cierre, y Convite lo hace solo.
+
+*Salvedad que hay que decir si preguntan por las velocidades.* En la simulación el optimizador planea con las velocidades de la tesis. El producto todavía planea con las del modelo (`despacho/red.py`, líneas 36 a 44). Pasarle esas velocidades al producto es trabajo del piloto.
+
+*Respaldo de esta respuesta.* `docs/SIMULACION.md`, secciones 9.3, 9.6 y 9.7; `despacho/sim/resultados_velocidades/tablas.md`.
 
 **12. ¿Cómo saben que un paquete llegó, y qué pasa si alguien pide dos veces?**
 
