@@ -2,6 +2,127 @@
 
 **Documento interno. No se fusiona a `main` antes del pitch.** El repositorio es público (`docs/QA_NOCHE.md`, rama `qa-noche`, sección 2.1) y el jurado recibe su enlace (`ENTREGA.md`, rama `fuentes-noche`, fila 5). Este archivo trae la nota que se pone el propio equipo, así que se queda en la rama `n2-jurado`.
 
+## Ronda de las 4:40
+
+Esta ronda le dice a Fable cuántos puntos suma cada rama de la noche si se fusiona y se cita en la ficha o en el pitch. Sirve para ordenar las fusiones de las 6:10 a. m., antes del congelamiento de las 8:30 a. m. La escribí entre las 4:35 y las 5:10 a. m. Las calificaciones y los puntos son estimados [E], con la escala de `docs/ESTRATEGIA.md` y la rúbrica de `CLAUDE.md`. Lo que medí lleva [M]. La ronda de las 2:00 sigue debajo sin cambios, y sus cinco correcciones son el punto de partida de esta.
+
+### Resumen de la ronda
+
+Las ramas de la noche mueven pocos niveles por sí solas, porque casi todas dan más evidencia a criterios que los jurados ya contaban. Su valor mayor está en las preguntas que responden y en los errores que evitan. Cuatro sí mueven la nota. `simulacion` y `n2-sensibilidad` traen cifras del código actual y suben un nivel los impactos del académico, un paso que se reparten. `n2-aliados` cita el informe de gestión 2025 del propio Banco y acerca a la directora medio nivel en el problema. `n2-eval-lector`, si se graba el video, completa medio nivel del prototipo del académico.
+
+Con las cinco correcciones y todo lo de la noche fusionado y citado, la nota queda en 75, 65 y 72,5 puntos si nadie responde a las 8:00 a. m. [E]. Si responden el Banco y el IDEA, queda en 87,5, 76,25 y 77,5 [E]. El techo, con un padrino de socorro y el video, es de 93,75, 76,25 y 81,25 [E]. Las nueve ramas de la tabla suman unas 4 h 50 min de Fable entre fusionar, citar y cotejar. Fusionar es la parte corta, unos 40 minutos, y cabe antes de las 8:30 a. m. Lo que cuesta es citar y cotejar, y ahí sí importa el orden. Conviene empezar por `n2-aliados`, `a25` y `n2-eval-lector`, seguir con el par de simulación y dejar al final la privacidad, la inyección y las figuras. `erratas` se fusiona de todos modos, porque toma cinco minutos y asegura el respaldo de la demo. Las cinco correcciones conservan su orden, y entra una sexta, llenar los [SIM] del pitch con la corrida de `simulacion`.
+
+### Puntas comprobadas a las 4:35 a. m.
+
+Las ramas que revisaron los tres jurados no se han movido [M]. Después de `git fetch`, `pitch-noche` sigue en `d337e06`, `defensa-noche` en `5737e09`, `fuentes-noche` en `2261013` y `a25` en `b96ff71`. `origin/main` está en `5571ab2`, y desde `7131261` solo cambiaron `torre/CANAL.md` y `torre/RELEVO_NOCHE2.md`. Por eso las notas de la ronda de las 2:00 siguen valiendo como punto de partida. Leí estas ramas en solo lectura.
+
+| Rama | Commit | Qué leí | Qué trae |
+|---|---|---|---|
+| `simulacion` | `f52ea33` | `despacho/sim/resultados_velocidades/tablas.md` y `confirmacion_factor_3/resumen.md` | La corrida con las velocidades de la tesis UNAL de 2019 y factor crítico 3, con 30 semillas por nivel de carga y 360 jornadas. Su `docs/SIMULACION.md` es idéntico al de `main`, así que la sección 9 que anuncian las tablas todavía no existe |
+| `n2-sensibilidad` | `30fab28` | `docs/SENSIBILIDAD.md` | Nueve variantes que cambian un valor cada una, con 60 semillas y 2.160 jornadas |
+| `n2-eval-lector` | `473444d` | `evaluacion/lector/RESULTADOS.md` | El lector por reglas medido con 330 mensajes sintéticos que escribió el equipo |
+| `n2-eval-inyeccion` | `193a68a` | `evaluacion/inyeccion/HALLAZGOS.md` | 40 mensajes maliciosos contra la regla de arquitectura y nueve hallazgos, de H1 a H9 |
+| `n2-privacidad` | `9a87606` | `docs/PRIVACIDAD.md` | Un borrador para revisión de un abogado, con la respuesta de 85 palabras para el jurado |
+| `n2-aliados` | `1bc08ac` | `aliados/DIRECTORIO.md` | Ocho fichas para las llamadas de las 8:00 a. m. y las cifras del informe de gestión 2025 del Banco |
+| `n2-figuras` | `ff8cf7b` | `figuras_pitch/README.md` y los PNG (b), (c) y (d) | Seis figuras de 1920 × 1080 px. Las tres que miré se leen bien y llevan su fuente al pie |
+| `erratas` | `4f5df00` | Su único commit | El guion de la demo corregido |
+
+`erratas` solo cambia `docs/GUION_DEMO.md`. Reemplaza el respaldo por terminal, que en `main` usa un comando que no existe (`entrada.procesar`), y reinicia la nube con `DESPACHOX_REINICIAR=1`. También corrige los apodos, el filtro de cierres y el aviso `punto:3`. Las erratas de los demás archivos ya están dentro de `pitch-noche` y `defensa-noche`, con 4 y 10 commits `[Fable/erratas]`.
+
+### Fusión de prueba
+
+Probé la fusión de todo en una copia aparte, sin empujar nada [M]. Entre 105 pares de ramas, `git merge-tree` solo encuentra un choque, el de `a25` con `fuentes-noche` en `docs/FUENTES.md`. `a25` añade cinco filas al registro de tres filas de `main`, mientras que `fuentes-noche` lo reemplaza por el registro consolidado. Por eso conviene fusionar primero `fuentes-noche` y después `a25`, y resolver el choque a mano. Se conserva el registro consolidado y se le pasan, en la sección del A25, las dos filas medidas de `a25`, que son los 36 de 36 valores del reporte de 2020 y la demostración con lluvia sintética. Si el choque se resuelve con la versión de `a25`, se pierde el registro de 25 discrepancias, y con él la base de la corrección 2.
+
+Fusioné doce ramas sobre `main` en ese orden: `fuentes-noche`, `a25`, `simulacion`, `erratas`, `pitch-noche`, `defensa-noche` y las seis de Noche-2 de la tabla. Con `DESPACHOX_SIN_RED=1`, `pytest` da 465 pruebas en verde, 11 fallidas, 1 omitida y 26 marcadas como falla esperada, en 61,9 s [M]. Las 11 fallidas son las mismas de `entrada/pruebas/` que explica la sección 1 de la ronda de las 2:00. La demo por terminal de `demo-noche` pasa 33 de 33 verificaciones sobre ese árbol, con el gancho del A25 apagado y encendido [M]. Con el gancho apagado, los tres planes tardan 3,2, 3,1 y 3,1 s. No incluí `samuel-bot`, `qa-noche` ni `jacobo-tablero`. El canal de las 3:32 a. m. ya avisa que `qa-noche` choca con `samuel-bot` en `entrada/pasarela_sms.py`, y `a25` con `samuel-bot` en `docs/FUENTES.md`.
+
+### Cómo cuento los puntos
+
+Uso el método de la ronda de las 2:00. La barra de `docs/ESTRATEGIA.md` es condición necesaria para el excelente, y cuando un nivel necesita dos cosas, cada una se lleva la mitad. Una rama solo suma si se fusiona y si la ficha, el pitch, las respuestas o la sección «Para el jurado» del README la citan. Cuento sobre la fila de las cinco correcciones, así que nada de lo de abajo se suma dos veces con ellas. Doy dos cifras por rama, que son el promedio de los tres jurados. La primera supone que nadie responde a las 8:00 a. m. y que no hay video. La segunda supone respuestas citables del Banco y del IDEA, un padrino de socorro confirmado y el video. El orden sigue los puntos por hora en el punto medio de las dos, como en la ronda de las 2:00. El tiempo incluye fusionar, citar y cotejar.
+
+### Qué mueve cada rama con cada jurado [E]
+
+| Rama | Profesor de la UNAL | Directora del banco | Funcionaria de riesgo |
+|---|---|---|---|
+| `n2-aliados` | Nada | Criterio 1, medio nivel, +2,5. Va de parcial hacia sólido sin respuesta del Banco, y de sólido hacia excelente con ella si el Banco dice quién transporta. El informe le muestra que el Banco entregó 364 t a 156 organizaciones en 2025 con un cronograma fijo, y que su meta de 2026 es fortalecer la logística, reducir el desperdicio y asegurar la trazabilidad | Criterio 5, un sexto del paso de sólido a excelente, +0,6, solo con la UGR o un organismo de socorro confirmados |
+| `a25` (corrección 3) | Criterio 3, de parcial a sólido, +3,75 | Nada, porque el A25 no le cambia un lunes sin lluvia | Criterio 3, de parcial a sólido, +3,75 |
+| `n2-eval-lector` | Criterio 2, la mitad del paso de sólido a excelente, +3,1, solo con el video. Cierra el hueco que él anotó, un lector medido con 15 mensajes | Nada | Nada. Le sirve que el formato SMS se lea bien en 30 de 30 mensajes en tipo, conteo y productos, pero su criterio 2 sigue esperando lo de SUMA y el mapa sin internet |
+| `n2-sensibilidad` | Criterio 6, de parcial a sólido, +2,5 si entra sola y +1,25 si entra con `simulacion`. Las cifras pasan a ser del código actual y aguantan en las nueve variantes | Nada | Nada |
+| `simulacion` | El mismo paso del criterio 6, +2,5 sola o +1,25 compartido. Con `a25` y el visto bueno del IDEA, además, la mitad del paso de sólido a excelente en el criterio 3, +1,9, porque la tesis de 2019 entra al código de la simulación | Nada. Su criterio 6 ya es sólido y le falta la magnitud del piloto | Nada |
+| `n2-privacidad` | Nada | Nada | Criterio 5, un sexto del paso de sólido a excelente, +0,6, solo con padrino de socorro |
+| `n2-eval-inyeccion` | Nada | Nada | Lo mismo que la privacidad, +0,6 |
+| `n2-figuras` | Nada | Nada | Nada |
+| `erratas` | Nada | Nada | Nada |
+
+En el criterio 5 de la funcionaria, la mitad del paso a excelente la pone el padrino. La otra mitad se la reparten la privacidad, la inyección y el directorio, que cubren la Ley 1581, los riesgos con mitigación medidos y lo que se le pide a cada padrino. Esa cuenta supone la matriz de riesgos en el Drive (corrección 5). El Banco no cuenta como padrino de ella, por la razón de la sección 6 de la ronda de las 2:00.
+
+### Tabla de ramas, por puntos esperados por hora de Fable
+
+| Orden | Rama | Puntos sin respuestas ni video [E] | Puntos con todo [E] | Tiempo de Fable | Puntos por hora, punto medio | Condición para que sume | Lo que resta si se cita mal [E] |
+|---|---|---:|---:|---|---:|---|---|
+| 1 | `n2-aliados` | 0,83 | 1,04 | 30 min | 1,9 | Que una persona abra el PDF del informe del Banco antes de citarlo. Para el excelente de la directora, además, que el Banco diga a las 8:00 a. m. si reparte o si recogen las organizaciones | Decir «351 t rescatadas». El informe marca 48 t de ellas como compradas, así que lo rescatado ronda 303 t, según el cálculo de la rama. La directora lo nota y devuelve el medio nivel (−0,83) |
+| 2 | `a25` (corrección 3) | 2,5 | 2,5 | 85 min, 25 más que a las 2:00 | 1,8 | Fusionar antes de las 8:30 a. m. y después de `fuentes-noche`. Cambiar los enlaces del reporte A25 de 2020 y del Boletín 145, que dieron 404 (canal, 1:24 a. m.), por una captura del Internet Archive que abra una persona | Un enlace del IDEA que no carga ante el académico, que conoce el IDEA, le cuesta medio nivel en el criterio 3 (−0,63). Resolver el choque con la versión de `a25` borra el registro consolidado |
+| 3 | `n2-eval-lector` | 0 | 1,04 | 20 min | 1,6 | El video grabado. Citar el 96,4 % de productos encontrados y ningún lugar equivocado propuesto con seguridad en 320 pedidos, con la salvedad de que el conjunto es sintético y lo escribió el equipo | Decir en los tres minutos que «casi la mitad salió sin ningún error» hace pensar que la otra mitad falla, así que va mejor en las preguntas. Tampoco conviene ofrecer en vivo la confirmación de entrega por chat en la nube, porque con el modelo activo puede no registrarse (`entrada/flujo.py`, líneas 102 a 107). El arreglo está en `qa-noche` |
+| 4 | `n2-sensibilidad` | 0,83 | 0,42 | 35 min | 1,1 | Aprobar la frase de su sección 8, anotarla en `docs/FUENTES.md` como M y condicionar la sección 7 de `docs/SIMULACION.md` a la red urbana con las velocidades del modelo | Citar su referencia, 99,3 % contra 54,7 %, como resultado principal, cuando el propio documento dice que no lo es. Lo mismo si la sección 7 queda como está, porque el académico ve dos documentos que se contradicen. Devuelve el paso (−0,83) |
+| 5 | `simulacion` | 0,83 | 1,04 | 60 min | 0,9 | Escribir la sección 9 de `docs/SIMULACION.md` con `tablas.md`, condicionar la sección 7 y llenar los [SIM] de `pitch/CIFRAS_PITCH.md` (C15, C16, A12 y P09). Cada cifra va con su línea base, sus 360 jornadas y la palabra «simulación». En carga media, DespachoX entrega a tiempo el 98,3 % de los pedidos críticos y el orden de llegada el 53,6 % | Decir que DespachoX le gana al despachador con oficio sin salvedad. Los 3,7 puntos de ventaja mezclan dos cambios, la red y las velocidades, y con la red urbana la sección 8.3 no los sostuvo. El académico devuelve el paso (−0,83) |
+| 6 | `n2-privacidad` | 0 | 0,21 | 15 min | 0,4 | Pasar la respuesta de 85 palabras a `pitch/PREGUNTAS_JURADO.md` como borrador que revisará un abogado | Ninguna si se dice como borrador y con la salvedad del filtro, que en la prueba de 11 mensajes dejó pasar nombres después de «doña» |
+| 7 | `n2-eval-inyeccion` | 0 | 0,21 | 20 min | 0,3 | Aprobar la frase del final de `HALLAZGOS.md` con su salvedad del tablero sin clave | Decir «No guardamos teléfono ni nombre» (`docs/QA_NOCHE.md`, 2.7), que H6 contradice en un archivo público. El académico y la funcionaria bajan un nivel en el criterio 5 (−2,5). Decir que solo el despachador aprueba, sin aclarar que hoy el tablero no pide clave, le cuesta a la funcionaria otro nivel en el mismo criterio (−1,25) |
+| 8 | `n2-figuras` | 0 | 0 | 20 min | 0 | Ninguna para la nota. Mejora la claridad, porque (b) puede reemplazar a `barras_abaco.pdf` en la diapositiva 1 y (d) sirve de respaldo en la 2. (b) se proyecta con su sello «Cifras por verificar» hasta que la corrección 2 lo quite | Proyectar un mapa (a) antes de decidir entre 8,4 y 9,3 km a Bajo Tablazo. Citar los 152 registros sin sismo de (d), que solo revisó un agente, sin abrirlos por persona |
+| 9 | `erratas` | 0 | 0 | 5 min | 0 | Fusionar. Asegura el respaldo de la demo, que en `main` depende de un comando que no existe | Ninguna |
+
+El orden de fusión puede ser otro que el de esta tabla. Las ramas con código (`a25`, `simulacion`, `n2-sensibilidad`, `n2-eval-lector` y `n2-eval-inyeccion`) conviene fusionarlas antes de las 8:30 a. m., aunque se citen después, porque citar es texto. Las dos de simulación se trabajan juntas, ya que comparten la sección 7 y el paso del criterio 6 del académico. Si solo hay tiempo para una, `n2-sensibilidad` cobra el paso en 35 minutos. Aun así, los [SIM] del guion solo los llena `simulacion`.
+
+### Calificación con todo fusionado y citado
+
+Todas las filas suponen que se hicieron las cinco correcciones y que, antes de registrar, se corrigieron las frases con discrepancia y las fases del informe corto, como en la ronda de las 2:00 (sección 6).
+
+| Escenario [E] | Académico | Banco | Riesgo | Rango |
+|---|---:|---:|---:|---|
+| Hoy, ronda de las 2:00 | 65,0 | 62,5 | 65,0 | 62,5 a 65,0 |
+| Las cinco, sin respuesta del Banco (ronda de las 2:00) | 72,5 | 62,5 | 72,5 | 62,5 a 72,5 |
+| Las cinco y las nueve ramas de la tabla, sin respuestas de las 8:00 a. m. | 75,0 | 65,0 | 72,5 | 65,0 a 75,0 |
+| Lo anterior, con respuestas citables del Banco y del IDEA | 87,5 | 76,25 | 77,5 | 76,25 a 87,5 |
+| Lo anterior, con la UGR o un organismo de socorro confirmados | 87,5 | 76,25 | 81,25 | 76,25 a 87,5 |
+| Lo anterior y el video de respaldo | 93,75 | 76,25 | 81,25 | 76,25 a 93,75 |
+
+**Qué sube en cada fila.** Sin respuestas, el académico gana el paso del criterio 6 con la simulación nueva, y la directora medio nivel del criterio 1 con el informe del Banco. Con respuestas, el académico suma el excelente del criterio 3, que se reparten `simulacion` y el visto bueno del IDEA. La directora llega a excelente en el criterio 1 si el Banco le dice al equipo quién transporta, porque el informe ya muestra cómo reparte. La funcionaria solo sube en el criterio 5, y únicamente con un padrino de socorro. El video completa el prototipo del académico junto con `n2-eval-lector`. A las otras dos no les basta, porque la directora sigue sin forma de subir su inventario en el tablero y la funcionaria sigue con la promesa de SUMA y un mapa que necesita internet.
+
+**El paso menos seguro.** El excelente del criterio 3 del académico pide que la Sede respalde el uso de sus capacidades. El visto bueno del IDEA para citar el A25 se acerca a eso, aunque no revisa la formulación del ruteo, que es lo que él anotó. Si el académico exige esa revisión, su nota baja 3,75 puntos en las tres últimas filas, a 83,75 y 90,0.
+
+**Si se cita mal.** Las frases de la lista siguiente pesan distinto en cada jurado [E]. Al académico le cuestan hasta 8,1 puntos la ventaja sobre el despachador con oficio dicha sin salvedad, la frase «No guardamos teléfono ni nombre» y un enlace del IDEA que no carga. A la funcionaria le cuestan 7,5 esa misma frase y el tablero sin clave callado. A la directora le cuestan 2,5 las «351 t rescatadas».
+
+### Lo que no conviene citar todavía
+
+1. La ventaja sobre el despachador con oficio en críticos, sean los 3,7 puntos de `simulacion` o los 3,2 de `n2-sensibilidad`. Cambian a la vez la red y las velocidades, y con la red urbana la sección 8.3 de `docs/SIMULACION.md` no la sostuvo. La frase de la sensibilidad ya la deja fuera. Lo que sí aguanta en todas las variantes es la comparación con el orden de llegada.
+2. La referencia de `n2-sensibilidad` como resultado principal, porque el propio documento dice que no lo es. Los [SIM] salen de `simulacion`.
+3. La sección 7 de `docs/SIMULACION.md` tal como está, si la ficha cita la corrida nueva. Su primer punto dice que el despachador con oficio le gana a DespachoX por cerca de 2 puntos en las entregas a tiempo de todos los puntos. En carga media, las dos corridas nuevas dan empate, con −0,8 [−3,1; 1,4] en `simulacion` y −0,3 [−1,4; 0,9] en la referencia de la sensibilidad. Hay que condicionarla a la red urbana con las velocidades del modelo, o retirarla.
+4. «No guardamos teléfono ni nombre», de `docs/QA_NOCHE.md` 2.7, por H6. El nombre que alguien escribe al describir el sitio queda como nombre de un lugar que el bot les ofrece a desconocidos.
+5. «Solo el despachador aprueba» sin la salvedad de que hoy el tablero no pide clave. Definir `DESPACHOX_CLAVE_TABLERO` sigue en manos de Carlos (pregunta del canal, 2:06 a. m.).
+6. La confirmación de entrega por chat como algo que se muestra en vivo en la nube, mientras el arreglo de `qa-noche` no esté fusionado y probado con el modelo activo. La demo del guion no la usa, así que basta con no ofrecerla.
+7. «351 t rescatadas» por el Banco. Se dice 364 t entregadas a 156 organizaciones en 2025, o unas 303 t rescatadas, que es un cálculo nuestro.
+8. Las cifras del informe del Banco, las demás filas F de `n2-aliados` y los 152 registros de cierres sin sismo de `n2-figuras`, hasta que una persona los abra. Los abrió un lector automático o los revisó un agente, así que entran a la carga de la corrección 2.
+9. Los enlaces del reporte A25 de 2020 y del Boletín 145 del IDEA, que dieron 404. Se cambian por la captura del Internet Archive o por la página nueva del IDEA antes de citarlos.
+10. Cualquier distancia a Bajo Tablazo, 8,4 o 9,3 km, hasta que Fable decida. Los mapas (a) de `n2-figuras` llevan el sello «por confirmar».
+11. El 49,1 % de mensajes sin ningún error en la versión de tres minutos del pitch. Cabe en las preguntas, con su salvedad.
+
+### Las cinco correcciones, revisadas
+
+El orden de las cinco no cambia, aunque cambian dos tiempos y entra una sexta.
+
+| # | Corrección | Qué cambia esta noche | Puntos por hora, punto medio |
+|---|---|---|---:|
+| 1 | Anotar lo que respondió el Banco | `n2-aliados` trae el canal y lo que hay que preguntar. Si el Banco dice quién transporta, la directora llega a excelente en el criterio 1, y el máximo sube de 5,8 a 6,7 puntos de promedio. La llamada al IDEA de la misma mañana, con el mismo directorio, vale 0,6 más si entran `simulacion` y `a25` | 10,0 (antes 8,8) |
+| 2 | Verificar por persona las siete cifras del pitch | Cada cifra nueva de `n2-aliados` o de `n2-figuras` que se cite también se abre por persona, a unos 10 minutos cada una | 5,8, menos si crece la lista |
+| 3 | Fusionar `a25` y decir a qué vías llega | Toma 25 minutos más, por el choque con `fuentes-noche` y los enlaces del IDEA | 1,8 (antes 2,5) |
+| 4 | Nombrar al integrante de Ingeniería Industrial | Nada | 2,5 |
+| 5 | Subir el plan y la matriz de riesgos al Drive | Ahora es también la base del excelente de la funcionaria en el criterio 5, con la privacidad, la inyección y un padrino de socorro | 1,9 |
+| 6, nueva | Llenar los [SIM] del pitch con `simulacion`, escribir la sección 9 de `docs/SIMULACION.md` y condicionar la sección 7 | El guion y las diapositivas esperan esa sección para el bloque 6 y la diapositiva 6 | 0,9 |
+
+Por puntos por hora, la corrección 3 queda ahora por debajo de la 4 y de la 5. Sigue tercera porque es código y tiene que entrar antes de las 8:30 a. m., y porque la 4 solo cobra si se hace también la 5. La sexta va al final por puntos por hora, pero no es opcional. Sin ella, el bloque 6 del guion tiene que decirse sin ningún número de simulación, porque `pitch/CIFRAS_PITCH.md` deja en revisión las cifras de la primera corrida.
+
+## Ronda de las 2:00
+
+Lo que sigue es la revisión de la 1:38 a. m., con el ajuste de `4c21647`, sin cambios. Sus cifras de «hoy» son el punto de partida de la ronda de las 4:40.
+
 La escribió el agente `n2-jurado` de Noche-2 el sábado 21 de noviembre de 2026, hora de Colombia. La primera versión va de las 12:03 a las 12:37 a. m. (commit `c726bea`). Esta segunda versión, escrita entre la 1:01 y la 1:38 a. m., corrige lo que encontró una revisión independiente y vuelve a cotejar cada frase citada con las ramas de la 1:36 a. m. Tres jurados que no vieron el trabajo lo califican con la rúbrica de `CLAUDE.md` y la escala de `docs/ESTRATEGIA.md` (excelente 100 %, sólido 75 %, parcial 50 %, incipiente 25 %, no evidenciado 0 %). Las calificaciones y los puntos que gana cada corrección son juicio mío, así que van como estimados [E]. Los conteos de pruebas, la demo por terminal y la cobertura del A25 los medí sobre copias de las ramas [M].
 
 ## Resumen
