@@ -13,7 +13,8 @@ Reglas (las mismas en la tabla, el CSV y el tablero):
 - Cuentan los pedidos con punto de entrega, sin los `descartado`, sin los que tienen `duplicado_de` y
   sin las alertas por silencio (`origen='silencio'`), que son visitas de verificación, no pedidos.
 - El territorio es la comuna del punto. Si el punto no la tiene (los que crea el bot al confirmar un
-  lugar), se toma la de su barrio en `datos/semilla/barrios.csv`; si tampoco, «sin comuna».
+  lugar), se toma la de su barrio en `datos/semilla/barrios.csv` o el corregimiento de su vereda en
+  `datos/semilla/corregimientos.csv`; si tampoco, «sin comuna».
 - La hora de entrega es el `entregado_en` más tardío de los paquetes del pedido.
 - A tiempo: entregado a más tardar en `limite_en`. El denominador (`evaluados`) son los pedidos con
   `limite_en` que ya se pueden juzgar: entregados con hora conocida, o abiertos con el límite vencido
@@ -37,6 +38,8 @@ from despacho.cierres import normalizar
 
 SIN_COMUNA = "sin comuna"
 RUTA_BARRIOS = Path(__file__).resolve().parent.parent / "datos" / "semilla" / "barrios.csv"
+# Veredas y su corregimiento según la Alcaldía (no según OpenStreetMap); el corregimiento es su territorio.
+RUTA_CORREGIMIENTOS = RUTA_BARRIOS.with_name("corregimientos.csv")
 ABIERTOS = ("nuevo", "confirmado", "asignado")
 COLUMNAS = ("territorio", "puntos", "puntos_criticos", "pedidos", "familias", "kg_pedidos", "entregados",
             "kg_entregados", "a_tiempo", "evaluados", "pct_a_tiempo", "criticos_a_tiempo",
@@ -64,13 +67,17 @@ def _en_periodo(creado: datetime | None, desde: datetime | None, hasta: datetime
     return (desde is None or creado >= desde) and (hasta is None or creado < hasta)
 
 
-def _comuna_de_barrio() -> dict[str, str]:
-    """barrio normalizado -> comuna, del nomenclátor de OpenStreetMap."""
-    if not RUTA_BARRIOS.exists():
+def _comunas(ruta: Path) -> dict[str, str]:
+    if not ruta.exists():
         return {}
-    with open(RUTA_BARRIOS, encoding="utf-8") as f:
+    with open(ruta, encoding="utf-8") as f:
         return {normalizar(r["nombre"]): r["comuna"].strip() for r in csv.DictReader(f)
                 if r.get("nombre") and (r.get("comuna") or "").strip()}
+
+
+def _comuna_de_barrio() -> dict[str, str]:
+    """barrio o vereda normalizado -> comuna o corregimiento. Si un nombre está en los dos, gana el barrio."""
+    return {**_comunas(RUTA_CORREGIMIENTOS), **_comunas(RUTA_BARRIOS)}
 
 
 def _territorios(con: sqlite3.Connection) -> tuple[dict[int, str], set[str]]:
@@ -187,6 +194,7 @@ def silencio(con: sqlite3.Connection, desde=None, hasta=None) -> list[dict]:
     nombres_con = [f" {normalizar(p['nombre'])} " for p in puntos]
     de_punto, _ = _territorios(con)
     por_barrio = _comuna_de_barrio()
+    por_vereda = _comunas(RUTA_CORREGIMIENTOS)
     for r in con.execute("SELECT id, barrio FROM puntos WHERE barrio IS NOT NULL"):
         if de_punto[r["id"]] != SIN_COMUNA:
             por_barrio.setdefault(normalizar(r["barrio"]), de_punto[r["id"]])
@@ -202,7 +210,7 @@ def silencio(con: sqlite3.Connection, desde=None, hasta=None) -> list[dict]:
         if l["puntos"] & con_pedidos or n in barrios_con or (
                 tipo == "vereda" and any(f" {n} " in x for x in nombres_con)):
             continue
-        comuna = por_barrio.get(n) if tipo == "barrio" else None
+        comuna = por_barrio.get(n) if tipo == "barrio" else por_vereda.get(n)
         enlazadas = sorted({de_punto[i] for i in l["puntos"] if de_punto.get(i, SIN_COMUNA) != SIN_COMUNA})
         salida.append({"nombre": nombre, "tipo": tipo, "comuna": comuna or (enlazadas[0] if enlazadas else None),
                        "estado": SIN_PEDIDOS})
