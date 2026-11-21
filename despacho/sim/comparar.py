@@ -87,8 +87,8 @@ def tabla_indicador(L, m, A, C, S) -> None:
     dec = _dec(m)
     L += [f"### {INDICADORES[m]}", "",
           "| Carga | `ingenua` | `experta` | `despachox` | `despachox` − `ingenua` | `despachox` − `experta` "
-          "| Semillas mejor / igual / peor frente a `experta` | Misma diferencia, velocidades del modelo, misma red "
-          "| Misma diferencia en la sección 8.3 |",
+          "| Semillas mejor / igual / peor frente a `experta` | `despachox` − `experta`, velocidades del modelo, "
+          "misma red (9.3) | `despachox` − `experta` en la sección 8.3 (red urbana) |",
           "|---|---:|---:|---:|---|---|---|---|---|"]
     for c in CARGAS:
         pe = pareada(A, "despachox", A, "experta", c, m)
