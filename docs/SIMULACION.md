@@ -1,6 +1,6 @@
 # Simulación: cuánto mejora DespachoX frente a un despacho sin optimizador
 
-Estado: resultados de la primera corrida y de la segunda ronda (sección 8), del 20 de noviembre de 2026, sin revisar todavía por el equipo.
+Estado: resultados de la primera corrida y de la segunda ronda (sección 8), del 20 de noviembre de 2026, y de la corrida con las velocidades de la tesis UNAL de 2019 (sección 9), de la noche del 20 al 21. Sin revisar todavía por el equipo.
 
 Código en `despacho/sim/`. Se reproduce con `python -m despacho.sim.correr --carga todas`.
 
@@ -136,17 +136,17 @@ Los cierres se sortean entre los tramos que usan los caminos más cortos del aco
 
 Actualizada el 20 de noviembre de 2026 con la segunda ronda (sección 8).
 
-- **No prueba que DespachoX supere a un buen despachador humano cuando la información es perfecta.** Una regla simple de prioridad y de rotación de bodega iguala a DespachoX en críticos a tiempo y le gana por cerca de 2 puntos en entregas a tiempo de todos los puntos. Subir el peso de los puntos críticos no cambió eso (sección 8.2). DespachoX gana esa comparación con la flota corta (8.6) y cuando hay pedidos mal ubicados (8.4).
-- **Mide solo en parte el valor de la entrada por chat.** La sección 8.4 modela un tipo de error, el pedido registrado en otro punto, y una corrección, la confirmación de ubicación. La tasa de error de 10 % o 20 % es nuestra y no tiene fuente. Además se supone que el despachador experto no confirma; uno que llame a cada comité tendría el mismo beneficio, a costa de un tiempo que no se modela.
-- **No modela cierres registrados tarde ni falsos.** El encargo S2 lo proponía y se dejó por fuera: exige separar lo que sabe cada conductor de lo que sabe el despacho. Todo cierre reportado es cierto y se confirma en 5 minutos.
+- **No prueba que DespachoX supere a un buen despachador humano cuando la información es perfecta.** Con la red urbana y las velocidades del modelo (sección 8.3), una regla simple de prioridad y de rotación de bodega iguala a DespachoX en críticos a tiempo. Con carga media y alta, le gana por cerca de 2 puntos en entregas a tiempo de todos los puntos. Subir el peso de los puntos críticos no cambió eso (sección 8.2). Con las velocidades de la tesis UNAL de 2019 en la red ampliada (sección 9), DespachoX gana en críticos y empata en el total, salvo con carga alta. Esa corrida cambia a la vez la red y la velocidad (sección 9.3). DespachoX también gana con la flota corta (8.6) y cuando hay pedidos mal ubicados (8.4).
+- **Mide solo en parte el valor de la entrada por chat.** La sección 8.4 modela un tipo de error, el pedido registrado en otro punto, y una corrección, la confirmación de ubicación. La tasa de error de 10 % o 20 % es nuestra y no tiene fuente. Además, suponemos que el despachador experto no confirma. Uno que llame a cada comité tendría el mismo beneficio, a costa de un tiempo que no modelamos.
+- **No modela cierres registrados tarde ni falsos.** El encargo S2 lo proponía y lo dejamos por fuera, porque exige separar lo que sabe cada conductor de lo que sabe el despacho. Todo cierre reportado es cierto y se confirma en 5 minutos.
 - **No mide la trazabilidad.** El código QR y la confirmación de entrega no entran en la simulación.
 - **No valida los supuestos.** Las velocidades, los tiempos de carga y de entrega, los plazos por urgencia, la flota, la demanda y los cierres son nuestros. Ningún dato viene de una operación real del Banco de Alimentos ni de los organismos de socorro.
-- **No dice cuál es la carga real.** Los niveles de carga se eligieron para que la línea base no quedara ni holgada ni colapsada. La magnitud de la ventaja sobre la política ingenua depende mucho de ese nivel y de la flota: va de 10 a 58 puntos en críticos a tiempo.
-- **No representa bien los perecederos.** Hay un solo acopio, tanto inventario perecedero como demanda y lotes que vencen entre 6 y 48 horas. El efecto del empaque activo (patente UNAL), que `optimizar.py` ya modela, no se midió: con rotación por vencimiento el desperdicio ya es 0,0 % en estos escenarios, así que el empaque no tendría margen para mostrarse.
-- **Describe la red urbana, no la ampliada.** Casi todas las corridas usan `manizales.graphml`, la red de Manizales y Villamaría con que se hizo la primera ronda. El producto usa ahora `manizales_region.graphml`, con los accesos; la sección 8.8 repite la carga media sobre esa red.
+- **No dice cuál es la carga real.** Los niveles de carga se eligieron para que la línea base no quedara ni holgada ni colapsada. La magnitud de la ventaja sobre la política ingenua depende mucho de ese nivel y de la flota, y va de 10 a 58 puntos en críticos a tiempo.
+- **No representa bien los perecederos.** Hay un solo acopio, tanto inventario perecedero como demanda y lotes que vencen entre 6 y 48 horas. El efecto del empaque activo (patente UNAL), que `optimizar.py` ya modela, no se midió. Con rotación por vencimiento el desperdicio ya es 0,0 % en estos escenarios, así que el empaque no tendría margen para mostrarse.
+- **Describe la red urbana, no la ampliada.** Casi todas las corridas usan `manizales.graphml`, la red de Manizales y Villamaría con que se hizo la primera ronda. El producto usa ahora `manizales_region.graphml`, con los accesos. La sección 8.8 repite la carga media sobre esa red.
 - **No incluye otros errores humanos.** El despachador aprueba siempre en 2 minutos y los conductores siguen el plan.
 - **No cubre varios días.** Es una jornada de 14 horas, sin reabastecimiento ni cierres que se levanten.
-- **No es exactamente reproducible.** La búsqueda del optimizador se corta por tiempo de reloj, así que repetir una corrida con las mismas semillas da cifras muy cercanas, pero no idénticas (sección 8.2).
+- **No es reproducible al pie de la letra.** La búsqueda del optimizador se corta por tiempo de reloj, así que repetir una corrida con las mismas semillas da cifras muy cercanas, pero no idénticas (sección 8.2).
 
 ## 8. Segunda ronda: peso de los puntos críticos (encargo S2, 20 de noviembre de 2026)
 
@@ -276,3 +276,160 @@ Con otra red, la misma semilla pone los puntos y los cierres en otros lugares. P
 | `despachox` − `optimiza_una_vez` | 17,5 [11,7; 23,2] | 0,0 [0,0; 0,0] | 0,9 [−0,4; 2,3] | −29,6 [−40,1; −19,0] |
 
 Las conclusiones de la red urbana se mantienen. DespachoX supera a la política ingenua por 28 puntos en críticos a tiempo (70,4 % contra 98,3 %), empata con `experta` en críticos, queda 2 puntos debajo de ella en el total y le ahorra 60 km por jornada. Ninguna llamada al optimizador terminó en error.
+
+## 9. Con las velocidades de la tesis UNAL de 2019 (noche del 20 al 21 de noviembre de 2026)
+
+Las secciones 1 a 8 no se modifican. Esta sección repite la confirmación de la sección 8.3 con velocidades más lentas. Son velocidades derivadas de mediciones GPS de un bus en Manizales y asignadas por tipo de vía y pendiente (tesis UNAL de 2019, tabla 14, pp. 46 a 48). En adelante se llaman «velocidades de la tesis».
+
+**Por qué.** Dos agentes encontraron que la velocidad supuesta estaba inflada. Según `docs/datos/flota_perecederos_costos.md`, una tesis de maestría de la UNAL Manizales de 2019 da para un bus diésel 22,6 km/h de media en su ruta de Manizales (p. 50), y de 21,8 a 24,2 km/h en vías principales (tabla 14, p. 48). El grafo, en cambio, le daba al campero 39,0 km/h de media en `primary` y 54,7 en `trunk` (medido por un agente sobre el grafo, en el mismo documento). Fuera de la ciudad, el SICE-TAC del Ministerio de Transporte supone 15 km/h para un camión de dos ejes en terreno montañoso. Ese valor no se usó.
+
+**De dónde salen las velocidades. Estado: revisado por máquina; falta que una persona abra la tesis.** Un agente de Fable leyó las páginas impresas de la tesis. La p. 27 nombra un registrador GPS V-900, y la p. 29, un GPS en cada bus. En las pp. 46 y 47, las velocidades salen de procesar los datos del GPS y se asignan a la red por tipo de vía y pendiente. La tabla 14, en la p. 48, se titula «velocidades asignadas». Por eso esta sección no las llama medidas a secas.
+
+### 9.1 Qué cambió y cómo se corrió
+
+- **Velocidad de cada tramo.** Con `python -m despacho.sim.correr --velocidades medidas`, o con la variable de entorno `DESPACHOX_SIM_VELOCIDADES=medidas`, cada tramo toma la velocidad de su tipo de vía y de vehículo en `datos_publicos/velocidades.csv`. Donde hay dato, ese archivo trae las velocidades de la tesis. `medidas` es solo el nombre de la opción en el código. Sin la opción, o con `--velocidades modelo`, todo queda como antes.
+- **Sin `maxspeed`.** Se ignora el límite de OpenStreetMap, que en `trunk` llegaba a 80 km/h. Solo 31 de las 18.821 aristas, 13,7 de 4.262 km, traen un límite menor que la velocidad de la tesis.
+- **Por vehículo.** El camión va a la misma velocidad que el campero, sin el factor 1,25 del modelo, y la moto va 11 % más rápido. Así lo trae el CSV. El camión sigue sin entrar a vías residenciales.
+- **Vías sin fila en el CSV.** Solo `ladder`, con 2 aristas y 0,1 km. Queda con el supuesto del modelo, 20 km/h.
+- **El optimizador planea con las mismas velocidades.** El adaptador le pasa a `matriz.calcular` una copia del grafo por tipo de vehículo. No se tocaron `optimizar.py` ni `matriz.py`. Una prueba confirma que la simulación y el optimizador calculan los mismos segundos entre sitios, con una diferencia máxima de 0,5 s por el redondeo.
+- **Los viajes se alargan.** En los escenarios de carga media, el tiempo medio entre sitios sube 44 % para el campero y la moto, y 23 % para el camión. Del acopio a un punto, el campero pasa de 7,1 a 9,8 minutos en promedio, el camión de 9,8 a 11,5 y la moto de 6,4 a 8,8 (medido por nosotros en los 30 escenarios).
+- **Apagada, nada cambia.** Es el valor por defecto. Con la opción apagada, `ingenua` y `experta` dan un `resultados.csv` idéntico byte a byte al del código anterior, en 5 semillas de las tres cargas. Antes del cambio, ese código reprodujo sin diferencias las 60 filas de esas dos políticas en la sección 8.8, así que la red es la misma. Las políticas con optimizador no se pueden comparar byte a byte, porque su búsqueda se corta por reloj (sección 7). Con la opción apagada, el optimizador recibe el grafo y las matrices de siempre. Las pruebas están en `despacho/sim/tests/test_velocidades.py`.
+
+**Red.** Se usó `manizales_region.graphml` (7.825 nodos), la red del producto. La sección 8.3 corrió sobre la red urbana `manizales.graphml` (6.395 nodos). Ese archivo no está en esta máquina y no lo pudimos bajar, porque Overpass no respondió. Con otra red, la misma semilla pone los puntos y los cierres en otros lugares (sección 8.8). Por eso la comparación con la sección 8.3 no es pareada y mezcla dos cambios: la velocidad y la red. Para separarlos, la sección 9.3 repite la confirmación con las velocidades del modelo sobre la misma red y las mismas semillas. Así quedan las dos versiones, como pide la decisión 3 de `docs/DECISIONES_9PM.md`.
+
+**Semillas.** 20261150 a 20261179, 30 por carga. Son las semillas de confirmación de la sección 8.3, que no intervinieron en la elección del factor 3. Esa elección se hizo con las semillas 20261120 a 20261149. Se usan las mismas tres cargas, las mismas cuatro políticas y las mismas líneas base de la sección 8.3, con `FACTOR_CRITICO` = 3 y 1 s de búsqueda por llamada. Con la misma semilla y la misma red, las dos versiones de velocidad tienen los mismos puntos, pedidos, lotes y flota. Los cierres se sortean con la misma regla sobre los caminos más cortos de cada versión, así que pueden caer en otros tramos.
+
+**Tiempo.** Antes de la corrida principal, 3 semillas tardaron 9,5 minutos en las tres cargas. Con eso, 30 semillas cabían antes de las 5:00 a. m., y no se bajó a 20. La corrida principal duró de las 11:11 p. m. a las 12:33 a. m., con 2 procesos en una máquina de 2 núcleos. La corrida sin cierres empezó a las 12:33 a. m. y se detuvo hacia la 1:00 a. m., cuando se apagó el servidor de la sesión. A las 6:03 a. m., Fable relanzó solo la corrida de la misma red con las velocidades del modelo.
+
+| Corrida | Qué cambia | Jornadas | Estado | Carpeta en `despacho/sim/resultados_velocidades/` |
+|---|---|---:|---|---|
+| Principal (9.2) | Velocidades de la tesis, 3 a 8 cierres, las tres cargas | 360 | Terminada. Ninguna llamada al optimizador terminó en error | `confirmacion_factor_3` |
+| Misma red (9.3) | Velocidades del modelo | 360 | En curso desde las 6:03 a. m. | `modelo_misma_red` |
+| Sin cierres (9.4) | 0 cierres por jornada | 0 | No se hizo | ninguna |
+| Vida útil por producto (9.5) | Vencimientos de `datos_publicos/vida_util.csv` | 0 | No se hizo | ninguna |
+
+Las tablas completas, con todas las métricas, están en el `resumen.md` de cada carpeta, y los datos por semilla en su `resultados.csv`. Las tablas de esta sección salen de `tablas.md`, que escribe `python -m despacho.sim.comparar despacho/sim/resultados_velocidades`, y se copiaron sin cambios. El código de la simulación es el del commit `1489760`.
+
+### 9.2 Resultados con las velocidades de la tesis
+
+Corrida principal: 30 escenarios por carga, 90 en total, cuatro políticas y 360 jornadas. Los escenarios tienen en promedio 49 puntos, 7,5 vehículos y 5,6 cierres. La carga holgada son 100 pedidos, la media 125 y la alta 149.
+
+En cada tabla, las tres primeras columnas de cifras son medias por política. Las líneas base son `ingenua`, que atiende por orden de llegada, y `experta`, que atiende primero lo más urgente y saca primero lo que vence primero. Las diferencias son la media pareada por semilla con su IC del 95 % (t de Student, 29 grados de libertad). Las dos últimas columnas dan la misma diferencia `despachox` − `experta` con las velocidades del modelo: sobre la misma red y las mismas semillas (9.3), y la que se reportó en la sección 8.3, sobre la red urbana. Mientras la corrida de la misma red no termine, esa columna dice «s. d.». Los supuestos están en la sección 9.6.
+
+**Críticos a tiempo (%).** Pedidos de puntos críticos entregados antes de su hora límite. 30 escenarios por carga.
+
+| Carga | `ingenua` | `experta` | `despachox` | `despachox` − `ingenua` | `despachox` − `experta` | Semillas mejor / igual / peor frente a `experta` | `despachox` − `experta`, velocidades del modelo, misma red (9.3) | `despachox` − `experta` en la sección 8.3 (red urbana) |
+|---|---:|---:|---:|---|---|---|---|---|
+| Holgada | 75,9 | 97,7 | 99,2 | 23,3 [17,4; 29,1] | 1,5 [0,2; 2,8] | 8 / 20 / 2 | s. d. | 0,3 [−0,6; 1,2] |
+| Media | 53,6 | 94,6 | 98,3 | 44,7 [37,7; 51,6] | 3,7 [1,7; 5,7] | 15 / 13 / 2 | s. d. | 1,7 [−0,7; 4,0] |
+| Alta | 40,5 | 91,9 | 98,4 | 57,9 [52,7; 63,1] | 6,5 [4,4; 8,7] | 23 / 6 / 1 | s. d. | 0,8 [−0,6; 2,2] |
+
+**A tiempo, todos los puntos (%).** 30 escenarios por carga.
+
+| Carga | `ingenua` | `experta` | `despachox` | `despachox` − `ingenua` | `despachox` − `experta` | Semillas mejor / igual / peor frente a `experta` | `despachox` − `experta`, velocidades del modelo, misma red (9.3) | `despachox` − `experta` en la sección 8.3 (red urbana) |
+|---|---:|---:|---:|---|---|---|---|---|
+| Holgada | 90,4 | 95,2 | 94,8 | 4,3 [2,4; 6,3] | −0,5 [−1,9; 0,9] | 9 / 6 / 15 | s. d. | −0,2 [−0,7; 0,4] |
+| Media | 76,4 | 84,8 | 84,0 | 7,6 [5,2; 9,9] | −0,8 [−3,1; 1,4] | 10 / 3 / 17 | s. d. | −1,9 [−3,5; −0,3] |
+| Alta | 62,4 | 70,3 | 73,2 | 10,8 [8,4; 13,3] | 3,0 [0,7; 5,3] | 23 / 0 / 7 | s. d. | −1,7 [−3,2; −0,2] |
+
+**Perecederos vencidos (%).** Kilos de lotes que vencen en la jornada y no se entregaron antes de vencer. 30 escenarios por carga.
+
+| Carga | `ingenua` | `experta` | `despachox` | `despachox` − `ingenua` | `despachox` − `experta` | Semillas mejor / igual / peor frente a `experta` | `despachox` − `experta`, velocidades del modelo, misma red (9.3) | `despachox` − `experta` en la sección 8.3 (red urbana) |
+|---|---:|---:|---:|---|---|---|---|---|
+| Holgada | 1,4 | 0,0 | 0,0 | −1,4 [−2,1; −0,8] | 0,0 [0,0; 0,0] | 0 / 30 / 0 | s. d. | 0,0 [0,0; 0,0] |
+| Media | 3,4 | 0,0 | 0,0 | −3,4 [−4,4; −2,4] | 0,0 [0,0; 0,0] | 0 / 30 / 0 | s. d. | 0,0 [0,0; 0,0] |
+| Alta | 5,6 | 0,0 | 0,0 | −5,6 [−6,8; −4,3] | 0,0 [0,0; 0,0] | 0 / 30 / 0 | s. d. | 0,0 [0,0; 0,0] |
+
+**Kilómetros de la flota por jornada.** 30 escenarios por carga.
+
+| Carga | `ingenua` | `experta` | `despachox` | `despachox` − `ingenua` | `despachox` − `experta` | Semillas mejor / igual / peor frente a `experta` | `despachox` − `experta`, velocidades del modelo, misma red (9.3) | `despachox` − `experta` en la sección 8.3 (red urbana) |
+|---|---:|---:|---:|---|---|---|---|---|
+| Holgada | 623,0 | 615,9 | 569,9 | −53,1 [−71,2; −34,9] | −46,0 [−63,3; −28,7] | 27 / 0 / 3 | s. d. | −51,1 [−62,6; −39,5] |
+| Media | 760,5 | 755,8 | 699,8 | −60,6 [−82,4; −38,9] | −56,0 [−77,9; −34,0] | 26 / 0 / 4 | s. d. | −59,5 [−73,0; −46,0] |
+| Alta | 842,3 | 840,5 | 798,3 | −44,0 [−59,4; −28,7] | −42,2 [−56,8; −27,6] | 26 / 0 / 4 | s. d. | −46,9 [−65,0; −28,7] |
+
+**Espera en el punto peor atendido (h).** 30 escenarios por carga.
+
+| Carga | `ingenua` | `experta` | `despachox` | `despachox` − `ingenua` | `despachox` − `experta` | Semillas mejor / igual / peor frente a `experta` | `despachox` − `experta`, velocidades del modelo, misma red (9.3) | `despachox` − `experta` en la sección 8.3 (red urbana) |
+|---|---:|---:|---:|---|---|---|---|---|
+| Holgada | 5,14 | 6,96 | 7,09 | 1,95 [1,36; 2,53] | 0,13 [−0,36; 0,63] | 13 / 0 / 17 | s. d. | 0,23 [−0,21; 0,67] |
+| Media | 6,46 | 9,00 | 9,53 | 3,07 [2,46; 3,68] | 0,53 [0,04; 1,02] | 9 / 0 / 21 | s. d. | 0,81 [0,37; 1,25] |
+| Alta | 7,56 | 10,77 | 11,37 | 3,82 [3,21; 4,43] | 0,61 [0,17; 1,04] | 10 / 2 / 18 | s. d. | 0,89 [0,33; 1,45] |
+
+**Frente al despacho por orden de llegada, DespachoX gana con claridad en puntos críticos.** Entrega a tiempo 23,3, 44,7 y 57,9 puntos más de pedidos críticos que la política ingenua, según la carga, y el intervalo nunca toca el cero. En la sección 8.3 eran 10,1, 28,6 y 47,5. La ingenua cae a 75,9 %, 53,6 % y 40,5 % de críticos a tiempo.
+
+**Frente al despachador con oficio, DespachoX gana en puntos críticos en las tres cargas.** La diferencia es de 1,5, 3,7 y 6,5 puntos, y los tres intervalos excluyen el cero. DespachoX fue mejor en 8, 15 y 23 de los 30 escenarios, y peor en 2, 2 y 1. En la sección 8.3 los tres intervalos incluían el cero.
+
+**En el total de entregas a tiempo, empata en carga holgada y media y gana en carga alta.** Las diferencias son de −0,5 y −0,8 puntos, con intervalos que incluyen el cero, aunque DespachoX fue peor en más escenarios que mejor: 15 y 17 de 30. En carga alta gana 3,0 puntos, con IC de [0,7; 5,3]. En la sección 8.3 quedaba 1,9 y 1,7 puntos debajo en carga media y alta, con intervalos que excluían el cero.
+
+**Los kilómetros se mantienen.** DespachoX recorre 46,0, 56,0 y 42,2 km menos que `experta` por jornada, del 5,0 % al 7,5 % de su recorrido. En la sección 8.3 eran 51,1, 59,5 y 46,9 km.
+
+**El desperdicio sigue resuelto por la regla de bodega.** `experta` y DespachoX dejan vencer 0,0 % de los perecederos en los 90 escenarios. La ingenua pierde 1,4 %, 3,4 % y 5,6 %. En carga alta pasa en promedio la meta del 5 % del reto, y 17 de sus 30 escenarios quedan por encima. En carga holgada y media son 2 y 9 de 30. En la sección 8.3 la ingenua perdía 1,0 %, 1,8 % y 3,2 %.
+
+**La prioridad sigue costando en equidad.** DespachoX hace esperar al punto peor atendido 0,13, 0,53 y 0,61 horas más que `experta`, y en carga media y alta el intervalo excluye el cero. Frente a la ingenua son 1,95, 3,07 y 3,82 horas más.
+
+El optimizador se llamó entre 56 y 78 veces por jornada en promedio, según la carga. Tardó entre 1,37 y 1,64 segundos por llamada en promedio, con 1 s de búsqueda. En la sección 8.3 tardaba 1,28 segundos.
+
+### 9.3 Comparación con la sección 8: el efecto de la velocidad
+
+La corrida con las velocidades del modelo sobre la misma red y las mismas semillas está en curso desde las 6:03 a. m. y debe terminar hacia las 7:25 a. m. Hasta entonces, la columna «`despachox` − `experta`, velocidades del modelo, misma red (9.3)» de las tablas dice «s. d.».
+
+Mientras tanto, la comparación con la sección 8.3 mezcla la velocidad con la red y no es pareada. Con esa salvedad, `experta` pierde más que DespachoX en críticos a tiempo. Con carga alta, `experta` baja de 98,1 % a 91,9 % y DespachoX de 98,9 % a 98,4 %. En el total de entregas a tiempo con carga alta, `experta` baja de 85,2 % a 70,3 % y DespachoX de 83,5 % a 73,2 %.
+
+Hay dos pistas, a falta de la corrida de la misma red. En la sección 8.8, con las velocidades del modelo, pasar de la red urbana a la ampliada no cambió las conclusiones (carga media, factor 1, otras semillas). Una lectura posible, por confirmar, es que con viajes más largos los mismos plazos quedan más apretados y planear con prioridad pesa más.
+
+**Medias de la sección 8.3 (red urbana, velocidades del modelo).** 30 escenarios por carga, semillas 20261150 a 20261179, factor 3.
+
+| Carga | Indicador | `ingenua` | `experta` | `despachox` |
+|---|---|---:|---:|---:|
+| Holgada | Críticos a tiempo (%) | 89,7 | 99,5 | 99,8 |
+| Holgada | A tiempo, todos los puntos (%) | 95,8 | 99,1 | 98,9 |
+| Holgada | Perecederos vencidos (%) | 1,0 | 0,0 | 0,0 |
+| Holgada | Kilómetros de la flota | 625,5 | 623,5 | 572,4 |
+| Holgada | Espera en el punto peor atendido (h) | 3,90 | 5,07 | 5,30 |
+| Media | Críticos a tiempo (%) | 70,9 | 97,8 | 99,5 |
+| Media | A tiempo, todos los puntos (%) | 88,8 | 94,7 | 92,8 |
+| Media | Perecederos vencidos (%) | 1,8 | 0,0 | 0,0 |
+| Media | Kilómetros de la flota | 745,8 | 754,4 | 694,9 |
+| Media | Espera en el punto peor atendido (h) | 5,04 | 7,07 | 7,88 |
+| Alta | Críticos a tiempo (%) | 51,4 | 98,1 | 98,9 |
+| Alta | A tiempo, todos los puntos (%) | 76,5 | 85,2 | 83,5 |
+| Alta | Perecederos vencidos (%) | 3,2 | 0,0 | 0,0 |
+| Alta | Kilómetros de la flota | 883,8 | 875,2 | 828,3 |
+| Alta | Espera en el punto peor atendido (h) | 5,82 | 8,74 | 9,63 |
+
+### 9.4 Un día sin cierres (pedido de Samuel)
+
+No se midió con las velocidades de la tesis. La corrida empezó a las 12:33 a. m. y se detuvo hacia la 1:00 a. m. con el servidor de la sesión, sin escribir resultados. Esta mañana Fable decidió no repetirla. El pedido de Samuel (canal, 8:00 p. m.) sigue pendiente con estas velocidades.
+
+Lo más cercano que ya está medido es la corrida de 0 cierres de la sección 8.5: carga media, velocidades del modelo, red urbana, factor 1 y semillas 20261120 a 20261149. Ahí DespachoX recorrió 65,0 km menos que `experta` por jornada, con IC del 95 % de [−83,8; −46,2], y fue mejor en 28 de los 30 escenarios. Son 762,4 km contra 827,4, un 7,9 % menos. En esa corrida empató en críticos a tiempo, con 0,6 [−0,8; 2,1], y quedó 2,1 puntos debajo en el total de entregas a tiempo, con [−3,0; −1,3]. Los kilómetros salen de `despacho/sim/resultados_s2/cierres_0/resultados.csv`, porque la sección 8.5 no los reportó.
+
+### 9.5 Vida útil por producto
+
+La corrida con los vencimientos de `datos_publicos/vida_util.csv`, en lugar del rango de 6 a 48 horas, no se hizo. Los perecederos vencidos de esta sección siguen saliendo de ese rango, que es un supuesto nuestro (sección 6). Según `docs/datos/flota_perecederos_costos.md`, sección 4, la evidencia da a algunos perecederos más vida útil que ese rango, como el huevo, de 15 a 30 días, y a otros menos, como el pollo crudo sin frío, 2 horas.
+
+### 9.6 Supuestos de esta sección
+
+Todo lo demás es igual que en las secciones 2 y 6.
+
+| Supuesto | Valor | Estado |
+|---|---|---|
+| Velocidad por tipo de vía y vehículo | `datos_publicos/velocidades.csv`, donde hay dato: velocidades derivadas de mediciones GPS de un bus en Manizales y asignadas por tipo de vía y pendiente (tesis UNAL de 2019, tabla 14, pp. 46 a 48). Asignar `tertiary` a colectora y `unclassified` y `residential` a vía local es un supuesto del CSV | revisado por máquina; falta que una persona abra la tesis |
+| Pendiente | La simulación no usa la pendiente de cada tramo. Cada tipo de vía lleva una sola velocidad, la media de las cuatro clases de pendiente de la tabla 14. Por ejemplo, `primary` lleva 23,3 km/h, la media de 23,8, 21,8, 23,4 y 24,2 | cálculo del CSV |
+| `trunk` | Se asimila a vía nacional, con 26,5 km/h en todos los tramos. La tesis solo da ese valor con pendiente de 8 % o más | supuesto del CSV |
+| `unclassified` | Se asimila a vía local urbana, con 21,9 km/h. Son 2.251 de los 4.262 km de la red, un 53 %, sobre todo caminos rurales de los accesos. En vía destapada la velocidad puede ser menor | supuesto del CSV |
+| Campero y moto | El campero, igual que el camión; la moto, 11 % más rápido | supuesto del CSV |
+| Hora del día | La velocidad del bus en horas de entrada, almuerzo y salida vale para toda la jornada y para los tres vehículos | supuesto nuestro |
+| `maxspeed` de OpenStreetMap | No se usa | supuesto nuestro |
+| Lo que sabe el optimizador | Planea con las mismas velocidades de la jornada simulada, igual que las líneas base. El producto no cambió: `despacho/red.py` sigue con las velocidades del modelo, así que sus tiempos de llegada salen más cortos que estos. Cambiar `red.py` es decisión de B. No se midió un optimizador que planee con velocidades equivocadas | supuesto nuestro |
+| Cuándo se recalcula | La política simulada recalcula con cada cierre confirmado, con cada tanda de 30 minutos y cada vez que un vehículo vuelve al acopio (sección 3). El producto recalcula con un cierre confirmado o cuando lo pide el despachador (`despacho/recalcular.py`) | supuesto nuestro |
+| Red | `manizales_region.graphml`, la del producto | trazado de OpenStreetMap |
+| Máquina | 2 núcleos, compartidos con otras sesiones. La búsqueda del optimizador se corta por reloj, así que con la máquina cargada busca menos | condición de la corrida |
+
+### 9.7 Qué decir en el pitch (por aprobar)
+
+1. Con velocidades derivadas de mediciones GPS de un bus en Manizales y asignadas por tipo de vía y pendiente (tesis UNAL de 2019, tabla 14, pp. 46 a 48), Convite entrega a tiempo 23,3, 44,7 y 57,9 puntos porcentuales más de pedidos críticos que el despacho por orden de llegada, según la carga. Son 90 escenarios simulados con cierres de vías, 30 por carga, y cada diferencia compara 30 jornadas por política.
+2. Frente a un despachador con oficio que ya prioriza lo urgente, Convite recorre 46,0, 56,0 y 42,2 km menos por jornada, según la carga. En el total de entregas a tiempo empata con carga holgada y media, y con carga alta gana 3,0 puntos. Si se dice la diferencia en críticos a tiempo, que es de 1,5, 3,7 y 6,5 puntos, va con esta salvedad. Esa corrida cambia a la vez la red y la velocidad, y la corrida que los separa (9.3) está pendiente.
+3. Con Convite y con el despachador con oficio, los perecederos vencidos quedan en 0,0 %, y el despacho por orden de llegada pasa la meta del 5 % con carga alta.
+
+Marcas: por aprobar. Fuente de las velocidades: revisado por máquina; falta que una persona abra la tesis. Son cifras de simulación medidas por nosotros: 30 escenarios por carga, 90 en total, semillas 20261150 a 20261179, factor crítico 3, IC del 95 %. Falta la corrida de la misma red con las velocidades del modelo (9.3) para saber cuánto de la mejora frente al despachador con oficio viene de la velocidad y cuánto de la red.

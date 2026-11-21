@@ -1,0 +1,8327 @@
+{
+ "metricas": {
+  "todos": {
+   "tipo": {
+    "n": 330,
+    "aciertos": 323,
+    "proporcion": 0.9787878787878788,
+    "ic95": [
+     0.9568694136801833,
+     0.9896876769708111
+    ]
+   },
+   "lugar_extraido": {
+    "n": 305,
+    "aciertos": 181,
+    "proporcion": 0.5934426229508196,
+    "ic95": [
+     0.5374869492439073,
+     0.6470737642615058
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 301,
+    "aciertos": 221,
+    "proporcion": 0.7342192691029901,
+    "ic95": [
+     0.6815909559457282,
+     0.7809445552851618
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 301,
+    "aciertos": 265,
+    "proporcion": 0.8803986710963455,
+    "ic95": [
+     0.8388644125663994,
+     0.9123457439717123
+    ]
+   },
+   "techo_lugar": {
+    "n": 301,
+    "aciertos": 260,
+    "proporcion": 0.8637873754152824,
+    "ic95": [
+     0.8204256439695037,
+     0.8979805756018784
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 320,
+    "aciertos": 320,
+    "proporcion": 1.0,
+    "ic95": [
+     0.9881378411686904,
+     1.0
+    ]
+   },
+   "familias": {
+    "n": 170,
+    "aciertos": 142,
+    "proporcion": 0.8352941176470589,
+    "ic95": [
+     0.7722520572638996,
+     0.8835178653618845
+    ]
+   },
+   "conteo_exacto": {
+    "n": 304,
+    "aciertos": 222,
+    "proporcion": 0.7302631578947368,
+    "ic95": [
+     0.6777279672923913,
+     0.777051582337877
+    ]
+   },
+   "urgencia": {
+    "n": 320,
+    "aciertos": 300,
+    "proporcion": 0.9375,
+    "ic95": [
+     0.9054405958383621,
+     0.9591800151842419
+    ]
+   },
+   "productos_exactos": {
+    "n": 304,
+    "aciertos": 253,
+    "proporcion": 0.8322368421052632,
+    "ic95": [
+     0.7861451996533171,
+     0.8700367219560698
+    ]
+   },
+   "kg_abstencion": {
+    "n": 586,
+    "aciertos": 582,
+    "proporcion": 0.9931740614334471,
+    "ic95": [
+     0.9825819187253891,
+     0.9973424174778182
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 330,
+    "aciertos": 162,
+    "proporcion": 0.4909090909090909,
+    "ic95": [
+     0.4373875025502697,
+     0.544639894462686
+    ]
+   },
+   "personas": {
+    "n": 121,
+    "aciertos": 82,
+    "proporcion": 0.6776859504132231,
+    "ic95": [
+     0.5900535548732551,
+     0.7543833045338393
+    ]
+   },
+   "personas_como_familias": {
+    "n": 119,
+    "aciertos": 19,
+    "proporcion": 0.15966386554621848,
+    "ic95": [
+     0.1046635199364653,
+     0.23594997669880444
+    ]
+   },
+   "abstencion_productos": {
+    "n": 16,
+    "aciertos": 16,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8063923194655637,
+     1.0
+    ]
+   },
+   "kg": {
+    "n": 34,
+    "aciertos": 28,
+    "proporcion": 0.8235294117647058,
+    "ic95": [
+     0.6648626260015724,
+     0.9165103095462768
+    ]
+   },
+   "dos_pedidos_detectados": {
+    "n": 30,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.11351339317396876
+    ]
+   },
+   "abstencion_lugar": {
+    "n": 15,
+    "aciertos": 8,
+    "proporcion": 0.5333333333333333,
+    "ic95": [
+     0.30116980025498397,
+     0.7519046463426261
+    ]
+   },
+   "bebes": {
+    "n": 16,
+    "aciertos": 14,
+    "proporcion": 0.875,
+    "ic95": [
+     0.639771727342413,
+     0.9650225122567595
+    ]
+   },
+   "abstencion_conteo": {
+    "n": 16,
+    "aciertos": 15,
+    "proporcion": 0.9375,
+    "ic95": [
+     0.7167126242970107,
+     0.9888806552353576
+    ]
+   },
+   "lugar_dudoso_sin_compromiso": {
+    "n": 4,
+    "aciertos": 4,
+    "proporcion": 1.0,
+    "ic95": [
+     0.5101091635454027,
+     1.0
+    ]
+   },
+   "cierre_detectado": {
+    "n": 3,
+    "aciertos": 2,
+    "proporcion": 0.6666666666666666,
+    "ic95": [
+     0.2076596008020477,
+     0.9385080552796037
+    ]
+   },
+   "cierre_lugar_extraido": {
+    "n": 2,
+    "aciertos": 1,
+    "proporcion": 0.5,
+    "ic95": [
+     0.09453120573423074,
+     0.9054687942657693
+    ]
+   },
+   "cierre_lugar_resuelto": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "cierre_bloqueados": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "codigo_entrega": {
+    "n": 3,
+    "aciertos": 2,
+    "proporcion": 0.6666666666666666,
+    "ic95": [
+     0.2076596008020477,
+     0.9385080552796037
+    ]
+   },
+   "productos": {
+    "vp": 619,
+    "fp": 62,
+    "fn": 23,
+    "precision": 0.908957415565345,
+    "precision_ic95": [
+     0.8849966558165259,
+     0.9283302723737756
+    ],
+    "exhaustividad": 0.9641744548286605,
+    "exhaustividad_ic95": [
+     0.946816339867749,
+     0.9760107593530033
+    ],
+    "f1": 0.9357520786092214,
+    "perdidos": 65,
+    "exhaustividad_con_perdidos": 0.8755304101838756,
+    "exhaustividad_con_perdidos_ic95": [
+     0.849148579426098,
+     0.8978534326413241
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 221,
+    "por opciones": 45,
+    "no sé": 38,
+    "se abstiene": 8,
+    "inventa sin compromiso": 7,
+    "sin lugar": 1
+   },
+   "falsos_reportes": 5,
+   "mensajes": 330
+  },
+  "generados": {
+   "tipo": {
+    "n": 300,
+    "aciertos": 299,
+    "proporcion": 0.9966666666666667,
+    "ic95": [
+     0.9813633063054688,
+     0.9994113422781488
+    ]
+   },
+   "lugar_extraido": {
+    "n": 285,
+    "aciertos": 174,
+    "proporcion": 0.6105263157894737,
+    "ic95": [
+     0.552801785188739,
+     0.6653109478559618
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 285,
+    "aciertos": 211,
+    "proporcion": 0.7403508771929824,
+    "ic95": [
+     0.6864906445274997,
+     0.7878179971728813
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 285,
+    "aciertos": 254,
+    "proporcion": 0.8912280701754386,
+    "ic95": [
+     0.8497435402936857,
+     0.9223062925470806
+    ]
+   },
+   "techo_lugar": {
+    "n": 285,
+    "aciertos": 245,
+    "proporcion": 0.8596491228070176,
+    "ic95": [
+     0.8145236482251088,
+     0.8952082608886003
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 300,
+    "aciertos": 300,
+    "proporcion": 1.0,
+    "ic95": [
+     0.9873570287754538,
+     0.9999999999999998
+    ]
+   },
+   "familias": {
+    "n": 153,
+    "aciertos": 129,
+    "proporcion": 0.8431372549019608,
+    "ic95": [
+     0.7772007634702084,
+     0.8922650830572659
+    ]
+   },
+   "conteo_exacto": {
+    "n": 285,
+    "aciertos": 209,
+    "proporcion": 0.7333333333333333,
+    "ic95": [
+     0.67913774818645,
+     0.7813224660190294
+    ]
+   },
+   "urgencia": {
+    "n": 300,
+    "aciertos": 281,
+    "proporcion": 0.9366666666666666,
+    "ic95": [
+     0.9032086875144784,
+     0.9590831176160847
+    ]
+   },
+   "productos_exactos": {
+    "n": 285,
+    "aciertos": 238,
+    "proporcion": 0.8350877192982457,
+    "ic95": [
+     0.7876030409618633,
+     0.8736593719196901
+    ]
+   },
+   "kg_abstencion": {
+    "n": 556,
+    "aciertos": 552,
+    "proporcion": 0.9928057553956835,
+    "ic95": [
+     0.9816497041518953,
+     0.9971988454970749
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 300,
+    "aciertos": 151,
+    "proporcion": 0.5033333333333333,
+    "ic95": [
+     0.44707193979203275,
+     0.5595104403998036
+    ]
+   },
+   "personas": {
+    "n": 117,
+    "aciertos": 79,
+    "proporcion": 0.6752136752136753,
+    "ic95": [
+     0.5859633558382507,
+     0.753324173459424
+    ]
+   },
+   "personas_como_familias": {
+    "n": 117,
+    "aciertos": 19,
+    "proporcion": 0.1623931623931624,
+    "ic95": [
+     0.10649805976106343,
+     0.23975279842146602
+    ]
+   },
+   "abstencion_productos": {
+    "n": 15,
+    "aciertos": 15,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7961166989641515,
+     1.0
+    ]
+   },
+   "kg": {
+    "n": 31,
+    "aciertos": 27,
+    "proporcion": 0.8709677419354839,
+    "ic95": [
+     0.7114759374369357,
+     0.9486571562537085
+    ]
+   },
+   "dos_pedidos_detectados": {
+    "n": 30,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.11351339317396876
+    ]
+   },
+   "abstencion_lugar": {
+    "n": 15,
+    "aciertos": 8,
+    "proporcion": 0.5333333333333333,
+    "ic95": [
+     0.30116980025498397,
+     0.7519046463426261
+    ]
+   },
+   "bebes": {
+    "n": 15,
+    "aciertos": 13,
+    "proporcion": 0.8666666666666667,
+    "ic95": [
+     0.6211801716767764,
+     0.9626387408969346
+    ]
+   },
+   "abstencion_conteo": {
+    "n": 15,
+    "aciertos": 15,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7961166989641515,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 586,
+    "fp": 60,
+    "fn": 18,
+    "precision": 0.9071207430340558,
+    "precision_ic95": [
+     0.8822676833485971,
+     0.9271605131142194
+    ],
+    "exhaustividad": 0.9701986754966887,
+    "exhaustividad_ic95": [
+     0.9533866839773009,
+     0.9810675092296044
+    ],
+    "f1": 0.9376,
+    "perdidos": 65,
+    "exhaustividad_con_perdidos": 0.8759342301943199,
+    "exhaustividad_con_perdidos_ic95": [
+     0.8487867684426615,
+     0.8987890436685906
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 211,
+    "por opciones": 43,
+    "no sé": 30,
+    "se abstiene": 8,
+    "inventa sin compromiso": 7,
+    "sin lugar": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 300
+  },
+  "variante:sms": {
+   "tipo": {
+    "n": 30,
+    "aciertos": 30,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8864866068260312,
+     0.9999999999999999
+    ]
+   },
+   "lugar_extraido": {
+    "n": 30,
+    "aciertos": 30,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8864866068260312,
+     0.9999999999999999
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 30,
+    "aciertos": 23,
+    "proporcion": 0.7666666666666667,
+    "ic95": [
+     0.5907167384187784,
+     0.8820761185551049
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 30,
+    "aciertos": 30,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8864866068260312,
+     0.9999999999999999
+    ]
+   },
+   "techo_lugar": {
+    "n": 30,
+    "aciertos": 23,
+    "proporcion": 0.7666666666666667,
+    "ic95": [
+     0.5907167384187784,
+     0.8820761185551049
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 30,
+    "aciertos": 30,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8864866068260312,
+     0.9999999999999999
+    ]
+   },
+   "familias": {
+    "n": 19,
+    "aciertos": 19,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8318207759473837,
+     1.0
+    ]
+   },
+   "conteo_exacto": {
+    "n": 30,
+    "aciertos": 30,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8864866068260312,
+     0.9999999999999999
+    ]
+   },
+   "urgencia": {
+    "n": 30,
+    "aciertos": 30,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8864866068260312,
+     0.9999999999999999
+    ]
+   },
+   "productos_exactos": {
+    "n": 30,
+    "aciertos": 30,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8864866068260312,
+     0.9999999999999999
+    ]
+   },
+   "kg_abstencion": {
+    "n": 59,
+    "aciertos": 59,
+    "proporcion": 1.0,
+    "ic95": [
+     0.9388706294732116,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 30,
+    "aciertos": 23,
+    "proporcion": 0.7666666666666667,
+    "ic95": [
+     0.5907167384187784,
+     0.8820761185551049
+    ]
+   },
+   "personas": {
+    "n": 10,
+    "aciertos": 10,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7224672001371107,
+     0.9999999999999999
+    ]
+   },
+   "personas_como_familias": {
+    "n": 10,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.2775327998628892
+    ]
+   },
+   "kg": {
+    "n": 3,
+    "aciertos": 3,
+    "proporcion": 1.0,
+    "ic95": [
+     0.4385029682449546,
+     1.0
+    ]
+   },
+   "bebes": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 62,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.9416559278986275,
+     0.9999999999999999
+    ],
+    "exhaustividad": 1.0,
+    "exhaustividad_ic95": [
+     0.9416559278986275,
+     0.9999999999999999
+    ],
+    "f1": 1.0,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 1.0,
+    "exhaustividad_con_perdidos_ic95": [
+     0.9416559278986275,
+     0.9999999999999999
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 23,
+    "por opciones": 7
+   },
+   "falsos_reportes": 0,
+   "mensajes": 30
+  },
+  "etiqueta:conteo_familias": {
+   "tipo": {
+    "n": 161,
+    "aciertos": 160,
+    "proporcion": 0.9937888198757764,
+    "ic95": [
+     0.9656604381231965,
+     0.9989027314672388
+    ]
+   },
+   "lugar_extraido": {
+    "n": 153,
+    "aciertos": 98,
+    "proporcion": 0.6405228758169934,
+    "ic95": [
+     0.5619056155584891,
+     0.7122565882575241
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 153,
+    "aciertos": 116,
+    "proporcion": 0.7581699346405228,
+    "ic95": [
+     0.6845364673150653,
+     0.8191568838817962
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 153,
+    "aciertos": 138,
+    "proporcion": 0.9019607843137255,
+    "ic95": [
+     0.844547363017974,
+     0.9396840571999246
+    ]
+   },
+   "techo_lugar": {
+    "n": 153,
+    "aciertos": 132,
+    "proporcion": 0.8627450980392157,
+    "ic95": [
+     0.7992779748182122,
+     0.9084430629394038
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 161,
+    "aciertos": 161,
+    "proporcion": 1.0,
+    "ic95": [
+     0.976696039648177,
+     1.0
+    ]
+   },
+   "familias": {
+    "n": 153,
+    "aciertos": 129,
+    "proporcion": 0.8431372549019608,
+    "ic95": [
+     0.7772007634702084,
+     0.8922650830572659
+    ]
+   },
+   "conteo_exacto": {
+    "n": 161,
+    "aciertos": 129,
+    "proporcion": 0.8012422360248447,
+    "ic95": [
+     0.7328990966206308,
+     0.8555451011798236
+    ]
+   },
+   "urgencia": {
+    "n": 161,
+    "aciertos": 155,
+    "proporcion": 0.9627329192546584,
+    "ic95": [
+     0.9210886045972584,
+     0.9828102147044706
+    ]
+   },
+   "productos_exactos": {
+    "n": 153,
+    "aciertos": 127,
+    "proporcion": 0.8300653594771242,
+    "ic95": [
+     0.7626498664298916,
+     0.8813125192774885
+    ]
+   },
+   "kg_abstencion": {
+    "n": 294,
+    "aciertos": 293,
+    "proporcion": 0.9965986394557823,
+    "ic95": [
+     0.9809880311241003,
+     0.9993993238001492
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 161,
+    "aciertos": 88,
+    "proporcion": 0.546583850931677,
+    "ic95": [
+     0.4694943305146957,
+     0.6215021949183643
+    ]
+   },
+   "abstencion_productos": {
+    "n": 8,
+    "aciertos": 8,
+    "proporcion": 1.0,
+    "ic95": [
+     0.6755924351161198,
+     1.0
+    ]
+   },
+   "abstencion_lugar": {
+    "n": 8,
+    "aciertos": 4,
+    "proporcion": 0.5,
+    "ic95": [
+     0.21521606221387757,
+     0.7847839377861224
+    ]
+   },
+   "dos_pedidos_detectados": {
+    "n": 20,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.16112515805281938
+    ]
+   },
+   "kg": {
+    "n": 14,
+    "aciertos": 14,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7846891972623643,
+     1.0
+    ]
+   },
+   "personas": {
+    "n": 6,
+    "aciertos": 6,
+    "proporcion": 1.0,
+    "ic95": [
+     0.6096657120978346,
+     1.0
+    ]
+   },
+   "personas_como_familias": {
+    "n": 6,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     2.7755575615628914e-17,
+     0.3903342879021653
+    ]
+   },
+   "bebes": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 308,
+    "fp": 39,
+    "fn": 7,
+    "precision": 0.8876080691642652,
+    "precision_ic95": [
+     0.8500427125676779,
+     0.9166853728308009
+    ],
+    "exhaustividad": 0.9777777777777777,
+    "exhaustividad_ic95": [
+     0.9548480984977241,
+     0.9891947531230005
+    ],
+    "f1": 0.930513595166163,
+    "perdidos": 43,
+    "exhaustividad_con_perdidos": 0.8603351955307262,
+    "exhaustividad_con_perdidos_ic95": [
+     0.8205891611164235,
+     0.892430294533761
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 116,
+    "por opciones": 22,
+    "inventa sin compromiso": 4,
+    "no sé": 14,
+    "se abstiene": 4,
+    "sin lugar": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 161
+  },
+  "etiqueta:familias_implicitas": {
+   "tipo": {
+    "n": 12,
+    "aciertos": 12,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7575059933447592,
+     1.0
+    ]
+   },
+   "lugar_extraido": {
+    "n": 12,
+    "aciertos": 12,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7575059933447592,
+     1.0
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 12,
+    "aciertos": 12,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7575059933447592,
+     1.0
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 12,
+    "aciertos": 12,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7575059933447592,
+     1.0
+    ]
+   },
+   "techo_lugar": {
+    "n": 12,
+    "aciertos": 12,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7575059933447592,
+     1.0
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 12,
+    "aciertos": 12,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7575059933447592,
+     1.0
+    ]
+   },
+   "familias": {
+    "n": 12,
+    "aciertos": 12,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7575059933447592,
+     1.0
+    ]
+   },
+   "conteo_exacto": {
+    "n": 12,
+    "aciertos": 12,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7575059933447592,
+     1.0
+    ]
+   },
+   "urgencia": {
+    "n": 12,
+    "aciertos": 12,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7575059933447592,
+     1.0
+    ]
+   },
+   "productos_exactos": {
+    "n": 12,
+    "aciertos": 12,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7575059933447592,
+     1.0
+    ]
+   },
+   "kg_abstencion": {
+    "n": 25,
+    "aciertos": 25,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8668077490609515,
+     0.9999999999999999
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 12,
+    "aciertos": 12,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7575059933447592,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 25,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.8668077490609515,
+     0.9999999999999999
+    ],
+    "exhaustividad": 1.0,
+    "exhaustividad_ic95": [
+     0.8668077490609515,
+     0.9999999999999999
+    ],
+    "f1": 1.0,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 1.0,
+    "exhaustividad_con_perdidos_ic95": [
+     0.8668077490609515,
+     0.9999999999999999
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 12
+   },
+   "falsos_reportes": 0,
+   "mensajes": 12
+  },
+  "etiqueta:lugar_barrio": {
+   "tipo": {
+    "n": 237,
+    "aciertos": 236,
+    "proporcion": 0.9957805907172996,
+    "ic95": [
+     0.9764908440383245,
+     0.9992547819460992
+    ]
+   },
+   "lugar_extraido": {
+    "n": 237,
+    "aciertos": 137,
+    "proporcion": 0.5780590717299579,
+    "ic95": [
+     0.514428912148082,
+     0.6391991225813806
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 237,
+    "aciertos": 184,
+    "proporcion": 0.7763713080168776,
+    "ic95": [
+     0.7191551843509595,
+     0.8247711007722723
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 237,
+    "aciertos": 209,
+    "proporcion": 0.8818565400843882,
+    "ic95": [
+     0.8345484868633449,
+     0.9169832505969985
+    ]
+   },
+   "techo_lugar": {
+    "n": 237,
+    "aciertos": 221,
+    "proporcion": 0.9324894514767933,
+    "ic95": [
+     0.8931613399719069,
+     0.9580210146102499
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 237,
+    "aciertos": 237,
+    "proporcion": 1.0,
+    "ic95": [
+     0.9840498440779082,
+     1.0
+    ]
+   },
+   "familias": {
+    "n": 120,
+    "aciertos": 98,
+    "proporcion": 0.8166666666666667,
+    "ic95": [
+     0.7379908648282967,
+     0.8756969964398578
+    ]
+   },
+   "conteo_exacto": {
+    "n": 223,
+    "aciertos": 157,
+    "proporcion": 0.7040358744394619,
+    "ic95": [
+     0.6410778373597379,
+     0.7600833986554589
+    ]
+   },
+   "urgencia": {
+    "n": 237,
+    "aciertos": 221,
+    "proporcion": 0.9324894514767933,
+    "ic95": [
+     0.8931613399719069,
+     0.9580210146102499
+    ]
+   },
+   "productos_exactos": {
+    "n": 223,
+    "aciertos": 182,
+    "proporcion": 0.8161434977578476,
+    "ic95": [
+     0.7600970661161898,
+     0.8614824314458184
+    ]
+   },
+   "kg_abstencion": {
+    "n": 445,
+    "aciertos": 443,
+    "proporcion": 0.9955056179775281,
+    "ic95": [
+     0.9837629458337083,
+     0.9987666118383991
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 237,
+    "aciertos": 124,
+    "proporcion": 0.5232067510548524,
+    "ic95": [
+     0.45975660305855504,
+     0.5859165964556096
+    ]
+   },
+   "personas": {
+    "n": 90,
+    "aciertos": 60,
+    "proporcion": 0.6666666666666666,
+    "ic95": [
+     0.5642231776063374,
+     0.7554649472055536
+    ]
+   },
+   "personas_como_familias": {
+    "n": 90,
+    "aciertos": 17,
+    "proporcion": 0.18888888888888888,
+    "ic95": [
+     0.12141259844132833,
+     0.28183623524314166
+    ]
+   },
+   "abstencion_productos": {
+    "n": 14,
+    "aciertos": 14,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7846891972623643,
+     1.0
+    ]
+   },
+   "kg": {
+    "n": 24,
+    "aciertos": 22,
+    "proporcion": 0.9166666666666666,
+    "ic95": [
+     0.741511978067893,
+     0.9768411847029567
+    ]
+   },
+   "dos_pedidos_detectados": {
+    "n": 30,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.11351339317396876
+    ]
+   },
+   "bebes": {
+    "n": 13,
+    "aciertos": 11,
+    "proporcion": 0.8461538461538461,
+    "ic95": [
+     0.5776536898051745,
+     0.9567418216419186
+    ]
+   },
+   "abstencion_conteo": {
+    "n": 14,
+    "aciertos": 14,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7846891972623643,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 468,
+    "fp": 60,
+    "fn": 12,
+    "precision": 0.8863636363636364,
+    "precision_ic95": [
+     0.856456445756058,
+     0.9106894644268368
+    ],
+    "exhaustividad": 0.975,
+    "exhaustividad_ic95": [
+     0.9568152821429874,
+     0.9856421937240984
+    ],
+    "f1": 0.9285714285714285,
+    "perdidos": 65,
+    "exhaustividad_con_perdidos": 0.8587155963302753,
+    "exhaustividad_con_perdidos_ic95": [
+     0.8269564462869178,
+     0.8854532919281016
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 184,
+    "por opciones": 25,
+    "no sé": 27,
+    "sin lugar": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 237
+  },
+  "variante:faltan_datos": {
+   "tipo": {
+    "n": 45,
+    "aciertos": 45,
+    "proporcion": 1.0,
+    "ic95": [
+     0.9213484012671117,
+     1.0
+    ]
+   },
+   "lugar_extraido": {
+    "n": 30,
+    "aciertos": 19,
+    "proporcion": 0.6333333333333333,
+    "ic95": [
+     0.4551356365479487,
+     0.7812607919389929
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 30,
+    "aciertos": 22,
+    "proporcion": 0.7333333333333333,
+    "ic95": [
+     0.555520383048111,
+     0.8581733668040368
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 30,
+    "aciertos": 24,
+    "proporcion": 0.8,
+    "ic95": [
+     0.6269430358685175,
+     0.9049489282271013
+    ]
+   },
+   "techo_lugar": {
+    "n": 30,
+    "aciertos": 28,
+    "proporcion": 0.9333333333333333,
+    "ic95": [
+     0.7867654163738308,
+     0.9815229762087295
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 45,
+    "aciertos": 45,
+    "proporcion": 1.0,
+    "ic95": [
+     0.9213484012671117,
+     1.0
+    ]
+   },
+   "personas": {
+    "n": 10,
+    "aciertos": 9,
+    "proporcion": 0.9,
+    "ic95": [
+     0.5958499732047615,
+     0.9821237869049271
+    ]
+   },
+   "conteo_exacto": {
+    "n": 30,
+    "aciertos": 28,
+    "proporcion": 0.9333333333333333,
+    "ic95": [
+     0.7867654163738308,
+     0.9815229762087295
+    ]
+   },
+   "personas_como_familias": {
+    "n": 10,
+    "aciertos": 1,
+    "proporcion": 0.1,
+    "ic95": [
+     0.017876213095072896,
+     0.4041500267952385
+    ]
+   },
+   "urgencia": {
+    "n": 45,
+    "aciertos": 43,
+    "proporcion": 0.9555555555555556,
+    "ic95": [
+     0.8517248923056439,
+     0.9877258732932802
+    ]
+   },
+   "abstencion_productos": {
+    "n": 15,
+    "aciertos": 15,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7961166989641515,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 45,
+    "aciertos": 29,
+    "proporcion": 0.6444444444444445,
+    "ic95": [
+     0.4983581419637687,
+     0.7678091739578413
+    ]
+   },
+   "familias": {
+    "n": 16,
+    "aciertos": 16,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8063923194655637,
+     1.0
+    ]
+   },
+   "abstencion_lugar": {
+    "n": 15,
+    "aciertos": 8,
+    "proporcion": 0.5333333333333333,
+    "ic95": [
+     0.30116980025498397,
+     0.7519046463426261
+    ]
+   },
+   "productos_exactos": {
+    "n": 30,
+    "aciertos": 30,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8864866068260312,
+     0.9999999999999999
+    ]
+   },
+   "kg_abstencion": {
+    "n": 58,
+    "aciertos": 58,
+    "proporcion": 1.0,
+    "ic95": [
+     0.9378821442127971,
+     1.0
+    ]
+   },
+   "bebes": {
+    "n": 4,
+    "aciertos": 4,
+    "proporcion": 1.0,
+    "ic95": [
+     0.5101091635454027,
+     1.0
+    ]
+   },
+   "abstencion_conteo": {
+    "n": 15,
+    "aciertos": 15,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7961166989641515,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 58,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.9378821442127971,
+     1.0
+    ],
+    "exhaustividad": 1.0,
+    "exhaustividad_ic95": [
+     0.9378821442127971,
+     1.0
+    ],
+    "f1": 1.0,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 1.0,
+    "exhaustividad_con_perdidos_ic95": [
+     0.9378821442127971,
+     1.0
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 22,
+    "se abstiene": 8,
+    "inventa sin compromiso": 7,
+    "no sé": 6,
+    "por opciones": 2
+   },
+   "falsos_reportes": 0,
+   "mensajes": 45
+  },
+  "etiqueta:conteo_ninos": {
+   "tipo": {
+    "n": 11,
+    "aciertos": 11,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7411670330319684,
+     1.0
+    ]
+   },
+   "lugar_extraido": {
+    "n": 11,
+    "aciertos": 5,
+    "proporcion": 0.45454545454545453,
+    "ic95": [
+     0.21271271622459764,
+     0.719908462590678
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 11,
+    "aciertos": 10,
+    "proporcion": 0.9090909090909091,
+    "ic95": [
+     0.6226415635484043,
+     0.9837678271141151
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 11,
+    "aciertos": 11,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7411670330319684,
+     1.0
+    ]
+   },
+   "techo_lugar": {
+    "n": 11,
+    "aciertos": 10,
+    "proporcion": 0.9090909090909091,
+    "ic95": [
+     0.6226415635484043,
+     0.9837678271141151
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 11,
+    "aciertos": 11,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7411670330319684,
+     1.0
+    ]
+   },
+   "personas": {
+    "n": 10,
+    "aciertos": 8,
+    "proporcion": 0.8,
+    "ic95": [
+     0.49016247153664183,
+     0.9433178485456247
+    ]
+   },
+   "conteo_exacto": {
+    "n": 11,
+    "aciertos": 7,
+    "proporcion": 0.6363636363636364,
+    "ic95": [
+     0.35380117450784887,
+     0.8483352890463243
+    ]
+   },
+   "personas_como_familias": {
+    "n": 10,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.2775327998628892
+    ]
+   },
+   "urgencia": {
+    "n": 11,
+    "aciertos": 10,
+    "proporcion": 0.9090909090909091,
+    "ic95": [
+     0.6226415635484043,
+     0.9837678271141151
+    ]
+   },
+   "abstencion_productos": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 11,
+    "aciertos": 5,
+    "proporcion": 0.45454545454545453,
+    "ic95": [
+     0.21271271622459764,
+     0.719908462590678
+    ]
+   },
+   "productos_exactos": {
+    "n": 9,
+    "aciertos": 5,
+    "proporcion": 0.5555555555555556,
+    "ic95": [
+     0.26665129349549305,
+     0.8112214789023355
+    ]
+   },
+   "kg_abstencion": {
+    "n": 18,
+    "aciertos": 17,
+    "proporcion": 0.9444444444444444,
+    "ic95": [
+     0.7424269921812741,
+     0.990124809021697
+    ]
+   },
+   "dos_pedidos_detectados": {
+    "n": 3,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     5.551115123125783e-17,
+     0.5614970317550454
+    ]
+   },
+   "kg": {
+    "n": 2,
+    "aciertos": 1,
+    "proporcion": 0.5,
+    "ic95": [
+     0.09453120573423074,
+     0.9054687942657693
+    ]
+   },
+   "familias": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 19,
+    "fp": 7,
+    "fn": 1,
+    "precision": 0.7307692307692307,
+    "precision_ic95": [
+     0.5391695962082381,
+     0.8629555167798162
+    ],
+    "exhaustividad": 0.95,
+    "exhaustividad_ic95": [
+     0.763868806553258,
+     0.9911185511992047
+    ],
+    "f1": 0.8260869565217392,
+    "perdidos": 7,
+    "exhaustividad_con_perdidos": 0.7037037037037037,
+    "exhaustividad_con_perdidos_ic95": [
+     0.5151931703585185,
+     0.8414695953022023
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 10,
+    "por opciones": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 11
+  },
+  "etiqueta:sin_productos": {
+   "tipo": {
+    "n": 15,
+    "aciertos": 15,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7961166989641515,
+     1.0
+    ]
+   },
+   "lugar_extraido": {
+    "n": 15,
+    "aciertos": 8,
+    "proporcion": 0.5333333333333333,
+    "ic95": [
+     0.30116980025498397,
+     0.7519046463426261
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 15,
+    "aciertos": 11,
+    "proporcion": 0.7333333333333333,
+    "ic95": [
+     0.4804956594401943,
+     0.8910254667430761
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 15,
+    "aciertos": 12,
+    "proporcion": 0.8,
+    "ic95": [
+     0.5481455128483065,
+     0.9295245065301844
+    ]
+   },
+   "techo_lugar": {
+    "n": 15,
+    "aciertos": 14,
+    "proporcion": 0.9333333333333333,
+    "ic95": [
+     0.7018347012621998,
+     0.9881331045067315
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 15,
+    "aciertos": 15,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7961166989641515,
+     1.0
+    ]
+   },
+   "personas": {
+    "n": 5,
+    "aciertos": 5,
+    "proporcion": 1.0,
+    "ic95": [
+     0.5655175352168251,
+     1.0
+    ]
+   },
+   "conteo_exacto": {
+    "n": 15,
+    "aciertos": 14,
+    "proporcion": 0.9333333333333333,
+    "ic95": [
+     0.7018347012621998,
+     0.9881331045067315
+    ]
+   },
+   "personas_como_familias": {
+    "n": 5,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.43448246478317476
+    ]
+   },
+   "urgencia": {
+    "n": 15,
+    "aciertos": 15,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7961166989641515,
+     1.0
+    ]
+   },
+   "abstencion_productos": {
+    "n": 15,
+    "aciertos": 15,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7961166989641515,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 15,
+    "aciertos": 10,
+    "proporcion": 0.6666666666666666,
+    "ic95": [
+     0.41713547738519774,
+     0.8482367556028526
+    ]
+   },
+   "familias": {
+    "n": 8,
+    "aciertos": 8,
+    "proporcion": 1.0,
+    "ic95": [
+     0.6755924351161198,
+     1.0
+    ]
+   },
+   "bebes": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 0,
+    "fp": 0,
+    "fn": 0,
+    "precision": null,
+    "precision_ic95": [
+     null,
+     null
+    ],
+    "exhaustividad": null,
+    "exhaustividad_ic95": [
+     null,
+     null
+    ],
+    "f1": null,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": null,
+    "exhaustividad_con_perdidos_ic95": [
+     null,
+     null
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 11,
+    "no sé": 3,
+    "por opciones": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 15
+  },
+  "variante:voz": {
+   "tipo": {
+    "n": 60,
+    "aciertos": 59,
+    "proporcion": 0.9833333333333333,
+    "ic95": [
+     0.9114487027240993,
+     0.9970518402052136
+    ]
+   },
+   "lugar_extraido": {
+    "n": 60,
+    "aciertos": 20,
+    "proporcion": 0.3333333333333333,
+    "ic95": [
+     0.2272926152352268,
+     0.4594313354788031
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 60,
+    "aciertos": 32,
+    "proporcion": 0.5333333333333333,
+    "ic95": [
+     0.4089342702715789,
+     0.6537209395856151
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 60,
+    "aciertos": 49,
+    "proporcion": 0.8166666666666667,
+    "ic95": [
+     0.7008024625353194,
+     0.8944220311080237
+    ]
+   },
+   "techo_lugar": {
+    "n": 60,
+    "aciertos": 46,
+    "proporcion": 0.7666666666666667,
+    "ic95": [
+     0.6456372962239805,
+     0.8556043826335717
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 60,
+    "aciertos": 60,
+    "proporcion": 1.0,
+    "ic95": [
+     0.93982814785791,
+     0.9999999999999998
+    ]
+   },
+   "personas": {
+    "n": 28,
+    "aciertos": 13,
+    "proporcion": 0.4642857142857143,
+    "ic95": [
+     0.2953156998279538,
+     0.6418731076553209
+    ]
+   },
+   "conteo_exacto": {
+    "n": 60,
+    "aciertos": 26,
+    "proporcion": 0.43333333333333335,
+    "ic95": [
+     0.3157239680468677,
+     0.5589656122387444
+    ]
+   },
+   "personas_como_familias": {
+    "n": 28,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     1.3877787807814457e-17,
+     0.12064330476584563
+    ]
+   },
+   "urgencia": {
+    "n": 60,
+    "aciertos": 59,
+    "proporcion": 0.9833333333333333,
+    "ic95": [
+     0.9114487027240993,
+     0.9970518402052136
+    ]
+   },
+   "productos_exactos": {
+    "n": 60,
+    "aciertos": 42,
+    "proporcion": 0.7,
+    "ic95": [
+     0.5749129205308552,
+     0.8010183386123089
+    ]
+   },
+   "kg_abstencion": {
+    "n": 109,
+    "aciertos": 107,
+    "proporcion": 0.981651376146789,
+    "ic95": [
+     0.9355554243500118,
+     0.9949536376326568
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 60,
+    "aciertos": 13,
+    "proporcion": 0.21666666666666667,
+    "ic95": [
+     0.13123044048190308,
+     0.33620027573194783
+    ]
+   },
+   "familias": {
+    "n": 29,
+    "aciertos": 13,
+    "proporcion": 0.4482758620689655,
+    "ic95": [
+     0.28413168023037194,
+     0.6245203678902909
+    ]
+   },
+   "kg": {
+    "n": 9,
+    "aciertos": 7,
+    "proporcion": 0.7777777777777778,
+    "ic95": [
+     0.45258896910698887,
+     0.9367748928821533
+    ]
+   },
+   "bebes": {
+    "n": 3,
+    "aciertos": 1,
+    "proporcion": 0.3333333333333333,
+    "ic95": [
+     0.06149194472039621,
+     0.7923403991979522
+    ]
+   },
+   "productos": {
+    "vp": 117,
+    "fp": 0,
+    "fn": 18,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.9682107543372667,
+     1.0
+    ],
+    "exhaustividad": 0.8666666666666667,
+    "exhaustividad_ic95": [
+     0.7990752115895692,
+     0.9139682902642459
+    ],
+    "f1": 0.9285714285714286,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 0.8666666666666667,
+    "exhaustividad_con_perdidos_ic95": [
+     0.7990752115895692,
+     0.9139682902642459
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 32,
+    "por opciones": 17,
+    "no sé": 10,
+    "sin lugar": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 60
+  },
+  "etiqueta:conteo_personas": {
+   "tipo": {
+    "n": 103,
+    "aciertos": 103,
+    "proporcion": 1.0,
+    "ic95": [
+     0.964045241771352,
+     1.0
+    ]
+   },
+   "lugar_extraido": {
+    "n": 100,
+    "aciertos": 54,
+    "proporcion": 0.54,
+    "ic95": [
+     0.44264860323368227,
+     0.6343919169097589
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 100,
+    "aciertos": 72,
+    "proporcion": 0.72,
+    "ic95": [
+     0.6251197129007884,
+     0.7986031478881379
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 100,
+    "aciertos": 90,
+    "proporcion": 0.9,
+    "ic95": [
+     0.8256343384950865,
+     0.9447708629393249
+    ]
+   },
+   "techo_lugar": {
+    "n": 100,
+    "aciertos": 83,
+    "proporcion": 0.83,
+    "ic95": [
+     0.7445199523239887,
+     0.8910643388594006
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 103,
+    "aciertos": 103,
+    "proporcion": 1.0,
+    "ic95": [
+     0.964045241771352,
+     1.0
+    ]
+   },
+   "personas": {
+    "n": 98,
+    "aciertos": 67,
+    "proporcion": 0.6836734693877551,
+    "ic95": [
+     0.5861612171628963,
+     0.7673293987107721
+    ]
+   },
+   "conteo_exacto": {
+    "n": 103,
+    "aciertos": 62,
+    "proporcion": 0.6019417475728155,
+    "ic95": [
+     0.5053868568583854,
+     0.6911660565124728
+    ]
+   },
+   "personas_como_familias": {
+    "n": 98,
+    "aciertos": 14,
+    "proporcion": 0.14285714285714285,
+    "ic95": [
+     0.0870447054699054,
+     0.22561243033129502
+    ]
+   },
+   "urgencia": {
+    "n": 103,
+    "aciertos": 96,
+    "proporcion": 0.9320388349514563,
+    "ic95": [
+     0.866317705300666,
+     0.966692260890114
+    ]
+   },
+   "productos_exactos": {
+    "n": 101,
+    "aciertos": 73,
+    "proporcion": 0.7227722772277227,
+    "ic95": [
+     0.6285376644435487,
+     0.8006818495367134
+    ]
+   },
+   "kg_abstencion": {
+    "n": 200,
+    "aciertos": 197,
+    "proporcion": 0.985,
+    "ic95": [
+     0.9568342712073097,
+     0.9948857622067417
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 103,
+    "aciertos": 34,
+    "proporcion": 0.3300970873786408,
+    "ic95": [
+     0.2468297273744029,
+     0.42558208367416694
+    ]
+   },
+   "kg": {
+    "n": 15,
+    "aciertos": 12,
+    "proporcion": 0.8,
+    "ic95": [
+     0.5481455128483065,
+     0.9295245065301844
+    ]
+   },
+   "dos_pedidos_detectados": {
+    "n": 20,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.16112515805281938
+    ]
+   },
+   "abstencion_lugar": {
+    "n": 3,
+    "aciertos": 2,
+    "proporcion": 0.6666666666666666,
+    "ic95": [
+     0.2076596008020477,
+     0.9385080552796037
+    ]
+   },
+   "familias": {
+    "n": 5,
+    "aciertos": 3,
+    "proporcion": 0.6,
+    "ic95": [
+     0.2307242812760128,
+     0.882379225767352
+    ]
+   },
+   "abstencion_productos": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 215,
+    "fp": 39,
+    "fn": 9,
+    "precision": 0.8464566929133859,
+    "precision_ic95": [
+     0.7969895605564282,
+     0.8856004341053395
+    ],
+    "exhaustividad": 0.9598214285714286,
+    "exhaustividad_ic95": [
+     0.9254171615003551,
+     0.9787203078884675
+    ],
+    "f1": 0.8995815899581591,
+    "perdidos": 42,
+    "exhaustividad_con_perdidos": 0.8082706766917294,
+    "exhaustividad_con_perdidos_ic95": [
+     0.7567080133581828,
+     0.8510562668852609
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 72,
+    "por opciones": 18,
+    "no sé": 10,
+    "se abstiene": 2,
+    "inventa sin compromiso": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 103
+  },
+  "etiqueta:mencion_vulnerable": {
+   "tipo": {
+    "n": 22,
+    "aciertos": 22,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8513451253913791,
+     1.0
+    ]
+   },
+   "lugar_extraido": {
+    "n": 21,
+    "aciertos": 11,
+    "proporcion": 0.5238095238095238,
+    "ic95": [
+     0.3236953458284443,
+     0.7165599389846583
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 21,
+    "aciertos": 14,
+    "proporcion": 0.6666666666666666,
+    "ic95": [
+     0.4537345197425524,
+     0.8280524739491653
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 21,
+    "aciertos": 16,
+    "proporcion": 0.7619047619047619,
+    "ic95": [
+     0.5490882631704924,
+     0.8937198697736354
+    ]
+   },
+   "techo_lugar": {
+    "n": 21,
+    "aciertos": 20,
+    "proporcion": 0.9523809523809523,
+    "ic95": [
+     0.7733063992587743,
+     0.9915440121901737
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 22,
+    "aciertos": 22,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8513451253913791,
+     1.0
+    ]
+   },
+   "personas": {
+    "n": 10,
+    "aciertos": 7,
+    "proporcion": 0.7,
+    "ic95": [
+     0.39677814746114537,
+     0.8922087325936989
+    ]
+   },
+   "conteo_exacto": {
+    "n": 18,
+    "aciertos": 12,
+    "proporcion": 0.6666666666666666,
+    "ic95": [
+     0.43749467295945105,
+     0.837212252491663
+    ]
+   },
+   "personas_como_familias": {
+    "n": 10,
+    "aciertos": 2,
+    "proporcion": 0.2,
+    "ic95": [
+     0.05668215145437519,
+     0.5098375284633583
+    ]
+   },
+   "urgencia": {
+    "n": 22,
+    "aciertos": 14,
+    "proporcion": 0.6363636363636364,
+    "ic95": [
+     0.42951708090131013,
+     0.8026679532963387
+    ]
+   },
+   "productos_exactos": {
+    "n": 21,
+    "aciertos": 21,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8453609810751531,
+     1.0
+    ]
+   },
+   "kg_abstencion": {
+    "n": 43,
+    "aciertos": 43,
+    "proporcion": 1.0,
+    "ic95": [
+     0.9179901967742088,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 22,
+    "aciertos": 5,
+    "proporcion": 0.22727272727272727,
+    "ic95": [
+     0.10123039985248516,
+     0.4343995317522171
+    ]
+   },
+   "abstencion_lugar": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "familias": {
+    "n": 6,
+    "aciertos": 6,
+    "proporcion": 1.0,
+    "ic95": [
+     0.6096657120978346,
+     1.0
+    ]
+   },
+   "bebes": {
+    "n": 2,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.6576197724933469
+    ]
+   },
+   "abstencion_productos": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "abstencion_conteo": {
+    "n": 4,
+    "aciertos": 4,
+    "proporcion": 1.0,
+    "ic95": [
+     0.5101091635454027,
+     1.0
+    ]
+   },
+   "kg": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 44,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.9197043962415192,
+     1.0
+    ],
+    "exhaustividad": 1.0,
+    "exhaustividad_ic95": [
+     0.9197043962415192,
+     1.0
+    ],
+    "f1": 1.0,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 1.0,
+    "exhaustividad_con_perdidos_ic95": [
+     0.9197043962415192,
+     1.0
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 14,
+    "inventa sin compromiso": 1,
+    "no sé": 5,
+    "por opciones": 2
+   },
+   "falsos_reportes": 0,
+   "mensajes": 22
+  },
+  "etiqueta:numeros_en_palabras": {
+   "tipo": {
+    "n": 33,
+    "aciertos": 32,
+    "proporcion": 0.9696969696969697,
+    "ic95": [
+     0.846812746178811,
+     0.9946305894631283
+    ]
+   },
+   "lugar_extraido": {
+    "n": 33,
+    "aciertos": 3,
+    "proporcion": 0.09090909090909091,
+    "ic95": [
+     0.03140394152458165,
+     0.2357260564646973
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 33,
+    "aciertos": 14,
+    "proporcion": 0.42424242424242425,
+    "ic95": [
+     0.2723559663341021,
+     0.5919273666268755
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 33,
+    "aciertos": 27,
+    "proporcion": 0.8181818181818182,
+    "ic95": [
+     0.6561176836533009,
+     0.9138923179105933
+    ]
+   },
+   "techo_lugar": {
+    "n": 33,
+    "aciertos": 23,
+    "proporcion": 0.696969696969697,
+    "ic95": [
+     0.5266186485419944,
+     0.8262446857594641
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 33,
+    "aciertos": 33,
+    "proporcion": 1.0,
+    "ic95": [
+     0.895730002457548,
+     1.0
+    ]
+   },
+   "personas": {
+    "n": 15,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.20388330103584862
+    ]
+   },
+   "conteo_exacto": {
+    "n": 33,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.10426999754245206
+    ]
+   },
+   "personas_como_familias": {
+    "n": 15,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.20388330103584862
+    ]
+   },
+   "urgencia": {
+    "n": 33,
+    "aciertos": 32,
+    "proporcion": 0.9696969696969697,
+    "ic95": [
+     0.846812746178811,
+     0.9946305894631283
+    ]
+   },
+   "productos_exactos": {
+    "n": 33,
+    "aciertos": 26,
+    "proporcion": 0.7878787878787878,
+    "ic95": [
+     0.6224835500784931,
+     0.8932397846697919
+    ]
+   },
+   "kg_abstencion": {
+    "n": 64,
+    "aciertos": 62,
+    "proporcion": 0.96875,
+    "ic95": [
+     0.8930270822904169,
+     0.9913878616538281
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 33,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.10426999754245206
+    ]
+   },
+   "kg": {
+    "n": 7,
+    "aciertos": 5,
+    "proporcion": 0.7142857142857143,
+    "ic95": [
+     0.35893445183261935,
+     0.9177810759959433
+    ]
+   },
+   "bebes": {
+    "n": 2,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.6576197724933469
+    ]
+   },
+   "familias": {
+    "n": 16,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.1936076805344365
+    ]
+   },
+   "productos": {
+    "vp": 70,
+    "fp": 0,
+    "fn": 7,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.9479769375897331,
+     1.0
+    ],
+    "exhaustividad": 0.9090909090909091,
+    "exhaustividad_ic95": [
+     0.8240388171888766,
+     0.9552642893982226
+    ],
+    "f1": 0.9523809523809523,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 0.9090909090909091,
+    "exhaustividad_con_perdidos_ic95": [
+     0.8240388171888766,
+     0.9552642893982226
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 14,
+    "no sé": 5,
+    "por opciones": 13,
+    "sin lugar": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 33
+  },
+  "etiqueta:homofonos": {
+   "tipo": {
+    "n": 36,
+    "aciertos": 35,
+    "proporcion": 0.9722222222222222,
+    "ic95": [
+     0.8583028134672614,
+     0.9950795928601897
+    ]
+   },
+   "lugar_extraido": {
+    "n": 36,
+    "aciertos": 11,
+    "proporcion": 0.3055555555555556,
+    "ic95": [
+     0.1800445159482992,
+     0.4685627285051034
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 36,
+    "aciertos": 17,
+    "proporcion": 0.4722222222222222,
+    "ic95": [
+     0.31986041515179053,
+     0.629940619770124
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 36,
+    "aciertos": 28,
+    "proporcion": 0.7777777777777778,
+    "ic95": [
+     0.6191529705388181,
+     0.8828366802420353
+    ]
+   },
+   "techo_lugar": {
+    "n": 36,
+    "aciertos": 23,
+    "proporcion": 0.6388888888888888,
+    "ic95": [
+     0.4757507548555804,
+     0.7752440705348462
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 36,
+    "aciertos": 36,
+    "proporcion": 1.0,
+    "ic95": [
+     0.9035813714055363,
+     1.0
+    ]
+   },
+   "familias": {
+    "n": 16,
+    "aciertos": 8,
+    "proporcion": 0.5,
+    "ic95": [
+     0.27999563610326017,
+     0.7200043638967398
+    ]
+   },
+   "conteo_exacto": {
+    "n": 36,
+    "aciertos": 16,
+    "proporcion": 0.4444444444444444,
+    "ic95": [
+     0.2954126874008022,
+     0.6041893824430271
+    ]
+   },
+   "urgencia": {
+    "n": 36,
+    "aciertos": 35,
+    "proporcion": 0.9722222222222222,
+    "ic95": [
+     0.8583028134672614,
+     0.9950795928601897
+    ]
+   },
+   "productos_exactos": {
+    "n": 36,
+    "aciertos": 18,
+    "proporcion": 0.5,
+    "ic95": [
+     0.34474325409626827,
+     0.6552567459037317
+    ]
+   },
+   "kg_abstencion": {
+    "n": 63,
+    "aciertos": 61,
+    "proporcion": 0.9682539682539683,
+    "ic95": [
+     0.8914352295339257,
+     0.9912504724384196
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 36,
+    "aciertos": 4,
+    "proporcion": 0.1111111111111111,
+    "ic95": [
+     0.04406640300315648,
+     0.25314808590364857
+    ]
+   },
+   "personas": {
+    "n": 19,
+    "aciertos": 9,
+    "proporcion": 0.47368421052631576,
+    "ic95": [
+     0.2732980516117956,
+     0.6829219075488682
+    ]
+   },
+   "personas_como_familias": {
+    "n": 19,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.16817922405261626
+    ]
+   },
+   "kg": {
+    "n": 5,
+    "aciertos": 3,
+    "proporcion": 0.6,
+    "ic95": [
+     0.2307242812760128,
+     0.882379225767352
+    ]
+   },
+   "bebes": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "productos": {
+    "vp": 67,
+    "fp": 0,
+    "fn": 18,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.9457738606086981,
+     0.9999999999999998
+    ],
+    "exhaustividad": 0.788235294117647,
+    "exhaustividad_ic95": [
+     0.689906657554083,
+     0.8616376400119344
+    ],
+    "f1": 0.8815789473684211,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 0.788235294117647,
+    "exhaustividad_con_perdidos_ic95": [
+     0.689906657554083,
+     0.8616376400119344
+    ]
+   },
+   "clases_lugar": {
+    "por opciones": 11,
+    "acierto seguro": 17,
+    "no sé": 7,
+    "sin lugar": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 36
+  },
+  "etiqueta:lugar_punto": {
+   "tipo": {
+    "n": 25,
+    "aciertos": 25,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8668077490609515,
+     0.9999999999999999
+    ]
+   },
+   "lugar_extraido": {
+    "n": 25,
+    "aciertos": 18,
+    "proporcion": 0.72,
+    "ic95": [
+     0.5242339480963842,
+     0.8571614614904344
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 25,
+    "aciertos": 6,
+    "proporcion": 0.24,
+    "ic95": [
+     0.11496313693401444,
+     0.4342968335542908
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 25,
+    "aciertos": 24,
+    "proporcion": 0.96,
+    "ic95": [
+     0.8045593626380625,
+     0.9929037664980127
+    ]
+   },
+   "techo_lugar": {
+    "n": 25,
+    "aciertos": 2,
+    "proporcion": 0.08,
+    "ic95": [
+     0.022220401284847563,
+     0.24966108950395313
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 25,
+    "aciertos": 25,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8668077490609515,
+     0.9999999999999999
+    ]
+   },
+   "familias": {
+    "n": 11,
+    "aciertos": 9,
+    "proporcion": 0.8181818181818182,
+    "ic95": [
+     0.523019438039156,
+     0.9486323102539149
+    ]
+   },
+   "conteo_exacto": {
+    "n": 24,
+    "aciertos": 15,
+    "proporcion": 0.625,
+    "ic95": [
+     0.42709962442674276,
+     0.7884063244045122
+    ]
+   },
+   "urgencia": {
+    "n": 25,
+    "aciertos": 25,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8668077490609515,
+     0.9999999999999999
+    ]
+   },
+   "productos_exactos": {
+    "n": 25,
+    "aciertos": 19,
+    "proporcion": 0.76,
+    "ic95": [
+     0.5657031664457093,
+     0.8850368630659855
+    ]
+   },
+   "kg_abstencion": {
+    "n": 50,
+    "aciertos": 48,
+    "proporcion": 0.96,
+    "ic95": [
+     0.8653990931249297,
+     0.9889611156723802
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 25,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     1.3877787807814457e-17,
+     0.13319225093904846
+    ]
+   },
+   "dos_pedidos_detectados": {
+    "n": 2,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.6576197724933469
+    ]
+   },
+   "personas": {
+    "n": 12,
+    "aciertos": 6,
+    "proporcion": 0.5,
+    "ic95": [
+     0.2537815976337061,
+     0.7462184023662939
+    ]
+   },
+   "personas_como_familias": {
+    "n": 12,
+    "aciertos": 1,
+    "proporcion": 0.08333333333333333,
+    "ic95": [
+     0.014865094404917095,
+     0.35387991114111694
+    ]
+   },
+   "abstencion_conteo": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "kg": {
+    "n": 4,
+    "aciertos": 2,
+    "proporcion": 0.5,
+    "ic95": [
+     0.15003898915214947,
+     0.8499610108478506
+    ]
+   },
+   "bebes": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 54,
+    "fp": 5,
+    "fn": 4,
+    "precision": 0.9152542372881356,
+    "precision_ic95": [
+     0.8164820473258972,
+     0.9632579669823632
+    ],
+    "exhaustividad": 0.9310344827586207,
+    "exhaustividad_ic95": [
+     0.8356633368561964,
+     0.9728557529824217
+    ],
+    "f1": 0.923076923076923,
+    "perdidos": 6,
+    "exhaustividad_con_perdidos": 0.84375,
+    "exhaustividad_con_perdidos_ic95": [
+     0.7357193822745122,
+     0.912851576617934
+    ]
+   },
+   "clases_lugar": {
+    "por opciones": 18,
+    "acierto seguro": 6,
+    "no sé": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 25
+  },
+  "etiqueta:urgente": {
+   "tipo": {
+    "n": 53,
+    "aciertos": 53,
+    "proporcion": 1.0,
+    "ic95": [
+     0.932418011423458,
+     0.9999999999999999
+    ]
+   },
+   "lugar_extraido": {
+    "n": 51,
+    "aciertos": 26,
+    "proporcion": 0.5098039215686274,
+    "ic95": [
+     0.37680923894569696,
+     0.6414251410562926
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 51,
+    "aciertos": 36,
+    "proporcion": 0.7058823529411765,
+    "ic95": [
+     0.5700092442431359,
+     0.8129127357986454
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 51,
+    "aciertos": 44,
+    "proporcion": 0.8627450980392157,
+    "ic95": [
+     0.7427830774241833,
+     0.9318889826494312
+    ]
+   },
+   "techo_lugar": {
+    "n": 51,
+    "aciertos": 43,
+    "proporcion": 0.8431372549019608,
+    "ic95": [
+     0.7198955322701224,
+     0.9183077677995128
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 53,
+    "aciertos": 53,
+    "proporcion": 1.0,
+    "ic95": [
+     0.932418011423458,
+     0.9999999999999999
+    ]
+   },
+   "familias": {
+    "n": 24,
+    "aciertos": 19,
+    "proporcion": 0.7916666666666666,
+    "ic95": [
+     0.5952954674681133,
+     0.9075517464714814
+    ]
+   },
+   "conteo_exacto": {
+    "n": 50,
+    "aciertos": 32,
+    "proporcion": 0.64,
+    "ic95": [
+     0.501410168761127,
+     0.7586125034815325
+    ]
+   },
+   "urgencia": {
+    "n": 53,
+    "aciertos": 53,
+    "proporcion": 1.0,
+    "ic95": [
+     0.932418011423458,
+     0.9999999999999999
+    ]
+   },
+   "productos_exactos": {
+    "n": 48,
+    "aciertos": 35,
+    "proporcion": 0.7291666666666666,
+    "ic95": [
+     0.5900303501775939,
+     0.8343404237254355
+    ]
+   },
+   "kg_abstencion": {
+    "n": 86,
+    "aciertos": 86,
+    "proporcion": 1.0,
+    "ic95": [
+     0.9572418027142576,
+     0.9999999999999999
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 53,
+    "aciertos": 22,
+    "proporcion": 0.41509433962264153,
+    "ic95": [
+     0.29260908779813966,
+     0.549055778186556
+    ]
+   },
+   "personas": {
+    "n": 24,
+    "aciertos": 18,
+    "proporcion": 0.75,
+    "ic95": [
+     0.55100555994846,
+     0.8800063377140499
+    ]
+   },
+   "personas_como_familias": {
+    "n": 24,
+    "aciertos": 2,
+    "proporcion": 0.08333333333333333,
+    "ic95": [
+     0.023158815297043306,
+     0.25848802193210685
+    ]
+   },
+   "kg": {
+    "n": 6,
+    "aciertos": 5,
+    "proporcion": 0.8333333333333334,
+    "ic95": [
+     0.43649717781352987,
+     0.9699466302516935
+    ]
+   },
+   "dos_pedidos_detectados": {
+    "n": 8,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.32440756488388023
+    ]
+   },
+   "abstencion_productos": {
+    "n": 5,
+    "aciertos": 5,
+    "proporcion": 1.0,
+    "ic95": [
+     0.5655175352168251,
+     1.0
+    ]
+   },
+   "abstencion_lugar": {
+    "n": 2,
+    "aciertos": 1,
+    "proporcion": 0.5,
+    "ic95": [
+     0.09453120573423074,
+     0.9054687942657693
+    ]
+   },
+   "abstencion_conteo": {
+    "n": 3,
+    "aciertos": 3,
+    "proporcion": 1.0,
+    "ic95": [
+     0.4385029682449546,
+     1.0
+    ]
+   },
+   "bebes": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 92,
+    "fp": 15,
+    "fn": 5,
+    "precision": 0.8598130841121495,
+    "precision_ic95": [
+     0.7815182005609461,
+     0.9131677122666834
+    ],
+    "exhaustividad": 0.9484536082474226,
+    "exhaustividad_ic95": [
+     0.8849564458853718,
+     0.9777839489624893
+    ],
+    "f1": 0.9019607843137255,
+    "perdidos": 17,
+    "exhaustividad_con_perdidos": 0.8070175438596491,
+    "exhaustividad_con_perdidos_ic95": [
+     0.7250573655529112,
+     0.8689610783846421
+    ]
+   },
+   "clases_lugar": {
+    "por opciones": 8,
+    "acierto seguro": 36,
+    "se abstiene": 1,
+    "no sé": 7,
+    "inventa sin compromiso": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 53
+  },
+  "etiqueta:kilos": {
+   "tipo": {
+    "n": 33,
+    "aciertos": 33,
+    "proporcion": 1.0,
+    "ic95": [
+     0.895730002457548,
+     1.0
+    ]
+   },
+   "lugar_extraido": {
+    "n": 33,
+    "aciertos": 16,
+    "proporcion": 0.48484848484848486,
+    "ic95": [
+     0.32504042108133696,
+     0.6478162455108585
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 33,
+    "aciertos": 20,
+    "proporcion": 0.6060606060606061,
+    "ic95": [
+     0.43683440819940234,
+     0.7531689256552291
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 33,
+    "aciertos": 30,
+    "proporcion": 0.9090909090909091,
+    "ic95": [
+     0.7642739435353026,
+     0.9685960584754184
+    ]
+   },
+   "techo_lugar": {
+    "n": 33,
+    "aciertos": 27,
+    "proporcion": 0.8181818181818182,
+    "ic95": [
+     0.6561176836533009,
+     0.9138923179105933
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 33,
+    "aciertos": 33,
+    "proporcion": 1.0,
+    "ic95": [
+     0.895730002457548,
+     1.0
+    ]
+   },
+   "personas": {
+    "n": 17,
+    "aciertos": 11,
+    "proporcion": 0.6470588235294118,
+    "ic95": [
+     0.41300363485218694,
+     0.8269027960275627
+    ]
+   },
+   "conteo_exacto": {
+    "n": 33,
+    "aciertos": 22,
+    "proporcion": 0.6666666666666666,
+    "ic95": [
+     0.4960789442780561,
+     0.8024977232077931
+    ]
+   },
+   "personas_como_familias": {
+    "n": 17,
+    "aciertos": 2,
+    "proporcion": 0.11764705882352941,
+    "ic95": [
+     0.03287977376379267,
+     0.3433635059488588
+    ]
+   },
+   "urgencia": {
+    "n": 33,
+    "aciertos": 31,
+    "proporcion": 0.9393939393939394,
+    "ic95": [
+     0.8039375519135219,
+     0.9832191169128082
+    ]
+   },
+   "productos_exactos": {
+    "n": 33,
+    "aciertos": 26,
+    "proporcion": 0.7878787878787878,
+    "ic95": [
+     0.6224835500784931,
+     0.8932397846697919
+    ]
+   },
+   "kg_abstencion": {
+    "n": 44,
+    "aciertos": 40,
+    "proporcion": 0.9090909090909091,
+    "ic95": [
+     0.7884076083340138,
+     0.9640778067726837
+    ]
+   },
+   "kg": {
+    "n": 31,
+    "aciertos": 27,
+    "proporcion": 0.8709677419354839,
+    "ic95": [
+     0.7114759374369357,
+     0.9486571562537085
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 33,
+    "aciertos": 12,
+    "proporcion": 0.36363636363636365,
+    "ic95": [
+     0.2218717823524236,
+     0.5338382169773361
+    ]
+   },
+   "dos_pedidos_detectados": {
+    "n": 4,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.4898908364545973
+    ]
+   },
+   "familias": {
+    "n": 14,
+    "aciertos": 11,
+    "proporcion": 0.7857142857142857,
+    "ic95": [
+     0.524107694133997,
+     0.9242861328730683
+    ]
+   },
+   "bebes": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 74,
+    "fp": 7,
+    "fn": 3,
+    "precision": 0.9135802469135802,
+    "precision_ic95": [
+     0.8322008336612947,
+     0.9575074166600406
+    ],
+    "exhaustividad": 0.961038961038961,
+    "exhaustividad_ic95": [
+     0.8916001812736711,
+     0.986662049959409
+    ],
+    "f1": 0.9367088607594937,
+    "perdidos": 7,
+    "exhaustividad_con_perdidos": 0.8809523809523809,
+    "exhaustividad_con_perdidos_ic95": [
+     0.794550842255297,
+     0.9340345075240096
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 20,
+    "por opciones": 10,
+    "no sé": 3
+   },
+   "falsos_reportes": 0,
+   "mensajes": 33
+  },
+  "variante:sin_tildes": {
+   "tipo": {
+    "n": 30,
+    "aciertos": 30,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8864866068260312,
+     0.9999999999999999
+    ]
+   },
+   "lugar_extraido": {
+    "n": 30,
+    "aciertos": 27,
+    "proporcion": 0.9,
+    "ic95": [
+     0.7437891742081593,
+     0.9654001112526658
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 30,
+    "aciertos": 24,
+    "proporcion": 0.8,
+    "ic95": [
+     0.6269430358685175,
+     0.9049489282271013
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 30,
+    "aciertos": 28,
+    "proporcion": 0.9333333333333333,
+    "ic95": [
+     0.7867654163738308,
+     0.9815229762087295
+    ]
+   },
+   "techo_lugar": {
+    "n": 30,
+    "aciertos": 26,
+    "proporcion": 0.8666666666666667,
+    "ic95": [
+     0.703186733179637,
+     0.9469034451594526
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 30,
+    "aciertos": 30,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8864866068260312,
+     0.9999999999999999
+    ]
+   },
+   "personas": {
+    "n": 11,
+    "aciertos": 10,
+    "proporcion": 0.9090909090909091,
+    "ic95": [
+     0.6226415635484043,
+     0.9837678271141151
+    ]
+   },
+   "conteo_exacto": {
+    "n": 30,
+    "aciertos": 29,
+    "proporcion": 0.9666666666666667,
+    "ic95": [
+     0.8332960900859082,
+     0.9940914096183874
+    ]
+   },
+   "personas_como_familias": {
+    "n": 11,
+    "aciertos": 1,
+    "proporcion": 0.09090909090909091,
+    "ic95": [
+     0.016232172885884855,
+     0.37735843645159567
+    ]
+   },
+   "urgencia": {
+    "n": 30,
+    "aciertos": 28,
+    "proporcion": 0.9333333333333333,
+    "ic95": [
+     0.7867654163738308,
+     0.9815229762087295
+    ]
+   },
+   "productos_exactos": {
+    "n": 30,
+    "aciertos": 30,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8864866068260312,
+     0.9999999999999999
+    ]
+   },
+   "kg_abstencion": {
+    "n": 64,
+    "aciertos": 64,
+    "proporcion": 1.0,
+    "ic95": [
+     0.9433759402071946,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 30,
+    "aciertos": 22,
+    "proporcion": 0.7333333333333333,
+    "ic95": [
+     0.555520383048111,
+     0.8581733668040368
+    ]
+   },
+   "familias": {
+    "n": 17,
+    "aciertos": 17,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8156818649911483,
+     1.0
+    ]
+   },
+   "kg": {
+    "n": 5,
+    "aciertos": 5,
+    "proporcion": 1.0,
+    "ic95": [
+     0.5655175352168251,
+     1.0
+    ]
+   },
+   "bebes": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 69,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.9472627418109483,
+     1.0
+    ],
+    "exhaustividad": 1.0,
+    "exhaustividad_ic95": [
+     0.9472627418109483,
+     1.0
+    ],
+    "f1": 1.0,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 1.0,
+    "exhaustividad_con_perdidos_ic95": [
+     0.9472627418109483,
+     1.0
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 24,
+    "no sé": 2,
+    "por opciones": 4
+   },
+   "falsos_reportes": 0,
+   "mensajes": 30
+  },
+  "etiqueta:conteo_aproximado": {
+   "tipo": {
+    "n": 61,
+    "aciertos": 61,
+    "proporcion": 1.0,
+    "ic95": [
+     0.9407561321018871,
+     1.0
+    ]
+   },
+   "lugar_extraido": {
+    "n": 58,
+    "aciertos": 23,
+    "proporcion": 0.39655172413793105,
+    "ic95": [
+     0.2808875779487437,
+     0.525067840489988
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 58,
+    "aciertos": 45,
+    "proporcion": 0.7758620689655172,
+    "ic95": [
+     0.653388823610813,
+     0.8640633938859026
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 58,
+    "aciertos": 52,
+    "proporcion": 0.896551724137931,
+    "ic95": [
+     0.7921189700751577,
+     0.951718592576371
+    ]
+   },
+   "techo_lugar": {
+    "n": 58,
+    "aciertos": 49,
+    "proporcion": 0.8448275862068966,
+    "ic95": [
+     0.730660191401075,
+     0.9161550804698196
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 61,
+    "aciertos": 61,
+    "proporcion": 1.0,
+    "ic95": [
+     0.9407561321018871,
+     1.0
+    ]
+   },
+   "personas": {
+    "n": 34,
+    "aciertos": 20,
+    "proporcion": 0.5882352941176471,
+    "ic95": [
+     0.42221593878812513,
+     0.7363403163612884
+    ]
+   },
+   "conteo_exacto": {
+    "n": 61,
+    "aciertos": 37,
+    "proporcion": 0.6065573770491803,
+    "ic95": [
+     0.48117252628978935,
+     0.7193164854696293
+    ]
+   },
+   "personas_como_familias": {
+    "n": 34,
+    "aciertos": 8,
+    "proporcion": 0.23529411764705882,
+    "ic95": [
+     0.12436985532639575,
+     0.3999613792253638
+    ]
+   },
+   "urgencia": {
+    "n": 61,
+    "aciertos": 54,
+    "proporcion": 0.8852459016393442,
+    "ic95": [
+     0.7815569152759893,
+     0.9432879733926779
+    ]
+   },
+   "productos_exactos": {
+    "n": 58,
+    "aciertos": 43,
+    "proporcion": 0.7413793103448276,
+    "ic95": [
+     0.6162261423525959,
+     0.8365445479570304
+    ]
+   },
+   "kg_abstencion": {
+    "n": 119,
+    "aciertos": 118,
+    "proporcion": 0.9915966386554622,
+    "ic95": [
+     0.9539321145669224,
+     0.9985150569599106
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 61,
+    "aciertos": 22,
+    "proporcion": 0.36065573770491804,
+    "ic95": [
+     0.2517411151987451,
+     0.4860809463466307
+    ]
+   },
+   "familias": {
+    "n": 25,
+    "aciertos": 18,
+    "proporcion": 0.72,
+    "ic95": [
+     0.5242339480963842,
+     0.8571614614904344
+    ]
+   },
+   "abstencion_productos": {
+    "n": 3,
+    "aciertos": 3,
+    "proporcion": 1.0,
+    "ic95": [
+     0.4385029682449546,
+     1.0
+    ]
+   },
+   "dos_pedidos_detectados": {
+    "n": 13,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.22809537235419838
+    ]
+   },
+   "kg": {
+    "n": 5,
+    "aciertos": 4,
+    "proporcion": 0.8,
+    "ic95": [
+     0.37553462976252533,
+     0.9637758913675698
+    ]
+   },
+   "bebes": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "abstencion_lugar": {
+    "n": 3,
+    "aciertos": 2,
+    "proporcion": 0.6666666666666666,
+    "ic95": [
+     0.2076596008020477,
+     0.9385080552796037
+    ]
+   },
+   "productos": {
+    "vp": 123,
+    "fp": 22,
+    "fn": 3,
+    "precision": 0.8482758620689655,
+    "precision_ic95": [
+     0.7809560285537818,
+     0.8976183471628147
+    ],
+    "exhaustividad": 0.9761904761904762,
+    "exhaustividad_ic95": [
+     0.9323339858507348,
+     0.9918700479757426
+    ],
+    "f1": 0.9077490774907749,
+    "perdidos": 23,
+    "exhaustividad_con_perdidos": 0.825503355704698,
+    "exhaustividad_con_perdidos_ic95": [
+     0.7565985890972182,
+     0.8780459683968025
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 45,
+    "por opciones": 7,
+    "no sé": 6,
+    "se abstiene": 2,
+    "inventa sin compromiso": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 61
+  },
+  "variante:limpio": {
+   "tipo": {
+    "n": 30,
+    "aciertos": 30,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8864866068260312,
+     0.9999999999999999
+    ]
+   },
+   "lugar_extraido": {
+    "n": 30,
+    "aciertos": 22,
+    "proporcion": 0.7333333333333333,
+    "ic95": [
+     0.555520383048111,
+     0.8581733668040368
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 30,
+    "aciertos": 18,
+    "proporcion": 0.6,
+    "ic95": [
+     0.42320360253322475,
+     0.7540937188319815
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 30,
+    "aciertos": 24,
+    "proporcion": 0.8,
+    "ic95": [
+     0.6269430358685175,
+     0.9049489282271013
+    ]
+   },
+   "techo_lugar": {
+    "n": 30,
+    "aciertos": 24,
+    "proporcion": 0.8,
+    "ic95": [
+     0.6269430358685175,
+     0.9049489282271013
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 30,
+    "aciertos": 30,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8864866068260312,
+     0.9999999999999999
+    ]
+   },
+   "personas": {
+    "n": 11,
+    "aciertos": 11,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7411670330319684,
+     1.0
+    ]
+   },
+   "conteo_exacto": {
+    "n": 30,
+    "aciertos": 30,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8864866068260312,
+     0.9999999999999999
+    ]
+   },
+   "personas_como_familias": {
+    "n": 11,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.2588329669680317
+    ]
+   },
+   "urgencia": {
+    "n": 30,
+    "aciertos": 27,
+    "proporcion": 0.9,
+    "ic95": [
+     0.7437891742081593,
+     0.9654001112526658
+    ]
+   },
+   "productos_exactos": {
+    "n": 30,
+    "aciertos": 30,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8864866068260312,
+     0.9999999999999999
+    ]
+   },
+   "kg_abstencion": {
+    "n": 52,
+    "aciertos": 51,
+    "proporcion": 0.9807692307692307,
+    "ic95": [
+     0.8987948887210774,
+     0.9965971919290547
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 30,
+    "aciertos": 16,
+    "proporcion": 0.5333333333333333,
+    "ic95": [
+     0.36142299619873297,
+     0.6976761109230025
+    ]
+   },
+   "familias": {
+    "n": 18,
+    "aciertos": 18,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8241207763533425,
+     1.0
+    ]
+   },
+   "kg": {
+    "n": 4,
+    "aciertos": 3,
+    "proporcion": 0.75,
+    "ic95": [
+     0.30064184258240184,
+     0.9544127391902995
+    ]
+   },
+   "bebes": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 56,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.9358060632812366,
+     1.0
+    ],
+    "exhaustividad": 1.0,
+    "exhaustividad_ic95": [
+     0.9358060632812366,
+     1.0
+    ],
+    "f1": 1.0,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 1.0,
+    "exhaustividad_con_perdidos_ic95": [
+     0.9358060632812366,
+     1.0
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 18,
+    "no sé": 6,
+    "por opciones": 6
+   },
+   "falsos_reportes": 0,
+   "mensajes": 30
+  },
+  "etiqueta:palabras_pegadas": {
+   "tipo": {
+    "n": 10,
+    "aciertos": 10,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7224672001371107,
+     0.9999999999999999
+    ]
+   },
+   "lugar_extraido": {
+    "n": 10,
+    "aciertos": 3,
+    "proporcion": 0.3,
+    "ic95": [
+     0.10779126740630099,
+     0.6032218525388546
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 10,
+    "aciertos": 4,
+    "proporcion": 0.4,
+    "ic95": [
+     0.16818032970623614,
+     0.6873262302663417
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 10,
+    "aciertos": 8,
+    "proporcion": 0.8,
+    "ic95": [
+     0.49016247153664183,
+     0.9433178485456247
+    ]
+   },
+   "techo_lugar": {
+    "n": 10,
+    "aciertos": 7,
+    "proporcion": 0.7,
+    "ic95": [
+     0.39677814746114537,
+     0.8922087325936989
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 10,
+    "aciertos": 10,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7224672001371107,
+     0.9999999999999999
+    ]
+   },
+   "personas": {
+    "n": 6,
+    "aciertos": 4,
+    "proporcion": 0.6666666666666666,
+    "ic95": [
+     0.299993315138392,
+     0.9032285888942195
+    ]
+   },
+   "conteo_exacto": {
+    "n": 10,
+    "aciertos": 5,
+    "proporcion": 0.5,
+    "ic95": [
+     0.236593090512564,
+     0.7634069094874361
+    ]
+   },
+   "personas_como_familias": {
+    "n": 6,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     2.7755575615628914e-17,
+     0.3903342879021653
+    ]
+   },
+   "urgencia": {
+    "n": 10,
+    "aciertos": 10,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7224672001371107,
+     0.9999999999999999
+    ]
+   },
+   "productos_exactos": {
+    "n": 10,
+    "aciertos": 6,
+    "proporcion": 0.6,
+    "ic95": [
+     0.31267376973365824,
+     0.8318196702937638
+    ]
+   },
+   "kg_abstencion": {
+    "n": 16,
+    "aciertos": 16,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8063923194655637,
+     1.0
+    ]
+   },
+   "kg": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 10,
+    "aciertos": 1,
+    "proporcion": 0.1,
+    "ic95": [
+     0.017876213095072896,
+     0.4041500267952385
+    ]
+   },
+   "familias": {
+    "n": 2,
+    "aciertos": 1,
+    "proporcion": 0.5,
+    "ic95": [
+     0.09453120573423074,
+     0.9054687942657693
+    ]
+   },
+   "bebes": {
+    "n": 2,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.6576197724933469
+    ]
+   },
+   "productos": {
+    "vp": 17,
+    "fp": 0,
+    "fn": 4,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.8156818649911483,
+     1.0
+    ],
+    "exhaustividad": 0.8095238095238095,
+    "exhaustividad_ic95": [
+     0.5999943530979508,
+     0.9233243494723822
+    ],
+    "f1": 0.8947368421052632,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 0.8095238095238095,
+    "exhaustividad_con_perdidos_ic95": [
+     0.5999943530979508,
+     0.9233243494723822
+    ]
+   },
+   "clases_lugar": {
+    "por opciones": 4,
+    "acierto seguro": 4,
+    "no sé": 2
+   },
+   "falsos_reportes": 0,
+   "mensajes": 10
+  },
+  "variante:dos_pedidos": {
+   "tipo": {
+    "n": 30,
+    "aciertos": 30,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8864866068260312,
+     0.9999999999999999
+    ]
+   },
+   "dos_pedidos_detectados": {
+    "n": 30,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.11351339317396876
+    ]
+   },
+   "lugar_extraido": {
+    "n": 30,
+    "aciertos": 7,
+    "proporcion": 0.23333333333333334,
+    "ic95": [
+     0.11792388144489496,
+     0.40928326158122164
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 30,
+    "aciertos": 26,
+    "proporcion": 0.8666666666666667,
+    "ic95": [
+     0.703186733179637,
+     0.9469034451594526
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 30,
+    "aciertos": 30,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8864866068260312,
+     0.9999999999999999
+    ]
+   },
+   "techo_lugar": {
+    "n": 30,
+    "aciertos": 26,
+    "proporcion": 0.8666666666666667,
+    "ic95": [
+     0.703186733179637,
+     0.9469034451594526
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 30,
+    "aciertos": 30,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8864866068260312,
+     0.9999999999999999
+    ]
+   },
+   "personas": {
+    "n": 16,
+    "aciertos": 12,
+    "proporcion": 0.75,
+    "ic95": [
+     0.5050168346449122,
+     0.8981793250878696
+    ]
+   },
+   "conteo_exacto": {
+    "n": 30,
+    "aciertos": 9,
+    "proporcion": 0.3,
+    "ic95": [
+     0.16664748268243793,
+     0.47875787458714947
+    ]
+   },
+   "personas_como_familias": {
+    "n": 16,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.1936076805344365
+    ]
+   },
+   "urgencia": {
+    "n": 30,
+    "aciertos": 25,
+    "proporcion": 0.8333333333333334,
+    "ic95": [
+     0.6643564949358398,
+     0.9266345762815145
+    ]
+   },
+   "productos_exactos": {
+    "n": 30,
+    "aciertos": 1,
+    "proporcion": 0.03333333333333333,
+    "ic95": [
+     0.005908590381612455,
+     0.16670390991409173
+    ]
+   },
+   "kg_abstencion": {
+    "n": 63,
+    "aciertos": 62,
+    "proporcion": 0.9841269841269841,
+    "ic95": [
+     0.915414745405616,
+     0.9971925057861307
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 30,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.11351339317396876
+    ]
+   },
+   "kg": {
+    "n": 2,
+    "aciertos": 1,
+    "proporcion": 0.5,
+    "ic95": [
+     0.09453120573423074,
+     0.9054687942657693
+    ]
+   },
+   "familias": {
+    "n": 12,
+    "aciertos": 5,
+    "proporcion": 0.4166666666666667,
+    "ic95": [
+     0.19326031365875665,
+     0.6804886874504503
+    ]
+   },
+   "bebes": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 65,
+    "fp": 60,
+    "fn": 0,
+    "precision": 0.52,
+    "precision_ic95": [
+     0.4331350544138638,
+     0.6056723298378032
+    ],
+    "exhaustividad": 1.0,
+    "exhaustividad_ic95": [
+     0.9441984686771432,
+     1.0
+    ],
+    "f1": 0.6842105263157895,
+    "perdidos": 65,
+    "exhaustividad_con_perdidos": 0.5,
+    "exhaustividad_con_perdidos_ic95": [
+     0.4152923244410056,
+     0.5847076755589944
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 26,
+    "por opciones": 4
+   },
+   "falsos_reportes": 0,
+   "mensajes": 30
+  },
+  "etiqueta:conteo_bebes": {
+   "tipo": {
+    "n": 18,
+    "aciertos": 18,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8241207763533425,
+     1.0
+    ]
+   },
+   "dos_pedidos_detectados": {
+    "n": 5,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.43448246478317476
+    ]
+   },
+   "lugar_extraido": {
+    "n": 16,
+    "aciertos": 6,
+    "proporcion": 0.375,
+    "ic95": [
+     0.18481232558863633,
+     0.6135895945449727
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 16,
+    "aciertos": 12,
+    "proporcion": 0.75,
+    "ic95": [
+     0.5050168346449122,
+     0.8981793250878696
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 16,
+    "aciertos": 14,
+    "proporcion": 0.875,
+    "ic95": [
+     0.639771727342413,
+     0.9650225122567595
+    ]
+   },
+   "techo_lugar": {
+    "n": 16,
+    "aciertos": 15,
+    "proporcion": 0.9375,
+    "ic95": [
+     0.7167126242970107,
+     0.9888806552353576
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 18,
+    "aciertos": 18,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8241207763533425,
+     1.0
+    ]
+   },
+   "personas": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "conteo_exacto": {
+    "n": 18,
+    "aciertos": 12,
+    "proporcion": 0.6666666666666666,
+    "ic95": [
+     0.43749467295945105,
+     0.837212252491663
+    ]
+   },
+   "personas_como_familias": {
+    "n": 2,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.6576197724933469
+    ]
+   },
+   "urgencia": {
+    "n": 18,
+    "aciertos": 16,
+    "proporcion": 0.8888888888888888,
+    "ic95": [
+     0.672002348698212,
+     0.9689804773543876
+    ]
+   },
+   "productos_exactos": {
+    "n": 16,
+    "aciertos": 11,
+    "proporcion": 0.6875,
+    "ic95": [
+     0.44404355834740666,
+     0.8583535614521796
+    ]
+   },
+   "kg_abstencion": {
+    "n": 31,
+    "aciertos": 31,
+    "proporcion": 1.0,
+    "ic95": [
+     0.889744604539564,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 18,
+    "aciertos": 10,
+    "proporcion": 0.5555555555555556,
+    "ic95": [
+     0.33716415642042774,
+     0.7544048187299437
+    ]
+   },
+   "bebes": {
+    "n": 15,
+    "aciertos": 13,
+    "proporcion": 0.8666666666666667,
+    "ic95": [
+     0.6211801716767764,
+     0.9626387408969346
+    ]
+   },
+   "abstencion_productos": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "kg": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "familias": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "abstencion_lugar": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 32,
+    "fp": 12,
+    "fn": 0,
+    "precision": 0.7272727272727273,
+    "precision_ic95": [
+     0.5815112690754881,
+     0.8365361837615662
+    ],
+    "exhaustividad": 1.0,
+    "exhaustividad_ic95": [
+     0.8928208017449293,
+     1.0
+    ],
+    "f1": 0.8421052631578948,
+    "perdidos": 14,
+    "exhaustividad_con_perdidos": 0.6956521739130435,
+    "exhaustividad_con_perdidos_ic95": [
+     0.5519435355159235,
+     0.8092015919723277
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 12,
+    "no sé": 2,
+    "por opciones": 2,
+    "se abstiene": 2
+   },
+   "falsos_reportes": 0,
+   "mensajes": 18
+  },
+  "variante:abreviaturas": {
+   "tipo": {
+    "n": 45,
+    "aciertos": 45,
+    "proporcion": 1.0,
+    "ic95": [
+     0.9213484012671117,
+     1.0
+    ]
+   },
+   "lugar_extraido": {
+    "n": 45,
+    "aciertos": 29,
+    "proporcion": 0.6444444444444445,
+    "ic95": [
+     0.4983581419637687,
+     0.7678091739578413
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 45,
+    "aciertos": 40,
+    "proporcion": 0.8888888888888888,
+    "ic95": [
+     0.7650090300423141,
+     0.9515952820543282
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 45,
+    "aciertos": 43,
+    "proporcion": 0.9555555555555556,
+    "ic95": [
+     0.8517248923056439,
+     0.9877258732932802
+    ]
+   },
+   "techo_lugar": {
+    "n": 45,
+    "aciertos": 42,
+    "proporcion": 0.9333333333333333,
+    "ic95": [
+     0.8214339803640811,
+     0.977067967400749
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 45,
+    "aciertos": 45,
+    "proporcion": 1.0,
+    "ic95": [
+     0.9213484012671117,
+     1.0
+    ]
+   },
+   "familias": {
+    "n": 26,
+    "aciertos": 25,
+    "proporcion": 0.9615384615384616,
+    "ic95": [
+     0.8110722109696524,
+     0.9931780150064564
+    ]
+   },
+   "conteo_exacto": {
+    "n": 45,
+    "aciertos": 28,
+    "proporcion": 0.6222222222222222,
+    "ic95": [
+     0.47629934480889535,
+     0.7489191532786209
+    ]
+   },
+   "urgencia": {
+    "n": 45,
+    "aciertos": 42,
+    "proporcion": 0.9333333333333333,
+    "ic95": [
+     0.8214339803640811,
+     0.977067967400749
+    ]
+   },
+   "productos_exactos": {
+    "n": 45,
+    "aciertos": 45,
+    "proporcion": 1.0,
+    "ic95": [
+     0.9213484012671117,
+     1.0
+    ]
+   },
+   "kg_abstencion": {
+    "n": 91,
+    "aciertos": 91,
+    "proporcion": 1.0,
+    "ic95": [
+     0.9594959960711198,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 45,
+    "aciertos": 24,
+    "proporcion": 0.5333333333333333,
+    "ic95": [
+     0.3907745474012537,
+     0.670648679349887
+    ]
+   },
+   "personas": {
+    "n": 18,
+    "aciertos": 2,
+    "proporcion": 0.1111111111111111,
+    "ic95": [
+     0.03101952264561239,
+     0.32799765130178804
+    ]
+   },
+   "personas_como_familias": {
+    "n": 18,
+    "aciertos": 16,
+    "proporcion": 0.8888888888888888,
+    "ic95": [
+     0.672002348698212,
+     0.9689804773543876
+    ]
+   },
+   "kg": {
+    "n": 5,
+    "aciertos": 5,
+    "proporcion": 1.0,
+    "ic95": [
+     0.5655175352168251,
+     1.0
+    ]
+   },
+   "bebes": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 96,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.9615244121423243,
+     1.0
+    ],
+    "exhaustividad": 1.0,
+    "exhaustividad_ic95": [
+     0.9615244121423243,
+     1.0
+    ],
+    "f1": 1.0,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 1.0,
+    "exhaustividad_con_perdidos_ic95": [
+     0.9615244121423243,
+     1.0
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 40,
+    "por opciones": 3,
+    "no sé": 2
+   },
+   "falsos_reportes": 0,
+   "mensajes": 45
+  },
+  "etiqueta:lugar_vereda": {
+   "tipo": {
+    "n": 35,
+    "aciertos": 35,
+    "proporcion": 1.0,
+    "ic95": [
+     0.9010990076755959,
+     0.9999999999999999
+    ]
+   },
+   "lugar_extraido": {
+    "n": 35,
+    "aciertos": 21,
+    "proporcion": 0.6,
+    "ic95": [
+     0.435727090128925,
+     0.7444927114061941
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 35,
+    "aciertos": 31,
+    "proporcion": 0.8857142857142857,
+    "ic95": [
+     0.7404853135378618,
+     0.9546482066690264
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 35,
+    "aciertos": 33,
+    "proporcion": 0.9428571428571428,
+    "ic95": [
+     0.8139294257983507,
+     0.9841868381428913
+    ]
+   },
+   "techo_lugar": {
+    "n": 35,
+    "aciertos": 32,
+    "proporcion": 0.9142857142857143,
+    "ic95": [
+     0.7762072603410349,
+     0.9704176317330301
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 35,
+    "aciertos": 35,
+    "proporcion": 1.0,
+    "ic95": [
+     0.9010990076755959,
+     0.9999999999999999
+    ]
+   },
+   "personas": {
+    "n": 14,
+    "aciertos": 12,
+    "proporcion": 0.8571428571428571,
+    "ic95": [
+     0.6005862050302965,
+     0.9599060787285351
+    ]
+   },
+   "conteo_exacto": {
+    "n": 35,
+    "aciertos": 26,
+    "proporcion": 0.7428571428571429,
+    "ic95": [
+     0.5793069315616084,
+     0.8583697293093955
+    ]
+   },
+   "personas_como_familias": {
+    "n": 14,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     1.3877787807814457e-17,
+     0.2153108027376358
+    ]
+   },
+   "urgencia": {
+    "n": 35,
+    "aciertos": 31,
+    "proporcion": 0.8857142857142857,
+    "ic95": [
+     0.7404853135378618,
+     0.9546482066690264
+    ]
+   },
+   "productos_exactos": {
+    "n": 34,
+    "aciertos": 22,
+    "proporcion": 0.6470588235294118,
+    "ic95": [
+     0.47913963119781733,
+     0.785120794051205
+    ]
+   },
+   "kg_abstencion": {
+    "n": 63,
+    "aciertos": 62,
+    "proporcion": 0.9841269841269841,
+    "ic95": [
+     0.915414745405616,
+     0.9971925057861307
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 35,
+    "aciertos": 19,
+    "proporcion": 0.5428571428571428,
+    "ic95": [
+     0.3818972506848375,
+     0.6953398071159278
+    ]
+   },
+   "familias": {
+    "n": 21,
+    "aciertos": 16,
+    "proporcion": 0.7619047619047619,
+    "ic95": [
+     0.5490882631704924,
+     0.8937198697736354
+    ]
+   },
+   "dos_pedidos_detectados": {
+    "n": 10,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.2775327998628892
+    ]
+   },
+   "kg": {
+    "n": 3,
+    "aciertos": 3,
+    "proporcion": 1.0,
+    "ic95": [
+     0.4385029682449546,
+     1.0
+    ]
+   },
+   "abstencion_productos": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 66,
+    "fp": 19,
+    "fn": 2,
+    "precision": 0.7764705882352941,
+    "precision_ic95": [
+     0.6770648583572626,
+     0.851967427063203
+    ],
+    "exhaustividad": 0.9705882352941176,
+    "exhaustividad_ic95": [
+     0.8989536863477694,
+     0.9918968204568701
+    ],
+    "f1": 0.8627450980392157,
+    "perdidos": 21,
+    "exhaustividad_con_perdidos": 0.7415730337078652,
+    "exhaustividad_con_perdidos_ic95": [
+     0.6419705871628898,
+     0.8211845651386962
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 31,
+    "por opciones": 2,
+    "no sé": 2
+   },
+   "falsos_reportes": 0,
+   "mensajes": 35
+  },
+  "variante:mayusculas": {
+   "tipo": {
+    "n": 30,
+    "aciertos": 30,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8864866068260312,
+     0.9999999999999999
+    ]
+   },
+   "lugar_extraido": {
+    "n": 30,
+    "aciertos": 20,
+    "proporcion": 0.6666666666666666,
+    "ic95": [
+     0.4878005164454384,
+     0.8076950191632386
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 30,
+    "aciertos": 26,
+    "proporcion": 0.8666666666666667,
+    "ic95": [
+     0.703186733179637,
+     0.9469034451594526
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 30,
+    "aciertos": 26,
+    "proporcion": 0.8666666666666667,
+    "ic95": [
+     0.703186733179637,
+     0.9469034451594526
+    ]
+   },
+   "techo_lugar": {
+    "n": 30,
+    "aciertos": 30,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8864866068260312,
+     0.9999999999999999
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 30,
+    "aciertos": 30,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8864866068260312,
+     0.9999999999999999
+    ]
+   },
+   "personas": {
+    "n": 13,
+    "aciertos": 12,
+    "proporcion": 0.9230769230769231,
+    "ic95": [
+     0.6668604907890041,
+     0.9862895787574435
+    ]
+   },
+   "conteo_exacto": {
+    "n": 30,
+    "aciertos": 29,
+    "proporcion": 0.9666666666666667,
+    "ic95": [
+     0.8332960900859082,
+     0.9940914096183874
+    ]
+   },
+   "personas_como_familias": {
+    "n": 13,
+    "aciertos": 1,
+    "proporcion": 0.07692307692307693,
+    "ic95": [
+     0.013710421242556586,
+     0.3331395092109959
+    ]
+   },
+   "urgencia": {
+    "n": 30,
+    "aciertos": 27,
+    "proporcion": 0.9,
+    "ic95": [
+     0.7437891742081593,
+     0.9654001112526658
+    ]
+   },
+   "productos_exactos": {
+    "n": 30,
+    "aciertos": 30,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8864866068260312,
+     0.9999999999999999
+    ]
+   },
+   "kg_abstencion": {
+    "n": 60,
+    "aciertos": 60,
+    "proporcion": 1.0,
+    "ic95": [
+     0.93982814785791,
+     0.9999999999999998
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 30,
+    "aciertos": 24,
+    "proporcion": 0.8,
+    "ic95": [
+     0.6269430358685175,
+     0.9049489282271013
+    ]
+   },
+   "familias": {
+    "n": 16,
+    "aciertos": 16,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8063923194655637,
+     1.0
+    ]
+   },
+   "bebes": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "kg": {
+    "n": 3,
+    "aciertos": 3,
+    "proporcion": 1.0,
+    "ic95": [
+     0.4385029682449546,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 63,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.9425288004111484,
+     1.0
+    ],
+    "exhaustividad": 1.0,
+    "exhaustividad_ic95": [
+     0.9425288004111484,
+     1.0
+    ],
+    "f1": 1.0,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 1.0,
+    "exhaustividad_con_perdidos_ic95": [
+     0.9425288004111484,
+     1.0
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 26,
+    "no sé": 4
+   },
+   "falsos_reportes": 0,
+   "mensajes": 30
+  },
+  "etiqueta:palabras_partidas": {
+   "tipo": {
+    "n": 13,
+    "aciertos": 13,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7719046276458016,
+     0.9999999999999999
+    ]
+   },
+   "lugar_extraido": {
+    "n": 13,
+    "aciertos": 4,
+    "proporcion": 0.3076923076923077,
+    "ic95": [
+     0.12680703655710515,
+     0.5763065681945096
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 13,
+    "aciertos": 4,
+    "proporcion": 0.3076923076923077,
+    "ic95": [
+     0.12680703655710515,
+     0.5763065681945096
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 13,
+    "aciertos": 11,
+    "proporcion": 0.8461538461538461,
+    "ic95": [
+     0.5776536898051745,
+     0.9567418216419186
+    ]
+   },
+   "techo_lugar": {
+    "n": 13,
+    "aciertos": 11,
+    "proporcion": 0.8461538461538461,
+    "ic95": [
+     0.5776536898051745,
+     0.9567418216419186
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 13,
+    "aciertos": 13,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7719046276458016,
+     0.9999999999999999
+    ]
+   },
+   "familias": {
+    "n": 6,
+    "aciertos": 2,
+    "proporcion": 0.3333333333333333,
+    "ic95": [
+     0.09677141110578041,
+     0.700006684861608
+    ]
+   },
+   "conteo_exacto": {
+    "n": 13,
+    "aciertos": 5,
+    "proporcion": 0.38461538461538464,
+    "ic95": [
+     0.17709707797762575,
+     0.6447710848733431
+    ]
+   },
+   "urgencia": {
+    "n": 13,
+    "aciertos": 13,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7719046276458016,
+     0.9999999999999999
+    ]
+   },
+   "productos_exactos": {
+    "n": 13,
+    "aciertos": 11,
+    "proporcion": 0.8461538461538461,
+    "ic95": [
+     0.5776536898051745,
+     0.9567418216419186
+    ]
+   },
+   "kg_abstencion": {
+    "n": 20,
+    "aciertos": 20,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8388748419471806,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 13,
+    "aciertos": 3,
+    "proporcion": 0.23076923076923078,
+    "ic95": [
+     0.08179528718498569,
+     0.5025637594672749
+    ]
+   },
+   "personas": {
+    "n": 7,
+    "aciertos": 3,
+    "proporcion": 0.42857142857142855,
+    "ic95": [
+     0.15821985525146975,
+     0.7495416354723428
+    ]
+   },
+   "personas_como_familias": {
+    "n": 7,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     5.551115123125783e-17,
+     0.35433043506668743
+    ]
+   },
+   "kg": {
+    "n": 4,
+    "aciertos": 4,
+    "proporcion": 1.0,
+    "ic95": [
+     0.5101091635454027,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 24,
+    "fp": 0,
+    "fn": 2,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.8620237953250198,
+     1.0
+    ],
+    "exhaustividad": 0.9230769230769231,
+    "exhaustividad_ic95": [
+     0.7585844622837095,
+     0.9786449115277238
+    ],
+    "f1": 0.9600000000000001,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 0.9230769230769231,
+    "exhaustividad_con_perdidos_ic95": [
+     0.7585844622837095,
+     0.9786449115277238
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 4,
+    "por opciones": 7,
+    "no sé": 2
+   },
+   "falsos_reportes": 0,
+   "mensajes": 13
+  },
+  "etiqueta:espera": {
+   "tipo": {
+    "n": 21,
+    "aciertos": 21,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8453609810751531,
+     1.0
+    ]
+   },
+   "lugar_extraido": {
+    "n": 20,
+    "aciertos": 8,
+    "proporcion": 0.4,
+    "ic95": [
+     0.21880653237281705,
+     0.6134184992377469
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 20,
+    "aciertos": 13,
+    "proporcion": 0.65,
+    "ic95": [
+     0.43285427668523624,
+     0.818808175898918
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 20,
+    "aciertos": 14,
+    "proporcion": 0.7,
+    "ic95": [
+     0.4810271816464765,
+     0.8545227551323956
+    ]
+   },
+   "techo_lugar": {
+    "n": 20,
+    "aciertos": 20,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8388748419471806,
+     1.0
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 21,
+    "aciertos": 21,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8453609810751531,
+     1.0
+    ]
+   },
+   "personas": {
+    "n": 9,
+    "aciertos": 4,
+    "proporcion": 0.4444444444444444,
+    "ic95": [
+     0.18877852109766452,
+     0.733348706504507
+    ]
+   },
+   "conteo_exacto": {
+    "n": 21,
+    "aciertos": 14,
+    "proporcion": 0.6666666666666666,
+    "ic95": [
+     0.4537345197425524,
+     0.8280524739491653
+    ]
+   },
+   "personas_como_familias": {
+    "n": 9,
+    "aciertos": 3,
+    "proporcion": 0.3333333333333333,
+    "ic95": [
+     0.1205838183869109,
+     0.6457978644196036
+    ]
+   },
+   "urgencia": {
+    "n": 21,
+    "aciertos": 21,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8453609810751531,
+     1.0
+    ]
+   },
+   "productos_exactos": {
+    "n": 21,
+    "aciertos": 17,
+    "proporcion": 0.8095238095238095,
+    "ic95": [
+     0.5999943530979508,
+     0.9233243494723822
+    ]
+   },
+   "kg_abstencion": {
+    "n": 46,
+    "aciertos": 46,
+    "proporcion": 1.0,
+    "ic95": [
+     0.9229264369144198,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 21,
+    "aciertos": 7,
+    "proporcion": 0.3333333333333333,
+    "ic95": [
+     0.17194752605083477,
+     0.5462654802574476
+    ]
+   },
+   "familias": {
+    "n": 12,
+    "aciertos": 11,
+    "proporcion": 0.9166666666666666,
+    "ic95": [
+     0.646120088858883,
+     0.9851349055950829
+    ]
+   },
+   "dos_pedidos_detectados": {
+    "n": 3,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     5.551115123125783e-17,
+     0.5614970317550454
+    ]
+   },
+   "abstencion_lugar": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "kg": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 48,
+    "fp": 6,
+    "fn": 1,
+    "precision": 0.8888888888888888,
+    "precision_ic95": [
+     0.7780529897881872,
+     0.9480697750300044
+    ],
+    "exhaustividad": 0.9795918367346939,
+    "exhaustividad_ic95": [
+     0.8930647847660838,
+     0.9963883274101746
+    ],
+    "f1": 0.9320388349514563,
+    "perdidos": 6,
+    "exhaustividad_con_perdidos": 0.8727272727272727,
+    "exhaustividad_con_perdidos_ic95": [
+     0.7598297234409093,
+     0.9369578957263536
+    ]
+   },
+   "clases_lugar": {
+    "no sé": 6,
+    "acierto seguro": 13,
+    "inventa sin compromiso": 1,
+    "por opciones": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 21
+  },
+  "etiqueta:lugar_ausente": {
+   "tipo": {
+    "n": 15,
+    "aciertos": 15,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7961166989641515,
+     1.0
+    ]
+   },
+   "abstencion_lugar": {
+    "n": 15,
+    "aciertos": 8,
+    "proporcion": 0.5333333333333333,
+    "ic95": [
+     0.30116980025498397,
+     0.7519046463426261
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 15,
+    "aciertos": 15,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7961166989641515,
+     1.0
+    ]
+   },
+   "personas": {
+    "n": 5,
+    "aciertos": 4,
+    "proporcion": 0.8,
+    "ic95": [
+     0.37553462976252533,
+     0.9637758913675698
+    ]
+   },
+   "conteo_exacto": {
+    "n": 15,
+    "aciertos": 14,
+    "proporcion": 0.9333333333333333,
+    "ic95": [
+     0.7018347012621998,
+     0.9881331045067315
+    ]
+   },
+   "personas_como_familias": {
+    "n": 5,
+    "aciertos": 1,
+    "proporcion": 0.2,
+    "ic95": [
+     0.03622410863243014,
+     0.6244653702374747
+    ]
+   },
+   "urgencia": {
+    "n": 15,
+    "aciertos": 14,
+    "proporcion": 0.9333333333333333,
+    "ic95": [
+     0.7018347012621998,
+     0.9881331045067315
+    ]
+   },
+   "productos_exactos": {
+    "n": 15,
+    "aciertos": 15,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7961166989641515,
+     1.0
+    ]
+   },
+   "kg_abstencion": {
+    "n": 26,
+    "aciertos": 26,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8712710781407846,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 15,
+    "aciertos": 8,
+    "proporcion": 0.5333333333333333,
+    "ic95": [
+     0.30116980025498397,
+     0.7519046463426261
+    ]
+   },
+   "familias": {
+    "n": 8,
+    "aciertos": 8,
+    "proporcion": 1.0,
+    "ic95": [
+     0.6755924351161198,
+     1.0
+    ]
+   },
+   "bebes": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 26,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.8712710781407846,
+     1.0
+    ],
+    "exhaustividad": 1.0,
+    "exhaustividad_ic95": [
+     0.8712710781407846,
+     1.0
+    ],
+    "f1": 1.0,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 1.0,
+    "exhaustividad_con_perdidos_ic95": [
+     0.8712710781407846,
+     1.0
+    ]
+   },
+   "clases_lugar": {
+    "se abstiene": 8,
+    "inventa sin compromiso": 7
+   },
+   "falsos_reportes": 0,
+   "mensajes": 15
+  },
+  "etiqueta:sin_lugar": {
+   "tipo": {
+    "n": 15,
+    "aciertos": 15,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7961166989641515,
+     1.0
+    ]
+   },
+   "abstencion_lugar": {
+    "n": 15,
+    "aciertos": 8,
+    "proporcion": 0.5333333333333333,
+    "ic95": [
+     0.30116980025498397,
+     0.7519046463426261
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 15,
+    "aciertos": 15,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7961166989641515,
+     1.0
+    ]
+   },
+   "personas": {
+    "n": 5,
+    "aciertos": 4,
+    "proporcion": 0.8,
+    "ic95": [
+     0.37553462976252533,
+     0.9637758913675698
+    ]
+   },
+   "conteo_exacto": {
+    "n": 15,
+    "aciertos": 14,
+    "proporcion": 0.9333333333333333,
+    "ic95": [
+     0.7018347012621998,
+     0.9881331045067315
+    ]
+   },
+   "personas_como_familias": {
+    "n": 5,
+    "aciertos": 1,
+    "proporcion": 0.2,
+    "ic95": [
+     0.03622410863243014,
+     0.6244653702374747
+    ]
+   },
+   "urgencia": {
+    "n": 15,
+    "aciertos": 14,
+    "proporcion": 0.9333333333333333,
+    "ic95": [
+     0.7018347012621998,
+     0.9881331045067315
+    ]
+   },
+   "productos_exactos": {
+    "n": 15,
+    "aciertos": 15,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7961166989641515,
+     1.0
+    ]
+   },
+   "kg_abstencion": {
+    "n": 26,
+    "aciertos": 26,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8712710781407846,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 15,
+    "aciertos": 8,
+    "proporcion": 0.5333333333333333,
+    "ic95": [
+     0.30116980025498397,
+     0.7519046463426261
+    ]
+   },
+   "familias": {
+    "n": 8,
+    "aciertos": 8,
+    "proporcion": 1.0,
+    "ic95": [
+     0.6755924351161198,
+     1.0
+    ]
+   },
+   "bebes": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 26,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.8712710781407846,
+     1.0
+    ],
+    "exhaustividad": 1.0,
+    "exhaustividad_ic95": [
+     0.8712710781407846,
+     1.0
+    ],
+    "f1": 1.0,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 1.0,
+    "exhaustividad_con_perdidos_ic95": [
+     0.8712710781407846,
+     1.0
+    ]
+   },
+   "clases_lugar": {
+    "se abstiene": 8,
+    "inventa sin compromiso": 7
+   },
+   "falsos_reportes": 0,
+   "mensajes": 15
+  },
+  "etiqueta:conteo_ausente": {
+   "tipo": {
+    "n": 15,
+    "aciertos": 15,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7961166989641515,
+     1.0
+    ]
+   },
+   "lugar_extraido": {
+    "n": 15,
+    "aciertos": 11,
+    "proporcion": 0.7333333333333333,
+    "ic95": [
+     0.4804956594401943,
+     0.8910254667430761
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 15,
+    "aciertos": 11,
+    "proporcion": 0.7333333333333333,
+    "ic95": [
+     0.4804956594401943,
+     0.8910254667430761
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 15,
+    "aciertos": 12,
+    "proporcion": 0.8,
+    "ic95": [
+     0.5481455128483065,
+     0.9295245065301844
+    ]
+   },
+   "techo_lugar": {
+    "n": 15,
+    "aciertos": 14,
+    "proporcion": 0.9333333333333333,
+    "ic95": [
+     0.7018347012621998,
+     0.9881331045067315
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 15,
+    "aciertos": 15,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7961166989641515,
+     1.0
+    ]
+   },
+   "abstencion_conteo": {
+    "n": 15,
+    "aciertos": 15,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7961166989641515,
+     1.0
+    ]
+   },
+   "urgencia": {
+    "n": 15,
+    "aciertos": 14,
+    "proporcion": 0.9333333333333333,
+    "ic95": [
+     0.7018347012621998,
+     0.9881331045067315
+    ]
+   },
+   "productos_exactos": {
+    "n": 15,
+    "aciertos": 15,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7961166989641515,
+     1.0
+    ]
+   },
+   "kg_abstencion": {
+    "n": 32,
+    "aciertos": 32,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8928208017449293,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 15,
+    "aciertos": 11,
+    "proporcion": 0.7333333333333333,
+    "ic95": [
+     0.4804956594401943,
+     0.8910254667430761
+    ]
+   },
+   "productos": {
+    "vp": 32,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.8928208017449293,
+     1.0
+    ],
+    "exhaustividad": 1.0,
+    "exhaustividad_ic95": [
+     0.8928208017449293,
+     1.0
+    ],
+    "f1": 1.0,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 1.0,
+    "exhaustividad_con_perdidos_ic95": [
+     0.8928208017449293,
+     1.0
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 11,
+    "no sé": 3,
+    "por opciones": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 15
+  },
+  "etiqueta:sin_conteo": {
+   "tipo": {
+    "n": 15,
+    "aciertos": 15,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7961166989641515,
+     1.0
+    ]
+   },
+   "lugar_extraido": {
+    "n": 15,
+    "aciertos": 11,
+    "proporcion": 0.7333333333333333,
+    "ic95": [
+     0.4804956594401943,
+     0.8910254667430761
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 15,
+    "aciertos": 11,
+    "proporcion": 0.7333333333333333,
+    "ic95": [
+     0.4804956594401943,
+     0.8910254667430761
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 15,
+    "aciertos": 12,
+    "proporcion": 0.8,
+    "ic95": [
+     0.5481455128483065,
+     0.9295245065301844
+    ]
+   },
+   "techo_lugar": {
+    "n": 15,
+    "aciertos": 14,
+    "proporcion": 0.9333333333333333,
+    "ic95": [
+     0.7018347012621998,
+     0.9881331045067315
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 15,
+    "aciertos": 15,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7961166989641515,
+     1.0
+    ]
+   },
+   "abstencion_conteo": {
+    "n": 15,
+    "aciertos": 15,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7961166989641515,
+     1.0
+    ]
+   },
+   "urgencia": {
+    "n": 15,
+    "aciertos": 14,
+    "proporcion": 0.9333333333333333,
+    "ic95": [
+     0.7018347012621998,
+     0.9881331045067315
+    ]
+   },
+   "productos_exactos": {
+    "n": 15,
+    "aciertos": 15,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7961166989641515,
+     1.0
+    ]
+   },
+   "kg_abstencion": {
+    "n": 32,
+    "aciertos": 32,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8928208017449293,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 15,
+    "aciertos": 11,
+    "proporcion": 0.7333333333333333,
+    "ic95": [
+     0.4804956594401943,
+     0.8910254667430761
+    ]
+   },
+   "productos": {
+    "vp": 32,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.8928208017449293,
+     1.0
+    ],
+    "exhaustividad": 1.0,
+    "exhaustividad_ic95": [
+     0.8928208017449293,
+     1.0
+    ],
+    "f1": 1.0,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 1.0,
+    "exhaustividad_con_perdidos_ic95": [
+     0.8928208017449293,
+     1.0
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 11,
+    "no sé": 3,
+    "por opciones": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 15
+  },
+  "etiqueta:conteo_mayores": {
+   "tipo": {
+    "n": 13,
+    "aciertos": 13,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7719046276458016,
+     0.9999999999999999
+    ]
+   },
+   "dos_pedidos_detectados": {
+    "n": 3,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     5.551115123125783e-17,
+     0.5614970317550454
+    ]
+   },
+   "lugar_extraido": {
+    "n": 11,
+    "aciertos": 4,
+    "proporcion": 0.36363636363636365,
+    "ic95": [
+     0.15166471095367573,
+     0.6461988254921511
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 11,
+    "aciertos": 10,
+    "proporcion": 0.9090909090909091,
+    "ic95": [
+     0.6226415635484043,
+     0.9837678271141151
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 11,
+    "aciertos": 10,
+    "proporcion": 0.9090909090909091,
+    "ic95": [
+     0.6226415635484043,
+     0.9837678271141151
+    ]
+   },
+   "techo_lugar": {
+    "n": 11,
+    "aciertos": 11,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7411670330319684,
+     1.0
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 13,
+    "aciertos": 13,
+    "proporcion": 1.0,
+    "ic95": [
+     0.7719046276458016,
+     0.9999999999999999
+    ]
+   },
+   "familias": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "conteo_exacto": {
+    "n": 13,
+    "aciertos": 5,
+    "proporcion": 0.38461538461538464,
+    "ic95": [
+     0.17709707797762575,
+     0.6447710848733431
+    ]
+   },
+   "urgencia": {
+    "n": 13,
+    "aciertos": 6,
+    "proporcion": 0.46153846153846156,
+    "ic95": [
+     0.23206067809538303,
+     0.7085620428549398
+    ]
+   },
+   "productos_exactos": {
+    "n": 12,
+    "aciertos": 8,
+    "proporcion": 0.6666666666666666,
+    "ic95": [
+     0.39062208887279953,
+     0.8618799089087867
+    ]
+   },
+   "kg_abstencion": {
+    "n": 25,
+    "aciertos": 25,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8668077490609515,
+     0.9999999999999999
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 13,
+    "aciertos": 3,
+    "proporcion": 0.23076923076923078,
+    "ic95": [
+     0.08179528718498569,
+     0.5025637594672749
+    ]
+   },
+   "personas": {
+    "n": 12,
+    "aciertos": 6,
+    "proporcion": 0.5,
+    "ic95": [
+     0.2537815976337061,
+     0.7462184023662939
+    ]
+   },
+   "personas_como_familias": {
+    "n": 12,
+    "aciertos": 5,
+    "proporcion": 0.4166666666666667,
+    "ic95": [
+     0.19326031365875665,
+     0.6804886874504503
+    ]
+   },
+   "abstencion_productos": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "abstencion_lugar": {
+    "n": 2,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.6576197724933469
+    ]
+   },
+   "productos": {
+    "vp": 25,
+    "fp": 7,
+    "fn": 1,
+    "precision": 0.78125,
+    "precision_ic95": [
+     0.6124500635075647,
+     0.8897616374739581
+    ],
+    "exhaustividad": 0.9615384615384616,
+    "exhaustividad_ic95": [
+     0.8110722109696524,
+     0.9931780150064564
+    ],
+    "f1": 0.8620689655172413,
+    "perdidos": 7,
+    "exhaustividad_con_perdidos": 0.7575757575757576,
+    "exhaustividad_con_perdidos_ic95": [
+     0.5897538017044264,
+     0.8716828662282499
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 10,
+    "inventa sin compromiso": 2,
+    "no sé": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 13
+  },
+  "dificiles": {
+   "tipo": {
+    "n": 30,
+    "aciertos": 24,
+    "proporcion": 0.8,
+    "ic95": [
+     0.6269430358685175,
+     0.9049489282271013
+    ]
+   },
+   "lugar_extraido": {
+    "n": 20,
+    "aciertos": 7,
+    "proporcion": 0.35,
+    "ic95": [
+     0.18119182410108206,
+     0.5671457233147638
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 16,
+    "aciertos": 10,
+    "proporcion": 0.625,
+    "ic95": [
+     0.38641040545502714,
+     0.8151876744113636
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 16,
+    "aciertos": 11,
+    "proporcion": 0.6875,
+    "ic95": [
+     0.44404355834740666,
+     0.8583535614521796
+    ]
+   },
+   "techo_lugar": {
+    "n": 16,
+    "aciertos": 15,
+    "proporcion": 0.9375,
+    "ic95": [
+     0.7167126242970107,
+     0.9888806552353576
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 20,
+    "aciertos": 20,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8388748419471806,
+     1.0
+    ]
+   },
+   "familias": {
+    "n": 17,
+    "aciertos": 13,
+    "proporcion": 0.7647058823529411,
+    "ic95": [
+     0.5273820188043501,
+     0.9044495567791988
+    ]
+   },
+   "conteo_exacto": {
+    "n": 19,
+    "aciertos": 13,
+    "proporcion": 0.6842105263157895,
+    "ic95": [
+     0.46010407675327475,
+     0.8463562091220773
+    ]
+   },
+   "urgencia": {
+    "n": 20,
+    "aciertos": 19,
+    "proporcion": 0.95,
+    "ic95": [
+     0.763868806553258,
+     0.9911185511992047
+    ]
+   },
+   "productos_exactos": {
+    "n": 19,
+    "aciertos": 15,
+    "proporcion": 0.7894736842105263,
+    "ic95": [
+     0.5666572155618583,
+     0.9149232336708375
+    ]
+   },
+   "kg_abstencion": {
+    "n": 30,
+    "aciertos": 30,
+    "proporcion": 1.0,
+    "ic95": [
+     0.8864866068260312,
+     0.9999999999999999
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 30,
+    "aciertos": 11,
+    "proporcion": 0.36666666666666664,
+    "ic95": [
+     0.21873920806100708,
+     0.5448643634520511
+    ]
+   },
+   "abstencion_conteo": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "personas": {
+    "n": 4,
+    "aciertos": 3,
+    "proporcion": 0.75,
+    "ic95": [
+     0.30064184258240184,
+     0.9544127391902995
+    ]
+   },
+   "lugar_dudoso_sin_compromiso": {
+    "n": 4,
+    "aciertos": 4,
+    "proporcion": 1.0,
+    "ic95": [
+     0.5101091635454027,
+     1.0
+    ]
+   },
+   "personas_como_familias": {
+    "n": 2,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.6576197724933469
+    ]
+   },
+   "abstencion_productos": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "cierre_detectado": {
+    "n": 3,
+    "aciertos": 2,
+    "proporcion": 0.6666666666666666,
+    "ic95": [
+     0.2076596008020477,
+     0.9385080552796037
+    ]
+   },
+   "cierre_lugar_extraido": {
+    "n": 2,
+    "aciertos": 1,
+    "proporcion": 0.5,
+    "ic95": [
+     0.09453120573423074,
+     0.9054687942657693
+    ]
+   },
+   "cierre_lugar_resuelto": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "cierre_bloqueados": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "codigo_entrega": {
+    "n": 3,
+    "aciertos": 2,
+    "proporcion": 0.6666666666666666,
+    "ic95": [
+     0.2076596008020477,
+     0.9385080552796037
+    ]
+   },
+   "kg": {
+    "n": 3,
+    "aciertos": 1,
+    "proporcion": 0.3333333333333333,
+    "ic95": [
+     0.06149194472039621,
+     0.7923403991979522
+    ]
+   },
+   "bebes": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 33,
+    "fp": 2,
+    "fn": 5,
+    "precision": 0.9428571428571428,
+    "precision_ic95": [
+     0.8139294257983507,
+     0.9841868381428913
+    ],
+    "exhaustividad": 0.868421052631579,
+    "exhaustividad_ic95": [
+     0.7267314055770869,
+     0.9424613230987987
+    ],
+    "f1": 0.904109589041096,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 0.868421052631579,
+    "exhaustividad_con_perdidos_ic95": [
+     0.7267314055770869,
+     0.9424613230987987
+    ]
+   },
+   "clases_lugar": {
+    "no sé": 8,
+    "acierto seguro": 10,
+    "por opciones": 2
+   },
+   "falsos_reportes": 5,
+   "mensajes": 30
+  },
+  "dificil:negacion": {
+   "tipo": {
+    "n": 3,
+    "aciertos": 3,
+    "proporcion": 1.0,
+    "ic95": [
+     0.4385029682449546,
+     1.0
+    ]
+   },
+   "lugar_extraido": {
+    "n": 3,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     5.551115123125783e-17,
+     0.5614970317550454
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 3,
+    "aciertos": 1,
+    "proporcion": 0.3333333333333333,
+    "ic95": [
+     0.06149194472039621,
+     0.7923403991979522
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 3,
+    "aciertos": 1,
+    "proporcion": 0.3333333333333333,
+    "ic95": [
+     0.06149194472039621,
+     0.7923403991979522
+    ]
+   },
+   "techo_lugar": {
+    "n": 3,
+    "aciertos": 3,
+    "proporcion": 1.0,
+    "ic95": [
+     0.4385029682449546,
+     1.0
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 3,
+    "aciertos": 3,
+    "proporcion": 1.0,
+    "ic95": [
+     0.4385029682449546,
+     1.0
+    ]
+   },
+   "familias": {
+    "n": 3,
+    "aciertos": 3,
+    "proporcion": 1.0,
+    "ic95": [
+     0.4385029682449546,
+     1.0
+    ]
+   },
+   "conteo_exacto": {
+    "n": 3,
+    "aciertos": 3,
+    "proporcion": 1.0,
+    "ic95": [
+     0.4385029682449546,
+     1.0
+    ]
+   },
+   "urgencia": {
+    "n": 3,
+    "aciertos": 2,
+    "proporcion": 0.6666666666666666,
+    "ic95": [
+     0.2076596008020477,
+     0.9385080552796037
+    ]
+   },
+   "productos_exactos": {
+    "n": 3,
+    "aciertos": 1,
+    "proporcion": 0.3333333333333333,
+    "ic95": [
+     0.06149194472039621,
+     0.7923403991979522
+    ]
+   },
+   "kg_abstencion": {
+    "n": 6,
+    "aciertos": 6,
+    "proporcion": 1.0,
+    "ic95": [
+     0.6096657120978346,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 3,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     5.551115123125783e-17,
+     0.5614970317550454
+    ]
+   },
+   "productos": {
+    "vp": 6,
+    "fp": 2,
+    "fn": 0,
+    "precision": 0.75,
+    "precision_ic95": [
+     0.40927543031016883,
+     0.9285207872478909
+    ],
+    "exhaustividad": 1.0,
+    "exhaustividad_ic95": [
+     0.6096657120978346,
+     1.0
+    ],
+    "f1": 0.8571428571428571,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 1.0,
+    "exhaustividad_con_perdidos_ic95": [
+     0.6096657120978346,
+     1.0
+    ]
+   },
+   "clases_lugar": {
+    "no sé": 2,
+    "acierto seguro": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 3
+  },
+  "dificil:unidades_raras": {
+   "tipo": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "lugar_extraido": {
+    "n": 2,
+    "aciertos": 1,
+    "proporcion": 0.5,
+    "ic95": [
+     0.09453120573423074,
+     0.9054687942657693
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 2,
+    "aciertos": 1,
+    "proporcion": 0.5,
+    "ic95": [
+     0.09453120573423074,
+     0.9054687942657693
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 2,
+    "aciertos": 1,
+    "proporcion": 0.5,
+    "ic95": [
+     0.09453120573423074,
+     0.9054687942657693
+    ]
+   },
+   "techo_lugar": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "abstencion_conteo": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "urgencia": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "productos_exactos": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "kg_abstencion": {
+    "n": 4,
+    "aciertos": 4,
+    "proporcion": 1.0,
+    "ic95": [
+     0.5101091635454027,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 2,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.6576197724933469
+    ]
+   },
+   "familias": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "conteo_exacto": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 4,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.5101091635454027,
+     1.0
+    ],
+    "exhaustividad": 1.0,
+    "exhaustividad_ic95": [
+     0.5101091635454027,
+     1.0
+    ],
+    "f1": 1.0,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 1.0,
+    "exhaustividad_con_perdidos_ic95": [
+     0.5101091635454027,
+     1.0
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 1,
+    "no sé": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 2
+  },
+  "dificil:personas_y_familias": {
+   "tipo": {
+    "n": 3,
+    "aciertos": 3,
+    "proporcion": 1.0,
+    "ic95": [
+     0.4385029682449546,
+     1.0
+    ]
+   },
+   "lugar_extraido": {
+    "n": 3,
+    "aciertos": 1,
+    "proporcion": 0.3333333333333333,
+    "ic95": [
+     0.06149194472039621,
+     0.7923403991979522
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 3,
+    "aciertos": 3,
+    "proporcion": 1.0,
+    "ic95": [
+     0.4385029682449546,
+     1.0
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 3,
+    "aciertos": 3,
+    "proporcion": 1.0,
+    "ic95": [
+     0.4385029682449546,
+     1.0
+    ]
+   },
+   "techo_lugar": {
+    "n": 3,
+    "aciertos": 3,
+    "proporcion": 1.0,
+    "ic95": [
+     0.4385029682449546,
+     1.0
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 3,
+    "aciertos": 3,
+    "proporcion": 1.0,
+    "ic95": [
+     0.4385029682449546,
+     1.0
+    ]
+   },
+   "familias": {
+    "n": 3,
+    "aciertos": 2,
+    "proporcion": 0.6666666666666666,
+    "ic95": [
+     0.2076596008020477,
+     0.9385080552796037
+    ]
+   },
+   "personas": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "conteo_exacto": {
+    "n": 3,
+    "aciertos": 1,
+    "proporcion": 0.3333333333333333,
+    "ic95": [
+     0.06149194472039621,
+     0.7923403991979522
+    ]
+   },
+   "urgencia": {
+    "n": 3,
+    "aciertos": 3,
+    "proporcion": 1.0,
+    "ic95": [
+     0.4385029682449546,
+     1.0
+    ]
+   },
+   "productos_exactos": {
+    "n": 3,
+    "aciertos": 3,
+    "proporcion": 1.0,
+    "ic95": [
+     0.4385029682449546,
+     1.0
+    ]
+   },
+   "kg_abstencion": {
+    "n": 4,
+    "aciertos": 4,
+    "proporcion": 1.0,
+    "ic95": [
+     0.5101091635454027,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 3,
+    "aciertos": 1,
+    "proporcion": 0.3333333333333333,
+    "ic95": [
+     0.06149194472039621,
+     0.7923403991979522
+    ]
+   },
+   "productos": {
+    "vp": 4,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.5101091635454027,
+     1.0
+    ],
+    "exhaustividad": 1.0,
+    "exhaustividad_ic95": [
+     0.5101091635454027,
+     1.0
+    ],
+    "f1": 1.0,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 1.0,
+    "exhaustividad_con_perdidos_ic95": [
+     0.5101091635454027,
+     1.0
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 3
+   },
+   "falsos_reportes": 0,
+   "mensajes": 3
+  },
+  "dificil:numero_en_lugar": {
+   "tipo": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "lugar_extraido": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "techo_lugar": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "familias": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "conteo_exacto": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "urgencia": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "productos_exactos": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "kg_abstencion": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "productos": {
+    "vp": 1,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.20654931437723745,
+     1.0
+    ],
+    "exhaustividad": 1.0,
+    "exhaustividad_ic95": [
+     0.20654931437723745,
+     1.0
+    ],
+    "f1": 1.0,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 1.0,
+    "exhaustividad_con_perdidos_ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "clases_lugar": {
+    "por opciones": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 1
+  },
+  "dificil:lugar_ambiguo": {
+   "tipo": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "lugar_extraido": {
+    "n": 2,
+    "aciertos": 1,
+    "proporcion": 0.5,
+    "ic95": [
+     0.09453120573423074,
+     0.9054687942657693
+    ]
+   },
+   "lugar_dudoso_sin_compromiso": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "personas": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "conteo_exacto": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "personas_como_familias": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "urgencia": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "productos_exactos": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "kg_abstencion": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "familias": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "abstencion_productos": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 2,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.34238022750665303,
+     1.0
+    ],
+    "exhaustividad": 1.0,
+    "exhaustividad_ic95": [
+     0.34238022750665303,
+     1.0
+    ],
+    "f1": 1.0,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 1.0,
+    "exhaustividad_con_perdidos_ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "clases_lugar": {
+    "no sé": 1,
+    "por opciones": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 2
+  },
+  "dificil:lugar_desconocido": {
+   "tipo": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "lugar_extraido": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "lugar_dudoso_sin_compromiso": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "familias": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "conteo_exacto": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "urgencia": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "productos_exactos": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "kg_abstencion": {
+    "n": 3,
+    "aciertos": 3,
+    "proporcion": 1.0,
+    "ic95": [
+     0.4385029682449546,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 3,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.4385029682449546,
+     1.0
+    ],
+    "exhaustividad": 1.0,
+    "exhaustividad_ic95": [
+     0.4385029682449546,
+     1.0
+    ],
+    "f1": 1.0,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 1.0,
+    "exhaustividad_con_perdidos_ic95": [
+     0.4385029682449546,
+     1.0
+    ]
+   },
+   "clases_lugar": {
+    "no sé": 2
+   },
+   "falsos_reportes": 0,
+   "mensajes": 2
+  },
+  "dificil:reporte_via": {
+   "tipo": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "cierre_detectado": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "cierre_lugar_extraido": {
+    "n": 2,
+    "aciertos": 1,
+    "proporcion": 0.5,
+    "ic95": [
+     0.09453120573423074,
+     0.9054687942657693
+    ]
+   },
+   "cierre_lugar_resuelto": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "cierre_bloqueados": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 0,
+    "fp": 0,
+    "fn": 0,
+    "precision": null,
+    "precision_ic95": [
+     null,
+     null
+    ],
+    "exhaustividad": null,
+    "exhaustividad_ic95": [
+     null,
+     null
+    ],
+    "f1": null,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": null,
+    "exhaustividad_con_perdidos_ic95": [
+     null,
+     null
+    ]
+   },
+   "clases_lugar": {},
+   "falsos_reportes": 0,
+   "mensajes": 2
+  },
+  "dificil:no_pedido": {
+   "tipo": {
+    "n": 3,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     5.551115123125783e-17,
+     0.5614970317550454
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 3,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     5.551115123125783e-17,
+     0.5614970317550454
+    ]
+   },
+   "productos": {
+    "vp": 0,
+    "fp": 0,
+    "fn": 0,
+    "precision": null,
+    "precision_ic95": [
+     null,
+     null
+    ],
+    "exhaustividad": null,
+    "exhaustividad_ic95": [
+     null,
+     null
+    ],
+    "f1": null,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": null,
+    "exhaustividad_con_perdidos_ic95": [
+     null,
+     null
+    ]
+   },
+   "clases_lugar": {},
+   "falsos_reportes": 3,
+   "mensajes": 3
+  },
+  "dificil:entrega": {
+   "tipo": {
+    "n": 3,
+    "aciertos": 2,
+    "proporcion": 0.6666666666666666,
+    "ic95": [
+     0.2076596008020477,
+     0.9385080552796037
+    ]
+   },
+   "codigo_entrega": {
+    "n": 3,
+    "aciertos": 2,
+    "proporcion": 0.6666666666666666,
+    "ic95": [
+     0.2076596008020477,
+     0.9385080552796037
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 3,
+    "aciertos": 2,
+    "proporcion": 0.6666666666666666,
+    "ic95": [
+     0.2076596008020477,
+     0.9385080552796037
+    ]
+   },
+   "productos": {
+    "vp": 0,
+    "fp": 0,
+    "fn": 0,
+    "precision": null,
+    "precision_ic95": [
+     null,
+     null
+    ],
+    "exhaustividad": null,
+    "exhaustividad_ic95": [
+     null,
+     null
+    ],
+    "f1": null,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": null,
+    "exhaustividad_con_perdidos_ic95": [
+     null,
+     null
+    ]
+   },
+   "clases_lugar": {},
+   "falsos_reportes": 0,
+   "mensajes": 3
+  },
+  "dificil:largo": {
+   "tipo": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "lugar_extraido": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "techo_lugar": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "familias": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "conteo_exacto": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "urgencia": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "productos_exactos": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "kg_abstencion": {
+    "n": 4,
+    "aciertos": 4,
+    "proporcion": 1.0,
+    "ic95": [
+     0.5101091635454027,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 4,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.5101091635454027,
+     1.0
+    ],
+    "exhaustividad": 1.0,
+    "exhaustividad_ic95": [
+     0.5101091635454027,
+     1.0
+    ],
+    "f1": 1.0,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 1.0,
+    "exhaustividad_con_perdidos_ic95": [
+     0.5101091635454027,
+     1.0
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 1
+  },
+  "dificil:emojis": {
+   "tipo": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "lugar_extraido": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "techo_lugar": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "familias": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "conteo_exacto": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "urgencia": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "productos_exactos": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "kg_abstencion": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "productos": {
+    "vp": 2,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.34238022750665303,
+     1.0
+    ],
+    "exhaustividad": 1.0,
+    "exhaustividad_ic95": [
+     0.34238022750665303,
+     1.0
+    ],
+    "f1": 1.0,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 1.0,
+    "exhaustividad_con_perdidos_ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 1
+  },
+  "dificil:cancelacion": {
+   "tipo": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "productos": {
+    "vp": 0,
+    "fp": 0,
+    "fn": 0,
+    "precision": null,
+    "precision_ic95": [
+     null,
+     null
+    ],
+    "exhaustividad": null,
+    "exhaustividad_ic95": [
+     null,
+     null
+    ],
+    "f1": null,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": null,
+    "exhaustividad_con_perdidos_ic95": [
+     null,
+     null
+    ]
+   },
+   "clases_lugar": {},
+   "falsos_reportes": 1,
+   "mensajes": 1
+  },
+  "dificil:correccion": {
+   "tipo": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "productos": {
+    "vp": 0,
+    "fp": 0,
+    "fn": 0,
+    "precision": null,
+    "precision_ic95": [
+     null,
+     null
+    ],
+    "exhaustividad": null,
+    "exhaustividad_ic95": [
+     null,
+     null
+    ],
+    "f1": null,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": null,
+    "exhaustividad_con_perdidos_ic95": [
+     null,
+     null
+    ]
+   },
+   "clases_lugar": {},
+   "falsos_reportes": 1,
+   "mensajes": 1
+  },
+  "dificil:pedido_y_cierre": {
+   "tipo": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "cierre_detectado": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "lugar_extraido": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "techo_lugar": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "familias": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "conteo_exacto": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "urgencia": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "productos_exactos": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "kg_abstencion": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "productos": {
+    "vp": 1,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.20654931437723745,
+     1.0
+    ],
+    "exhaustividad": 1.0,
+    "exhaustividad_ic95": [
+     0.20654931437723745,
+     1.0
+    ],
+    "f1": 1.0,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 1.0,
+    "exhaustividad_con_perdidos_ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "clases_lugar": {
+    "no sé": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 1
+  },
+  "dificil:kilos_en_serie": {
+   "tipo": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "lugar_extraido": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "techo_lugar": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "familias": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "conteo_exacto": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "urgencia": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "productos_exactos": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "kg": {
+    "n": 3,
+    "aciertos": 1,
+    "proporcion": 0.3333333333333333,
+    "ic95": [
+     0.06149194472039621,
+     0.7923403991979522
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "productos": {
+    "vp": 3,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.4385029682449546,
+     1.0
+    ],
+    "exhaustividad": 1.0,
+    "exhaustividad_ic95": [
+     0.4385029682449546,
+     1.0
+    ],
+    "f1": 1.0,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 1.0,
+    "exhaustividad_con_perdidos_ic95": [
+     0.4385029682449546,
+     1.0
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 1
+  },
+  "dificil:fuera_de_catalogo": {
+   "tipo": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "lugar_extraido": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "techo_lugar": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "familias": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "conteo_exacto": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "urgencia": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "productos_exactos": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "productos": {
+    "vp": 0,
+    "fp": 0,
+    "fn": 3,
+    "precision": null,
+    "precision_ic95": [
+     null,
+     null
+    ],
+    "exhaustividad": 0.0,
+    "exhaustividad_ic95": [
+     5.551115123125783e-17,
+     0.5614970317550454
+    ],
+    "f1": null,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 0.0,
+    "exhaustividad_con_perdidos_ic95": [
+     5.551115123125783e-17,
+     0.5614970317550454
+    ]
+   },
+   "clases_lugar": {
+    "no sé": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 1
+  },
+  "dificil:bebes": {
+   "tipo": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "lugar_extraido": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "techo_lugar": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "personas": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "bebes": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "conteo_exacto": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "personas_como_familias": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "urgencia": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "productos_exactos": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "kg_abstencion": {
+    "n": 2,
+    "aciertos": 2,
+    "proporcion": 1.0,
+    "ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "productos": {
+    "vp": 2,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.34238022750665303,
+     1.0
+    ],
+    "exhaustividad": 1.0,
+    "exhaustividad_ic95": [
+     0.34238022750665303,
+     1.0
+    ],
+    "f1": 1.0,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 1.0,
+    "exhaustividad_con_perdidos_ic95": [
+     0.34238022750665303,
+     1.0
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 1
+  },
+  "dificil:voz_extrema": {
+   "tipo": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "lugar_extraido": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "lugar_acierto_seguro": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "lugar_correcto_o_en_opciones": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "techo_lugar": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "sin_error_seguro_de_lugar": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "familias": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "conteo_exacto": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "urgencia": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "productos_exactos": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "kg_abstencion": {
+    "n": 1,
+    "aciertos": 1,
+    "proporcion": 1.0,
+    "ic95": [
+     0.20654931437723745,
+     1.0
+    ]
+   },
+   "mensaje_sin_errores": {
+    "n": 1,
+    "aciertos": 0,
+    "proporcion": 0.0,
+    "ic95": [
+     0.0,
+     0.7934506856227626
+    ]
+   },
+   "productos": {
+    "vp": 1,
+    "fp": 0,
+    "fn": 2,
+    "precision": 1.0,
+    "precision_ic95": [
+     0.20654931437723745,
+     1.0
+    ],
+    "exhaustividad": 0.3333333333333333,
+    "exhaustividad_ic95": [
+     0.06149194472039621,
+     0.7923403991979522
+    ],
+    "f1": 0.5,
+    "perdidos": 0,
+    "exhaustividad_con_perdidos": 0.3333333333333333,
+    "exhaustividad_con_perdidos_ic95": [
+     0.06149194472039621,
+     0.7923403991979522
+    ]
+   },
+   "clases_lugar": {
+    "acierto seguro": 1
+   },
+   "falsos_reportes": 0,
+   "mensajes": 1
+  }
+ },
+ "tiempos_ms": {
+  "lectura": {
+   "n": 330,
+   "mediana": 1.0286039996572072,
+   "p95": 2.2061250001570443,
+   "max": 4.586167000525165,
+   "total": 369.81562799155654
+  },
+  "lugar": {
+   "n": 318,
+   "mediana": 34.521000000495405,
+   "p95": 73.96004200018069,
+   "max": 173.80141600006027,
+   "total": 12214.775371012365
+  }
+ },
+ "fecha": "2026-11-21T01:17:28-05:00",
+ "lector": "entrada.sms.leer_sms tras entrada.privacidad.limpiar (Mesa.leer con DESPACHOX_SIN_RED=1); lugar con lugares.resolver, elegir=None",
+ "maquina": "Darwin 25.5.0 arm64, Python 3.12.13",
+ "conjunto": {
+  "ruta": "evaluacion/lector/conjunto.jsonl",
+  "n": 330,
+  "sha256": "f3992b4fd8d054c4534934e2866921a9ff91570b282cb9894c94be8d7300e427"
+ }
+}

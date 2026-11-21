@@ -1,0 +1,32 @@
+# Tema del tablero Convite: paleta del informe (tinta, ámbar, crema, ceniza) y tipografía Ancízar.
+# Ancízar es la familia institucional de la UNAL, con licencia SIL OFL 1.1 (tablero/static/OFL-Ancizar.txt).
+# Se sirve desde tablero/static, así que no depende de internet; si no carga, queda la sans-serif del sistema.
+[server]
+enableStaticServing = true
+
+[theme]
+base = "light"
+primaryColor = "#4F4086"                 # tinta
+backgroundColor = "#FBF7EF"              # crema muy clara
+secondaryBackgroundColor = "#F3E6C8"     # crema suave
+textColor = "#2E2A36"
+borderColor = "#E4D6B8"
+font = "AncizarSans, sans-serif"
+headingFont = "AncizarSans, sans-serif"
+baseRadius = "14px"
+showWidgetBorder = true
+dataframeBorderColor = "#EFE4CC"
+dataframeHeaderBackgroundColor = "#F6EEDB"
+dataframeHeaderTextColor = "#6E6878"     # ceniza: encabezados discretos
+
+[[theme.fontFaces]]
+family = "AncizarSans"
+url = "app/static/AncizarSans-VF.ttf"
+style = "normal"
+weight = "100 900"
+
+[[theme.fontFaces]]
+family = "AncizarSans"
+url = "app/static/AncizarSans-Italic-VF.ttf"
+style = "italic"
+weight = "100 900"

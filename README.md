@@ -1,13 +1,43 @@
-# DespachoX
+# Convite (antes DespachoX)
 
 Equipo 19 · Hackathon UNAL Manizales 2026 · Vertical 04, Logística y abastecimiento.
 Samuel Rosso (líder) · Carlos Orrego · Jacobo Vasco · Nicolás Ramírez · José Manuel Aristizábal
+
+## Para el jurado
+
+**Qué es.** Convite es una mesa de despacho de ayuda alimentaria pensada para el Banco Arquidiocesano de Alimentos de Manizales y los organismos de socorro. Las organizaciones y las juntas piden por chat o por SMS, y los conductores reportan por el mismo canal las vías cerradas. Un optimizador propone las rutas de una flota mixta con lo que hay en bodega y lo que vence primero, y las recalcula cuando se cierra un tramo. Cada paquete lleva un código hasta que alguien confirma la entrega. El despachador aprueba cada plan con su nombre.
+
+**La regla de arquitectura.** El modelo de lenguaje lee y estructura los mensajes. El optimizador y las reglas calculan. El despachador decide, y el modelo nunca asigna una ruta ni despacha nada.
+
+**Cómo verlo funcionar.**
+
+- En la nube, el tablero está en [despachox-production.up.railway.app](https://despachox-production.up.railway.app/) y el bot en [t.me/despachox_bot](https://t.me/despachox_bot), con el código QR más abajo. El tablero de la nube pide clave, así que lo mostramos en la demo y en el video. Al bot, en cambio, usted puede escribirle un pedido como «somos 40 familias en san jose no hay arroz ni leche». El bot le devuelve el lugar que entendió para que usted lo confirme, y el pedido entra a la cola del tablero.
+- La demo de tres minutos, con los mensajes y los clics exactos, está en [`docs/GUION_DEMO.md`](docs/GUION_DEMO.md).
+- Sin internet, el sistema arranca en un portátil con `bash despliegue/local.sh`. Los niveles de respaldo, del SMS a la hoja de ruta impresa, están en [`docs/SIN_CONEXION.md`](docs/SIN_CONEXION.md).
+- Las pruebas automáticas corren con `python -m pytest -q`. En la revisión del sábado a las 6:50 a. m. pasaron 530 y se omitió 1 (`torre/CANAL.md`).
+
+**Dónde está la evidencia.** Cada cifra lleva su tipo (medida por el equipo, tomada de una fuente o estimada) y su estado de verificación en [`docs/FUENTES.md`](docs/FUENTES.md). Los resultados de la simulación salen de jornadas sintéticas. Los reportamos con su línea base, el número de escenarios y los supuestos (`docs/SIMULACION.md`, sección 9).
+
+| Criterio | Qué mostramos | Dónde |
+|---|---|---|
+| 1. Problema y vertical | El problema con sus cifras, cada una con fuente y estado | [`docs/FICHA_CORTA.md`](docs/FICHA_CORTA.md), [`docs/PROBLEMA.md`](docs/PROBLEMA.md), [`docs/informe/informe_corto.pdf`](docs/informe/informe_corto.pdf), [`docs/FUENTES.md`](docs/FUENTES.md) |
+| 2. Prototipo | El código que corre, la demo ensayada, las pruebas medidas y la simulación | `entrada/`, `lugares/`, `despacho/`, `tablero/`, [`docs/GUION_DEMO.md`](docs/GUION_DEMO.md), `entrada/pruebas/`, `entrada/ESCALA.md`, [`docs/SIMULACION.md`](docs/SIMULACION.md) |
+| 3. Conocimiento utilizado | Capacidades UNAL con responsable y uso, métodos y datos con fuente fila por fila | [`docs/FICHA.md`](docs/FICHA.md) (componente 3), [`docs/investigacion/08_capacidades_unal.md`](docs/investigacion/08_capacidades_unal.md), [`docs/investigacion/07_patentes_a_fondo.md`](docs/investigacion/07_patentes_a_fondo.md), `datos_publicos/`, `docs/datos/` |
+| 4. Plan de 30 a 90 días | Hitos, responsables, recursos y validación, y los territorios propuestos | [`docs/FICHA.md`](docs/FICHA.md) (componente 4), [`docs/PILOTO.md`](docs/PILOTO.md), [`docs/PILOTO_TERRITORIOS.md`](docs/PILOTO_TERRITORIOS.md) |
+| 5. Viabilidad y aliados | Costos, riesgos, operación sin internet y lo que le pedimos a cada aliado | [`docs/FICHA.md`](docs/FICHA.md) (componente 5), [`docs/SIN_CONEXION.md`](docs/SIN_CONEXION.md), `entrada/SMS.md` |
+| 6. Impactos | Indicadores con línea base, meta y forma de verificarlos | [`docs/FICHA.md`](docs/FICHA.md) (componente 6) |
+
+**Datos de prueba.** Todos los pedidos, lotes, personas y teléfonos de prueba de este repositorio son sintéticos, y ninguno corresponde a una persona real (Ley 1581 de 2012). Los lugares sí son reales. Puntos de entrega, acopios y red vial traen su fuente fila por fila en `datos_publicos/` y `datos/semilla/`. En uso real, el remitente queda como un código. Además, el bot intenta quitar teléfonos y nombres del texto antes de guardarlo, aunque no garantiza que no quede ninguno.
+
+**Sobre lo que sigue.** Debajo está la bitácora técnica del equipo, tal como la escribimos durante la hackathon. Su tabla de estado es del viernes a las 4:00 p. m. Sus cifras de simulación son de la primera corrida. Después la repetimos con las velocidades de la tesis UNAL de 2019, y las cifras vigentes están en `docs/SIMULACION.md`.
+
+---
 
 > **Si acabas de llegar:** primero lee [`docs/PROBLEMA.md`](docs/PROBLEMA.md), que explica qué problema resolvemos. Luego esta página, que explica cómo lo resolvemos. Después abre tu archivo de tareas: [`SAMUEL.md`](SAMUEL.md), [`JACOBO.md`](JACOBO.md) o [`CARLOS.md`](CARLOS.md).
 
 ## Qué es, en un párrafo
 
-Después del sismo, a Manizales llegó comida donada. Lo difícil fue decidir a dónde mandarla primero, por cuál vía y antes de que se dañara. DespachoX es una mesa de despacho para la persona que toma esa decisión en un centro de acopio. Los barrios piden por chat, los conductores avisan por chat cuando una vía está cerrada, el sistema propone rutas para los vehículos disponibles y las vuelve a calcular cuando algo cambia. La persona que despacha aprueba o rechaza cada plan.
+Después del sismo, a Manizales llegó comida donada. Lo difícil fue decidir a dónde mandarla primero, por cuál vía y antes de que se dañara. DespachoX es una mesa de despacho para la persona que toma esa decisión en un centro de acopio. Los barrios piden por chat, y los conductores también avisan por chat cuando una vía está cerrada. El sistema propone rutas para los vehículos disponibles y las vuelve a calcular cuando algo cambia. La persona que despacha aprueba o rechaza cada plan.
 
 La regla que no se negocia: **el modelo de lenguaje lee y ordena los mensajes; el optimizador y las reglas calculan; el despachador decide.**
 
@@ -31,14 +61,14 @@ Un ejemplo de punta a punta:
 3. La persona dice que sí. El pedido aparece en el mapa del despachador.
 4. El despachador lo confirma y pulsa «Calcular plan». Aparecen las rutas de cada vehículo.
 5. Un conductor escribe: «derrumbe en la avenida del centro, no pasa camión». El despachador confirma el cierre.
-6. El sistema recalcula: el camión ya no entra a San José y el pedido pasa a un campero. La pantalla dice qué cambió.
+6. El sistema recalcula. El camión ya no entra a San José y el pedido pasa a un campero. La pantalla dice qué cambió.
 7. El despachador aprueba con su nombre. Queda registrado.
 
 ## Qué hay en cada carpeta
 
 | Carpeta | Qué hace | En palabras simples | Dueño |
 |---|---|---|---|
-| `entrada/` | Bot de Telegram | Recibe mensajes, usa un modelo de lenguaje para sacar los datos, borra teléfonos y nombres, y guarda el pedido o el cierre | Samuel |
+| `entrada/` | Bot de Telegram | Recibe mensajes, usa un modelo de lenguaje para sacar los datos, intenta quitar teléfonos y nombres, y guarda el pedido o el cierre | Samuel |
 | `tablero/` | Pantalla del despachador | Mapa con pedidos, cierres y rutas; botones para confirmar, calcular, aprobar y rechazar; bitácora de decisiones | Jacobo |
 | `despacho/` | Optimizador | Reparte los pedidos entre camiones, camperos y motos sobre el mapa real de vías, saca primero lo que vence primero y recalcula cuando se cierra una vía | Carlos |
 | `lugares/` | Ubicador de lugares | Convierte «por la siria» en un punto del mapa. Conoce 452 nombres y apodos de Manizales. Si no sabe, lo dice y pide la ubicación. Nada se ubica sin que una persona confirme | Carlos |
@@ -49,15 +79,15 @@ Un ejemplo de punta a punta:
 | `encargos/` | Instrucciones para Claude Code | Lo que se le pide a cada sesión de Claude Code, con objetivo, pasos y criterio de «hecho» | Cada dueño |
 | `torre/` | Bitácoras | El estado de cada frente y `CANAL.md`, donde las sesiones dejan avisos, preguntas y resultados | Todos |
 
-Los módulos no se llaman entre sí: solo se comunican por la base de datos. Por eso cada dueño puede avanzar en su parte sin esperar a los demás.
+Los módulos no se llaman entre sí y solo se comunican por la base de datos. Por eso cada dueño puede avanzar en su parte sin esperar a los demás.
 
 ## Estado al viernes 4:00 p. m.
 
 | Pieza | Estado |
 |---|---|
 | **En la nube** | **Funciona** desde las 3:45 p. m. Bot y tablero en Railway, con una sola base de datos |
-| **De punta a punta** | **Funciona.** Un mensaje real («hay 6 bebés sin leche desde ayer en la enea») llegó por el bot, quien lo escribió confirmó el lugar desde el teléfono, el despachador lo confirmó y entró al plan: 19 de 19 pedidos en 3 vehículos, calculado en 8 s. Falta probar en la nube un cierre vial y la aprobación |
-| Bot | Funciona. Leyó bien 62 de 64 datos en 15 mensajes de ejemplo escritos por el equipo. Falla conocido: no convierte «6 bebés» en familias ni pone cantidad a la leche. En corrección |
+| **De punta a punta** | **Funciona.** Un mensaje real («hay 6 bebés sin leche desde ayer en la enea») llegó por el bot. Quien lo escribió confirmó el lugar desde el teléfono, el despachador lo confirmó y el pedido entró al plan, con 19 de 19 pedidos en 3 vehículos, calculado en 8 s. Falta probar en la nube un cierre vial y la aprobación |
+| Bot | Funciona. Leyó bien 62 de 64 datos en 15 mensajes de ejemplo escritos por el equipo. Fallo conocido: no convierte «6 bebés» en familias ni pone cantidad a la leche. En corrección |
 | Ubicador de lugares | Funciona. En 44 frases de prueba: 30 aciertos directos, 5 ofreciendo opciones, 9 «no sé» y ningún lugar equivocado propuesto con seguridad |
 | Optimizador | Funciona. Planea unos 20 pedidos en 8 a 10 segundos y recalcula ante cierres |
 | Tablero | Funciona. Fallo conocido: con un plan ya aprobado, «Calcular plan» borra las rutas anteriores. En corrección |
@@ -67,15 +97,15 @@ Los módulos no se llaman entre sí: solo se comunican por la base de datos. Por
 | Cifras verificadas por una persona | **Ninguna** (`docs/FUENTES.md` vacío) |
 | Aliado con nombre | Ninguno |
 
-Las pruebas automáticas pasan completas: 101.
+Pasan completas las 101 pruebas automáticas.
 
 ### Qué dice la simulación, sin adornos
 
-- Contra despachar por orden de llegada, DespachoX sube las entregas a tiempo en puntos críticos entre 12 y 46 puntos porcentuales, según la carga.
-- Contra un despachador experto que ya prioriza lo urgente, **empata** en puntos críticos, queda unos 2 puntos por debajo en el total de entregas a tiempo y ahorra entre 47 y 75 km por jornada. Darle más tiempo de cálculo al optimizador no cambia esto.
-- El desperdicio de perecederos baja a cero por una regla de bodega (sacar primero lo que vence primero), no por el ruteo.
+- En simulación, con 30 jornadas por política y carga, DespachoX sube las entregas a tiempo en puntos críticos 23,3, 44,7 y 57,9 puntos porcentuales frente a despachar por orden de llegada, según la carga.
+- Contra un despachador experto que ya prioriza lo urgente, ahorra entre 42,2 y 56,0 km por jornada. En el total de entregas a tiempo **empata** con carga holgada y media, y con carga alta gana 3,0 puntos. En puntos críticos saca 1,5, 3,7 y 6,5 puntos más, pero esa corrida cambia a la vez la red y la velocidad, y falta la que separa los dos efectos (`docs/SIMULACION.md`, sección 9.3).
+- El desperdicio de perecederos baja a cero por una regla de bodega (sacar primero lo que vence primero). Esa mejora no viene del ruteo.
 
-El argumento honesto: DespachoX pone al alcance de cualquier voluntario lo que hoy solo sabe hacer un despachador con experiencia, lo combina con los cierres que llegan por chat y deja registro. Detalle en `docs/SIMULACION.md`.
+Lo que podemos defender con honestidad es que DespachoX pone al alcance de cualquier voluntario lo que hoy solo sabe hacer un despachador con experiencia. Además, lo combina con los cierres que llegan por chat y deja registro. El detalle está en `docs/SIMULACION.md`.
 
 ## En qué está cada uno ahora
 
@@ -101,16 +131,16 @@ Haz git pull --rebase, lee encargos/A2_BOT_SAMUEL.md y ejecútalo.
 
 **En ramas, nunca directo a `main`.** Cada cambio en `main` reinicia el servidor de la nube y corta las pruebas de todos. Cada dueño sube a su rama y abre un pull request. Carlos fusiona a horas fijas, con las pruebas en verde: **6:30 p. m.**, **11:00 p. m.** y **8:00 a. m.**
 
-**Avisos en `torre/CANAL.md`.** Si cambias algo que otro usa, necesitas una decisión o te bloqueas, escríbelo ahí. Si necesitas una columna nueva en la base, pídela ahí: `datos/esquema.sql` lo cambia Carlos.
+**Avisos en `torre/CANAL.md`.** Si cambias algo que otro usa, necesitas una decisión o te bloqueas, escríbelo ahí. Si necesitas una columna nueva en la base, pídela ahí, porque `datos/esquema.sql` lo cambia Carlos.
 
 **Una sola base en la nube.** Lo que confirmes o apruebes en el tablero lo ven los demás. Antes de un ensayo serio, se reinician los datos de prueba.
 
 ## Cómo probarlo
 
-**En la nube (ya funciona):** le escribes al bot en Telegram y abres el tablero. Es la misma base de datos para todos: lo que confirmes o apruebes lo ven los demás. Si el mapa sale gris en Brave, desactiva los escudos de Brave para esa página.
+**En la nube (ya funciona):** le escribes al bot en Telegram y abres el tablero. Todos usamos la misma base de datos, así que lo que confirmes o apruebes lo ven los demás. Si el mapa sale gris en Brave, desactiva los escudos de Brave para esa página.
 
 - Bot: [t.me/despachox_bot](https://t.me/despachox_bot) (o escanea el código de abajo)
-- Tablero: [despachox-production.up.railway.app](https://despachox-production.up.railway.app/)
+- Tablero: [despachox-production.up.railway.app](https://despachox-production.up.railway.app/). Pide clave, así que lo mostramos en la demo y en el video
 
 <img src="recursos/qr_bot.png" alt="Código QR del bot de DespachoX en Telegram" width="220">
 
@@ -136,7 +166,7 @@ El código cubre sobre todo el criterio 2. Los otros 75 puntos se ganan escribie
 | Cuándo | Qué |
 |---|---|
 | Hoy, 5:00 o 7:00 p. m. | Mentoría 1: se muestran los componentes 1 a 3 |
-| Sábado 8:30 a. m. | Se congelan las funciones: desde ahí solo se arregla |
+| Sábado 8:30 a. m. | Se congelan las funciones. Desde ahí solo se arregla |
 | Sábado 10:30 a. m. | Mentoría 2: los seis componentes y la presentación |
 | Sábado 1:00 a 2:30 p. m. | Entrega: un enlace de Google Drive registrado en iNNOVO |
 | Sábado 2:30 p. m. | Pitch de preselección |

@@ -1,0 +1,4 @@
+# El conjunto congelado se compara byte a byte (generar.py --verificar y tests/). Con core.autocrlf=true,
+# la opción que deja el instalador de Git para Windows, estos archivos saldrían con CRLF. Aquí se fija LF.
+*.jsonl text eol=lf
+*.csv text eol=lf

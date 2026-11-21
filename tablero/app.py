@@ -25,35 +25,62 @@ sys.path[:] = [str(RAIZ)] + [p for p in sys.path if Path(p or ".").resolve() not
 
 from datos import db  # noqa: E402
 from tablero import datos as T  # noqa: E402
+from tablero import mapa_base  # noqa: E402
+from tablero.clave import clave_ok  # noqa: E402
+from tablero.mapa_base import seguro as S  # noqa: E402  - todo texto de la base que va al mapa
 
+NOMBRE = "Convite"          # nombre visible (canal, 20/11 23:30); módulos y archivos no cambian
 CENTRO = (5.07, -75.52)
 SEGUNDOS_REFRESCO = 5
 ALTERNATIVAS = 3          # cuántas alternativas de ubicación se ofrecen por propuesta
-COLOR_PEDIDO = {"nuevo": "#f59e0b", "confirmado": "#2563eb", "asignado": "#7c3aed", "entregado": "#16a34a"}
-COLORES_RUTA = ["#1f77b4", "#ff7f0e", "#2ca02c", "#9467bd", "#8c564b", "#e377c2", "#17becf", "#7f7f7f"]
-ROJO = "#dc2626"
-MORADO = "#a21caf"
+# Paleta del informe: tinta, ámbar, crema y ceniza. El verde de «entregado» y el rojo de alerta
+# (cierres, puntos críticos) se conservan porque su significado tiene que leerse de un vistazo.
+TINTA, AMBAR, CREMA, CENIZA = "#4F4086", "#A36752", "#EBD3A2", "#6E6878"
+VERDE = "#4E7D5B"
+# Colores de estado: pendiente (nuevo y confirmado), en ruta (asignado), entregado y silencio.
+COLOR_PEDIDO = {"nuevo": AMBAR, "confirmado": "#C9935A", "asignado": TINTA, "entregado": VERDE}
+COLOR_SILENCIO = CENIZA
+FONDO_ESTADO = {"pendiente": "#F6E9E2", "en ruta": "#ECE8F6", "entregado": "#E7F0E8", "silencio": "#ECEAEE"}
+COLORES_RUTA = [TINTA, AMBAR, "#2F7F86", "#8A5A9E", "#5F7A3B", "#B4566E", "#3E6FA3", CENIZA]
+ROJO = "#C0392B"
+MORADO = "#8A5A9E"
+FILA_ALTERNA = "#FAF4E6"
 
 ESTILO = """
 <style>
-.block-container {padding-top: 3.4rem; padding-bottom: 1rem; max-width: 100%;}
+.block-container {padding-top: 3.2rem; padding-bottom: 1.5rem; max-width: 100%;}
 html, body, [data-testid="stMarkdownContainer"] p, .stButton button {font-size: 1.05rem;}
-h1 {font-size: 1.7rem !important; padding: 0 !important;}
-.tarjeta {border: 1px solid rgba(128,128,128,.35); border-radius: 12px; padding: .7rem 1rem; height: 100%;}
-.tarjeta .rotulo {font-size: 1.05rem; opacity: .8; line-height: 1.2;}
-.tarjeta .valor {font-size: 3rem; font-weight: 700; line-height: 1.1;}
-.tarjeta .nota {font-size: 1.05rem; line-height: 1.25;}
-.tarjeta.alerta {border-color: #dc2626; border-width: 2px;}
-.tarjeta.alerta .valor {color: #dc2626;}
-.ficha {display: inline-block; margin: .15rem .9rem .15rem 0; font-size: 1.05rem; white-space: nowrap;}
+h1 {font-size: 1.75rem !important; padding: 0 !important; color: #4F4086; letter-spacing: .01em;}
+h3 {color: #4F4086;}
+[data-testid="stVerticalBlock"] {gap: 1.05rem;}
+/* Tarjetas: bordes redondeados, sombra suave y aire; el borde por defecto casi desaparece. */
+[data-testid="stVerticalBlockBorderWrapper"]:has(> div > [data-testid="stVerticalBlock"]) {
+  border-radius: 14px; border-color: rgba(110,104,120,.14) !important; background: #FFFDF8;
+  box-shadow: 0 1px 2px rgba(46,42,54,.05), 0 6px 18px rgba(46,42,54,.07); padding: .35rem .25rem;}
+.tarjeta {border-radius: 16px; padding: 1rem 1.2rem 1.05rem; height: 100%; background: #FFFDF8;
+          box-shadow: 0 1px 2px rgba(46,42,54,.05), 0 8px 22px rgba(46,42,54,.08);
+          border-top: 5px solid #4F4086;}
+.tarjeta .rotulo {font-size: 1rem; color: #6E6878; line-height: 1.25; font-weight: 600;}
+.tarjeta .valor {font-size: 3.1rem; font-weight: 750; line-height: 1.05; color: #2E2A36; margin: .35rem 0 .2rem;}
+.tarjeta .meta {font-size: .95rem; color: #6E6878; font-weight: 600;}
+.tarjeta .nota {font-size: 1rem; line-height: 1.3; color: #2E2A36;}
+.tarjeta .contexto {display: inline-block; font-size: .85rem; font-weight: 700; letter-spacing: .04em;
+                    text-transform: uppercase; border-radius: 999px; padding: .12rem .6rem; margin-bottom: .2rem;
+                    background: #ECE8F6; color: #4F4086;}
+.tarjeta.alerta {border-top-color: #A36752;}
+.tarjeta.alerta .valor {color: #A36752;}
+.tarjeta.alerta .contexto {background: #F6E9E2; color: #A36752;}
+.ficha {display: inline-block; margin: .2rem .9rem .2rem 0; font-size: 1rem; white-space: nowrap; color: #2E2A36;}
 .ficha i {display: inline-block; width: 1.6rem; height: .5rem; border-radius: 3px; margin-right: .4rem;
           vertical-align: middle;}
 .ficha b.punto {display: inline-block; width: .9rem; height: .9rem; border-radius: 50%; margin-right: .35rem;
                 vertical-align: middle;}
-.sin-ubicar {background: #dc2626; color: white; border-radius: 6px; padding: .1rem .5rem; font-weight: 700;}
-.critico {color: #dc2626; font-weight: 700;}
-.grande {font-size: 1.25rem; font-weight: 700;}
-.cita {font-size: 1.1rem; font-style: italic;}
+.sin-ubicar {background: #C0392B; color: white; border-radius: 8px; padding: .1rem .55rem; font-weight: 700;}
+.critico {color: #C0392B; font-weight: 700;}
+.silencio {background: #6E6878; color: white; border-radius: 8px; padding: .1rem .55rem; font-weight: 700;}
+.grande {font-size: 1.25rem; font-weight: 700; color: #4F4086;}
+.cita {font-size: 1.1rem; font-style: italic; color: #4A4453;}
+[data-testid="stTabs"] button[role="tab"] p {font-size: 1.05rem; font-weight: 600;}
 </style>
 """
 
@@ -94,10 +121,31 @@ def color_de(rutas: list[dict]) -> dict[int, str]:
     return {r["vehiculo_id"]: COLORES_RUTA[(r["vehiculo_id"] - 1) % len(COLORES_RUTA)] for r in rutas}
 
 
-def tarjeta(col, rotulo: str, valor: str, nota: str = "", alerta: bool = False) -> None:
-    col.markdown(f'<div class="tarjeta{" alerta" if alerta else ""}"><div class="rotulo">{rotulo}</div>'
-                 f'<div class="valor">{valor}</div><div class="nota">{nota or "&nbsp;"}</div></div>',
+def tarjeta(col, rotulo: str, valor: str, nota: str = "", alerta: bool = False, contexto: str = "",
+            meta: str = "") -> None:
+    """Ficha grande: palabra de contexto, rótulo, número, meta (si existe) y una nota."""
+    col.markdown(f'<div class="tarjeta{" alerta" if alerta else ""}">'
+                 f'<span class="contexto">{contexto or ("atención" if alerta else "al día")}</span>'
+                 f'<div class="rotulo">{rotulo}</div><div class="valor">{valor}</div>'
+                 f'<div class="meta">{meta or "&nbsp;"}</div><div class="nota">{nota or "&nbsp;"}</div></div>',
                  unsafe_allow_html=True)
+
+
+def tabla(filas: list[dict], columna_estado: str | None = None, estado_de=None, fondo_fila=None):
+    """Tabla con filas alternadas suaves y, si se da, el color de estado de cada fila."""
+    import pandas as pd
+    df = pd.DataFrame(filas)
+    if df.empty:
+        return df
+
+    def pintar(fila):
+        fondo = fondo_fila(fila.name) if fondo_fila else None
+        if not fondo and columna_estado and estado_de:
+            fondo = FONDO_ESTADO.get(estado_de(fila[columna_estado]))
+        if not fondo and fila.name % 2:
+            fondo = FILA_ALTERNA
+        return [f"background-color: {fondo}" if fondo else ""] * len(fila)
+    return df.style.apply(pintar, axis=1)
 
 
 # ---------- indicadores ----------
@@ -105,19 +153,25 @@ def tarjeta(col, rotulo: str, valor: str, nota: str = "", alerta: bool = False) 
 def indicadores(ind: dict, plan: dict | None) -> None:
     c1, c2, c3, c4 = st.columns(4)
     tarjeta(c1, "Pedidos pendientes", str(ind["pedidos_pendientes"]),
-            f"{ind['pedidos_por_confirmar']} por confirmar")
+            f"{ind['pedidos_por_confirmar']} por confirmar"
+            + (f' · <span class="silencio">{ind["sin_contacto"]} sin contacto</span>' if ind["sin_contacto"] else ""),
+            contexto="en espera")
     tarjeta(c2, "Perecederos que vencen en menos de 12 h", f"{ind['kg_vencen_pronto']:,.0f} kg".replace(",", "."),
-            alerta=ind["kg_vencen_pronto"] > 0)
+            alerta=ind["kg_vencen_pronto"] > 0,
+            contexto="vencen pronto" if ind["kg_vencen_pronto"] > 0 else "sin riesgo")
     tarjeta(c3, "Cierres activos", str(ind["cierres_activos"]),
-            f"{ind['cierres_reportados']} por confirmar", alerta=ind["cierres_activos"] > 0)
+            f"{ind['cierres_reportados']} por confirmar", alerta=ind["cierres_activos"] > 0,
+            contexto="vías cerradas" if ind["cierres_activos"] > 0 else "vías abiertas")
     p = ind["puntualidad"]
     if p["pct"] is None:
-        tarjeta(c4, "Pedidos del plan a tiempo", "–", "Sin plan" if not plan else "El plan no tiene paradas")
+        tarjeta(c4, "Pedidos del plan a tiempo", "–", "Sin plan" if not plan else "El plan no tiene paradas",
+                contexto="sin plan", meta=f"meta {T.META_CRITICOS_PCT} %")
     else:
         crit = (f"Puntos críticos: <b>{p['pct_criticos']:.0f} %</b> ({p['criticos_a_tiempo']} de "
                 f"{p['criticos_total']})" if p["pct_criticos"] is not None else "Sin puntos críticos en el plan")
         tarjeta(c4, f"Pedidos del plan a tiempo ({p['a_tiempo']} de {p['total']})", f"{p['pct']:.0f} %", crit,
-                alerta=p["pct"] < 100)
+                alerta=p["pct"] < T.META_CRITICOS_PCT, contexto="a tiempo",
+                meta=f"meta {T.META_CRITICOS_PCT} %")
 
 
 # ---------- mapa ----------
@@ -134,7 +188,7 @@ def capa(con, plan: dict | None, rutas: list[dict], revisar: dict, pin: dict | N
     la actualización automática no redibuje ni mueva el mapa."""
     acopios = T.filas(con, "SELECT * FROM acopios")
     puntos = {p["id"]: p for p in T.filas(con, "SELECT * FROM puntos")}
-    pedidos = T.filas(con, "SELECT id, punto_id, estado, urgencia, kg_estimado, familias FROM pedidos "
+    pedidos = T.filas(con, "SELECT id, punto_id, estado, urgencia, kg_estimado, familias, origen FROM pedidos "
                            "WHERE estado IN ('nuevo','confirmado','asignado') AND duplicado_de IS NULL")
     cierres = T.filas(con, "SELECT * FROM cierres WHERE estado != 'levantado' AND lat IS NOT NULL")
     firma = hashlib.sha1(json.dumps(
@@ -151,53 +205,55 @@ def capa(con, plan: dict | None, rutas: list[dict], revisar: dict, pin: dict | N
         for s in r["paradas"]:
             if len(s["geometria"]) >= 2:
                 folium.PolyLine(s["geometria"], color=c, weight=6, opacity=0.85,
-                                tooltip=f"{r['nombre']} · parada {s['orden']}").add_to(fg)
+                                tooltip=S(f"{r['nombre']} · parada {s['orden']}")).add_to(fg)
         if len(r["regreso"]) >= 2:
             folium.PolyLine(r["regreso"], color=c, weight=3, opacity=0.6, dash_array="4 8",
-                            tooltip=f"{r['nombre']} · regreso al acopio").add_to(fg)
+                            tooltip=S(f"{r['nombre']} · regreso al acopio")).add_to(fg)
 
     for p in puntos.values():
         folium.CircleMarker([p["lat"], p["lon"]], radius=13 if p["critico"] else 6,
                             color=ROJO if p["critico"] else "#374151", weight=4 if p["critico"] else 1.5,
-                            fill=False, tooltip=p["nombre"] + (" · PUNTO CRÍTICO" if p["critico"] else "")
+                            fill=False, tooltip=S(p["nombre"] + (" · PUNTO CRÍTICO" if p["critico"] else ""))
                             ).add_to(fg)
     for d in pedidos:
         p = puntos.get(d["punto_id"])
         if p:
             folium.CircleMarker([p["lat"], p["lon"]], radius=3 + 2.5 * (d["urgencia"] or 2), weight=1,
-                                color="white", fill=True, fill_color=COLOR_PEDIDO[d["estado"]], fill_opacity=0.9,
-                                tooltip=f"Pedido {d['id']} · {d['estado']} · urgencia {d['urgencia']} · "
-                                        f"{d['kg_estimado'] or '?'} kg · {p['nombre']}").add_to(fg)
+                                color="white", fill=True, fill_opacity=0.9,
+                                fill_color=COLOR_SILENCIO if d.get("origen") == T.ORIGEN_SILENCIO
+                                else COLOR_PEDIDO[d["estado"]],
+                                tooltip=S(f"Pedido {d['id']} · {d['estado']} · urgencia {d['urgencia']} · "
+                                          f"{d['kg_estimado'] or '?'} kg · {p['nombre']}")).add_to(fg)
     for r in rutas:
         for s in r["paradas"]:
             if s["lat"] is not None:
                 folium.Marker([s["lat"], s["lon"]], icon=numero(s["orden"], colores[r["vehiculo_id"]]),
-                              tooltip=f"{r['nombre']} · parada {s['orden']} · {s['punto']} · "
-                                      f"llega {hora(s['llegada_estimada'])}"
-                                      + ("" if s["a_tiempo"] else " · TARDE")).add_to(fg)
+                              tooltip=S(f"{r['nombre']} · parada {s['orden']} · {s['punto']} · "
+                                        f"llega {hora(s['llegada_estimada'])}"
+                                        + ("" if s["a_tiempo"] else " · TARDE"))).add_to(fg)
     for a in acopios:
-        folium.Marker([a["lat"], a["lon"]], tooltip=f"Acopio · {a['nombre']}",
+        folium.Marker([a["lat"], a["lon"]], tooltip=S(f"Acopio · {a['nombre']}"),
                       icon=folium.Icon(color="darkgreen", icon="warehouse", prefix="fa")).add_to(fg)
     for c in cierres:
         reportado = c["estado"] == "reportado"
         folium.Circle([c["lat"], c["lon"]], radius=140, color=ROJO, weight=5,
                       dash_array="8 10" if reportado else None, fill=not reportado, fill_opacity=0.45,
-                      tooltip=f"Cierre {c['id']} · {'por confirmar' if reportado else 'confirmado'} · "
-                              f"{c['lugar'] or c['descripcion'] or ''}").add_to(fg)
+                      tooltip=S(f"Cierre {c['id']} · {'por confirmar' if reportado else 'confirmado'} · "
+                                f"{c['lugar'] or c['descripcion'] or ''}")).add_to(fg)
 
     for u in revisar["ubicaciones"]:
         que = f"{'Pedido' if u['tabla'] == 'pedidos' else 'Cierre'} {u['fila_id']}"
         if u["lat"] is not None:
             folium.Marker([u["lat"], u["lon"]], icon=folium.Icon(color="purple", icon="question", prefix="fa"),
-                          tooltip=f"Propuesta · {que} · «{u['texto']}» = {u['lugar'] or '?'}").add_to(fg)
+                          tooltip=S(f"Propuesta · {que} · «{u['texto']}» = {u['lugar'] or '?'}")).add_to(fg)
         for c in u["alternativas"][:ALTERNATIVAS]:
             if c.get("lat") is not None:
                 folium.CircleMarker([c["lat"], c["lon"]], radius=8, color=MORADO, weight=3, fill=True,
                                     fill_opacity=0.25, dash_array="3 5",
-                                    tooltip=f"Alternativa · {que} · {c.get('nombre')}").add_to(fg)
+                                    tooltip=S(f"Alternativa · {que} · {c.get('nombre')}")).add_to(fg)
     if pin and pin.get("punto"):
         folium.Marker(pin["punto"], icon=folium.Icon(color="red", icon="location-dot", prefix="fa"),
-                      tooltip="Punto marcado: falta guardarlo").add_to(fg)
+                      tooltip=S("Punto marcado: falta guardarlo")).add_to(fg)
 
     st.session_state["capa"] = (firma, fg)
     return fg
@@ -205,7 +261,7 @@ def capa(con, plan: dict | None, rutas: list[dict], revisar: dict, pin: dict | N
 
 def mapa(con, plan: dict | None, rutas: list[dict], revisar: dict) -> None:
     pin = st.session_state.get("pin")
-    base = folium.Map(location=CENTRO, zoom_start=13, tiles="OpenStreetMap", control_scale=True)
+    base = mapa_base.crear(CENTRO, 13)
     salida = st_folium(base, key="mapa", feature_group_to_add=capa(con, plan, rutas, revisar, pin),
                        height=640, use_container_width=True, returned_objects=["last_clicked"])
     clic = (salida or {}).get("last_clicked")
@@ -222,6 +278,7 @@ def mapa(con, plan: dict | None, rutas: list[dict], revisar: dict) -> None:
         f' · {len(r["paradas"])} paradas · {r["kg"]:.0f} kg</span>' for r in rutas)
     fichas += "".join(f'<span class="ficha"><b class="punto" style="background:{c}"></b>pedido {e}</span>'
                       for e, c in COLOR_PEDIDO.items() if e != "entregado")
+    fichas += f'<span class="ficha"><b class="punto" style="background:{COLOR_SILENCIO}"></b>sin contacto</span>'
     fichas += (f'<span class="ficha"><b class="punto" style="border:3px solid {ROJO}"></b>punto crítico</span>'
                f'<span class="ficha"><b class="punto" style="background:{ROJO}"></b>cierre</span>')
     st.markdown(fichas, unsafe_allow_html=True)
@@ -252,7 +309,7 @@ def bloque_plan(con, plan: dict | None, rutas: list[dict]) -> None:
 
     res = plan["resumen"]
     estado = {"propuesto": "PROPUESTO · falta aprobar",
-              "aprobado": f"APROBADO por {plan['aprobado_por'] or '?'} a las {hora(plan['aprobado_en'])}"
+              "aprobado": f"APROBADO por {html.escape(plan['aprobado_por'] or '?')} a las {hora(plan['aprobado_en'])}"
               }[plan["estado"]]
     st.markdown(f'<span class="grande">Plan {plan["id"]} · {estado}</span>', unsafe_allow_html=True)
     atendidos = sum(len(r["paradas"]) for r in rutas)
@@ -361,11 +418,38 @@ def tarjeta_ubicacion(con, u: dict) -> None:
                 refrescar()
 
 
+def tarjeta_silencio(con, d: dict) -> None:
+    """Alerta por silencio: no trae familias ni kilos, y no se inventan."""
+    with st.container(border=True):
+        donde = html.escape(d["punto"] or "sin punto") + (' <span class="critico">· CRÍTICO</span>'
+                                                          if d["critico"] else "")
+        st.markdown(f'<span class="silencio">Sin contacto: verificar</span> **Pedido {d["id"]}** · {donde}',
+                    unsafe_allow_html=True)
+        if d["texto_original"]:
+            st.caption(d["texto_original"])
+        c1, c2 = st.columns(2)
+        if c1.button("Mandar a verificar", type="primary", key=f"sv{d['id']}", width="stretch",
+                     disabled=d["punto_id"] is None):
+            ok = T.decidir_silencio(con, d["id"], "verificar", quien())
+            avisar("ok" if ok else "error", f"Pedido {d['id']}: visita de verificación mandada por {quien()}."
+                   if ok else "No se pudo mandar a verificar.")
+            refrescar()
+        if c2.button("Descartar", key=f"sd{d['id']}", width="stretch"):
+            ok = T.decidir_silencio(con, d["id"], "descartar", quien())
+            avisar("ok" if ok else "error", f"Alerta {d['id']} descartada por {quien()}." if ok
+                   else "No se pudo descartar.")
+            refrescar()
+
+
 def por_revisar(con, revisar: dict) -> None:
-    total = len(revisar["ubicaciones"]) + len(revisar["pedidos"]) + len(revisar["cierres"])
+    total = (len(revisar["ubicaciones"]) + len(revisar["pedidos"]) + len(revisar["cierres"])
+             + len(revisar["silencio"]))
     st.subheader(f"Por revisar ({total})")
     if not total and not revisar["confirmados_sin_ubicar"]:
         st.markdown("Nada pendiente.")
+
+    for d in revisar["silencio"]:
+        tarjeta_silencio(con, d)
 
     for c in revisar["cierres"]:
         with st.container(border=True):
@@ -429,15 +513,18 @@ def detalle_plan(con, plan: dict | None, rutas: list[dict]) -> None:
         cap = f" de {r['capacidad_kg']:.0f}" if r["capacidad_kg"] else ""
         st.markdown(f'<span class="ficha"><i style="background:{colores[r["vehiculo_id"]]}"></i>'
                     f'<b>{html.escape(r["nombre"])}</b> · {r["kg"]:.0f}{cap} kg</span>', unsafe_allow_html=True)
-        st.dataframe([{"Orden": s["orden"], "Punto": s["punto"], "Crítico": "sí" if s["critico"] else "",
-                       "Pedido": s["pedido_id"], "Llega": hora(s["llegada_estimada"]),
-                       "Límite": limite(s["limite_en"]), "A tiempo": "sí" if s["a_tiempo"] else "TARDE",
-                       "kg": s["kg"]} for s in r["paradas"]], hide_index=True, width="stretch")
+        st.dataframe(tabla([{"Orden": s["orden"], "Punto": s["punto"], "Crítico": "sí" if s["critico"] else "",
+                             "Pedido": s["pedido_id"], "Llega": hora(s["llegada_estimada"]),
+                             "Límite": limite(s["limite_en"]), "A tiempo": "sí" if s["a_tiempo"] else "TARDE",
+                             "kg": s["kg"]} for s in r["paradas"]],
+                           columna_estado="A tiempo",
+                           estado_de=lambda v: "pendiente" if v == "TARDE" else None),
+                     hide_index=True, width="stretch")
     fuera = T.sin_atender(con, plan)
     if fuera:
         st.markdown("**Sin atender**")
-        st.dataframe([{"Pedido": x["pedido_id"], "Punto": x["punto"], "Crítico": "sí" if x["critico"] else "",
-                       "Motivo": x["motivo"]} for x in fuera], hide_index=True, width="stretch")
+        st.dataframe(tabla([{"Pedido": x["pedido_id"], "Punto": x["punto"], "Crítico": "sí" if x["critico"] else "",
+                             "Motivo": x["motivo"]} for x in fuera]), hide_index=True, width="stretch")
     faltantes = plan["resumen"].get("faltantes") or []
     if faltantes:
         st.markdown("**Faltantes de inventario:** " + "; ".join(
@@ -446,14 +533,83 @@ def detalle_plan(con, plan: dict | None, rutas: list[dict]) -> None:
         st.caption(f"Aviso del optimizador: {a}")
 
 
+TITULOS_TERRITORIO = {
+    "territorio": "Territorio", "puntos": "Puntos", "puntos_criticos": "Críticos", "pedidos": "Pedidos",
+    "familias": "Familias", "kg_pedidos": "kg pedidos", "entregados": "Entregados",
+    "kg_entregados": "kg entregados", "a_tiempo": "A tiempo", "evaluados": "Evaluados",
+    "pct_a_tiempo": "% a tiempo", "criticos_a_tiempo": "Críticos a tiempo",
+    "criticos_evaluados": "Críticos evaluados", "pct_criticos_a_tiempo": "% críticos a tiempo",
+    "espera_mediana_h": "Espera mediana (h)", "pendiente_mas_viejo_h": "Pendiente más viejo (h)"}
+TITULOS_SIN_PEDIDOS = {"nombre": "Lugar", "tipo": "Tipo", "comuna": "Comuna", "estado": "Estado"}
+FONDO_BAJO_META = "#F6E9E2"       # ámbar muy suave: por debajo de la meta
+
+
+def detalle_territorio(con) -> None:
+    d = T.territorio(con)
+    if not d["disponible"]:
+        st.info("Pendiente: despacho.territorio")
+        return
+    st.markdown(f"**Atención por territorio** · los peor atendidos arriba · en color, los que están por "
+                f"debajo de la meta de {d['meta']} % de críticos a tiempo")
+    bajo = [f["bajo_meta"] for f in d["tabla"]]
+    if d["tabla"]:
+        st.dataframe(tabla([{TITULOS_TERRITORIO.get(c, c): f.get(c) for c in d["columnas"]} for f in d["tabla"]],
+                           fondo_fila=lambda i: FONDO_BAJO_META if bajo[i] else None),
+                     hide_index=True, width="stretch")
+    else:
+        st.markdown("Todavía no hay territorios con datos.")
+    st.download_button("Descargar CSV", T.territorio_csv(d), file_name="territorio.csv", mime="text/csv",
+                       key="territorio_csv")
+    st.caption("A tiempo: entregado a más tardar en su hora límite. Evaluados: pedidos con hora límite ya "
+               "entregados o con la hora vencida.")
+    st.markdown(f"**Barrios y veredas sin pedidos registrados ({len(d['sin_pedidos'])})**")
+    st.caption("Que un lugar no haya pedido no quiere decir que esté bien: puede no tener señal ni líder.")
+    if d["sin_pedidos"]:
+        st.dataframe(tabla([{TITULOS_SIN_PEDIDOS.get(c, c): s.get(c) or "" for c in d["columnas_sin_pedidos"]}
+                            for s in d["sin_pedidos"]], columna_estado="Estado", estado_de=lambda v: "silencio"),
+                     hide_index=True, width="stretch", height=360)
+    else:
+        st.markdown("Todos los barrios y veredas del nomenclátor tienen pedidos registrados.")
+
+
+def estado_de_accion(accion: str | None) -> str | None:
+    """Color de estado de una fila de la bitácora según la acción registrada."""
+    a = (accion or "").lower()
+    if "silencio" in a or "verificar" in a:
+        return "silencio"
+    if "entreg" in a:
+        return "entregado"
+    if "aprob" in a or "asign" in a:
+        return "en ruta"
+    if "confirm" in a:
+        return "pendiente"
+    return None
+
+
+def reinicio_datos(con) -> None:
+    """Botón para volver a la semilla antes de una demo. Pide confirmación con una casilla aparte."""
+    with st.expander("Reiniciar datos de prueba"):
+        st.caption("Borra pedidos, cierres, planes, inventario y ubicaciones de esta base y carga la semilla "
+                   "sintética (`python -m despacho.semilla --cargar --reiniciar`). Solo para pruebas y demos.")
+        seguro = st.checkbox("Sí, borrar los datos y cargar la semilla", key="confirmar_reinicio")
+        if st.button("Reiniciar datos de prueba", type="primary", disabled=not seguro, key="reiniciar_datos"):
+            r = correr("Cargando la semilla…", T.reiniciar_datos_prueba, con, quien())
+            st.session_state.pop("confirmar_reinicio", None)
+            st.session_state.pop("capa", None)
+            avisar("ok" if r.ok else "error", f"Datos de prueba reiniciados por {quien()}." if r.ok
+                   else f"No se pudo reiniciar: {r.mensaje}")
+            refrescar()
+
+
 def detalle_bitacora(con) -> None:
     filas = T.bitacora(con, 60)
     if not filas:
         st.markdown("Todavía no hay decisiones registradas.")
         return
-    st.dataframe([{"Hora": hora(f["cuando"]), "Quién": f["quien"], "Acción": f["accion"],
-                   "Detalle": f["detalle"]} for f in filas], hide_index=True, width="stretch",
-                 height=600)
+    st.dataframe(tabla([{"Hora": hora(f["cuando"]), "Quién": f["quien"], "Acción": f["accion"],
+                         "Detalle": f["detalle"]} for f in filas],
+                       columna_estado="Acción", estado_de=estado_de_accion),
+                 hide_index=True, width="stretch", height=600)
 
 
 # ---------- página ----------
@@ -467,7 +623,7 @@ def mesa() -> None:
         revisar = T.por_revisar(con)
         indicadores(T.indicadores(con, plan), plan)
         st.write("")
-        t_mesa, t_plan, t_bitacora = st.tabs(["Mesa", "Plan en detalle", "Bitácora"])
+        t_mesa, t_plan, t_territorio, t_bitacora = st.tabs(["Mesa", "Plan en detalle", "Territorio", "Bitácora"])
         with t_mesa:
             col_mapa, col_lado = st.columns([2.6, 1])
             with col_mapa:
@@ -480,17 +636,22 @@ def mesa() -> None:
                 por_revisar(con, revisar)
         with t_plan:
             detalle_plan(con, plan, rutas)
+        with t_territorio:
+            detalle_territorio(con)
         with t_bitacora:
             detalle_bitacora(con)
+            reinicio_datos(con)
     finally:
         con.close()
 
 
 def main() -> None:
-    st.set_page_config(page_title="DespachoX · Mesa de despacho", layout="wide")
+    st.set_page_config(page_title=f"{NOMBRE} · Mesa de despacho", layout="wide")
     st.markdown(ESTILO, unsafe_allow_html=True)
+    if not clave_ok():
+        st.stop()
     c1, c2 = st.columns([5, 1])
-    c1.title("DespachoX · Mesa de despacho")
+    c1.title(f"{NOMBRE} · Mesa de despacho")
     c2.text_input("Despachador", key="quien", placeholder="Tu nombre", label_visibility="collapsed")
     mesa()
 

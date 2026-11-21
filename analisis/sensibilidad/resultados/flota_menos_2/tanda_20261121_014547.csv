@@ -1,0 +1,6 @@
+variante,carga,semilla,politica,puntos,criticos,pedidos,kg_pedidos,vehiculos,cierres,cierres_descubiertos,a_tiempo_criticos_pct,perecedero_vencido_pct,a_tiempo_todos_pct,entregados_pct,demanda_no_atendida_pct,llegada_media_h,llegada_max_h,peor_punto_h,km,vehiculos_aislados,salidas_emergencia,viajes_en_falso,recalculos,recalculo_medio_s,recalculo_max_s,fallos_optimizador,vel_medida_x,factor_critico,segundos_tarea
+flota_menos_2,media,20261196,despachox,51,10,127,40992,6,3,3,100.0,0.0,60.6299,88.9764,14.3735,4.6531,13.9229,13.8489,553.9096,0,1,0,62,1.3161,1.39,0,1.0,3,82.0
+flota_menos_2,media,20261198,despachox,34,7,90,29832,4,7,5,100.0,0.0,58.8889,74.4444,35.2373,3.5024,13.056,10.7079,349.5668,0,1,0,53,1.1366,1.2816,0,1.0,3,60.5
+flota_menos_2,media,20261195,despachox,79,16,220,70176,10,5,4,100.0,0.0,54.0909,79.0909,26.5561,4.2975,13.9551,11.6965,1149.8963,0,2,0,81,1.5332,1.6667,0,1.0,3,124.8
+flota_menos_2,media,20261197,despachox,60,12,129,41652,7,6,6,100.0,0.0,75.1938,93.0233,10.3717,3.9519,13.9692,10.7421,734.2674,0,1,0,73,1.2886,1.4381,0,1.0,3,94.6
+flota_menos_2,media,20261199,despachox,70,14,177,55332,9,3,2,100.0,0.0,58.7571,90.3955,9.1303,4.6097,13.9313,13.9313,903.6552,0,2,0,76,1.3416,1.5377,0,1.0,3,102.3

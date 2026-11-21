@@ -1,0 +1,15 @@
+id,nombre,nombre_reporte_2020,tipo,anio_instalacion,lat,lon,lat_dms,lon_dms,propietario
+emas,Emas,Emas,M,1997,5.080394,-75.508942,"5°4'49,42"" N","75°30'32,19"" W",EMAS
+posgrados,Posgrados,Posgrados,M,2002,5.056072,-75.492072,"5°3'21,86"" N","75°29'31,46"" W",UNAL
+ingeominas,Ingeominas,Obs. Vulcanológico,M,2003,5.071444,-75.524306,"5°4'17,2"" N","75°31'27,5"" W",UGR
+la_nubia,La Nubia,La Nubia,M,2003,5.028917,-75.472222,"5°1'44,1"" N","75°28'20"" W",UGR
+yarumos,Yarumos,Yarumos,M,2004,5.063222,-75.481286,"5°3'47,6"" N","75°28'52,63"" W",UGR
+el_carmen,El Carmen,El Carmen,M,2005,5.061389,-75.519722,"5°3'41"" N","75°31'11"" W",UGR
+aranjuez,Aranjuez,Aranjuez,M,2006,5.042833,-75.500444,"5°2'34,2"" N","75°30'1,6"" W",UGR
+bosques_del_norte,Bosques del Norte,Bosques del Norte,M,2006,5.083056,-75.488611,"5°4'59"" N","75°29'19"" W",UGR
+la_palma,La Palma,La Palma,M,2006,5.095972,-75.529417,"5°5'45,5"" N","75°31'45,9"" W",UGR
+hospital_de_caldas,Hospital de Caldas,Hospital de Caldas,M,2007,5.062944,-75.500583,"5°3'46,6"" N","75°30'2,1"" W",UGR
+palogrande_ruta30,Quebrada Palogrande-Ruta 30,Q. Palogrande-Ruta 30,HM,2008,5.058494,-75.504186,"5°3'30,58"" N","75°30'15,07"" W",UNAL
+milan_planta_niza,Milán-Planta Niza,Milán-Planta Niza,M,2009,5.053100,-75.475600,"5°3'11,16"" N","75°28'32,16"" W",UGR
+alcazares,Alcázares,Alcázares,M,2010,5.066722,-75.527750,"5°4'0,2"" N","75°31'39,9"" W",UGR
+chec_uribe,CHEC-Uribe,Chec-Uribe,M,2011,5.051931,-75.535039,"5°3'6,95"" N","75°32'6,14"" W",CHEC

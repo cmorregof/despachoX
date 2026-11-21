@@ -34,6 +34,9 @@ _SI = re.compile(r"^(si|sip|correcto|exacto|eso es|asi es|es ahi|ahi es|afirmati
 _NUMERO = re.compile(r"^(?:son|somos|como|unas|unos|para|de|aprox\w*|mas o menos|\s)*(\d{1,4})"
                      r"\s*(?:familias?|flias?|hogares)?\s*$")
 ESPERA_FAMILIAS_S = 120     # tras dos minutos sin respuesta el pedido se queda con lo que hay
+# «ENTREGADO DX-7KQ3», o el código solo: lo lee la regla, porque el esquema del modelo no tiene dónde
+# poner un código de paquete y con el modelo activo la entrega no quedaba registrada (revisión QA).
+_PARECE_ENTREGA = re.compile(r"\bdx\W?[a-z0-9]{4,6}\b|^\W*entreg", re.I)
 _CORTESIA = re.compile(r"^(muchas )?(gracias|ok|okay|vale|listo|bueno|dale|entendido)( gracias| muchas gracias)?$")
 
 EJEMPLOS = ("Somos 40 familias en San José, no hay arroz ni leche",
@@ -100,6 +103,10 @@ class Mesa:
         limpio = limpiar(texto)
         if os.environ.get("DESPACHOX_SIN_RED") == "1":
             return leer_sms(limpio)
+        if _PARECE_ENTREGA.search(limpio):
+            por_reglas = leer_sms(limpio)
+            if por_reglas.entregado:
+                return por_reglas
         x = self.extraer(limpio)
         if x.fallo and self.respaldo_reglas:
             por_reglas = leer_sms(limpio)
@@ -225,6 +232,11 @@ class Mesa:
                 n = int(partes[2])
             except (IndexError, ValueError):
                 return Respuesta("No reconocí ese botón. Escríbeme de nuevo, por favor.")
+            if not 0 < n <= 2000:           # el mismo tope que un número escrito
+                return Respuesta("No reconocí ese botón. Escríbeme de nuevo, por favor.")
+            dueno = self.con.execute("SELECT remitente_hash FROM pedidos WHERE id=?", (uid,)).fetchone()
+            if dueno is None or dueno["remitente_hash"] != rem:     # botón forjado desde otro chat
+                return Respuesta("No encontré ese reporte. Escríbeme de nuevo, por favor.")
             self.por_familias.pop(rem, None)
             etiqueta = next((e for e, v in raciones.RANGOS if v == n), str(n))
             return self._fijar_familias(rem, uid, n, etiqueta)

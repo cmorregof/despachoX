@@ -1,0 +1,23 @@
+Repeticiones anteriores a la de repeticion.md, de las 03:09 y las 03:13 del 21 de noviembre.
+Usaron el mismo código de simulación que la de las 03:22 (correr.py y velocidad_medida.py sin cambios
+desde 75f80a2), con repetir.py todavía sin versionar. En las dos salieron idénticas las 332 filas de
+ingenua y experta y las 7 de despachox. Estas son las filas de optimiza_una_vez que salieron distintas
+de la original, con las columnas que cambiaron. En la repetición de las 03:22 fueron tres. Dos salen
+también aquí, la semilla 20261155 de velocidad_x0.8 y la 20261179 de flota_menos_2. La tercera, la
+20261150 de la referencia, aquí salió idéntica.
+
+03:09
+velocidad_x0.8  20261155 optimiza_una_vez distinta: a_tiempo_criticos_pct,a_tiempo_todos_pct,entregados_pct,demanda_no_atendida_pct,llegada_media_h,llegada_max_h,peor_punto_h,km
+referencia      20261169 optimiza_una_vez distinta: a_tiempo_criticos_pct,a_tiempo_todos_pct,llegada_media_h,llegada_max_h,peor_punto_h,km
+demanda_x0.75   20261151 optimiza_una_vez distinta: a_tiempo_criticos_pct,a_tiempo_todos_pct,llegada_media_h,llegada_max_h,peor_punto_h,km
+demanda_x1.5    20261153 optimiza_una_vez distinta: a_tiempo_criticos_pct,a_tiempo_todos_pct,entregados_pct,demanda_no_atendida_pct,llegada_media_h,llegada_max_h,peor_punto_h,km,salidas_emergencia
+flota_menos_2   20261166 optimiza_una_vez distinta: a_tiempo_criticos_pct,a_tiempo_todos_pct,entregados_pct,demanda_no_atendida_pct,llegada_media_h,llegada_max_h,km,salidas_emergencia
+flota_menos_2   20261179 optimiza_una_vez distinta: llegada_media_h,km
+
+03:13
+velocidad_x0.8  20261155 optimiza_una_vez distinta: a_tiempo_criticos_pct,a_tiempo_todos_pct,entregados_pct,demanda_no_atendida_pct,llegada_media_h,llegada_max_h,peor_punto_h,km
+referencia      20261169 optimiza_una_vez distinta: a_tiempo_criticos_pct,a_tiempo_todos_pct,llegada_media_h,llegada_max_h,peor_punto_h,km
+demanda_x0.75   20261151 optimiza_una_vez distinta: a_tiempo_criticos_pct,a_tiempo_todos_pct,llegada_media_h,llegada_max_h,peor_punto_h,km
+demanda_x1.5    20261153 optimiza_una_vez distinta: a_tiempo_criticos_pct,a_tiempo_todos_pct,entregados_pct,demanda_no_atendida_pct,llegada_media_h,llegada_max_h,peor_punto_h,km,salidas_emergencia
+flota_menos_2   20261166 optimiza_una_vez distinta: a_tiempo_criticos_pct,a_tiempo_todos_pct,entregados_pct,demanda_no_atendida_pct,llegada_media_h,llegada_max_h,km,salidas_emergencia
+flota_menos_2   20261179 optimiza_una_vez distinta: llegada_media_h,km

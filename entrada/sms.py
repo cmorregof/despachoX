@@ -57,6 +57,11 @@ RELLENO = {"hola", "buenas", "buenos", "dias", "tardes", "noches", "por", "favor
 ABREVIATURAS = {"av": "avenida", "avda": "avenida", "cra": "carrera", "kra": "carrera", "cll": "calle",
                 "b": "barrio", "q": "que", "x": "por", "xfa": "por favor"}
 LIMITE_SMS = 160
+# Un código sin «DX» solo vale en un mensaje así de corto («ENTREGADO 7K2Q gracias»): en uno largo,
+# palabras como «enea» o «para» caben en el alfabeto de los códigos (revisión QA de la noche).
+CORTO = 3
+# Antes de «entregado», cambian el sentido: «todavía no nos han entregado DX-7KQ3» es un reclamo.
+NEGACIONES = {"no", "nunca", "jamas", "todavia", "aun", "ni", "sin", "falta", "faltan"}
 _CODIGO = re.compile(r"^(dx)?[a-z0-9]{4,6}$")
 _DX_SEPARADO = re.compile(r"\bdx\s+([a-z0-9]{4,6})\b")      # «DX-4MQ7» llega como «dx 4mq7»
 _TILDES = str.maketrans("áéíóúüÁÉÍÓÚÜ", "aeiouuAEIOUU")
@@ -130,19 +135,21 @@ def leer_sms(texto: str) -> Extraccion:
         return crudo(texto)
 
 
-def _es_codigo(t: str) -> bool:
-    """Un código de paquete: «dx» más 4 a 6 signos, o 4 signos del alfabeto de despacho/paquetes.py
-    que no sean un producto (el alfabeto no tiene o, s, l ni i, así que «jose» no pasa)."""
+def _es_codigo(t: str, corto: bool = True) -> bool:
+    """Un código de paquete: «dx» más 4 a 6 signos, o, si el mensaje es corto, 4 signos del alfabeto
+    de despacho/paquetes.py que no sean un producto (el alfabeto no tiene o, s, l ni i, así que «jose»
+    no pasa). En un mensaje largo, «enea» o «para» no son un código."""
     from despacho.paquetes import ALFABETO
     if t.startswith("dx") and _CODIGO.match(t):
         return True
-    return len(t) == 4 and all(c in ALFABETO.lower() for c in t) and t not in CATALOGO
+    return corto and len(t) == 4 and all(c in ALFABETO.lower() for c in t) and t not in CATALOGO
 
 
 def _leer(texto: str) -> Extraccion:
     tokens = [ABREVIATURAS.get(t, t) for t in _DX_SEPARADO.sub(r"dx\1", normalizar(texto)).split()]
     tokens = " ".join(tokens).split()                   # «xfa» -> «por favor»
-    clave = None
+    corto = len(tokens) <= CORTO
+    clave = pos_clave = None
     numero = unidad = None
     extra = {"personas": None, "bebes": None}     # «5 bebés 3 niños»: el segundo número también cuenta
     productos: list[Producto] = []
@@ -162,7 +169,7 @@ def _leer(texto: str) -> Extraccion:
         clasificado = True
         k = _clave(t, i == 0)
         if k and clave is None:
-            clave = k
+            clave, pos_clave = k, i
         elif k and k == clave:
             pass
         elif t.isdigit():
@@ -196,7 +203,7 @@ def _leer(texto: str) -> Extraccion:
             solo_pasan |= i >= 2 and tokens[i - 1] in {"pasan", "pasa"} and tokens[i - 2] == "solo"
         elif t in DESCRIPCIONES:
             descripcion = DESCRIPCIONES[t]
-        elif clave == "entregado" and codigo is None and _es_codigo(t):
+        elif clave == "entregado" and codigo is None and _es_codigo(t, corto):
             codigo = t
         else:
             p, largo = _producto(tokens, i)
@@ -224,14 +231,16 @@ def _leer(texto: str) -> Extraccion:
 
     # Sin palabra clave: se deduce de lo que trae, como haría una persona.
     if clave is None:
-        if codigo or any(t.startswith("dx") and _CODIGO.match(t) for t in tokens):
-            clave = "entregado"
+        if len(tokens) == 1 and _es_codigo(tokens[0], corto=False):    # el código solo, como lo deja el QR;
+            clave = "entregado"                                         # «no ha llegado DX-7KQ3» no es entrega
         elif numero is not None or productos:
             clave = "pedido"
         elif vehiculos or descripcion:
             clave = "cierre"
     if clave == "entregado":
-        codigo = codigo or next((t for t in tokens if _es_codigo(t)), None)
+        if any(t in NEGACIONES for t in tokens[:pos_clave or 0]):   # un reclamo: lo lee el despachador
+            return crudo(texto)
+        codigo = codigo or next((t for t in tokens if _es_codigo(t, corto)), None)
         if not codigo:
             return crudo(texto)
         from despacho.paquetes import normalizar_codigo
