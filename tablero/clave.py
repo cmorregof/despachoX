@@ -72,8 +72,7 @@ def _inicio(st, error: bool) -> str | None:
         imagen = _MARCA / "hero_convite_inicio.jpg"
         if imagen.exists():
             st.image(str(imagen), width="stretch")
-    st.markdown('<p class="inicio-pie">Equipo 19 · Hackathon UNAL Manizales 2026 · Datos de prueba · '
-                "Ilustración generada con IA</p>", unsafe_allow_html=True)
+    st.markdown('<p class="inicio-pie">Equipo 19 · Hackathon UNAL Manizales 2026 · Datos de prueba</p>', unsafe_allow_html=True)
     return dada if enviado else None
 
 
