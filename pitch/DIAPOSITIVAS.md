@@ -221,7 +221,7 @@ Debajo, métodos y datos: ruteo con capacidad y ventanas de tiempo en OR-Tools s
 
 **Pie de fuente.** «Medido con la red bloqueada, no con el wifi apagado: de la carga de datos a una entrega registrada en 23 s*.»
 
-**Nota del orador.** El 11 de agosto en la mañana, el 28 % de las estaciones base de Caldas estaba sin servicio, y MinTIC recomendó usar SMS (Noticias RCN*). El lector de SMS acertó 20 de 20 mensajes sintéticos en una prueba que no es independiente. Falta probarlo todo con el wifi apagado y con un celular real, y el mapa del tablero todavía necesita internet.
+**Nota del orador.** El 11 de agosto en la mañana, el 28 % de las estaciones base de Caldas estaba sin servicio, según el informe de MinTIC que cita Noticias RCN*. En esa nota, la recomendación de priorizar los mensajes de texto es de la CRC*. La página de MinTIC sobre la emergencia, actualizada el 13 de agosto, también recomienda usar mensajes de texto*. El lector de SMS acertó 20 de 20 mensajes sintéticos en una prueba que no es independiente. Falta probarlo todo con el wifi apagado y con un celular real, y el mapa del tablero todavía necesita internet.
 
 **Criterio.** 5, factibilidad y riesgo de conectividad, y 2, funcionamiento.
 
