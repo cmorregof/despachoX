@@ -272,6 +272,7 @@ Esta entidad también es de segunda línea, y se le llega por medio de la UGR.
 - Es la unidad académica de la Sede que articula conocimiento sobre gestión del riesgo, adaptación al cambio climático y análisis territorial [F] ([El IDEA](https://idea.manizales.unal.edu.co/the-idea)).
 - Enlaza el Geoportal SIMAC desde su portada [F] ([IDEA](https://idea.manizales.unal.edu.co/)).
 - Publica el indicador A25, con alertas de 200, 300 y 400 mm de lluvia acumulada en 25 días. Su reporte de 2020 cubre 14 estaciones (`docs/PILOTO.md`, sección 3; por verificar).
+- El enlace a ese reporte de 2020, que cita el equipo, devolvió 404 cuando lo probamos a las 12:40 a. m. Tampoco abren otras rutas viejas de `/publicaciones/`, y los PDF de la página de boletines del sitio nuevo apuntan a `localhost:9000` [F] ([boletines del IDEA](https://idea.manizales.unal.edu.co/boletin)). Un buscador web todavía indexa el reporte.
 - No distribuye ayuda. La Sede montó en agosto un acopio en el edificio S3 de La Nubia, con unos 240 voluntarios y transporte propio para recoger donaciones [F] ([La Patria, 23 ago 2026](https://www.lapatria.com/educacion/universidad-nacional-en-manizales-240-voluntarios-y-un-mundo-de-solidaridad-por-sus)).
 
 **Qué ganaría [I].** Un uso logístico del A25 con datos de campo, por ejemplo rutas que evitan tramos en alerta durante una semana de lluvia registrada (`docs/PILOTO.md`, hito de los días 60 a 75).
@@ -280,6 +281,7 @@ Esta entidad también es de segunda línea, y se le llega por medio de la UGR.
 
 - Su visto bueno para usar y citar el A25 en el piloto, y cómo debemos citarlo (P5, sección 5).
 - El A25 diario por estación de agosto a noviembre de 2026 (`docs/DECISIONES_9PM.md`, llamada 5).
+- La ruta vigente de los reportes A25, o una copia del de 2020, porque el enlace que cita el equipo ya no abre.
 - Su opinión del proyecto.
 
 **A quién.** El P5 pide escribirle al profesor Néstor, con el número que pasa Carlos. El sitio del IDEA publica a Sandra Bibiana Vargas G. como directora y a Néstor Darío Duque Méndez como representante investigador externo en el Consejo del Instituto [F] ([El IDEA](https://idea.manizales.unal.edu.co/the-idea)). Si es la misma persona del P5, lo confirma Carlos [P].
@@ -327,6 +329,7 @@ Estas cifras salieron esta noche de fuentes oficiales y todas son del tipo F. La
 - **Bomberos de Manizales.** No se encontraron un canal administrativo, la dirección de sus estaciones ni el nombre del comandante en 2026.
 - **Horarios del IDEA y del chat de la Gobernación.**
 - **Si el profesor Néstor del P5 es Néstor Darío Duque Méndez.**
+- **El reporte A25 de 2020 del IDEA.** Su enlace devolvió 404 esta noche, y ese mismo enlace aparece en `docs/PILOTO.md`, `docs/datos/vias_y_riesgo.md`, `docs/informe/informe_corto.tex` y las investigaciones 03 y 08.
 - **Las páginas de Facebook del Banco** no se pudieron leer sin iniciar sesión, así que tampoco dieron un horario.
 - **La forma de marcar el PBX del IDEA desde un celular**, que es una conversión nuestra al plan de numeración vigente [I].
 - **La página de la Defensa Civil muestra texto de un conflicto de versiones** en el bloque nacional. El bloque de la Seccional Caldas se lee completo.
