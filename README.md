@@ -101,8 +101,8 @@ Las pruebas automáticas pasan completas: 101.
 
 ### Qué dice la simulación, sin adornos
 
-- Contra despachar por orden de llegada, DespachoX sube las entregas a tiempo en puntos críticos entre 12 y 46 puntos porcentuales, según la carga.
-- Contra un despachador experto que ya prioriza lo urgente, **empata** en puntos críticos, queda unos 2 puntos por debajo en el total de entregas a tiempo y ahorra entre 47 y 75 km por jornada. Darle más tiempo de cálculo al optimizador no cambia esto.
+- En simulación, con 30 jornadas por política y carga, DespachoX sube las entregas a tiempo en puntos críticos 23,3, 44,7 y 57,9 puntos porcentuales frente a despachar por orden de llegada, según la carga.
+- Contra un despachador experto que ya prioriza lo urgente, ahorra entre 42,2 y 56,0 km por jornada. En el total de entregas a tiempo **empata** con carga holgada y media, y con carga alta gana 3,0 puntos. En puntos críticos saca 1,5, 3,7 y 6,5 puntos más, pero esa corrida cambia a la vez la red y la velocidad, y falta la que separa los dos efectos (`docs/SIMULACION.md`, sección 9.3).
 - El desperdicio de perecederos baja a cero por una regla de bodega (sacar primero lo que vence primero), no por el ruteo.
 
 El argumento honesto: DespachoX pone al alcance de cualquier voluntario lo que hoy solo sabe hacer un despachador con experiencia, lo combina con los cierres que llegan por chat y deja registro. Detalle en `docs/SIMULACION.md`.

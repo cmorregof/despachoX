@@ -8,18 +8,48 @@ Lo que hay que saber de ese modelo, porque condiciona a las políticas:
 - planea UN viaje por vehículo y solo asigna pedidos nuevos a vehículos que están en el acopio;
 - a un vehículo en ruta le conserva lo que lleva a bordo y le reordena las entregas;
 - el límite de búsqueda es de segundos enteros, con mínimo de 1 s por llamada.
+
+Con velocidades medidas (`DESPACHOX_SIM_VELOCIDADES=medidas`), el modelo de B tiene que planear
+con los mismos tiempos que la jornada simulada. Sin tocar `optimizar.py` ni `matriz.py`, el
+adaptador arma una copia del grafo por tipo de vehículo con el `travel_time` de las velocidades
+medidas, y durante cada llamada `matriz.calcular` lee la copia de cada tipo. Sin la variable
+no se arma ninguna copia ni se reemplaza nada: el modelo recibe el grafo de `red.cargar()`.
 """
 from __future__ import annotations
 
 import json
 from datetime import datetime, timedelta
 from pathlib import Path
+from unittest import mock
 
-from .red_sim import TIPOS, ruta_cache
+from .red_sim import TIPOS, modo_velocidades, ruta_cache, segundos_medidos, velocidades_medidas, _via
 
 T0 = (2026, 8, 11, 6, 0)          # hora 0 de la jornada simulada (fecha de adorno)
 LOTE_SECO = 900_000               # lote ficticio de no perecederos, sin límite
 LOTE_A_BORDO = 1_000_000          # lotes ficticios para lo que ya va cargado
+_GRAFOS_MEDIDOS: dict = {}        # id del grafo -> (grafo, {tipo: copia con velocidades medidas})
+
+
+def grafos_medidos(g) -> dict:
+    """{tipo: copia de `g` con `travel_time` = segundos medidos / factor del tipo en matriz.py}.
+
+    `matriz._red_del_tipo` multiplica `travel_time` por su factor; al dividir aquí por el mismo
+    factor, cada tipo queda con los segundos de `datos_publicos/velocidades.csv`.
+    """
+    if id(g) not in _GRAFOS_MEDIDOS:
+        from despacho import matriz
+
+        tabla = velocidades_medidas()
+        copias = {}
+        for tipo in TIPOS:
+            h = g.copy()
+            factor = matriz.FACTOR_TIEMPO[tipo]
+            for _, _, d in h.edges(data=True):
+                largo = float(d.get("length", 0.0)) or 1.0
+                d["travel_time"] = segundos_medidos(tabla, _via(d.get("highway", "")), largo)[tipo] / factor
+            copias[tipo] = h
+        _GRAFOS_MEDIDOS[id(g)] = (g, copias)
+    return _GRAFOS_MEDIDOS[id(g)][1]
 
 
 class OptimizadorB:
@@ -40,6 +70,29 @@ class OptimizadorB:
         self.t0 = datetime(*T0, tzinfo=db.BOGOTA)
         self.fallos, self.vacios, self.llamadas = 0, 0, 0
         self._esc, self._fijos = None, None
+        self.velocidades = modo_velocidades()
+        self._por_tipo = None
+        if self.velocidades == "medidas":
+            from despacho import matriz
+
+            self._matriz, self._calcular = matriz, matriz.calcular
+            self._por_tipo = grafos_medidos(self.g)
+            self.nombre = self.nombre[:-1] + ", velocidades medidas)"
+
+    def _calcular_medido(self, g, lugares, cierres=None, tipos=TIPOS):
+        """`matriz.calcular` con la copia del grafo de cada tipo de vehículo."""
+        resultado = {}
+        for tipo in tipos:
+            resultado.update(self._calcular(self._por_tipo.get(tipo, g), lugares, cierres, (tipo,)))
+        return resultado
+
+    def matrices(self, lugares, cierres=None, tipos=TIPOS) -> dict:
+        """Las matrices que recibe el modelo de B en cada llamada (para las pruebas)."""
+        from despacho import matriz
+
+        if self._por_tipo is None:
+            return matriz.calcular(self.g, lugares, cierres, tipos)
+        return self._calcular_medido(self.g, lugares, cierres, tipos)
 
     def _iso(self, t: float) -> str:
         return (self.t0 + timedelta(seconds=float(t))).isoformat(timespec="seconds")
@@ -110,7 +163,11 @@ class OptimizadorB:
                  "vehiculos": vehiculos, "cierres": cierres}
         self.llamadas += 1
         try:
-            resultado = self.mod._resolver(datos, self.g, ahora, self.limite, bloqueos)
+            if self._por_tipo is None:
+                resultado = self.mod._resolver(datos, self.g, ahora, self.limite, bloqueos)
+            else:
+                with mock.patch.object(self._matriz, "calcular", self._calcular_medido):
+                    resultado = self.mod._resolver(datos, self.g, ahora, self.limite, bloqueos)
         except Exception:                 # el optimizador real devuelve plan vacío; aquí se cuenta
             self.fallos += 1
             return None
