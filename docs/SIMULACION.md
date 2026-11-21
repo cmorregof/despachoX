@@ -279,11 +279,11 @@ Las conclusiones de la red urbana se mantienen. DespachoX supera a la política 
 
 ## 9. Con las velocidades de la tesis UNAL de 2019 (noche del 20 al 21 de noviembre de 2026)
 
-Las secciones 1 a 8 no se modifican. Esta sección repite la confirmación de la sección 8.3 con velocidades más lentas, las de la tesis UNAL de 2019 (tabla 14).
+Las secciones 1 a 8 no se modifican. Esta sección repite la confirmación de la sección 8.3 con velocidades más lentas. Son velocidades derivadas de mediciones GPS de un bus en Manizales y asignadas por tipo de vía y pendiente (tesis UNAL de 2019, tabla 14, pp. 46 a 48). En adelante se llaman «velocidades de la tesis».
 
-**Por qué.** Dos agentes encontraron que la velocidad supuesta estaba inflada. Según `docs/datos/flota_perecederos_costos.md`, una tesis de maestría de la UNAL Manizales de 2019 da para un bus diésel 22,6 km/h de media en Manizales, y de 21,8 a 24,2 km/h en vías principales (tabla 14). El grafo, en cambio, le daba al campero 39,0 km/h de media en `primary` y 54,7 en `trunk` (medido por un agente sobre el grafo, en el mismo documento). Fuera de la ciudad, el SICE-TAC del Ministerio de Transporte supone 15 km/h para un camión de dos ejes en terreno montañoso. Ese valor no se usó.
+**Por qué.** Dos agentes encontraron que la velocidad supuesta estaba inflada. Según `docs/datos/flota_perecederos_costos.md`, una tesis de maestría de la UNAL Manizales de 2019 da para un bus diésel 22,6 km/h de media en su ruta de Manizales (p. 50), y de 21,8 a 24,2 km/h en vías principales (tabla 14, p. 48). El grafo, en cambio, le daba al campero 39,0 km/h de media en `primary` y 54,7 en `trunk` (medido por un agente sobre el grafo, en el mismo documento). Fuera de la ciudad, el SICE-TAC del Ministerio de Transporte supone 15 km/h para un camión de dos ejes en terreno montañoso. Ese valor no se usó.
 
-**Velocidades de la tesis UNAL de 2019 (tabla 14), medidas con GPS: por confirmar por una persona.** El documento de datos dice que la tesis midió el bus con un registrador GPS. Otro agente leyó en la tesis velocidades «asignadas» al bus y no pudo confirmar el GPS. Hasta que una persona lo revise, esta sección no las llama medidas.
+**De dónde salen las velocidades. Estado: revisado por máquina; falta que una persona abra la tesis.** Un agente de Fable leyó las páginas impresas de la tesis. La p. 27 nombra un registrador GPS V-900, y la p. 29, un GPS en cada bus. En las pp. 46 y 47, las velocidades salen de procesar los datos del GPS y se asignan a la red por tipo de vía y pendiente. La tabla 14, en la p. 48, se titula «velocidades asignadas». Por eso esta sección no las llama medidas a secas.
 
 ### 9.1 Qué cambió y cómo se corrió
 
@@ -295,7 +295,7 @@ Las secciones 1 a 8 no se modifican. Esta sección repite la confirmación de la
 - **Los viajes se alargan.** En los escenarios de carga media, el tiempo medio entre sitios sube 44 % para el campero y la moto, y 23 % para el camión. Del acopio a un punto, el campero pasa de 7,1 a 9,8 minutos en promedio, el camión de 9,8 a 11,5 y la moto de 6,4 a 8,8 (medido por nosotros en los 30 escenarios).
 - **Apagada, nada cambia.** Es el valor por defecto. Con la opción apagada, `ingenua` y `experta` dan un `resultados.csv` idéntico byte a byte al del código anterior, en 5 semillas de las tres cargas. Antes del cambio, ese código reprodujo sin diferencias las 60 filas de esas dos políticas en la sección 8.8, así que la red es la misma. Las políticas con optimizador no se pueden comparar byte a byte, porque su búsqueda se corta por reloj (sección 7). Con la opción apagada, el optimizador recibe el grafo y las matrices de siempre. Las pruebas están en `despacho/sim/tests/test_velocidades.py`.
 
-**Red.** Se usó `manizales_region.graphml` (7.825 nodos), la red del producto. La sección 8.3 corrió sobre la red urbana `manizales.graphml` (6.395 nodos). Ese archivo no está en esta máquina y no se pudo bajar, porque Overpass no respondió. Con otra red, la misma semilla pone los puntos y los cierres en otros lugares (sección 8.8). Por eso la comparación con la sección 8.3 no es pareada y mezcla dos cambios: la velocidad y la red. Para separarlos se corre la confirmación con las velocidades del modelo sobre la misma red y las mismas semillas (sección 9.3). Así quedan las dos versiones, como pide la decisión 3 de `docs/DECISIONES_9PM.md`.
+**Red.** Se usó `manizales_region.graphml` (7.825 nodos), la red del producto. La sección 8.3 corrió sobre la red urbana `manizales.graphml` (6.395 nodos). Ese archivo no está en esta máquina y no se pudo bajar, porque Overpass no respondió. Con otra red, la misma semilla pone los puntos y los cierres en otros lugares (sección 8.8). Por eso la comparación con la sección 8.3 no es pareada y mezcla dos cambios: la velocidad y la red. Para separarlos, la sección 9.3 repite la confirmación con las velocidades del modelo sobre la misma red y las mismas semillas. Así quedan las dos versiones, como pide la decisión 3 de `docs/DECISIONES_9PM.md`.
 
 **Semillas.** 20261150 a 20261179, 30 por carga. Son las semillas de confirmación de la sección 8.3, que no intervinieron en la elección del factor 3: esa elección se hizo con las semillas 20261120 a 20261149. Se usan las mismas tres cargas, las mismas cuatro políticas y las mismas líneas base de la sección 8.3, con `FACTOR_CRITICO` = 3 y 1 s de búsqueda por llamada. Con la misma semilla y la misma red, las dos versiones de velocidad tienen los mismos puntos, pedidos, lotes y flota. Los cierres se sortean con la misma regla sobre los caminos más cortos de cada versión, así que pueden caer en otros tramos.
 
@@ -314,7 +314,7 @@ Las tablas completas, con todas las métricas, están en el `resumen.md` de cada
 
 Corrida principal: 30 escenarios por carga, 90 en total, cuatro políticas y 360 jornadas. Los escenarios tienen en promedio 49 puntos, 7,5 vehículos y 5,6 cierres. La carga holgada son 100 pedidos, la media 125 y la alta 149.
 
-En cada tabla, las tres primeras columnas de cifras son medias por política. Las líneas base son `ingenua`, que atiende por orden de llegada, y `experta`, que atiende primero lo más urgente y saca primero lo que vence primero. Las diferencias son la media pareada por semilla con su IC del 95 % (t de Student, 29 grados de libertad). Las dos últimas columnas comparan con la sección 8: la misma diferencia `despachox` − `experta` con las velocidades del modelo sobre la misma red (9.3), y la que se reportó en la sección 8.3, sobre la red urbana. Mientras la corrida de la misma red no termine, esa columna dice «s. d.». Los supuestos están en la sección 9.6.
+En cada tabla, las tres primeras columnas de cifras son medias por política. Las líneas base son `ingenua`, que atiende por orden de llegada, y `experta`, que atiende primero lo más urgente y saca primero lo que vence primero. Las diferencias son la media pareada por semilla con su IC del 95 % (t de Student, 29 grados de libertad). Las dos últimas columnas dan la misma diferencia `despachox` − `experta` con las velocidades del modelo: sobre la misma red y las mismas semillas (9.3), y la que se reportó en la sección 8.3, sobre la red urbana. Mientras la corrida de la misma red no termine, esa columna dice «s. d.». Los supuestos están en la sección 9.6.
 
 **Críticos a tiempo (%).** Pedidos de puntos críticos entregados antes de su hora límite. 30 escenarios por carga.
 
@@ -412,20 +412,20 @@ La corrida con los vencimientos de `datos_publicos/vida_util.csv`, en lugar del 
 
 Todo lo demás es igual que en las secciones 2 y 6.
 
-| Supuesto | Valor |
-|---|---|
-| Velocidad por tipo de vía y vehículo | `datos_publicos/velocidades.csv`: velocidades de la tesis UNAL de 2019 (tabla 14) donde hay dato, medidas con GPS: por confirmar por una persona. Asignar `tertiary` a colectora y `unclassified` y `residential` a vía local es un supuesto del CSV |
-| Campero y moto | El campero, igual que el camión; la moto, 11 % más rápido. Supuestos del CSV |
-| Hora del día | La velocidad del bus en horas de entrada, almuerzo y salida vale para toda la jornada y para los tres vehículos |
-| `maxspeed` de OpenStreetMap | No se usa |
-| Lo que sabe el optimizador | Planea con las mismas velocidades de la jornada simulada, igual que las líneas base. El producto no cambió: `despacho/red.py` sigue con las velocidades del modelo, así que sus tiempos de llegada salen más cortos que estos. Cambiar `red.py` es decisión de B. No se midió un optimizador que planee con velocidades equivocadas |
-| Red | `manizales_region.graphml`, la del producto |
-| Máquina | 2 núcleos, compartidos con otras sesiones. La búsqueda del optimizador se corta por reloj, así que con la máquina cargada busca menos |
+| Supuesto | Valor | Estado |
+|---|---|---|
+| Velocidad por tipo de vía y vehículo | `datos_publicos/velocidades.csv`, donde hay dato: velocidades derivadas de mediciones GPS de un bus en Manizales y asignadas por tipo de vía y pendiente (tesis UNAL de 2019, tabla 14, pp. 46 a 48). Asignar `tertiary` a colectora y `unclassified` y `residential` a vía local es un supuesto del CSV | revisado por máquina; falta que una persona abra la tesis |
+| Campero y moto | El campero, igual que el camión; la moto, 11 % más rápido | supuesto del CSV |
+| Hora del día | La velocidad del bus en horas de entrada, almuerzo y salida vale para toda la jornada y para los tres vehículos | supuesto nuestro |
+| `maxspeed` de OpenStreetMap | No se usa | supuesto nuestro |
+| Lo que sabe el optimizador | Planea con las mismas velocidades de la jornada simulada, igual que las líneas base. El producto no cambió: `despacho/red.py` sigue con las velocidades del modelo, así que sus tiempos de llegada salen más cortos que estos. Cambiar `red.py` es decisión de B. No se midió un optimizador que planee con velocidades equivocadas | supuesto nuestro |
+| Red | `manizales_region.graphml`, la del producto | trazado de OpenStreetMap |
+| Máquina | 2 núcleos, compartidos con otras sesiones. La búsqueda del optimizador se corta por reloj, así que con la máquina cargada busca menos | condición de la corrida |
 
 ### 9.7 Qué decir en el pitch (por aprobar)
 
-1. Con las velocidades de la tesis UNAL de 2019 (tabla 14), DespachoX entrega a tiempo entre 23 y 58 puntos porcentuales más de pedidos críticos que el despacho por orden de llegada, en 90 escenarios simulados con cierres de vías.
+1. Con velocidades derivadas de mediciones GPS de un bus en Manizales y asignadas por tipo de vía y pendiente (tesis UNAL de 2019, tabla 14, pp. 46 a 48), DespachoX entrega a tiempo entre 23 y 58 puntos porcentuales más de pedidos críticos que el despacho por orden de llegada, en 90 escenarios simulados con cierres de vías.
 2. Frente a un despachador con oficio que ya prioriza lo urgente, gana entre 1,5 y 6,5 puntos en críticos a tiempo y recorre entre 42 y 56 km menos por jornada; en el total de entregas empata, salvo con carga alta, donde gana 3 puntos.
 3. Con DespachoX y con el despachador con oficio, los perecederos vencidos quedan en 0,0 %, y el despacho por orden de llegada pasa la meta del 5 % con carga alta.
 
-Marcas: por aprobar. Velocidades de la tesis UNAL de 2019 (tabla 14), medidas con GPS: por confirmar por una persona. Son cifras de simulación medidas por nosotros: 30 escenarios por carga, 90 en total, semillas 20261150 a 20261179, factor crítico 3, IC del 95 %. Falta la corrida de la misma red con las velocidades del modelo (9.3) para saber cuánto de la mejora frente al despachador con oficio viene de la velocidad y cuánto de la red.
+Marcas: por aprobar. Fuente de las velocidades: revisado por máquina; falta que una persona abra la tesis. Son cifras de simulación medidas por nosotros: 30 escenarios por carga, 90 en total, semillas 20261150 a 20261179, factor crítico 3, IC del 95 %. Falta la corrida de la misma red con las velocidades del modelo (9.3) para saber cuánto de la mejora frente al despachador con oficio viene de la velocidad y cuánto de la red.
