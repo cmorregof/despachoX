@@ -30,10 +30,29 @@ Esa tabla es la entrada de tu tarea 2.
 
 **La pregunta que debes poder responder:** «¿Quién decide, el sistema o la persona?» y «¿cómo lee el despachador mil pedidos?».
 
-## Tarea 3 · La demo y su respaldo
+## Tarea 3 · El tablero sin internet
+
+Diseño completo en `docs/SIN_CONEXION.md`. Pídeselo a tu sesión de Claude Code cuando termine la etapa 1 de C2:
+
+- [ ] **Mapa de fondo sin conexión** con `DESPACHOX_MAPA=local`: dibujar como fondo las vías de la red guardada en disco (`despacho/cache/`), en gris claro, en vez de las teselas de OpenStreetMap. **No descargar teselas en bloque**: la política de uso de los servidores de OpenStreetMap lo prohíbe. La red vial ya la tenemos, así que el fondo sale de ahí.
+- [ ] Botón **«Imprimir hojas de ruta»** con el plan aprobado, que llama `despacho.hoja.generar` y ofrece los PDF para descargar. Carlos avisa por el canal cuando la función exista.
+- [ ] Registrar entregas por código de paquete (lo que el conductor trae anotado en la hoja).
+
+## Tarea 4 · La demo y su respaldo
 
 - [ ] Entra a https://innovo-hub.netlify.app con tu correo UNAL y pídeles a Nicolás y a José Manuel que hagan lo mismo.
 - [ ] Ensaya la «Versión de 75 segundos» de `docs/GUION_DEMO.md` hasta hacer los clics sin mirar.
 - [ ] Esta noche, con los datos recién reiniciados, graba la pantalla haciendo esa versión. Súbela a la carpeta de Drive. Enlace: ______
+
+## Tarea 5 · Pestaña «Territorio» (mentoría 1)
+
+- [ ] Pídele a tu Claude Code la parte C de `encargos/T1_TERRITORIO.md`: una pestaña con la tabla por comuna y vereda y la lista de barrios sin pedidos. Puede empezar antes de que exista `despacho/territorio.py`; mientras tanto, la pestaña dice «Pendiente».
+- [ ] Va después de la etapa 1 de C2 (lo que rompe la demo) y antes del mapa sin internet.
+
+## Tarea 6 · Enamorarse del problema, con Samuel (encargo P1)
+
+- [ ] Lee `encargos/P1_PROBLEMA_SAMUEL_JACOBO.md`. Es un encargo para ustedes, no para Claude Code.
+- [ ] Habla esta noche con personas reales (Banco de Alimentos, una líder de junta, un conductor) usando el guion de `docs/MENTORIA_1.md`.
+- [ ] Entrega `docs/PROPUESTA_P1.md` y conversa cinco minutos con Carlos y Fable a las 9:00 p. m.
 
 ## Notas y bloqueos

@@ -25,7 +25,7 @@ def test_respuesta_del_modelo_se_valida_y_se_recorta(monkeypatch):
     import anthropic
     from types import SimpleNamespace
     lectura = E.Lectura(tipo="otro", dudas=[], cierre=None, pedido=E.Pedido(
-        lugar=" San José ", familias=-3, urgencia=9, horas_limite=500,
+        lugar=" San José ", familias=-3, personas=0, bebes=None, urgencia=9, horas_limite=500,
         productos=[E.Producto(producto=" Arroz ", kg=0), E.Producto(producto="", kg=None)]))
     pedido = {}
 

@@ -1,0 +1,51 @@
+id,nombre,barrio,comuna,lat,lon,critico
+1,Albergue Coliseo Mayor,Palogrande,Palogrande,5.058001,-75.488449,1
+2,Albergue junto al Coliseo Menor,Guayacanes,Palogrande,5.055962,-75.488616,1
+3,ESE Hospital Departamental Universitario Santa Sofía,Asturias,Atardeceres,5.057983,-75.529544,1
+4,Hospital de Caldas,Bavaria,La Estación,5.062585,-75.500464,1
+5,Hospital Infantil Universitario Rafael Henao Toro,Versalles,La Estación,5.063833,-75.498681,1
+6,Hospital Geriátrico San Isidro,,Atardeceres,5.096325,-75.528954,1
+7,Assbasalud Clínica San Cayetano,San Cayetano,Ciudadela del Norte,5.073819,-75.493978,1
+8,Assbasalud La Enea,La Enea,Tesorito,5.031543,-75.467224,1
+9,Assbasalud Centro Piloto,San José,San José,5.070725,-75.514719,1
+10,Assbasalud Cervantes (Calle 36A),Cervantes,La Fuente,5.063662,-75.509369,1
+11,CDI Angelitos sede 1,La Carola,Nuevo Horizonte,5.065972,-75.486681,1
+12,CDI Aranjuez,Aranjuez,Universitaria,5.042564,-75.500610,1
+13,CDI Campoamor,Campoamor,Cumanday,5.064108,-75.512467,1
+14,CDI Cervantes 1,Campoamor,Cumanday,5.064152,-75.510963,1
+15,CDI El Caribe,El Caribe,Ciudadela del Norte,5.073692,-75.497414,1
+16,CDI El Carmen 1,El Carmen,La Macarena,5.060917,-75.519544,1
+17,CDI Jesús de la Buena Esperanza,20 de Julio,La Macarena,5.061775,-75.520942,1
+18,CDI La Isla,Marmato,La Fuente,5.063633,-75.517250,1
+19,CDI Las Palomas,La Sultana,Ecoturística Cerro de Oro,5.060330,-75.474980,1
+20,CDI La Toscana,La Toscana,Ecoturística Cerro de Oro,5.060786,-75.479439,1
+21,CDI Malhabar,Malhabar,Universitaria,5.046061,-75.503097,1
+22,CDI Mariela Quintero,Pío XII,Universitaria,5.050948,-75.500447,1
+23,CDI Mundo de Colores,Los Agustinos,Cumanday,5.070028,-75.524250,1
+24,CDI Pelusa,Delicias,San José,5.072297,-75.512519,1
+25,CDI Pulgarcito,San Antonio,La Macarena,5.064978,-75.521072,1
+26,CDI San José,Los Agustinos,Cumanday,5.070000,-75.524167,1
+27,CDI San Sebastián,San Sebastián,Ciudadela del Norte,5.086183,-75.490241,1
+28,CDI Solferino,Portón del Guamo,Nuevo Horizonte,5.076171,-75.489347,1
+29,CDI Villahermosa,Villahermosa,Nuevo Horizonte,5.068556,-75.491611,1
+30,Hogar Infantil Bellavista,Chipre,Atardeceres,5.077731,-75.525636,1
+31,Hogar Infantil Florida Blanca,La Enea,Tesorito,5.032500,-75.463056,1
+32,Hogar Infantil Los Ositos,Vivienda Popular,Universitaria,5.052219,-75.498506,1
+33,Hogar Infantil Los Ositos sede Versalles,Versalles,La Estación,5.060417,-75.499611,1
+34,Hogar Infantil Santa Bernardita,Chipre,Atardeceres,5.072892,-75.525897,1
+35,Centro Día Solferino (adulto mayor),Portón del Guamo,Nuevo Horizonte,5.076802,-75.488706,1
+36,CISCO Bosques del Norte,Bosques del Norte,Ciudadela del Norte,5.080773,-75.488286,0
+37,CISCO La Enea,San Marcel,Tesorito,5.032564,-75.466050,0
+38,CISCO El Nevado,El Nevado,La Fuente,5.060341,-75.513465,0
+39,Casa de la Cultura (Calle 55 # 12-35),Villahermosa,Nuevo Horizonte,5.068360,-75.489902,0
+40,Casa de la Cultura Malhabar,Malhabar,Universitaria,5.045971,-75.503407,0
+41,Instituto Manizales,San José,San José,5.071510,-75.513612,0
+42,Institución Educativa Leonardo da Vinci,Villa Carmenza,La Fuente,5.059612,-75.508587,0
+43,Colegio San Luis Gonzaga,Arboleda,Palogrande,5.059449,-75.498507,0
+44,Salón JAC vereda La Aurora,,,5.074119,-75.547264,0
+45,Caseta comunal Cuchilla del Salado,,,5.114028,-75.541583,0
+46,Casa de la Cultura Alto Bonito,,,5.114141,-75.509807,0
+47,Salón JAC vereda Alto del Naranjo,,,5.009237,-75.560941,0
+48,Salón JAC La Violeta,,,4.998677,-75.572529,0
+49,Caseta comunal vereda El Guineo,,,5.131295,-75.555382,0
+50,Caseta comunal Mina Rica,,,5.133400,-75.595865,0

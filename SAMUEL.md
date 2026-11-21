@@ -29,12 +29,30 @@ Esa tabla es la entrada de tu tarea 2.
 
 **La pregunta que debes poder responder:** «¿Qué pasa si la IA entiende mal un mensaje?» y «¿cuántos mensajes aguanta?».
 
-## Tarea 3 · Ficha 1 a 3 y pitch
+## Tarea 3 · Pedidos por SMS (cuando termines la etapa 1 del bot)
 
-La ficha está vacía y es lo que revisa la mentoría. Tú presentas, así que la escribes tú, aunque Claude te ayude a redactar.
+Después del sismo los datos móviles colapsan y los SMS aguantan más. Diseño completo en `docs/SIN_CONEXION.md`.
 
-- [ ] Componentes 1, 2 y 3 de `docs/FICHA.md`. Para el 1, abre los enlaces de `docs/investigacion/04_evidencia_del_problema.md` y pasa tres cifras verificadas a `docs/FUENTES.md`. No uses «desabastecimiento en 48 horas».
+- [ ] En Claude Code: «Haz git pull --rebase, lee `encargos/A3_SMS_SAMUEL.md` y ejecútalo».
+- [ ] Lector de SMS por reglas, sin internet ni modelo, antes del congelamiento.
+- [ ] Pasarela con un celular Android, si alcanza. Si no, queda descrita para el plan de 30 días.
+
+**La pregunta que debes poder responder:** «¿Y si no hay datos móviles?»
+
+## Tarea 4 · Revisar la ficha y preparar el pitch
+
+La ficha completa la está redactando un agente de Claude para no gastar tu cupo (`docs/FICHA.md`, `docs/FICHA_MENTORIA.md` y `docs/FUENTES.md`). Tú presentas, así que tu trabajo es que sea tuya.
+
+- [ ] Cuando aparezca en el canal, léela entera y marca lo que no dirías así o no entiendes.
+- [ ] Abre tú mismo los enlaces de las cifras del componente 1 y cambia en `docs/FUENTES.md` «agente» por tu nombre en las que confirmes.
+- [ ] Lleva `docs/FICHA_MENTORIA.md` a la mentoría.
 - [ ] Carpeta «DespachoX» en Drive, compartida con «cualquier persona con el enlace puede ver». Enlace: ______
 - [ ] Un ensayo cronometrado de `pitch/GUION.md`. Duración: ______
+
+## Tarea 5 · Enamorarse del problema, con Jacobo (encargo P1)
+
+- [ ] Lee `encargos/P1_PROBLEMA_SAMUEL_JACOBO.md`. Es un encargo para ustedes, no para Claude Code.
+- [ ] Habla esta noche con personas reales (Banco de Alimentos, una líder de junta, un conductor) usando el guion de `docs/MENTORIA_1.md`.
+- [ ] Entrega `docs/PROPUESTA_P1.md` y conversa cinco minutos con Carlos y Fable a las 9:00 p. m.
 
 ## Notas y bloqueos

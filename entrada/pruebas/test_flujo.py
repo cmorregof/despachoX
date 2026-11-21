@@ -38,12 +38,13 @@ def test_los_quince_mensajes_dejan_la_fila_esperada(con, mesa):
 
 def test_pedido_del_encargo_de_punta_a_punta(con, chat):
     r, = chat.escribir(TEXTO[1])
-    assert "40 familias en san jose" in r.texto and "arroz y leche" in r.texto and "despachador" in r.texto
+    assert "40 familias en san jose" in r.texto and "arroz (80 kg aprox.) y leche (80 kg aprox.)" in r.texto and "despachador" in r.texto
     assert "San José" in r.texto and r.botones[0][0] == "Sí, es ahí" and r.botones[-1][0] == "Enviar mi ubicación"
     assert any(t.startswith("San Jorge") for t, _ in r.botones)            # una alternativa por candidato
     p = una(con, "SELECT * FROM pedidos")
     assert (p["estado"], p["familias"], p["punto_id"], p["urgencia"]) == ("nuevo", 40, None, 2)
-    assert json.loads(p["productos"]) == [{"producto": "arroz", "kg": None}, {"producto": "leche", "kg": None}]
+    assert json.loads(p["productos"]) == [{"producto": "arroz", "kg": 80, "supuesto": "2 kg por familia"},
+                                          {"producto": "leche", "kg": 80, "supuesto": "2 kg por familia"}]
     assert p["remitente_hash"] == hash_remitente(1001) and "1001" not in p["remitente_hash"]
     u = una(con, "SELECT * FROM ubicaciones")
     assert (u["tabla"], u["fila_id"], u["estado"]) == ("pedidos", p["id"], "propuesta")
@@ -99,7 +100,7 @@ def test_lugar_desconocido_se_fija_con_la_ubicacion_del_chat(con, mesa):
 
 def test_respuesta_en_texto_libre_vuelve_a_resolver(con, mesa):
     mesa.extraer = extractor_falso({"somos 10 familias en el prado falta arroz": {
-        "tipo": "pedido", "pedido": {"lugar": "el prado", "familias": 10, "urgencia": 2, "horas_limite": None,
+        "tipo": "pedido", "pedido": {"lugar": "el prado", "familias": 10, "personas": None, "bebes": None, "urgencia": 2, "horas_limite": None,
                                      "productos": [{"producto": "arroz", "kg": None}]}}})
     chat = ClienteSimulado(mesa)
     r, = chat.escribir("somos 10 familias en el prado falta arroz")
@@ -161,14 +162,21 @@ def test_lo_que_no_es_nada_no_guarda_fila(con, chat):
     assert una(con, "SELECT COUNT(*) FROM pedidos")[0] + una(con, "SELECT COUNT(*) FROM cierres")[0] == 0
 
 
-def test_sin_modelo_el_bot_no_se_cae_y_guarda_el_texto(con):
+def test_sin_modelo_el_bot_lee_por_reglas_y_no_guarda_datos_personales(con):
     chat = ClienteSimulado(Mesa(con, extraer=E.crudo, elegir=None))
     r, = chat.escribir(TEXTO[15])
+    assert "20 familias en fatima" in r.texto and "reglas" not in r.texto
+    p = una(con, "SELECT * FROM pedidos")
+    assert (p["estado"], p["punto_id"], p["familias"]) == ("nuevo", None, 20)
+    assert "Pedro" not in p["texto_original"] and "3105551234" not in p["texto_original"]
+
+
+def test_sin_modelo_lo_que_no_se_entiende_se_guarda_crudo(con):
+    chat = ClienteSimulado(Mesa(con, extraer=E.crudo, elegir=None))
+    r, = chat.escribir("hola buenas como hago para ser voluntario")
     assert "un despachador lo revisará" in r.texto
     p = una(con, "SELECT * FROM pedidos")
-    assert p["estado"] == "nuevo" and p["punto_id"] is None and p["familias"] is None
-    assert "Pedro" not in p["texto_original"] and "3105551234" not in p["texto_original"]
-    assert "somos 20 familias en fatima" in p["texto_original"]
+    assert p["estado"] == "nuevo" and p["familias"] is None and "voluntario" in p["texto_original"]
 
 
 def test_no_se_guardan_nombre_telefono_ni_chat(con, chat):
@@ -198,15 +206,15 @@ def test_kilos_y_plazo(con, chat):
     assert una(con, "SELECT kg_estimado FROM pedidos")[0] == 70
     ClienteSimulado(chat.m.mesa, 9).escribir(TEXTO[6])
     p = con.execute("SELECT * FROM pedidos ORDER BY id DESC").fetchone()
-    assert p["kg_estimado"] is None and p["limite_en"] > p["creado_en"]
+    assert p["kg_estimado"] == 240 and p["limite_en"] > p["creado_en"]       # 80 familias x (2 leche + 1 huevos)
 
 
 def test_estado_ayuda_y_mensajes_que_no_son_texto(con, chat):
     assert "No tengo pedidos" in chat.comando("estado")[0].texto
     chat.escribir(TEXTO[1]); chat.pulsar("Sí")
     e, = chat.comando("estado")
-    assert "en revisión" in e.texto and "San José" in e.texto
-    assert "mesa de despacho" in chat.comando("inicio")[0].texto
+    assert "recibido. Una persona de la mesa lo está revisando" in e.texto and "San José" in e.texto
+    assert "<code>Somos 40 familias en San José" in chat.comando("inicio")[0].texto
     assert "solo leo texto" in chat.enviar_foto()[0].texto
     assert "No tengo un reporte tuyo pendiente" in chat.enviar_ubicacion(5.0, -75.5)[0].texto
 

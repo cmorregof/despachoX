@@ -1,0 +1,71 @@
+% Sección 6
+\section{Qué mide hoy el prototipo}\label{sec:prototipo}
+
+\subsection{Los indicadores del reto}
+
+La ficha de la vertical 04 mide el resultado con dos indicadores. El primero es el porcentaje de entregas a tiempo en puntos críticos, como un albergue o un comedor comunitario. El segundo es el desperdicio de alimentos perecederos, que debe quedar por debajo del 5~\%. Hoy los medimos solo en simulación, porque el prototipo no ha operado con datos reales de Manizales.
+
+\subsection{Cómo se simuló}
+
+La simulación compara cuatro formas de despachar la misma jornada, con los mismos pedidos, la misma flota y los mismos cierres. Usa el grafo de conducción de Manizales y Villamaría de OpenStreetMap. Cada escenario tiene entre 30 y 80 puntos de entrega, de los cuales el 20~\% son críticos. La flota mezcla camiones, camperos y motos, y en cada jornada se cierran entre 3 y 8 tramos de vía. Nadie conoce un cierre hasta que un vehículo intenta pasar por él. La jornada dura 14 horas, y lo que no se entregó para entonces cuenta como no entregado.
+
+Las cuatro políticas se distinguen por cómo deciden. La línea base, llamada ingenua, atiende por orden de llegada y saca los lotes de bodega por orden de ingreso. La política experta imita a un despachador con oficio, que atiende primero lo urgente y saca primero lo que vence. Las otras dos usan el optimizador de DespachoX. Una lo llama una sola vez al inicio, y la otra, que es DespachoX completo, recalcula con cada cierre, cada tanda de pedidos y cada regreso de un vehículo al acopio.
+
+Cada nivel de carga se corrió con 30 semillas, es decir, 30 jornadas sintéticas, las mismas para todas las políticas. Los resultados se comparan por pares, semilla a semilla, con un intervalo de confianza del 95~\%. Todos los datos de demanda, flota, inventario y cierres son sintéticos. Las velocidades, los tiempos y los plazos son supuestos del equipo, y ninguno viene de una operación real del Banco de Alimentos ni de los organismos de socorro. Nadie del equipo ha revisado todavía estos resultados.
+
+\subsection{Tres cifras con su línea base}
+
+La tabla~\ref{tab:simulacion} trae las tres cifras que el agente de simulación propuso para el pitch, con su línea base y su número de escenarios. Todas son simulación con supuestos nuestros, y su nivel de evidencia es \textbf{Inferencia}. Las fuentes son las entradas de las 4:57~p.\,m. del canal del equipo (\ruta{torre/CANAL.md}) y la sección 8 de \ruta{docs/SIMULACION.md}, en la rama principal del repositorio. La corrida con flota corta todavía no está descrita en \ruta{docs/SIMULACION.md}, así que su número de semillas sale de su archivo de resultados.
+
+{\footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{longtable}{L{0.20\linewidth} L{0.15\linewidth} L{0.24\linewidth} L{0.32\linewidth}}
+\caption{Cifras de simulación con su línea base. Ninguna es una medición en la operación real.}\label{tab:simulacion}\\
+\toprule
+\textbf{Indicador} & \textbf{DespachoX} & \textbf{Línea base} & \textbf{Escenarios y condiciones}\\
+\midrule
+\endfirsthead
+\multicolumn{4}{l}{\small\itshape Tabla~\ref{tab:simulacion}, continuación}\\
+\toprule
+\textbf{Indicador} & \textbf{DespachoX} & \textbf{Línea base} & \textbf{Escenarios y condiciones}\\
+\midrule
+\endhead
+\midrule
+\multicolumn{4}{r}{\small\itshape Sigue en la página siguiente}\\
+\endfoot
+\bottomrule
+\endlastfoot
+(1) Entregas a tiempo en puntos críticos, carga media & 99,5~\% & 70,9~\% con despacho por orden de llegada. Diferencia de +28,6 puntos, con intervalo [22,4; 34,7] & Simulación con 30 semillas nuevas que no intervinieron en ninguna decisión. Usa un peso de 3 para los puntos críticos (\texttt{FACTOR\_CRITICO}), propuesto a las 4:57~p.\,m. y que a esa hora no era todavía el valor por defecto del código.\\
+(2) Perecederos vencidos, carga media & 0,0~\% & 1,8~\% al sacar de bodega por orden de ingreso & Simulación con 30 semillas. Con dos camperos menos, también en 30 semillas, el orden de ingreso llega al 5,7~\% y pasa la meta del 5~\%, mientras DespachoX sigue en 0,0~\%.\\
+(3) Entregas a tiempo en todos los puntos, con un 10~\% de pedidos mal ubicados & +6,0 puntos, con intervalo [4,5; 7,5] & El mismo sistema sin el paso de confirmar la ubicación con quien pidió & Simulación con 30 semillas, carga media. El 10~\% es un supuesto sin fuente, porque no sabemos cuántos pedidos llegan mal ubicados.\\
+\end{longtable}
+}
+
+La primera cifra cambia poco con ese peso. Con el peso de 1 que usa hoy el código, la primera ronda dio una diferencia parecida en carga media, de 28,9 puntos con intervalo [23,2; 34,7]. La ventaja frente al despacho por orden de llegada crece con la carga. En la primera ronda fue de 12, 29 y 46 puntos en carga holgada, media y alta, y no sabemos cuál de esas cargas se parece a la real.
+
+\subsection{Lo que hay que saber decir frente a un despachador experto}
+
+Un despachador con experiencia consigue casi lo mismo que DespachoX en los dos indicadores del reto, y conviene decirlo antes de que lo diga el jurado. En entregas a tiempo en puntos críticos, DespachoX empata con la política experta. En las 30 semillas nuevas, con el peso de 3, la diferencia fue de 0,3, 1,7 y 0,8 puntos según la carga, y todos los intervalos incluyen el cero. En entregas a tiempo de todos los puntos, DespachoX queda unos 2 puntos por debajo en carga media y alta. En perecederos, los dos quedan en 0,0~\%, porque el desperdicio lo resuelve una regla de bodega y no el ruteo.
+
+Hay dos situaciones simuladas en que DespachoX supera a la experta. Con la flota corta, de dos camperos menos, en carga media y con 30 semillas, DespachoX entrega a tiempo 3,4 puntos más en todos los puntos, con intervalo [1,3; 5,5]. Con un 10~\% de pedidos mal ubicados, también en carga media y con 30 semillas, confirmar la ubicación le da 3,0 puntos más en puntos críticos [0,9; 5,2] y 3,4 más en todos los puntos [2,1; 4,8]. Esta segunda ventaja depende de un supuesto, que el despachador experto no llama a confirmar cada pedido. Si lo hiciera, tendría el mismo beneficio a costa de su tiempo, que la simulación no modela.
+
+DespachoX también recorre menos kilómetros. En las semillas nuevas, su flota hizo entre 47 y 60 km menos por jornada que la política experta. En la primera ronda la diferencia equivalía a entre el 5~\% y el 11~\% del recorrido.
+
+La prioridad tiene un costo en equidad. Atender primero lo crítico deja para el final a los puntos de baja urgencia. En la primera ronda, con DespachoX el punto peor atendido esperó 2,3 horas más en carga media y 4,3 horas más en carga alta que con el despacho por orden de llegada.
+
+Los cierres viales pesan poco en estos resultados. Con 0, 5 o 10 cierres por jornada, la ventaja sobre la línea base casi no cambia, porque viene de priorizar los pedidos críticos. La red urbana simulada tiene caminos alternos, y el aviso por radio desvía a todos los conductores por igual. Esto puede cambiar en la red de la región, donde hay menos alternativas. Esa última idea es una hipótesis que la simulación todavía no prueba.
+
+Frente a un experto, entonces, el argumento de DespachoX es la disponibilidad de su criterio. El sistema pone las reglas de un despachador con oficio al alcance de cualquier voluntario, a cualquier hora. Además las combina con información que hoy llega tarde o no llega, como los pedidos del chat, los cierres que reportan los conductores y la confirmación de cada entrega. La simulación todavía no mide el valor de esa información, salvo en el experimento de la ubicación.
+
+\subsection{Lo que la simulación no prueba}
+
+\begin{itemize}
+\item No prueba que DespachoX supere a un buen despachador humano en los indicadores del reto.
+\item No mide el valor de recibir los pedidos por chat ni el de la trazabilidad, salvo el paso de confirmar la ubicación.
+\item No valida sus supuestos. Las velocidades, los tiempos de carga y de entrega, los plazos, la flota, la demanda y los cierres son nuestros.
+\item No representa bien los perecederos. Hay un solo acopio, tanto inventario perecedero como demanda, y lotes que vencen entre 6 y 48 horas.
+\item No incluye errores humanos ni del modelo de lenguaje, y cubre una sola jornada de 14 horas.
+\end{itemize}
+
+Según el canal, a las 4:57~p.\,m. seguían en curso dos corridas. Una usa 3 segundos de búsqueda por llamada al optimizador, y la otra corre la carga media sobre la red ampliada de la región. El agente de simulación esperaba tenerlas hacia las 5:45~p.\,m.

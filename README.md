@@ -81,9 +81,9 @@ El argumento honesto: DespachoX pone al alcance de cualquier voluntario lo que h
 
 | Quién | Frente | Qué está haciendo | Encargo para Claude Code | Rama |
 |---|---|---|---|---|
-| **Samuel** | Bot | Que entienda a un vecino («6 bebés sin leche»), que sea cómodo de usar (botones, notas de voz, aviso cuando el pedido sale) y que aguante miles de mensajes, medido | `encargos/A2_BOT_SAMUEL.md` | `samuel-bot` |
-| **Jacobo** | Tablero | Corregir lo que rompe la demo, un **resumen de la mesa hecho por un modelo** para cuando hay miles de pedidos, y una pantalla con filtros para alguien con prisa | `encargos/C2_TABLERO_JACOBO.md` | `jacobo-tablero` |
-| **Carlos** | Optimizador e integración | Trazabilidad, la patente UNAL dentro del modelo, fusionar las ramas sin romper la nube, y las conversaciones con la organización, profesores y usuarios reales | `encargos/RONDA_3.md` (parte B) | `carlos-despacho` |
+| **Samuel** | Bot | Que entienda a un vecino («6 bebés sin leche»), que sea cómodo de usar (botones, notas de voz, aviso cuando el pedido sale) y que aguante miles de mensajes, medido. Después, **pedidos por SMS** para cuando no hay datos | `encargos/A2_BOT_SAMUEL.md`, luego `encargos/A3_SMS_SAMUEL.md` | `samuel-bot` |
+| **Jacobo** | Tablero | Corregir lo que rompe la demo, un **resumen de la mesa hecho por un modelo** para cuando hay miles de pedidos, una pantalla con filtros para alguien con prisa, y un **mapa que funciona sin internet** | `encargos/C2_TABLERO_JACOBO.md` y la tarea 3 de `JACOBO.md` | `jacobo-tablero` |
+| **Carlos** | Optimizador e integración | Trazabilidad, hoja de ruta impresa con QR para trabajar sin señal, la patente UNAL dentro del modelo, fusionar las ramas sin romper la nube, y las conversaciones con la organización, profesores y usuarios reales | `encargos/RONDA_3.md` (parte B), luego `encargos/B3_SIN_CONEXION_CARLOS.md` | `carlos-despacho` |
 
 Las tareas con casillas de cada uno están en `SAMUEL.md`, `JACOBO.md` y `CARLOS.md`. Además, Samuel escribe la ficha y presenta; Jacobo opera la demo y graba el video de respaldo.
 
@@ -157,6 +157,9 @@ El código cubre sobre todo el criterio 2. Los otros 75 puntos se ganan escribie
 | Cómo se entrega y los horarios oficiales | `docs/PLATAFORMA_INNOVO.md` |
 | Qué patente UNAL usamos | `docs/investigacion/06_patentes_sipi.md` |
 | Cómo correr todo en la nube | `docs/DESPLIEGUE.md` |
+| Cómo funciona sin internet | `docs/SIN_CONEXION.md` |
+| El contexto regional, para mentores y jurado | `docs/informe/informe_contexto.pdf` |
+| Lo que dijo la mentoría 1 y la idea que se discute | `docs/MENTORIA_1.md` |
 
 ## Reglas del equipo
 

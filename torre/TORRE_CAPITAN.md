@@ -1,5 +1,5 @@
 # Torre de control · Carlos · capitán
-Última actualización: viernes 20 de noviembre de 2026, 16:25
+Última actualización: viernes 20 de noviembre de 2026, 22:50
 
 ## Estado en una frase
 El módulo B corre de punta a punta: semilla cargada, plan en 10 s y recálculo que evita la vía cerrada. Faltan las pruebas (agente en curso) y, esta noche, la simulación.
@@ -9,6 +9,7 @@ El módulo B corre de punta a punta: semilla cargada, plan en 10 s y recálculo 
 - Propuesta de producto para la vertical 04 y horario de las dos jornadas.
 - Prompt del equipo en `CLAUDE.md` y `docs/PROMPT_EQUIPO.md`.
 - Revisión del estado del arte con cinco agentes: síntesis en `docs/ESTADO_DEL_ARTE.md`, informes en `docs/investigacion/`.
+- 16:55 · Datos de Railway reiniciados para la segunda prueba de Jacobo, por SSH y sin redesplegar (`railway ssh` y `python -m despacho.semilla --cargar --reiniciar`). Antes había 20 pedidos asignados, 3 planes y 20 paquetes; quedan 20 pedidos (17 confirmados y 3 nuevos), sin planes, paquetes ni cierres. Respaldo de lo anterior en `/data/respaldo_antes_prueba2.db`.
 
 ## Rol B · despacho (viernes)
 Hecho:
@@ -61,9 +62,9 @@ Salida de `python -m lugares.nomenclator "la siria" "la pana" "por la terminal"`
 
 Pruebas: `despacho/tests` 25 pasan (12 nuevas en `test_ronda3.py`); simulación 24 pasan con el grafo urbano; `tablero`, `lugares` y `entrada` 64 pasan y 1 se omite. Punta a punta en una base temporal con la semilla y el grafo regional: plan 1 con 17 de 17 y 3 de 3 críticos a tiempo; aprobado, 17 paquetes; un pedido sintético sin cantidad en un albergue entra al recálculo marcado «sin kilos ni familias: se supuso 1 familia, 10 kg»; rechazar ese recálculo deja el plan 1 aprobado; aprobar el siguiente lo reemplaza y crea 18 paquetes (los 17 conservan código); entregar por línea de órdenes funciona y la segunda vez se rechaza.
 
-### Nube (16:25)
+### Nube (16:25; nota de las 22:50)
 - Ronda 3 fusionada a `main` (2681c97) con 113 pruebas en verde; Railway la desplegó sin errores.
-- Fallo encontrado y corregido: la variable `DESPACHOX_DB` de Railway valía `samcarjac`, una ruta relativa dentro del contenedor y no en el volumen `/data`. Cada despliegue arrancaba sin base y recargaba la semilla. Así se perdieron el pedido real de La Enea y el plan 2 de las 3:55 p. m.; no se pueden recuperar. Ahora vale `/data/despachox.db`. El despliegue de las 4:17 p. m. cargó la semilla una última vez y el bot dice «Base: /data/despachox.db». Por SSH: la base está en `/data` y la red vial lleva en `/data/cache` desde las 3:37 p. m., así que el volumen sí persiste entre despliegues. No reinicié para confirmarlo: la acción se negó en esta sesión.
+- Fallo encontrado y corregido: la variable `DESPACHOX_DB` de Railway valía `samcarjac`, una ruta relativa dentro del contenedor y no en el volumen `/data`. Cada despliegue arrancaba sin base y recargaba la semilla. Así se perdieron el pedido real de La Enea y el plan 2 de las 3:55 p. m.; no se pueden recuperar. Ahora vale `/data/despachox.db`. El despliegue de las 4:17 p. m. cargó la semilla una última vez y el bot dice «Base: /data/despachox.db». Por SSH: la base está en `/data` y la red vial lleva en `/data/cache` desde las 3:37 p. m., así que el volumen sí persiste entre despliegues. No reinicié para confirmarlo: la acción se negó en esta sesión. A las 16:55 el capitán reinició los datos por SSH para la segunda prueba, así que el estado de la nube ya no es la semilla de las 4:17 p. m.
 
 ## En curso
 - Nada de B. Pendiente de otra sesión: encargo S2 de la simulación (barrido de `FACTOR_CRITICO`), que no se ejecutó, y el indicador A25 como riesgo de tramo.

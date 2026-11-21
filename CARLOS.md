@@ -31,7 +31,20 @@ Haz git pull --rebase, lee las entradas nuevas de torre/CANAL.md y ejecuta la pa
 - [ ] Un pedido urgente con cantidad supuesta sale marcado en el plan.
 - [ ] Prueba en la nube el paso que falta: un cierre en la avenida del Centro por el bot, recalcular y aprobar.
 
-## Tarea 3 · Lo que solo tú puedes hacer
+## Tarea 3 · Despacho sin conexión
+
+Cuando tu sesión termine la ronda 3:
+
+```
+Haz git pull --rebase, lee las entradas nuevas de torre/CANAL.md y ejecuta encargos/B3_SIN_CONEXION_CARLOS.md. Sigue en la rama carlos-despacho.
+```
+
+- [ ] Hoja de ruta impresa por vehículo, con un QR por paquete.
+- [ ] Arranque completo en un portátil con el wifi apagado.
+- [ ] Diapositiva de la escalera de degradación (`docs/SIN_CONEXION.md`) para el pitch.
+- [ ] Caminar hasta un equipo de la vertical de energía y conectividad y proponer «su red, nuestra mesa de despacho» para el plan de 30 a 90 días.
+
+## Tarea 4 · Lo que solo tú puedes hacer
 
 Los criterios 3 y 5 (30 puntos) siguen en cero, y dependen de personas.
 
@@ -40,5 +53,12 @@ Los criterios 3 y 5 (30 puntos) siguen en cero, y dependen de personas.
 - [ ] **Un profesor de logística de la Sede:** quince minutos. Nombre: ______
 - [ ] **Un usuario real** (Banco de Alimentos, Cruz Roja, Defensa Civil o gestión del riesgo). Nombre y cargo: ______
 - [ ] Mostrarle el bot y el tablero en vivo a ese usuario. Una frase suya vale más que cualquier función.
+
+## Tarea 5 · Lo que salió de la mentoría 1 (viernes, 5:10 p. m.)
+
+- [ ] Que tu sesión B-despacho ejecute la parte B de `encargos/T1_TERRITORIO.md`: `despacho/territorio.py`, la tabla por comuna y vereda.
+- [ ] Decidir si `FACTOR_CRITICO` pasa de 1 a 3, como propone la simulación en el canal (16:57). Fable recomienda que sí.
+- [ ] Hablar hoy con un usuario real usando el guion de `docs/MENTORIA_1.md`. Al Banco de Alimentos, una pregunta más: en un día normal, ¿reparten ustedes o las organizaciones recogen en la bodega?
+- [ ] Cerrar con Fable el diseño del piloto de 30 a 90 días para la recuperación del territorio.
 
 ## Notas y bloqueos
