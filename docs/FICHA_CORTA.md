@@ -37,7 +37,7 @@ El anexo técnico, con todas las cifras, supuestos y riesgos, está en `docs/FIC
 
 **En construcción.** La vista por comuna y vereda está en construcción para antes del congelamiento.
 
-**Simulación.** En 360 jornadas sintéticas sobre la red real de Manizales, con 30 semillas por nivel de carga, DespachoX sube los críticos a tiempo en 12,0, 28,9 y 46,3 puntos frente al despacho por orden de llegada [M]. Ningún intervalo del 95 % toca el cero. Frente a un despachador con oficio empata en críticos y queda unos 2 puntos abajo en el total de entregas a tiempo. A cambio, recorre entre 46,7 y 75,1 km menos por jornada. Los perecederos vencidos quedan en 0,0 %, frente a 0,5 %, 1,8 % y 3,5 % por orden de ingreso, por una regla de bodega que el despachador con oficio también cumple. Priorizar hace esperar al punto peor atendido entre 0,93 y 4,25 horas más que por orden de llegada. La corrida usó una media de 39,0 km/h en vías primarias, y un bus medido con GPS en Manizales promedió 22,6 km/h (tesis UNAL, 2019). También le dio al huevo una vida útil de horas, cuando dura días. Eso puede inflar entregas a tiempo, desperdicio y kilómetros ahorrados, y la simulación se está repitiendo con lo medido.
+**Simulación.** Con 30 escenarios por nivel de carga y 360 jornadas sobre la red real de Manizales, DespachoX sube los críticos a tiempo en 23,3, 44,7 y 57,9 puntos frente al despacho por orden de llegada [M]. Cada diferencia compara 30 jornadas por política, y ningún intervalo del 95 % toca el cero. Frente a un despachador con oficio, recorre 46,0, 56,0 y 42,2 km menos por jornada. En el total de entregas a tiempo empata con carga holgada y media, y con carga alta gana 3,0 puntos. Los perecederos vencidos quedan en 0,0 %, frente a 1,4 %, 3,4 % y 5,6 % por orden de ingreso, por una regla de bodega que el despachador con oficio también cumple. Priorizar hace esperar al punto peor atendido entre 1,95 y 3,82 horas más que por orden de llegada. Las velocidades son derivadas de mediciones GPS de un bus en Manizales y asignadas por tipo de vía y pendiente (tesis UNAL de 2019, tabla 14, pp. 46 a 48). La simulación usa la media por tipo de vía. La vida útil no se repitió con lo medido, y la corrida le sigue dando al huevo horas cuando dura días.
 
 ## 3. Conocimiento utilizado (15 puntos)
 
@@ -104,12 +104,12 @@ El anexo técnico, con todas las cifras, supuestos y riesgos, está en `docs/FIC
 
 | Indicador | Línea base | Meta | Verificación |
 |---|---|---|---|
-| Entregas a tiempo en puntos críticos | La del Banco. En simulación, 69,1 % por orden de llegada y 98,5 % con un despachador con oficio | Igual o mayor que la del Banco | Bitácora y código de cada entrega |
+| Entregas a tiempo en puntos críticos | La del Banco. En simulación, con carga media y 30 jornadas por política, 53,6 % por orden de llegada y 94,6 % con un despachador con oficio | Igual o mayor que la del Banco | Bitácora y código de cada entrega |
 | Desperdicio de perecederos | Kilos vencidos del registro del Banco | Menos del 5 % | Inventario con vencimientos |
 | Kilos entregados sobre kilos en acopio | La del Banco. Al sexto día del sismo, 41.163 frente a 404.587 kg | Mayor que la línea base | Inventario y confirmaciones |
 | Kilómetros con la misma flota | Odómetro del día en paralelo | Menos que la forma actual | Odómetro o GPS |
 | Entregas confirmadas | Por preguntar al Banco | Más del 90 % | Bitácora |
-| Espera del punto peor atendido | En simulación, 0,93 a 4,25 horas más que por orden de llegada | Sin meta. Se vigila | Tabla por territorio |
+| Espera del punto peor atendido | En simulación, con 30 jornadas por política, 1,95 a 3,82 horas más que por orden de llegada, según la carga | Sin meta. Se vigila | Tabla por territorio |
 
 ## Cifras usadas
 
