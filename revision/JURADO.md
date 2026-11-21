@@ -4,7 +4,7 @@
 
 ## Ronda de las 4:40
 
-Esta ronda le dice a Fable cuántos puntos suma cada rama de la noche si se fusiona y se cita en la ficha o en el pitch. Sirve para ordenar las fusiones de las 6:10 a. m., antes del congelamiento de las 8:30 a. m. La escribí entre las 4:35 y las 5:10 a. m. Las calificaciones y los puntos son estimados [E], con la escala de `docs/ESTRATEGIA.md` y la rúbrica de `CLAUDE.md`. Lo que medí lleva [M]. La ronda de las 2:00 sigue debajo sin cambios, y sus cinco correcciones son el punto de partida de esta.
+Esta ronda le dice a Fable cuántos puntos suma cada rama de la noche si se fusiona y se cita en la ficha o en el pitch. Sirve para ordenar las fusiones de las 6:10 a. m., antes del congelamiento de las 8:30 a. m. La escribí entre las 4:35 y las 4:55 a. m. Las calificaciones y los puntos son estimados [E], con la escala de `docs/ESTRATEGIA.md` y la rúbrica de `CLAUDE.md`. Lo que medí lleva [M]. La ronda de las 2:00 sigue debajo sin cambios, y sus cinco correcciones son el punto de partida de esta.
 
 ### Resumen de la ronda
 
@@ -33,7 +33,7 @@ Las ramas que revisaron los tres jurados no se han movido [M]. Después de `git 
 
 Probé la fusión de todo en una copia aparte, sin empujar nada [M]. Entre 105 pares de ramas, `git merge-tree` solo encuentra un choque, el de `a25` con `fuentes-noche` en `docs/FUENTES.md`. `a25` añade cinco filas al registro de tres filas de `main`, mientras que `fuentes-noche` lo reemplaza por el registro consolidado. Por eso conviene fusionar primero `fuentes-noche` y después `a25`, y resolver el choque a mano. Se conserva el registro consolidado y se le pasan, en la sección del A25, las dos filas medidas de `a25`, que son los 36 de 36 valores del reporte de 2020 y la demostración con lluvia sintética. Si el choque se resuelve con la versión de `a25`, se pierde el registro de 25 discrepancias, y con él la base de la corrección 2.
 
-Fusioné doce ramas sobre `main` en ese orden: `fuentes-noche`, `a25`, `simulacion`, `erratas`, `pitch-noche`, `defensa-noche` y las seis de Noche-2 de la tabla. Con `DESPACHOX_SIN_RED=1`, `pytest` da 465 pruebas en verde, 11 fallidas, 1 omitida y 26 marcadas como falla esperada, en 61,9 s [M]. Las 11 fallidas son las mismas de `entrada/pruebas/` que explica la sección 1 de la ronda de las 2:00. La demo por terminal de `demo-noche` pasa 33 de 33 verificaciones sobre ese árbol, con el gancho del A25 apagado y encendido [M]. Con el gancho apagado, los tres planes tardan 3,2, 3,1 y 3,1 s. No incluí `samuel-bot`, `qa-noche` ni `jacobo-tablero`. El canal de las 3:32 a. m. ya avisa que `qa-noche` choca con `samuel-bot` en `entrada/pasarela_sms.py`, y `a25` con `samuel-bot` en `docs/FUENTES.md`.
+Fusioné doce ramas sobre `main`, en este orden: `fuentes-noche`, `a25`, `simulacion`, `erratas`, `pitch-noche`, `defensa-noche` y las seis de Noche-2 de la tabla. Con `DESPACHOX_SIN_RED=1`, `pytest` da 465 pruebas en verde, 11 fallidas, 1 omitida y 26 marcadas como falla esperada, en 61,9 s [M]. Las 11 fallidas son las mismas de `entrada/pruebas/` que explica la sección 1 de la ronda de las 2:00. La demo por terminal de `demo-noche` pasa 33 de 33 verificaciones sobre ese árbol, con el gancho del A25 apagado y encendido [M]. Con el gancho apagado, los tres planes tardan 3,2, 3,1 y 3,1 s. No incluí `samuel-bot`, `qa-noche` ni `jacobo-tablero`. El canal de las 3:32 a. m. ya avisa que `qa-noche` choca con `samuel-bot` en `entrada/pasarela_sms.py`, y `a25` con `samuel-bot` en `docs/FUENTES.md`.
 
 ### Cómo cuento los puntos
 
