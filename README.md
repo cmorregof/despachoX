@@ -3,6 +3,36 @@
 Equipo 19 · Hackathon UNAL Manizales 2026 · Vertical 04, Logística y abastecimiento.
 Samuel Rosso (líder) · Carlos Orrego · Jacobo Vasco · Nicolás Ramírez · José Manuel Aristizábal
 
+## Para el jurado
+
+**Qué es.** DespachoX es una mesa de despacho de ayuda alimentaria para el Banco Arquidiocesano de Alimentos de Manizales y los organismos de socorro. Las organizaciones y las juntas piden por chat o por SMS, y los conductores reportan por el mismo canal las vías cerradas. Un optimizador propone las rutas de una flota mixta con lo que hay en bodega y lo que vence primero, y las recalcula cuando se cierra un tramo. Cada paquete lleva un código hasta que alguien confirma la entrega. El despachador aprueba cada plan con su nombre.
+
+**La regla de arquitectura.** El modelo de lenguaje lee y estructura los mensajes. El optimizador y las reglas calculan. El despachador decide, y el modelo nunca asigna una ruta ni despacha nada.
+
+**Cómo verlo funcionar.**
+
+- En la nube, el tablero está en [despachox-production.up.railway.app](https://despachox-production.up.railway.app/) y el bot en [t.me/despachox_bot](https://t.me/despachox_bot), con el código QR más abajo. Escríbale al bot un pedido como «somos 40 familias en san jose no hay arroz ni leche». El bot le devuelve el lugar que entendió para que usted lo confirme, y el pedido entra a la cola del tablero.
+- La demo de tres minutos, con los mensajes y los clics exactos, está en [`docs/GUION_DEMO.md`](docs/GUION_DEMO.md).
+- Sin internet, el sistema arranca en un portátil con `bash despliegue/local.sh`. Los niveles de respaldo, del SMS a la hoja de ruta impresa, están en [`docs/SIN_CONEXION.md`](docs/SIN_CONEXION.md).
+- Las pruebas automáticas corren con `python -m pytest -q`. En la revisión del viernes a las 11:15 p. m. pasaron 342 y se omitieron 3 (`torre/CANAL.md`).
+
+**Dónde está la evidencia.** Cada cifra lleva su tipo (medida por el equipo, tomada de una fuente o estimada) y su estado de verificación en [`docs/FUENTES.md`](docs/FUENTES.md). Los resultados de la simulación salen de jornadas sintéticas, y se reportan con su línea base, el número de escenarios y los supuestos ([SIM]).
+
+| Criterio | Qué mostramos | Dónde |
+|---|---|---|
+| 1. Problema y vertical | El problema con sus cifras, cada una con fuente y estado | [`docs/FICHA_CORTA.md`](docs/FICHA_CORTA.md), [`docs/PROBLEMA.md`](docs/PROBLEMA.md), [`docs/informe/informe_corto.pdf`](docs/informe/informe_corto.pdf), [`docs/FUENTES.md`](docs/FUENTES.md) |
+| 2. Prototipo | El código que corre, la demo ensayada, las pruebas medidas y la simulación | `entrada/`, `lugares/`, `despacho/`, `tablero/`, [`docs/GUION_DEMO.md`](docs/GUION_DEMO.md), `entrada/pruebas/`, `entrada/ESCALA.md`, [`docs/SIMULACION.md`](docs/SIMULACION.md) |
+| 3. Conocimiento utilizado | Capacidades UNAL con responsable y uso, métodos y datos con fuente fila por fila | [`docs/FICHA.md`](docs/FICHA.md) (componente 3), [`docs/investigacion/08_capacidades_unal.md`](docs/investigacion/08_capacidades_unal.md), [`docs/investigacion/07_patentes_a_fondo.md`](docs/investigacion/07_patentes_a_fondo.md), `datos_publicos/`, `docs/datos/` |
+| 4. Plan de 30 a 90 días | Hitos, responsables, recursos y validación, y los territorios propuestos | [`docs/FICHA.md`](docs/FICHA.md) (componente 4), [`docs/PILOTO.md`](docs/PILOTO.md), [`docs/PILOTO_TERRITORIOS.md`](docs/PILOTO_TERRITORIOS.md) |
+| 5. Viabilidad y aliados | Costos, riesgos, operación sin internet y lo que se le pide a cada aliado | [`docs/FICHA.md`](docs/FICHA.md) (componente 5), [`docs/SIN_CONEXION.md`](docs/SIN_CONEXION.md), `entrada/SMS.md` |
+| 6. Impactos | Indicadores con línea base, meta y forma de verificarlos | [`docs/FICHA.md`](docs/FICHA.md) (componente 6) |
+
+**Datos de prueba.** Todos los pedidos, lotes, personas y teléfonos de prueba de este repositorio son sintéticos, y ninguno corresponde a una persona real (Ley 1581 de 2012). Los lugares sí son reales. Puntos de entrega, acopios y red vial traen su fuente fila por fila en `datos_publicos/` y `datos/semilla/`. En uso real, el bot borra teléfonos y nombres antes de guardar, y el remitente queda como un código.
+
+**Sobre lo que sigue.** Debajo está la bitácora técnica del equipo, tal como se escribió durante la hackathon. Su tabla de estado es del viernes a las 4:00 p. m. Sus cifras de simulación son de la primera corrida, que se repite con las velocidades medidas en Manizales, y las vigentes están en `docs/SIMULACION.md`.
+
+---
+
 > **Si acabas de llegar:** primero lee [`docs/PROBLEMA.md`](docs/PROBLEMA.md), que explica qué problema resolvemos. Luego esta página, que explica cómo lo resolvemos. Después abre tu archivo de tareas: [`SAMUEL.md`](SAMUEL.md), [`JACOBO.md`](JACOBO.md) o [`CARLOS.md`](CARLOS.md).
 
 ## Qué es, en un párrafo
