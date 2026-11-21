@@ -29,6 +29,10 @@ HORAS_VENCE_PRONTO = 12
 # Meta de críticos a tiempo: la misma de la ficha de puntualidad, que se marca en alerta por debajo
 # del 100 %. No hay otra meta numérica en el código ni en CLAUDE.md.
 META_CRITICOS_PCT = 100
+ORIGEN_SILENCIO = "silencio"
+# decisión sobre una alerta por silencio -> (estado nuevo del pedido, acción en la bitácora)
+ACCIONES_SILENCIO = {"verificar": ("confirmado", "mandar a verificar"),
+                     "descartar": ("descartado", "descartar alerta por silencio")}
 # Solo se usa si el plan no trae sus supuestos; es el mismo valor de despacho/optimizar.py.
 LIMITE_POR_URGENCIA_H = {3: 4, 2: 12, 1: 24}
 
@@ -286,8 +290,15 @@ def indicadores(con: sqlite3.Connection, p: dict | None = None, ahora: datetime 
 def por_revisar(con: sqlite3.Connection) -> dict:
     """Lo que espera una decisión del despachador: pedidos nuevos, cierres reportados y ubicaciones."""
     puntos = {r["id"]: r for r in filas(con, "SELECT * FROM puntos")}
-    pedidos = filas(con, "SELECT * FROM pedidos WHERE estado='nuevo' AND duplicado_de IS NULL "
-                         "ORDER BY urgencia DESC, id")
+    todos = filas(con, "SELECT * FROM pedidos WHERE estado='nuevo' AND duplicado_de IS NULL "
+                       "ORDER BY urgencia DESC, id")
+    # Las alertas por silencio (entrada/silencio.py) no son pedidos de comida: van aparte.
+    silencio = [d for d in todos if d.get("origen") == ORIGEN_SILENCIO]
+    pedidos = [d for d in todos if d.get("origen") != ORIGEN_SILENCIO]
+    for d in silencio:
+        pu = puntos.get(d["punto_id"])
+        d["punto"] = pu["nombre"] if pu else None
+        d["critico"] = int(pu["critico"] or 0) if pu else 0
     for d in pedidos:
         pu = puntos.get(d["punto_id"])
         d["punto"] = pu["nombre"] if pu else None
@@ -308,7 +319,7 @@ def por_revisar(con: sqlite3.Connection) -> dict:
                              (u["fila_id"],)).fetchone() if u["tabla"] in ("pedidos", "cierres") else None
         u["texto_completo"] = origen["texto_original"] if origen else None
     return {"pedidos": pedidos, "confirmados_sin_ubicar": sin_ubicar, "cierres": cierres,
-            "ubicaciones": ubicaciones}
+            "ubicaciones": ubicaciones, "silencio": silencio}
 
 
 # ---------- cambios de estado ----------
@@ -329,6 +340,26 @@ def cambiar_estado(con: sqlite3.Connection, tabla: str, fila_id: int, estado: st
              "rechazado": "rechazar"}[estado]
     db.anotar(con, quien, f"{verbo} {tabla[:-1] if tabla != 'planes' else 'plan'}",
               f"{tabla} {fila_id} -> {estado}")
+    return True
+
+
+def decidir_silencio(con: sqlite3.Connection, pedido_id: int, decision: str, quien: str) -> bool:
+    """El despachador decide sobre una alerta por silencio. False si no aplica.
+
+    «verificar»: el pedido pasa a 'confirmado'; despacho/optimizar.py lo lista en `resumen.verificar`
+    como visita sin comida. «descartar»: pasa a 'descartado'. No toca familias ni kilos.
+    """
+    if decision not in ACCIONES_SILENCIO:
+        return False
+    actual = con.execute("SELECT estado, origen, punto_id FROM pedidos WHERE id=?", (pedido_id,)).fetchone()
+    if actual is None or actual["origen"] != ORIGEN_SILENCIO or actual["estado"] != "nuevo":
+        return False
+    estado, accion = ACCIONES_SILENCIO[decision]
+    if estado == "confirmado" and actual["punto_id"] is None:
+        return False
+    con.execute("UPDATE pedidos SET estado=? WHERE id=? AND origen=?", (estado, pedido_id, ORIGEN_SILENCIO))
+    con.commit()
+    db.anotar(con, quien or "despachador", accion, f"pedidos {pedido_id} -> {estado}")
     return True
 
 

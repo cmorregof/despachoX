@@ -52,6 +52,7 @@ h1 {font-size: 1.7rem !important; padding: 0 !important;}
                 vertical-align: middle;}
 .sin-ubicar {background: #dc2626; color: white; border-radius: 6px; padding: .1rem .5rem; font-weight: 700;}
 .critico {color: #dc2626; font-weight: 700;}
+.silencio {background: #6E6878; color: white; border-radius: 6px; padding: .1rem .5rem; font-weight: 700;}
 .grande {font-size: 1.25rem; font-weight: 700;}
 .cita {font-size: 1.1rem; font-style: italic;}
 </style>
@@ -361,11 +362,38 @@ def tarjeta_ubicacion(con, u: dict) -> None:
                 refrescar()
 
 
+def tarjeta_silencio(con, d: dict) -> None:
+    """Alerta por silencio: no trae familias ni kilos, y no se inventan."""
+    with st.container(border=True):
+        donde = html.escape(d["punto"] or "sin punto") + (' <span class="critico">· CRÍTICO</span>'
+                                                          if d["critico"] else "")
+        st.markdown(f'<span class="silencio">Sin contacto: verificar</span> **Pedido {d["id"]}** · {donde}',
+                    unsafe_allow_html=True)
+        if d["texto_original"]:
+            st.caption(d["texto_original"])
+        c1, c2 = st.columns(2)
+        if c1.button("Mandar a verificar", type="primary", key=f"sv{d['id']}", width="stretch",
+                     disabled=d["punto_id"] is None):
+            ok = T.decidir_silencio(con, d["id"], "verificar", quien())
+            avisar("ok" if ok else "error", f"Pedido {d['id']}: visita de verificación mandada por {quien()}."
+                   if ok else "No se pudo mandar a verificar.")
+            refrescar()
+        if c2.button("Descartar", key=f"sd{d['id']}", width="stretch"):
+            ok = T.decidir_silencio(con, d["id"], "descartar", quien())
+            avisar("ok" if ok else "error", f"Alerta {d['id']} descartada por {quien()}." if ok
+                   else "No se pudo descartar.")
+            refrescar()
+
+
 def por_revisar(con, revisar: dict) -> None:
-    total = len(revisar["ubicaciones"]) + len(revisar["pedidos"]) + len(revisar["cierres"])
+    total = (len(revisar["ubicaciones"]) + len(revisar["pedidos"]) + len(revisar["cierres"])
+             + len(revisar["silencio"]))
     st.subheader(f"Por revisar ({total})")
     if not total and not revisar["confirmados_sin_ubicar"]:
         st.markdown("Nada pendiente.")
+
+    for d in revisar["silencio"]:
+        tarjeta_silencio(con, d)
 
     for c in revisar["cierres"]:
         with st.container(border=True):
