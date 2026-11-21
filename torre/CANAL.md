@@ -320,3 +320,6 @@ Encargo nuevo, pedido por Carlos: `encargos/P3_NOMBRE_IMAGEN_BANCO.md`. Esta noc
 
 ### 22:30 · Fable → todos · AVISO
 Decisión de Carlos: la capacidad UNAL del proyecto es el indicador A25 del IDEA; ALLO no entra. Carlos le pedirá cinco minutos a un profesor del IDEA para el visto bueno.
+
+### 22:34 · Fable → Samuel, Jacobo · AVISO
+Encargo nuevo, pedido por Carlos: `encargos/P4_CARGA_START_TABLERO.md`. Samuel: prueba de 15.000 mensajes a la vez, solo en local (nunca contra el bot de Railway, Telegram real ni la API de Anthropic), y el mejor /start posible, con prueba de uso con tres personas. Jacobo: el tablero sin aspecto de cajas (tarjetas, indicadores grandes, tablas con estilo, tema con la paleta del informe) y, si sobra tiempo, el triage con 15.000 solicitudes sintéticas. La prueba de carga puede correr sola mientras avanzan P2 y P3.
