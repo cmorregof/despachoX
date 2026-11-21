@@ -1,93 +1,196 @@
 # Guion del pitch · DespachoX
 
-Borrador 1, viernes 11:00 a. m. La organización aún no dice cuánto dura el pitch: aquí va la versión de **tres minutos**, y al final qué se añade si dan cinco. El pitch debe cubrir los seis componentes de la rúbrica; cada bloque dice a cuál responde. Lo marcado **[ ]** falta por conseguir.
+Versión 2, viernes 20 de noviembre en la noche, rama `pitch-noche`. Reemplaza el borrador 1 de las 11:00 a. m. Sigue lo que pidió la mentoría 1 (`docs/MENTORIA_1.md`) y el orden del pitch de la decisión 4 (`docs/DECISIONES_9PM.md`). Las diapositivas están en `pitch/DIAPOSITIVAS.md`, y cada cifra dicha en voz alta, en `pitch/CIFRAS_PITCH.md`.
 
-Una sola persona habla y otra maneja la demo. Quien habla no toca el computador.
+**Duración.** Ningún documento del repositorio da la duración oficial. `docs/PLATAFORMA_INNOVO.md` solo trae la franja de la preselección, el sábado de 2:30 a 3:30 p. m., y `docs/ESTRATEGIA.md` la deja «sin definir todavía». **Supuesto: tres minutos.** Si los 22 equipos pasan por una sola sala en esa hora, a cada uno le tocan menos de tres minutos con los cambios de equipo (inferencia nuestra). Por eso hay un corte de dos minutos y una versión de un minuto. Lo primero que hay que preguntar en la mesa a las 8:30 a. m. es la duración.
+
+**Hora y entrega.** iNNOVO pone la preselección a las 2:30 p. m., mientras que el sitio anterior y `CLAUDE.md` decían 2:00 p. m. La entrega en iNNOVO es un enlace de Drive y cierra a las 2:30 p. m. (`docs/PLATAFORMA_INNOVO.md`).
+
+**Marcas.** Un asterisco (*) marca una cifra o un hecho por verificar, y su fila está en `pitch/CIFRAS_PITCH.md`. [SIM] marca un número de la simulación nueva, que llega hacia las 6:00 a. m. Se dice siempre con su línea base, su número de jornadas y la palabra «simulación». [DECIDE CARLOS] marca una decisión pendiente. Si a la 1:00 p. m. nadie ha abierto la fuente de una cifra con asterisco, esa cifra sale del pitch.
+
+## Quién hace qué
+
+| Papel | Rol | Qué hace |
+|---|---|---|
+| Voz 1 | D, ficha y pitch | Bloques 1 a 4, la narración de la demo y la última frase |
+| Voz 2 | B, optimización y medición. Sugerido: el integrante de Ingeniería Industrial, porque lidera la visita al Banco [DECIDE CARLOS] | Bloques 6, 7 y la regla de cambio del 8 |
+| Operador | C, tablero | Todos los clics. Cambia entre las diapositivas y el tablero. No habla |
+| Teléfono | A, entrada | Le entrega al jurado el teléfono y la tarjeta impresa. Si a los 15 segundos no hay mensaje, lo envía desde el teléfono del equipo. No habla |
+
+Quien habla no toca el computador.
+
+## Lo que pidió la mentoría y dónde se responde
+
+| Pedido de los mentores | Bloque |
+|---|---|
+| Recuperación del territorio, con personas y territorio además de tecnología | 3 y 7 |
+| El porqué y el para qué | 1, 2 y 3 |
+| A quién impacta y a quién le sirve | 3 |
+| Si hay algo parecido y por qué no se usa en Manizales ni en la región | 4 |
+| El prototipo funcional que mide el efecto | 5 y 6 |
+| El piloto de 30 a 90 días para la recuperación del territorio | 7 |
+| Enamorarse del problema aunque la solución cambie | 8, con la regla de cambio de la decisión 1 de `docs/DECISIONES_9PM.md` |
+
+## Preparación
+
+La demo de este guion no depende de nada nuevo. Es la de `docs/GUION_DEMO.md`, con la semilla ensayada.
+
+1. Entre 30 y 10 minutos antes, los pasos 1 a 7 de la sección «Preparación» de `docs/GUION_DEMO.md`. La semilla se carga menos de 30 minutos antes y nunca más de 90.
+2. Antes de entrar, los pasos «0:20 a 0:55» y «0:55 a 1:30» de ese mismo guion: enviar el pedido de San José, confirmarlo, calcular el plan y aprobarlo. Así el pitch arranca con el plan aprobado. Resultado esperado: 18 de 18 pedidos, 3 de 3 críticos a tiempo y San José en camión. Si no da eso, no hay demo en vivo y se usa el video.
+3. Tarjeta impresa con el QR del bot y el mensaje del cierre, tal cual: «derrumbe en la avenida del centro, no pasa camion, si pasa moto». El QR lo genera rol A con el enlace real del bot.
+4. Video de respaldo abierto en otra pestaña, en pausa en el segundo cero. Lo graba Jacobo (encargo P3), y hay que confirmar que existe.
+5. Internet por datos móviles, no por el wifi del campus.
+6. Diapositivas y tablero en dos ventanas. El operador cambia de una a otra con un atajo de teclado.
 
 ## Versión de tres minutos
 
-### 1. El problema (30 s) · criterio 1
+Los tiempos suponen 2,5 palabras por segundo y suman 3:00 con la demo. El ensayo cronometrado manda. Si pasa de 3:00, se corta en el orden de la sección «Qué cortar».
 
-> El 10 de agosto, Manizales se volvió el punto de acopio de alimentos para el Eje Cafetero. La comida llegó. Lo que faltó fue saber a dónde mandarla primero, por cuál vía y antes de que se dañara.
+### Bloque 1 · Por qué · 0:00 a 0:19 · criterio 1
 
-- Un dato de volumen con fuente: **[toneladas movidas por la red de bancos de alimentos, verificado]**.
-- Un dato de vías: **[dos salidas de Manizales cerradas dos días después, verificado]**.
-- La voz del usuario: **[frase textual de un despachador o coordinador, con nombre y cargo]**.
+**Habla:** Voz 1. **Pantalla:** diapositiva 1, las barras de la red de bancos de alimentos al sexto día.
 
-No decir «desabastecimiento en 48 horas»: no tenemos fuente.
+> Después del sismo, Manizales fue uno de los principales puntos de acopio de la red de bancos de alimentos*. La comida llegó. Lo que se atascó fue despacharla. Al sexto día, en todo el país, la red tenía 404 toneladas en acopio y había entregado 41*.
 
-### 2. Para quién (15 s) · criterio 1
+Las toneladas se dicen truncadas. En pantalla van los kilos exactos, 404.587 y 41.163.
 
-> Nuestro usuario es la persona que despacha en el centro de acopio. Hoy decide con un teléfono, un cuaderno y lo que le cuentan los conductores.
+### Bloque 2 · Las vías se cierran sin sismo · 0:19 a 0:30 · criterio 1
 
-### 3. Demo en vivo (75 s) · criterio 2
+**Habla:** Voz 1. **Pantalla:** diapositiva 2, el mapa de Manizales con la salida a Letras marcada.
 
-Con el tablero proyectado y el plan aprobado ya en pantalla:
+> En Manizales las vías se cierran también sin sismo. La salida a Letras suma 87 registros de cierre por derrumbe o deslizamiento desde 2017*.
 
-1. «Un líder de barrio pide ayuda por chat.» Se envía el mensaje preparado. Aparece el pedido en el mapa. (15 s)
-2. «El despachador lo confirma y pide un plan.» Clic, rutas dibujadas. (15 s)
-3. **«Ahora necesito a alguien del jurado.»** Se le pasa un teléfono o se muestra un código QR del bot: «Escriba que hay un derrumbe en la avenida del Centro.» (Es el tramo que sí cambia rutas con la semilla; ver `docs/GUION_DEMO.md`. La Siria ya se reconoce y sirve para las preguntas.) (20 s)
-4. El cierre aparece en rojo. El despachador lo confirma. Las rutas cambian. «El camión ya no entra a San José, así que el sistema manda el campero.» (20 s)
-5. «El sistema propuso. Quien aprobó fue una persona.» (5 s)
+Se dice «registros», porque un mismo derrumbe puede tener varios.
 
-Si algo falla: se dice «tenemos el mismo recorrido grabado» y se reproduce el video. No se depura en vivo.
+### Bloque 3 · Para qué y para quién · 0:30 a 0:48 · criterios 1 y 6
 
-### 4. Qué hay detrás (25 s) · criterio 3
+**Habla:** Voz 1. **Pantalla:** diapositiva 3, quién despacha, quién pide, quién reporta las vías y quién avala.
 
-> Tres piezas. Un modelo de lenguaje que solo lee y ordena el mensaje. Un optimizador de rutas para flota mixta que prioriza por vencimiento. Y una regla: decide el despachador.
+> DespachoX existe para que la comida llegue a quien no puede ir a buscarla, aunque la vía esté cerrada. Es para quien despacha en el Banco Arquidiocesano de Alimentos y para quienes le piden, como comedores, hogares infantiles y juntas de barrio y de vereda.
 
-- Capacidad UNAL: la patente colombiana 37476 de la Universidad Nacional, un empaque que captura etileno y retarda la maduración. El modelo trata distinto el vencimiento de un lote con ese empaque, como supuesto declarado, y el piloto propone medirlo con la UNAL. **[decir «vigente» solo si Fernando Bernal confirma la anualidad 2026]**
-- Asesoría: **[profesor de la Sede que revisó la formulación, si se consigue]**.
+### Bloque 4 · Lo que existe y por qué no basta · 0:48 a 1:04 · criterio 1
 
-### 5. Qué medimos (20 s) · criterios 2 y 6
+**Habla:** Voz 1. **Pantalla:** diapositiva 4, las piezas sueltas y la que falta.
 
-> Lo probamos en 360 jornadas simuladas sobre la red vial real de Manizales, con 30 semillas por nivel de carga.
+> ¿Hay algo parecido? Hay piezas sueltas, pensadas para la emergencia, y ninguna une el pedido, el vehículo, la vía y la entrega. El registro de damnificados cerró el 4 de septiembre y dejó por fuera a familias rurales dispersas*.
 
-- Contra un despacho por orden de llegada, las entregas a tiempo en puntos críticos suben 12, 29 y 46 puntos porcentuales con carga holgada, media y alta.
-- Los perecederos vencidos bajan de entre 0,5 % y 3,5 % a 0 %. Eso lo logra la regla de bodega «primero lo que vence primero», no el ruteo.
-- Contra un despachador experto que ya prioriza lo urgente, empatamos en puntos críticos y recorremos entre 47 y 75 km menos por jornada. En entregas a tiempo de todos los puntos quedamos 1,8 y 2,2 puntos por debajo con carga media y alta: se dice si preguntan.
+Al terminar la frase, el operador pasa al tablero.
 
-> Es una simulación, con sus supuestos escritos. No todos los centros de acopio tienen a ese experto un domingo a las tres de la mañana: DespachoX deja esa pericia escrita y disponible para cualquier voluntario. El dato real sale del piloto.
+### Bloque 5 · Demo en vivo · 1:04 a 2:09 · criterio 2
 
-Fuente: `docs/SIMULACION.md`. Estas cifras son de la primera corrida; el encargo S2 las puede cambiar. Decir siempre contra qué línea base es cada cifra.
+**Habla:** Voz 1. **Opera:** rol C. **Teléfono:** rol A. **Pantalla:** el tablero a pantalla completa, con el plan aprobado, las rutas de colores y los tres puntos críticos resaltados.
 
-### 6. Plan y aliados (25 s) · criterios 4 y 5
+| Tiempo | Qué pasa y qué se ve | Qué dice Voz 1 |
+|---|---|---|
+| 1:04 a 1:15 | Tablero con el plan aprobado | «Esta es la mesa de despacho. El plan aprobado ya incluye un pedido de prueba que llegó por chat desde San José. Ahora necesito a alguien del jurado.» |
+| 1:15 a 1:33 | Rol A le entrega al jurado el teléfono con el chat abierto y la tarjeta. El jurado escribe el mensaje de la tarjeta. El bot responde «Ubiqué «avenida del centro» en: avenida del Centro (via). ¿Es correcto?», y el jurado toca **Sí, es ahí** | Mientras escribe: «El 21 de octubre, la autopista del Café quedó a un carril y solo pasaban livianos*. Quien lo sabe primero es el conductor.» |
+| 1:33 a 1:41 | En el mapa aparece el cierre como reportado | «El sistema no cierra la vía por un mensaje. La deja reportada hasta que el despachador la confirme.» |
+| 1:41 a 1:51 | El operador hace clic en **Confirmar** en el cierre. Aparece «Hay un cierre nuevo: recalcular». Clic en **Recalcular**. El plan nuevo sale en menos de diez segundos | «El despachador confirma y pide recalcular.» |
+| 1:51 a 2:03 | Plan nuevo. En los avisos se lee `camion: punto:14 quedó aislado de la red`, y el pedido de San José pasa de un camión a un campero | «Con la avenida cerrada, el camión ya no llega a San José. El sistema le pasa el pedido a un campero, que sí entra, y los tres puntos críticos siguen a tiempo*.» |
+| 2:03 a 2:09 | Clic en **Aprobar**. Si hay bitácora, se muestra quién aprobó y a qué hora. El operador vuelve a las diapositivas | «El modelo leyó. El optimizador calculó. Decidió una persona, y quedó escrito quién y cuándo.» |
 
-> En 30 días reconstruimos los despachos de agosto con **[aliado]** y comparamos. En 60, un simulacro con un comité barrial y vehículos reales. En 90, operación junto al despachador y decisión de adopción.
+**Si algo falla.** No se depura en vivo. La tabla completa está en `docs/GUION_DEMO.md`, sección «Qué hacer si falla cada paso». Estos son los cuatro casos más probables.
 
-- Corre en un portátil. El optimizador no necesita internet; el fondo del mapa sí. Leer un mensaje cuesta fracciones de centavo.
-- No guarda nombres ni teléfonos.
+- El jurado tarda o no quiere. A los 15 segundos, rol A envía el mensaje desde el teléfono del equipo.
+- El jurado escribe otra vía, por ejemplo La Siria. Voz 1 dice «esa vía no la usa ninguna ruta de hoy, así que el plan sigue igual», y rol A envía el mensaje de la avenida del Centro.
+- El plan nuevo no muestra el campero. Se lee lo que sí está en pantalla, pedidos atendidos y críticos a tiempo, y no se afirma lo del campero.
+- Cualquier otra falla, o se cae internet. Voz 1 dice «tenemos el mismo recorrido grabado» y el operador pasa al video.
 
-### 7. Cierre (10 s)
+### Bloque 6 · Qué medimos y cómo · 2:09 a 2:30 · criterios 2 y 6
 
-> La reconstrucción ya tiene fondo y las donaciones ya tienen plataformas. A la última milla de la comida le faltaba una mesa de despacho. Somos DespachoX.
+**Habla:** Voz 2. **Pantalla:** diapositiva 6, la tabla por comuna y vereda y la barra de la simulación.
+
+> Cada paquete lleva un código QR, y la entrega queda registrada cuando ese código llega por chat o SMS. Con esos registros, el prototipo arma una tabla por comuna y vereda que mide el piloto. En [SIM] jornadas simuladas, los críticos a tiempo suben [SIM] puntos frente al despacho por orden de llegada.
+
+La comparación con un despachador con oficio va siempre en la diapositiva. Decirla en voz alta depende de la pregunta 2 de `docs/FICHA_MENTORIA.md`, que se les hace a los mentores en la mentoría 2 [DECIDE CARLOS]. Si se dice, la frase es «Frente a un despachador con oficio, [SIM].» Si el resultado nuevo vuelve a ser un empate en críticos, se añade la frase de `docs/PROBLEMA.md`: «El valor está en que esa pericia quede disponible para cualquier voluntario, a cualquier hora.»
+
+### Bloque 7 · El piloto de 30 a 90 días · 2:30 a 2:52 · criterios 3, 4 y 5
+
+**Habla:** Voz 2. **Pantalla:** diapositiva 7, la línea de tiempo del piloto y el mapa del territorio.
+
+> El piloto es para la recuperación del territorio. Dura 90 días en la rutina del Banco, con la Unidad de Gestión del Riesgo, en La Macarena y El Tablazo. Así la capacidad queda en Manizales y se usa entre desastres. Al final suma, tramo por tramo, la alerta de lluvia A25 del IDEA de la UNAL.
+
+- **Territorio.** La Macarena y El Tablazo es la propuesta 1 de `docs/PILOTO_TERRITORIOS.md`: una comuna y un corregimiento sobre la misma ruta. Al final decide el Banco [DECIDE CARLOS].
+- **A25.** Si el A25 entra al código antes de las 8:30 a. m. y se ve en el tablero, la última frase pasa a ser «La alerta de lluvia A25 del IDEA de la UNAL ya encarece los tramos en alerta». Si no, queda como está, porque hoy entra en los días 60 a 90 (`docs/FICHA_CORTA.md`, componente 3).
+- **Visita al Banco.** Si hubo conversación el sábado y la persona dio permiso, esta frase reemplaza a «Así la capacidad queda...»: «Esta mañana se lo mostramos a [cargo] del Banco, que nos dijo: «[frase textual]».» Sin permiso o sin conversación, no se menciona.
+
+### Bloque 8 · Regla de cambio y cierre · 2:52 a 3:00 · criterios 4 y 5
+
+**Habla:** Voz 2 y luego Voz 1. **Pantalla:** diapositiva 8.
+
+> **Voz 2:** Si el Banco no reparte, el piloto pasa al flujo de requerimientos de la UGR y la Gobernación.
+>
+> **Voz 1:** Somos DespachoX.
+
+Si el equipo cambió de nombre en el encargo P3, el nombre nuevo va aquí y en las diapositivas.
+
+## Qué cortar
+
+Se corta en este orden hasta que el ensayo dé 3:00, o el tiempo que fije la organización.
+
+1. En la demo, la frase del 21 de octubre. Solo ahorra tiempo si el jurado escribe rápido o si rol A envía el mensaje.
+2. En el bloque 7, la frase «Así la capacidad queda en Manizales y se usa entre desastres», unos 5 segundos. Se corta solo si no hubo visita al Banco, porque es la que explica la recuperación del territorio.
+3. En el bloque 4, la frase del registro de damnificados, unos 7 segundos.
+4. En el bloque 3, la lista de quienes piden. Queda «Es para quien despacha en el Banco Arquidiocesano de Alimentos y para quienes le piden».
+
+### Corte de dos minutos
+
+| Bloque | Qué queda | Tiempo |
+|---|---|---|
+| 1 y 2 | Sin cambios | 30 s |
+| 3 | Solo la primera frase | 8 s |
+| 4 | «Hay piezas sueltas, pensadas para la emergencia, y ninguna une el pedido, el vehículo, la vía y la entrega.» | 8 s |
+| 5 | La demo sin la frase del 21 de octubre ni la de «El sistema no cierra la vía por un mensaje». Rol A envía el mensaje si el jurado tarda más de 10 segundos | 45 s |
+| 6 | «Cada entrega confirmada entra a una tabla por comuna y vereda, y esa tabla mide el piloto.» La simulación queda en pantalla | 7 s |
+| 7 | Primera, segunda y cuarta frase | 18 s |
+| 8 | No va | 0 s |
+
+Suma 1:56.
 
 ## Si dan cinco minutos
 
-- Tras el bloque 1: un antecedente de cierre vial por derrumbe anterior a 2026, para mostrar que el problema vuelve cada invierno.
-- En la demo: la trazabilidad con QR y la bitácora de decisiones.
-- En el bloque 5: la política intermedia (optimizar sin recalcular), que muestra cuánto aporta el recálculo.
-- En el bloque 6: riesgos y cómo se mitigan, y qué se le pide a cada padrino.
+Se añaden estos textos, en este orden. Sus cifras están en `pitch/CIFRAS_PITCH.md`, sección «Añadidos de cinco minutos».
 
-## Preguntas que van a hacer
+1. **En el bloque 2, antes de la salida a Letras (6 s).** «Manizales está sobre una cuchilla y casi todas sus vías de acceso van por ladera.»
+2. **Después del bloque 2 (10 s).** «El día del sismo, la Policía anunció al mediodía el cierre de Pereira–Chinchiná*. El registro oficial apareció 9 horas y 46 minutos después del sismo*.»
+3. **Después del bloque 4 (12 s).** «En Manizales, la comida del sismo se repartió por listas. Para recibir un mercado había que llevar el formato azul de Bomberos, y la Cruz Roja Seccional Caldas entregó los kits por turnos*.»
+4. **Después del añadido 3 (14 s).** «Después del sismo de 1999, según un estudio de la Javeriana de Cali, las gerencias del FOREC actuaron con autonomía frente a las autoridades locales, y eso debilitó la gobernanza del territorio*. Por eso el piloto queda en manos de Manizales.»
+5. **En la demo (60 s más).** La demo completa de tres minutos de `docs/GUION_DEMO.md`, con el pedido de San José enviado en vivo.
+6. **En el bloque 6 (15 s).** La simulación completa, con las dos líneas base, los kilómetros, los perecederos vencidos y lo que cuesta priorizar, que es la espera del punto peor atendido. Todo [SIM].
+7. **En el bloque 7 (20 s).** «Del día 0 al 15, acuerdo y línea base. Del 15 al 30, reconstruimos un mes de despachos del Banco. Del 30 al 60, el Banco reparte como siempre y DespachoX planea en sombra. Del 60 al 90, simulacro con la UGR y decisión escrita del Banco. El piloto cabe en la calamidad pública de Manizales, vigente hasta el 9 de agosto de 2027*.»
+8. **Antes del bloque 8 (15 s).** «Al Banco le pedimos tres datos sin información personal: sus puntos de entrega, su inventario con vencimientos y un mes de despachos. Sin internet, el plan sale en un portátil y la ruta se imprime con un QR por paquete*. No guardamos el teléfono de quien escribe. Queda como un código.»
 
-| Pregunta | Respuesta corta |
+Las fases del añadido 7 salen de `docs/FICHA_CORTA.md`, componente 4. Si el plan que escribe otro agente esta noche cambia las fechas, se cambian aquí.
+
+## Versión de un minuto
+
+Sirve para un turno de un minuto, una presentación rápida en Conecta+ o un pasillo con un aliado. No lleva demo en vivo. **Habla:** Voz 1. **Pantalla:** diapositiva 1 hasta 0:20, el tablero con el plan recalculado hasta 0:56 y la diapositiva 8 al final. Sin proyector, se dice igual.
+
+| Tiempo | Qué se dice |
 |---|---|
-| ¿Qué pasa si la IA entiende mal? | Le responde al remitente lo que entendió y un humano confirma antes de despachar. Medimos el acierto con mensajes mal escritos: **[número]** |
-| ¿Por qué no usar Google Maps o Waze? | Dan una ruta para un carro. No reparten veinte pedidos entre cinco vehículos distintos ni saben qué se vence |
-| ¿Y sin internet? | El optimizador y la red vial corren sin conexión. El fondo del mapa y el chat necesitan red; sin ella, el pedido se digita en el tablero |
-| ¿La línea base es justa? | Usamos tres. Contra el orden de llegada ganamos por mucho. Contra un experto que prioriza lo urgente empatamos en puntos críticos, quedamos unos 2 puntos por debajo en el total y ahorramos kilómetros. Lo decimos así porque así salió |
-| Entonces, ¿para qué el optimizador si una regla simple empata? | Porque esa regla vive en la cabeza de una persona con experiencia. El sistema la aplica siempre, la combina con cierres viales que llegan por chat, ahorra recorrido y deja registro. Y la simulación no mide el valor de la entrada por chat ni de la trazabilidad |
-| ¿Qué de la UNAL hay aquí? | **[respuesta honesta según lo que quede integrado]** |
-| ¿Quién lo va a usar? | **[aliado con nombre]** |
-| ¿Qué tiene de nuevo? | La integración. Existen herramientas de ruteo, de registro y de reportes; no encontramos una abierta que una el pedido por chat con el despacho y el recálculo |
-| ¿Datos personales? | No guardamos nombres ni teléfonos; el remitente queda como un código |
+| 0:00 a 0:16 | «Después del sismo, la comida llegó a la región. Lo que se atascó fue despacharla. Al sexto día, en todo el país, la red de bancos de alimentos tenía 404 toneladas en acopio y había entregado 41*.» |
+| 0:16 a 0:20 | «Y en Manizales las vías se cierran también sin sismo.» |
+| 0:20 a 0:41 | «DespachoX es una mesa de despacho para el Banco Arquidiocesano de Alimentos. Comedores, hogares y juntas piden por chat o SMS, y los conductores reportan los derrumbes. El optimizador reparte entre camión, campero y moto, saca primero lo que vence primero y recalcula si se cierra una vía. El despachador aprueba cada plan.» |
+| 0:41 a 0:58 | «El piloto de 90 días entra a la rutina del Banco en La Macarena y El Tablazo, con la Unidad de Gestión del Riesgo y el A25 del IDEA de la UNAL. Todo se mide contra la línea base del propio Banco.» |
+| 0:58 a 1:00 | «Somos DespachoX.» |
+
+## Decisiones para Carlos
+
+1. **Duración.** Se asumió tres minutos. Hay que preguntar en la mesa a las 8:30 a. m.
+2. **Voces.** Quién es Voz 1 y quién es Voz 2.
+3. **Territorio.** La Macarena y El Tablazo, como recomienda `docs/PILOTO_TERRITORIOS.md`, o una de las otras dos propuestas.
+4. **Despachador con oficio.** Si la comparación se dice en voz alta en el bloque 6 o queda solo en pantalla. Depende de la mentoría 2 y del resultado nuevo.
+5. **A25.** Si entra al código antes del congelamiento, cambia la última frase del bloque 7.
+6. **Nombre del equipo.** DespachoX o el que salga del encargo P3.
+7. **Frase del Banco.** Si hubo visita y permiso, entra en el bloque 7.
 
 ## Lo que falta para que este guion sea verdad
 
-1. Una frase real de un usuario.
-2. Dos cifras verificadas por un humano.
-3. Los números de la simulación.
-4. Un aliado con nombre.
-5. La capacidad UNAL integrada, o una frase honesta sobre el plan de integrarla.
-6. El video de respaldo.
+1. Abrir la fuente de cada cifra con asterisco. La lista por orden de prioridad está al final de `pitch/CIFRAS_PITCH.md`.
+2. Los números [SIM] de la corrida nueva, con su línea base, su número de jornadas y sus supuestos.
+3. La tabla por territorio en pantalla. Puede ser la pestaña «Territorio» del tablero o, si no llega antes de las 8:30 a. m., la figura hecha con `python -m despacho.territorio`.
+4. El video de respaldo.
+5. Dos ensayos cronometrados con la demo real, el segundo con datos móviles.
+6. Una persona que repita el ensayo de la demo en la mañana. El último lo hizo el agente B-noche a las 11:15 p. m. y dio 18 de 18 pedidos, 3 de 3 críticos y el campero a San José (`torre/TORRE_CAPITAN.md`).
+
+El banco de preguntas del jurado, el plan detallado de 30 a 90 días y la matriz de riesgos los prepara otro agente en otra rama esta noche. Fable los integra.
