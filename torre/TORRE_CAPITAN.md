@@ -101,6 +101,12 @@ Pruebas: `despacho/tests` 25 pasan (12 nuevas en `test_ronda3.py`); simulación 
 - Resultado: para el camión quedaron aislados San José (punto 14) y el punto 3. Los dos pedidos de San José pasaron del Camión 2 al Campero 2 y a la Moto 1. El plan 2 atiende 20 de 20 pedidos. El plan 1 pasó a `reemplazado` solo al aprobar el 2. Hay 20 paquetes en ruta y los de San José conservan su código.
 - Lo que se ve mal y no es el cierre: 13 de 20 a tiempo y 0 de 4 críticos, porque la semilla se cargó a las 4:53 p. m. y los límites de los críticos vencieron a las 8:53 p. m. Antes de la demo hay que reiniciar los datos.
 
+### Reinicio de los datos de la nube (sábado 21, 6:13 a. m.)
+- La nota de la prueba del cierre entró a `main` a las 6:02 (f3bd289). Después Fable fusionó `jacobo-tablero` (d25e90c) y reinicié los datos sobre ese despliegue.
+- Comando: `python -m despacho.semilla --cargar --reiniciar` por `railway ssh`. Quedaron 20 pedidos, 0 planes, 0 cierres y 0 paquetes. El tablero Convite los muestra sin plan.
+- Límites nuevos: urgencia 3 a las 10:13 a. m., urgencia 2 a las 4:13 p. m. y urgencia 1 a las 2:13 a. m. del domingo. Para el ensayo y la demo de las 2:00 p. m. hay que volver a cargar la semilla después de las 10:13, con el botón «Reiniciar datos de prueba» del tablero (llega con `jacobo-tablero`) o con el mismo comando.
+- Se perdió el estado de la prueba del cierre (plan 2, cierre 1, 20 paquetes). Era de prueba y está descrito arriba. El respaldo que tomé con `cp` salió incompleto, porque la base usa WAL y los cambios estaban en `despachox.db-wal`; lo borré para que nadie lo restaure. Sigue completo `/data/respaldo_antes_prueba_cierre.db`, con el plan 1 de Jacobo y 17 paquetes. Los respaldos se sacan con `python -c "import sqlite3; sqlite3.connect('/data/despachox.db').backup(sqlite3.connect('/data/respaldo.db'))"` y no con `cp`.
+
 ## En curso
 - Nada de B. Pendiente de otra sesión: encargo S2 de la simulación (barrido de `FACTOR_CRITICO`), que no se ejecutó, y el indicador A25 como riesgo de tramo.
 
