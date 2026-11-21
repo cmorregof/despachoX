@@ -1,6 +1,6 @@
 # Convite (antes DespachoX) · Preguntas probables del jurado
 
-Son 30 preguntas para ensayar la defensa del sábado, agrupadas por criterio de la rúbrica. Esta versión es del sábado 21 de noviembre de 2026, de madrugada, en la rama `defensa-noche`. Cada respuesta cabe en dos o tres frases, y debajo va el archivo que la respalda. Las cinco preguntas que dejó la mentoría 1 llevan la marca «mentoría 1».
+Son 31 preguntas para ensayar la defensa del sábado, agrupadas por criterio de la rúbrica. Esta versión es del sábado 21 de noviembre de 2026, de madrugada, en la rama `defensa-noche`. Cada respuesta cabe en dos o tres frases, y debajo va el archivo que la respalda. Las cinco preguntas que dejó la mentoría 1 llevan la marca «mentoría 1».
 
 **Marcas.** [F] dato de una fuente, que alguien del equipo debe abrir en `docs/FUENTES.md` antes de decirlo en voz alta. [M] medido por el equipo. [E] estimado. [I] inferencia nuestra. [H] hipótesis por validar. Las cifras de simulación salen de `docs/SIMULACION.md`, sección 9, y de `despacho/sim/resultados_velocidades/tablas.md`. [P5] se actualiza con el resultado de la visita al Banco, que el integrante de Ingeniería Industrial reporta a las 12:30 p. m.
 
@@ -124,11 +124,11 @@ Durante 90 días, Convite entra a la operación diaria del Banco en una comuna y
 
 **18. ¿Por qué Ciudadela del Norte y El Manantial?**
 
-Ciudadela del Norte es la comuna más poblada, con 58.776 habitantes según el ASIS de 2023, y el PMA ya recorrió con la Alcaldía las veredas con más daño para identificar necesidades de seguridad alimentaria [F]. En Pueblo Hondo el sismo dejó cuatro viviendas con pérdida total, y en la vía a Neira el registro de Maracas de enero de 2023 dice que no hay ruta alterna [F]. Además, dos CDI, un centro de salud y un CISCO quedan a entre 2,4 y 4,1 km del Banco, y Alto Bonito a 8,8 km [M]. Aun así, al final el Banco elige el territorio donde ya tenga más organizaciones.
+Ciudadela del Norte es la comuna más poblada, con 58.776 habitantes según el ASIS de 2023, y el PMA ya recorrió con la Alcaldía las veredas con más daño para identificar necesidades de seguridad alimentaria [F]. En Pueblo Hondo el sismo dejó cuatro viviendas con pérdida total, y en la vía a Neira el registro de Maracas de enero de 2023 dice que no hay ruta alterna [F]. Además, dos CDI, un centro de salud y un CISCO quedan a entre 2,4 y 4,1 km del Banco, y Alto Bonito a 8,8 km [M]. Es la primera de tres zonas. Desde el día 30 se suma La Macarena y El Tablazo, y desde el día 60, Atardeceres y Kilómetro 41, cada una solo si la anterior cumplió su criterio de validación y el Banco lo confirma.
 
-*Respaldo.* `docs/PILOTO_TERRITORIOS.md`, propuesta 2 y recomendación; decisión de Carlos del 21 de noviembre a las 6:10 a. m.; `figuras_pitch/png/a_territorio_propuesta2.png`.
+*Respaldo.* `docs/PILOTO_TERRITORIOS.md`, propuesta 2 y recomendación; decisiones de Carlos del 21 de noviembre a las 6:10 y a las 8:05 a. m.; `docs/PLAN_30_90.md`, sección 4; `figuras_pitch/png/a_territorio_propuesta2.png`.
 
-*Nota para quien responde.* Si preguntan por La Macarena y El Tablazo, esa es la propuesta 1, que pone comuna y vereda sobre una sola ruta. En la 2, la ruta a Alto Bonito sale por la comuna San José [M]. Elegimos la 2 porque el PMA ya levantó necesidades allí y porque las juntas de Alto del Guamo y Alto Bonito hablaron en la nota de la Alcaldía del 20 de agosto [F].
+*Nota para quien responde.* Si preguntan por La Macarena y El Tablazo, esa es la propuesta 1, que entra el día 30 y pone comuna y vereda sobre una sola ruta. En la 2, la ruta a Alto Bonito sale por la comuna San José [M]. Elegimos la 2 porque el PMA ya levantó necesidades allí y porque las juntas de Alto del Guamo y Alto Bonito hablaron en la nota de la Alcaldía del 20 de agosto [F].
 
 **19. ¿Qué pasa si la solución cambia? (mentoría 1)**
 
@@ -192,9 +192,9 @@ El bot no lee el nombre, el usuario ni el teléfono de la cuenta, y el remitente
 
 **28. ¿A cuántas personas beneficia?**
 
-Todavía no lo sabemos para el territorio del piloto. Lo medimos en los días 0 a 15 con el catálogo de puntos del Banco. Para dar una escala, al cierre de agosto ABACO reportaba más de 2.000 toneladas para más de 9.470 familias en 36 municipios y comunidades, y Ciudadela del Norte, la comuna del piloto, tiene 58.776 habitantes según el ASIS de 2023 [F]. Los beneficiarios directos son el despachador, los voluntarios y las juntas, y los finales son quienes comen en comedores, hogares, albergues y veredas.
+Todavía no lo sabemos para ninguna zona del piloto. En la primera lo medimos en los días 0 a 15 con el catálogo de puntos del Banco. Para dar una escala, al cierre de agosto ABACO reportaba más de 2.000 toneladas para más de 9.470 familias en 36 municipios y comunidades [F]. Según el ASIS de 2023, las comunas de las tres zonas tienen 58.776 habitantes en Ciudadela del Norte, 42.063 en La Macarena y 39.250 en Atardeceres [F]. Son habitantes de cada comuna. Cuántos atiende el Banco allí lo medimos en el piloto. Los beneficiarios directos son el despachador, los voluntarios y las juntas, y los finales son quienes comen en comedores, hogares, albergues y veredas.
 
-*Respaldo.* `docs/FICHA.md`, componente 6; `docs/PILOTO_TERRITORIOS.md`, propuesta 2.
+*Respaldo.* `docs/FICHA.md`, componente 6; `docs/PILOTO_TERRITORIOS.md`, propuestas 1, 2 y 3. El enlace del ASIS 2023 da 404, así que las tres poblaciones están por verificar.
 
 **29. ¿Qué metas ponen a los dos indicadores del reto?**
 
@@ -207,3 +207,9 @@ Las entregas a tiempo en puntos críticos deben quedar iguales o mejores que la 
 Sí tiene un costo, y la simulación lo mide como la espera adicional del punto peor atendido frente al despacho por orden de llegada. En simulación, con carga media y 30 jornadas por política, ese punto espera 3,07 horas más que con el despacho por orden de llegada y 0,53 horas más que con el despachador con oficio. Ese indicador no tiene meta, y lo reportamos cada semana por comuna y vereda en la tabla por territorio. El despachador puede cambiar cualquier plan que deje a un punto esperando demasiado.
 
 *Respaldo.* `docs/FICHA.md`, componente 6; `docs/RIESGOS.md`, R14.
+
+**31. ¿Por qué tres zonas en 90 días y no una?**
+
+Porque cada zona prueba algo distinto. La primera mide los pedidos de las veredas que recorrió el PMA. La Macarena y El Tablazo pone lo urbano y lo rural en un solo corredor, y en Atardeceres ya ocurrió la alerta naranja de lluvia, así que ahí probamos el A25 [F, I]. Cada zona entra solo si la anterior cumplió su criterio y el Banco lo confirma. Crecer cuesta más horas, y todavía no tiene monto.
+
+*Respaldo.* `docs/PILOTO_TERRITORIOS.md`, «Por qué» y «Qué mediría» de las tres propuestas; `docs/PLAN_30_90.md`, secciones 4 y 7; `docs/RIESGOS.md`, R17.
