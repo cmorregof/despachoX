@@ -16,7 +16,7 @@ Las cinco reglas de esta sección están citadas de `docs/PLATAFORMA_INNOVO.md`.
 
 El mismo archivo trae un aviso más. Con la cuenta de Carlos, el «**formato de prototipo MVP**» y la «**plantilla de presentación**» daban «acceso denegado», y según el archivo «pueden fijar la forma del entregable». Si la mesa los comparte antes de la 1:00 p. m., se revisan antes de cargar.
 
-**Hora del pitch sin resolver.** `CLAUDE.md` y el relevo de Fable ponen el pitch a las 2:00 p. m., y la plataforma lo pone a las 2:30. Este plan cierra la entrega a la 1:45 p. m., así que sirve con cualquiera de las dos horas. Carlos confirma la hora en la mesa.
+**Hora del pitch sin resolver.** `CLAUDE.md` y el relevo de Fable ponen el pitch a las 2:00 p. m., y la plataforma lo pone a las 2:30. La página de la hackathon, revisada por máquina el sábado a las 12:05 a. m., todavía dice «2:00 – 3:30 p. m.» para el pitch de selección. Este plan cierra la entrega a la 1:45 p. m., así que sirve con cualquiera de las dos horas. Carlos confirma la hora en la mesa.
 
 ## Qué se sube
 

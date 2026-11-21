@@ -1,6 +1,6 @@
 # Verificar las cifras del pitch · Samuel, sábado en la mañana
 
-Esta lista trae las 15 cifras que más pesan en el pitch, en el orden en que conviene abrirlas. Las cinco primeras son las que ya sabemos dudosas. Las siguientes siguen el orden del guion nuevo (`pitch/GUION.md` en la rama `pitch-noche`) y después el de la ficha. Toma unos 45 minutos.
+Esta lista trae las 15 cifras que más pesan en el pitch, en el orden en que conviene abrirlas. Las cinco primeras son las que ya sabemos dudosas. Después van las del guion nuevo (`pitch/GUION.md` en la rama `pitch-noche`), en el orden en que se dicen, y al final las de la ficha. Toma unos 45 minutos.
 
 **Por qué importa.** La regla del equipo es que toda cifra del pitch tenga una fuente abierta por una persona. Una máquina ya revisó casi todas la noche del viernes, y lo que encontró va en cada ficha como «Lo que vio la máquina». Eso no cuenta como verificación, porque usted es la primera persona que las abre. Según el guion nuevo, la cifra con asterisco que nadie haya abierto a la 1:00 p. m. sale del pitch. Conviene terminar antes de la mentoría 2, a las 10:30 a. m.
 
@@ -42,7 +42,7 @@ Si la rama `fuentes-noche` todavía no está en `main`, marque las casillas en e
 
 - **Lo que decimos.** «El único respaldo es una cota inferior de 1,2, en gulupa a 8 °C, derivada de las figuras 1 y 2 de la solicitud de la patente (cálculo nuestro).» Está en la FICHA, la ficha corta y la ficha de la mentoría. El guion viejo dice que «vigente» solo se dice si Fernando Bernal confirma la anualidad 2026.
 - **Abrir.** SIPI, en https://sipi.sic.gov.co, con el expediente 14245775. El PDF de la solicitud CO 14-245775, que Carlos adjuntó en el proyecto de Claude, folio 18.
-- **Buscar.** En SIPI, el certificado 37476, la Universidad Nacional como titular, la concesión del 6 de julio de 2020, el vencimiento del 6 de noviembre de 2034 y el estado de la anualidad 2026. En el folio 18, la figura 1: sin empaque, el pico de etileno llega en la semana 5, y con 2 % de escualeno no hay pico hasta la semana 6. La figura 2 muestra lo mismo con diludina.
+- **Buscar.** En SIPI, el certificado 37476, la Universidad Nacional como titular, la concesión del 6 de julio de 2020, el vencimiento del 6 de noviembre de 2034 y el estado de la anualidad 2026. En el folio 18, la figura 1 muestra que sin empaque el pico de etileno llega en la semana 5, y que con 2 % de escualeno no hay pico hasta la semana 6. La figura 2 muestra lo mismo con diludina.
 - **Por qué es dudosa.** El 1,2 no está escrito en la patente. Es 6 ÷ 5, calculado por nosotros con el pico de etileno como indicador del fin de la vida útil. Vale solo para gulupa a 8 °C, y es el texto de 2014, no el concedido.
 - **Lo que vio la máquina.** Nada. SIPI no responde a los lectores automáticos, y el PDF no está en el repositorio.
 
@@ -65,7 +65,7 @@ Si la rama `fuentes-noche` todavía no está en `main`, marque las casillas en e
 
 - **Lo que decimos.** «El modelo le da al campero 39,0 km/h de media en vías primarias, y un bus medido con GPS en Manizales promedió 22,6 km/h (tesis de maestría de la UNAL Manizales, 2019).» Está en la FICHA, la ficha corta, el piloto y el informe corto. En vías troncales el modelo da 54,7 km/h.
 - **Abrir.** https://bffrepositorio.unal.edu.co/server/api/core/bitstreams/46d4a283-1bb5-4027-9a7d-6b0831aec2d8/content
-- **Buscar.** En la página 50, sección 5.3, «la del bus a combustión es de 22.6 km/h». En la página 48, la tabla 14, columna «Principal»: 23,8, 21,8, 23,4 y 24,2. En la portada, la autora y el director, porque la FICHA dice que están «por confirmar».
+- **Buscar.** En la página 50, sección 5.3, «la del bus a combustión es de 22.6 km/h». En la página 48, la columna «Principal» de la tabla 14 debe dar 23,8, 21,8, 23,4 y 24,2. En la portada, la autora y el director, porque la FICHA dice que están «por confirmar».
 - **Por qué es dudosa.** Los 39,0 y 54,7 km/h del modelo los midió un agente sobre el grafo, con un script que quedó fuera del repositorio. Por esta diferencia se repite la simulación esta noche, y sus números van como [SIM].
 - **Lo que vio la máquina.** Los 22,6 km/h en la página 50 y la tabla 14 en la página 48, con esos valores. La autora es Daniela Ocampo González y el director, Diego Alexander Escobar García.
 
@@ -193,7 +193,7 @@ Si la rama `fuentes-noche` todavía no está en `main`, marque las casillas en e
 
 ## Si sobra tiempo
 
-Estas cifras están en la ficha y pesan menos en el pitch. Las ocho tienen ficha completa en `docs/FUENTES.md`.
+Estas cifras están en la ficha y pesan menos en el pitch. Las ocho tienen su fila completa en `docs/FUENTES.md`.
 
 | Cifra | Abrir | Buscar o fijarse en |
 |---|---|---|
