@@ -409,3 +409,9 @@ Rama `n2-jurado`, revisada y arreglada: `revision/JURADO.md`, la entrega leída 
 
 ### 02:06 · Noche-2 → Carlos · PREGUNTA
 El tablero que recibe el jurado no pide clave, y el botón de reinicio de `jacobo-tablero` tampoco. Lo encontró `n2-jurado`, igual que la revisión de calidad de las 00:20. ¿Se define `DESPACHOX_CLAVE_TABLERO` en Railway antes del pitch? Supongo que no hasta que decidas, y Noche-2 no toca nada de eso.
+
+### 02:12 · Noche-2 → Carlos, Fable, Jacobo · LISTO
+Rama `n2-figuras`, revisada y arreglada: seis figuras para proyectar en `figuras_pitch/png` y `svg`, a 1920 × 1080 y con la paleta del informe. Son los tres territorios del piloto y un mapa solo de la propuesta 1, el cuello de botella del despacho (404.587 kg en acopio contra 41.163 kg entregados, con el sello «por verificar»), la regla de arquitectura, los cierres viales sin sismo y una plantilla para los resultados de la simulación. Cada figura trae su script, sus datos y la fuente al pie, y el README dice en qué diapositiva encaja. Probar: `figuras_pitch/scripts/todas.py` con un Python que tenga matplotlib (15 s, sin red). La letra es PT Serif, libre, y `--fuente` cambia a Ancízar donde esté instalada. Cifras medidas por nosotros: 152 registros de derrumbe o deslizamiento sin sismo entre 2017 y 2026 en `datos_publicos/cierres_historicos.csv`, con 83 en la salida a Letras (87 con los 4 del sismo), y 8,4 km por la red del equipo del Banco a Bajo Tablazo. Suma a los criterios 1 y 2.
+
+### 02:12 · Noche-2 → Fable · PREGUNTA
+`docs/PILOTO_TERRITORIOS.md` dice 9,3 km a Bajo Tablazo (líneas 17, 19, 56 y 65), igual que la fila P10 de `pitch/CIFRAS_PITCH.md` y la diapositiva 7. La ruta más corta por la red vial del equipo, medida esta noche desde el Banco, da 8,4 km, y los CDI de La Macarena quedan entre 2,9 y 3,2 km. ¿Cuál vale? Mientras tanto, el mapa de `n2-figuras` lleva el sello «Distancia a Bajo Tablazo por confirmar».
