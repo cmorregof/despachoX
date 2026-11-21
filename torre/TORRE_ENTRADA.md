@@ -1,5 +1,5 @@
 # Torre de control · A-entrada · rol A (entrada)
-Última actualización: 2026-11-20 23:30 (hora de Colombia)
+Última actualización: 2026-11-21 01:30 (hora de Colombia)
 
 Desde las 16:05 el módulo lo dirige Samuel con `encargos/A2_BOT_SAMUEL.md`. Se trabaja en la rama `samuel-bot`; Carlos fusiona a `main` a las 6:30 p. m., 11:00 p. m. y 8:00 a. m.
 
@@ -37,6 +37,8 @@ Etapa 1 del encargo A2 hecha en `samuel-bot` y probada con el extractor falso: �
 - 23:00 · Raciones con fuente en `entrada/raciones.py` (de `docs/datos/demanda.md`, sección 7): 555 g de ración seca por persona y día (ACNUR, Logistics Cluster), cereal 6:2:2 (ICBF), 2,9 personas por hogar (DANE 2018), pedido de 7 días (OPS/INCAP), agua de 1 día; frescos con la referencia del ICBF; pollo, pan, atún, azúcar, café, chocolate y papa se reconocen sin kilos. `despacho/semilla.py` no se tocó: la bodega sigue con la tabla vieja (aviso en el canal). Pruebas ahora leen las constantes. 110 pasan, 1 se omite.
 
 - 23:30 · `ENTREGADO` solo desde el destino o el conductor (`guardar.quien_confirma`, `flujo._entregar`): vale quien hizo el pedido o quien ya pidió para el mismo punto con origen `mensaje`; el conductor, cuando exista `vehiculos.conductor_hash` (pedida a B). Misma respuesta para código inexistente y no autorizado; rechazos en la bitácora. `test_entregado.py`: 6 pruebas. 116 pasan, 1 se omite. Es arreglo de seguridad: puede entrar después del congelamiento.
+
+- 01:30 (21 nov) · Encargo P4, carga de 15.000 a la vez, solo local: 0 perdidos, base íntegra, 91 a 98 MB. Sin caché 1.032/min; con `entrada/cache_lugares.py` 1.641/min con 50 a la vez y 6.050/min con 200. Espera de la persona con caché y 50: mediana 269 s y máximo 548 s. Se corrigió el arnés: antes no contaba la espera en fila (las filas de 5.000 la subestiman). Telegram: unos 30 mensajes por segundo en masivos (FAQ oficial), así que 15.000 respuestas toman unos 8 minutos. 120 pasan, 1 se omite.
 
 ## En curso (qué, hasta dónde llegó, qué falta)
 - Prueba desde un teléfono con el bot real: nadie le ha escrito todavía.

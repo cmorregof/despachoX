@@ -182,6 +182,9 @@ def main(argv=None) -> int:
     from dotenv import load_dotenv
     load_dotenv(db.RAIZ.parent / ".env")
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(message)s")
+    if os.environ.get("DESPACHOX_CACHE_LUGARES", "1") != "0":      # rendimiento; no cambia resultados
+        from entrada import cache_lugares
+        cache_lugares.instalar()
     servidor = Pasarela(("0.0.0.0", a.puerto))
     print(f"Receptor de SMS en http://{_ip_local()}:{a.puerto}/sms  (configure esa dirección en el celular)")
     try:

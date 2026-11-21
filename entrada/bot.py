@@ -163,6 +163,9 @@ def main() -> int:
     if not os.environ.get("ANTHROPIC_API_KEY"):
         log.warning("Sin ANTHROPIC_API_KEY: los mensajes se guardan sin leer y los revisa el despachador.")
     from datos import db
+    if os.environ.get("DESPACHOX_CACHE_LUGARES", "1") != "0":      # rendimiento; no cambia resultados
+        from entrada import cache_lugares
+        cache_lugares.instalar()
     mesa = Mesa(db.conectar())
     log.info("Bot en marcha. Base: %s", os.environ.get("DESPACHOX_DB") or db.RUTA_DB)
     construir(token, mesa).run_polling(allowed_updates=Update.ALL_TYPES)
