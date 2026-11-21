@@ -3,11 +3,16 @@
 Uso:
     python -m despacho.optimizar                  # imprime el id del plan
     python -m despacho.optimizar --segundos 5 --motivo "pedido nuevo"
+    python -m despacho.optimizar --a25            # con el gancho del A25 (despacho/a25.py)
 
 Regla del módulo: el plan siempre nace `propuesto`; solo el despachador lo aprueba. Si no hay
 solución se escribe un plan vacío con el motivo. Nunca se lanza una excepción hacia afuera.
 Una alerta por silencio (`pedidos.origen='silencio'`) nunca sale con comida, aunque esté
 confirmada: no se surte ni se rutea, y queda listada en `resumen.verificar`.
+Gancho del A25 (`despacho/a25.py`), apagado por defecto: con `DESPACHOX_A25=1` (o `a25=True`)
+el costo de las vías en alerta naranja o roja se multiplica por un factor. Encarece sin
+prohibir, los tiempos de llegada no cambian y el resumen dice qué vías se encarecieron y
+cuántos kilómetros en alerta recorre el plan. Apagado, el plan es el de siempre.
 
 Modelo (sustituto declarado de «tiempo de llegada y privación»):
   minimizar  tiempo de viaje
@@ -276,10 +281,12 @@ def sincronizar_aprobados(con: sqlite3.Connection) -> None:
     con.commit()
 
 
-def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int, int]) -> dict:
+def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int, int],
+              riesgo=None) -> dict:
     """Arma y resuelve el modelo. Devuelve {'paradas': [...], 'resumen': {...}} sin tocar la base.
 
     bloqueos: pedido_id -> vehiculo_id, para la carga que ya va a bordo de un vehículo en ruta.
+    riesgo: `a25.Riesgo` del gancho del A25, o None (apagado: el modelo de siempre).
     """
     from ortools.constraint_solver import pywrapcp, routing_enums_pb2
 
@@ -334,7 +341,8 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
         else:
             inicio_de[v["id"]] = f"acopio:{v['acopio_id']}"
     tipos = tuple(sorted({v["tipo"] for v in flota}))
-    matrices = mod_matriz.calcular(g, lugares, datos["cierres"], tipos)
+    matrices = mod_matriz.calcular(g, lugares, datos["cierres"], tipos,
+                                   riesgo=riesgo.factor if riesgo is not None else None)
     for m in matrices.values():
         avisos.extend(m.avisos)
 
@@ -401,11 +409,13 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
               + [f"punto:{x['p']['punto_id']}" for x in nodos_pedido])
     servicio = [0] * (2 * n_v) + [SERVICIO_S] * len(nodos_pedido)
     gramos = [0] * (2 * n_v) + [int(round(x["s"].kg * 1000)) for x in nodos_pedido]
-    tabla = {}
+    tabla, costo_a25 = {}, {}
     for t in tipos:
         m = matrices[t]
         idx = [m.claves.index(c) for c in claves]
         tabla[t] = [[int(m.segundos[i, j]) + servicio[a] for j in idx] for a, i in enumerate(idx)]
+        if m.costo is not None:        # gancho del A25: el solver minimiza el tiempo encarecido
+            costo_a25[t] = [[int(m.costo[i, j]) + servicio[a] for j in idx] for a, i in enumerate(idx)]
 
     manager = pywrapcp.RoutingIndexManager(len(claves), n_v, list(range(n_v)), list(range(n_v, 2 * n_v)))
     routing = pywrapcp.RoutingModel(manager)
@@ -414,7 +424,12 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
         T = tabla[v["tipo"]]
         cb = routing.RegisterTransitCallback(
             lambda i, j, T=T: T[manager.IndexToNode(i)][manager.IndexToNode(j)])
-        routing.SetArcCostEvaluatorOfVehicle(cb, k)
+        C = costo_a25.get(v["tipo"])
+        if C is None:
+            routing.SetArcCostEvaluatorOfVehicle(cb, k)
+        else:
+            routing.SetArcCostEvaluatorOfVehicle(routing.RegisterTransitCallback(
+                lambda i, j, C=C: C[manager.IndexToNode(i)][manager.IndexToNode(j)]), k)
         transitos.append(cb)
     routing.AddDimensionWithVehicleTransits(transitos, 0, HORIZONTE_S, True, "tiempo")
     dim_t = routing.GetDimensionOrDie("tiempo")
@@ -444,6 +459,7 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
 
     # --- Lectura de la solución ---
     paradas, por_vehiculo, atendidos = [], [], set()
+    en_alerta: dict[tuple[int, str, str], float] = {}      # (vehículo, vía, nivel) -> metros
     retraso_total, criticos_total, criticos_a_tiempo = 0, 0, 0
     for k, v in enumerate(flota):
         m = matrices[v["tipo"]]
@@ -464,6 +480,8 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
             if puntos[x["p"]["punto_id"]]["critico"]:
                 criticos_total += 1
                 criticos_a_tiempo += retraso == 0
+            if riesgo is not None:
+                _sumar_alerta(en_alerta, v["id"], g, m.camino(previo, claves[n]), riesgo)
             paradas.append({
                 "vehiculo_id": v["id"], "orden": orden, "punto_id": x["p"]["punto_id"],
                 "pedido_id": x["p"]["id"], "kg": round(x["s"].kg, 3),
@@ -471,6 +489,8 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
                 "geometria": m.geometria(g, previo, claves[n]), "retraso_s": retraso,
                 "cantidad_supuesta": x["supuesta"]})
             previo = claves[n]
+        if orden and riesgo is not None:
+            _sumar_alerta(en_alerta, v["id"], g, m.camino(previo, f"acopio:{v['acopio_id']}"), riesgo)
         if orden:
             por_vehiculo.append({
                 "vehiculo_id": v["id"], "nombre": v["nombre"], "tipo": v["tipo"], "paradas": orden,
@@ -525,9 +545,43 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
                       "factor_empaque_activo_aplica_a": EMPAQUE_APLICA_A,
                       "factor_tiempo": mod_matriz.FACTOR_TIEMPO, "un_viaje_por_vehiculo": True},
     }
+    if riesgo is not None:
+        resumen["a25"] = _resumen_a25(riesgo, en_alerta, flota)
+        resumen["supuestos"]["a25_factor_costo"] = riesgo.factores
+        avisos.extend(resumen["a25"]["avisos"])
     if not paradas:
         resumen["motivo_vacio"] = "ningún pedido cupo en el plan"
     return {"paradas": paradas, "resumen": resumen}
+
+
+def _sumar_alerta(en_alerta: dict, vehiculo_id: int, g, nodos: list[int], riesgo) -> None:
+    """Suma los metros que el camino `nodos` recorre por aristas que el A25 encareció."""
+    for u, v in zip(nodos[:-1], nodos[1:]):
+        if (u, v) in riesgo.tramo:
+            via, nivel = riesgo.tramo[(u, v)]
+            largo = min(float(d.get("length", 0.0)) for d in g[u][v].values()) if g.has_edge(u, v) else 0.0
+            clave = (vehiculo_id, via, nivel)
+            en_alerta[clave] = en_alerta.get(clave, 0.0) + largo
+
+
+def _resumen_a25(riesgo, en_alerta: dict, flota: list[dict]) -> dict:
+    """Qué vías encareció el A25 y cuánto de ellas recorre igual el plan (para el despachador)."""
+    nombres = {v["id"]: v["nombre"] or f"vehículo {v['id']}" for v in flota}
+    recorridos = [{"vehiculo_id": vid, "via": via, "nivel": nivel, "km": round(m / 1000, 2)}
+                  for (vid, via, nivel), m in sorted(en_alerta.items())]
+    lluvia = "sintética" if riesgo.sintetica else "real"
+    avisos = [f"{nombres.get(r['vehiculo_id'], r['vehiculo_id'])} recorre {r['km']:g} km de «{r['via']}» en "
+              f"alerta {r['nivel']} del A25 (lluvia {lluvia}): no hubo un desvío más barato. "
+              "El despachador decide." for r in recorridos]
+    return {"activo": True, "fecha": riesgo.fecha.isoformat(), "lluvia": lluvia,
+            "factor_costo": riesgo.factores,
+            "vias_encarecidas": [d for d in riesgo.detalle if d["factor"] > 1],
+            "vias_solo_aviso": [d for d in riesgo.detalle if d["factor"] <= 1],
+            "km_en_alerta_recorridos": round(sum(en_alerta.values()) / 1000, 2),
+            "recorridos_en_alerta": recorridos,
+            "nota": "Factores de costo supuestos, sin fuente; se calibran en el piloto con el IDEA. "
+                    "Los tiempos de llegada del plan no incluyen el factor.",
+            "avisos": avisos}
 
 
 def _escribir(con: sqlite3.Connection, motivo: str, resultado: dict, segundos_calculo: float,
@@ -552,7 +606,7 @@ def _escribir(con: sqlite3.Connection, motivo: str, resultado: dict, segundos_ca
 
 def planificar(con: sqlite3.Connection | None = None, motivo: str = "inicial",
                segundos: int = LIMITE_BUSQUEDA_S, recalculo: bool = False, g=None,
-               ahora: datetime | None = None) -> int:
+               ahora: datetime | None = None, a25: bool | None = None) -> int:
     """Calcula y escribe un plan `propuesto`. Devuelve su id. No lanza excepciones.
 
     recalculo=False: planea los pedidos `confirmado` con los vehículos libres.
@@ -561,6 +615,7 @@ def planificar(con: sqlite3.Connection | None = None, motivo: str = "inicial",
     En los dos casos las propuestas anteriores pasan a `reemplazado`. El plan aprobado sigue
     vigente hasta que el despachador apruebe el nuevo (`aprobar`); si rechaza la propuesta, el
     aprobado no se pierde. `resumen.reemplaza_a` nombra igual el aprobado que se quiere sustituir.
+    a25: enciende el gancho del A25; None lo toma de DESPACHOX_A25 (apagado por defecto).
     """
     inicio = time.perf_counter()
     propia = con is None
@@ -584,8 +639,11 @@ def planificar(con: sqlite3.Connection | None = None, motivo: str = "inicial",
             for r in con.execute("SELECT pedido_id, vehiculo_id FROM paradas WHERE plan_id=?", (vigente,)):
                 if r["vehiculo_id"] in en_ruta and r["pedido_id"] in asignados:
                     bloqueos[r["pedido_id"]] = r["vehiculo_id"]
-        resultado = _resolver(datos, g, ahora or datetime.now(db.BOGOTA), segundos, bloqueos)
-        resultado["resumen"]["avisos"] = avisos_cierres + resultado["resumen"].get("avisos", [])
+        ahora = ahora or datetime.now(db.BOGOTA)
+        riesgo, avisos_a25 = _riesgo_a25(g, ahora, a25)
+        resultado = _resolver(datos, g, ahora, segundos, bloqueos, riesgo=riesgo)
+        resultado["resumen"]["avisos"] = (avisos_cierres + avisos_a25
+                                          + resultado["resumen"].get("avisos", []))
     except Exception as e:  # noqa: BLE001  (regla del módulo: plan vacío con motivo, nunca excepción)
         traceback.print_exc(file=sys.stderr)
         resultado = {"paradas": [], "resumen": {
@@ -602,6 +660,18 @@ def planificar(con: sqlite3.Connection | None = None, motivo: str = "inicial",
         if propia:
             con.close()
     return plan_id
+
+
+def _riesgo_a25(g, ahora: datetime, activo: bool | None):
+    """(riesgo, avisos) del gancho del A25. Apagado, o si falla, (None, ...): plan de siempre."""
+    from despacho import a25 as mod_a25
+    if not (mod_a25.gancho_activo() if activo is None else activo):
+        return None, []
+    try:
+        return mod_a25.riesgo_corredores(g, ahora.astimezone(db.BOGOTA).date()), []
+    except Exception as e:  # noqa: BLE001  (sin datos de lluvia el plan sale igual, sin el A25)
+        traceback.print_exc(file=sys.stderr)
+        return None, [f"A25: no se pudo calcular ({type(e).__name__}: {e}); el plan no usa el A25"]
 
 
 def aprobar(con: sqlite3.Connection, plan_id: int, quien: str = "despachador") -> bool:
@@ -633,13 +703,15 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--motivo", default="inicial")
     ap.add_argument("--aprobar", type=int, metavar="PLAN", help="aprueba un plan propuesto (lo hace un humano)")
     ap.add_argument("--quien", default="despachador")
+    ap.add_argument("--a25", action="store_true", default=None,
+                    help="enciende el gancho del A25 (por defecto lo decide DESPACHOX_A25)")
     args = ap.parse_args(argv)
     if args.aprobar is not None:
         con = db.conectar()
         ok = aprobar(con, args.aprobar, args.quien)
         print(args.aprobar if ok else f"el plan {args.aprobar} no está propuesto", file=sys.stdout if ok else sys.stderr)
         return 0 if ok else 1
-    print(planificar(motivo=args.motivo, segundos=args.segundos))
+    print(planificar(motivo=args.motivo, segundos=args.segundos, a25=args.a25))
     return 0
 
 

@@ -8,6 +8,11 @@ Cada tipo de vehículo ve una red distinta:
 Los cierres con estado `confirmado` quitan su arista (en los dos sentidos) para los tipos que
 aparecen en `tipos_bloqueados`.
 
+`riesgo` (opcional, gancho del A25 en `despacho/a25.py`): arista dirigida -> factor >= 1. El
+camino se elige con el tiempo de cada arista multiplicado por su factor; `segundos` sigue siendo
+el tiempo real de ese camino y `costo`, el tiempo encarecido que minimiza el solver. Sin `riesgo`
+(o con todas sus aristas fuera de la red del tipo) todo queda igual que antes y `costo` es None.
+
 Unidades: segundos enteros. Par inalcanzable: `INALCANZABLE` y un aviso.
 """
 from __future__ import annotations
@@ -48,6 +53,7 @@ class Matriz:
     _pred: np.ndarray | None = None
     _ids: list[int] | None = None
     _pos: dict[int, int] | None = None
+    costo: np.ndarray | None = None           # tiempo encarecido por el A25; None sin gancho
 
     def tiempo(self, a: str, b: str) -> int:
         return int(self.segundos[self.claves.index(a), self.claves.index(b)])
@@ -125,13 +131,51 @@ def _red_del_tipo(g: nx.MultiDiGraph, tipo: str, cerradas: set[tuple[int, int]])
     return m, ids, pos, usados
 
 
+def _encarecer(m: csr_matrix, pos: dict[int, int], riesgo: dict[tuple[int, int], float] | None):
+    """Copia de `m` con el tiempo de las aristas en riesgo multiplicado por su factor.
+
+    Devuelve (matriz, extra) con extra[(a, b)] = segundos añadidos a la arista de índices a -> b,
+    o (m, {}) si ninguna arista en riesgo está en esta red.
+    """
+    extra: dict[tuple[int, int], float] = {}
+    if not riesgo:
+        return m, extra
+    mc = None
+    for (u, v), f in riesgo.items():
+        if f <= 1.0 or u not in pos or v not in pos:
+            continue
+        a, b = pos[u], pos[v]
+        t = float(m[a, b])
+        if t <= 0:                       # la arista no existe en la red de este tipo
+            continue
+        if mc is None:
+            mc = m.copy()
+        mc[a, b] = t * f
+        extra[(a, b)] = t * (f - 1.0)
+    return (mc, extra) if mc is not None else (m, extra)
+
+
+def _extra_del_camino(pred_fila: np.ndarray, origen: int, destino: int, extra: dict) -> float:
+    """Segundos de encarecimiento que suma el camino origen -> destino del árbol `pred_fila`."""
+    total, k = 0.0, destino
+    while k != origen:
+        p = int(pred_fila[k])
+        if p < 0:
+            break
+        total += extra.get((p, k), 0.0)
+        k = p
+    return total
+
+
 def calcular(g: nx.MultiDiGraph, lugares: list[Lugar], cierres: list[dict] | None = None,
-             tipos: tuple[str, ...] = TIPOS) -> dict[str, Matriz]:
-    """Una `Matriz` por tipo de vehículo entre todos los `lugares`."""
+             tipos: tuple[str, ...] = TIPOS,
+             riesgo: dict[tuple[int, int], float] | None = None) -> dict[str, Matriz]:
+    """Una `Matriz` por tipo de vehículo entre todos los `lugares`. `riesgo`: ver el encabezado."""
     cerradas = aristas_cerradas(cierres or [])
     resultado: dict[str, Matriz] = {}
     for tipo in tipos:
         m, ids, pos, usados = _red_del_tipo(g, tipo, cerradas.get(tipo, set()))
+        mc, extra = _encarecer(m, pos, riesgo)
         if cerradas.get(tipo):
             # Cada lugar se amarra a la red sin cierres: si un cierre lo corta, queda aislado
             # en vez de "saltar" a otra vía cercana.
@@ -150,18 +194,26 @@ def calcular(g: nx.MultiDiGraph, lugares: list[Lugar], cierres: list[dict] | Non
                 nodos.append(n)
         n_l = len(lugares)
         seg = np.full((n_l, n_l), INALCANZABLE, dtype=np.int64)
+        costo = np.full((n_l, n_l), INALCANZABLE, dtype=np.int64) if extra else None
         pred = np.full((n_l, len(ids)), -9999, dtype=np.int32)
         con_nodo = [i for i, n in enumerate(nodos) if n is not None]
         if con_nodo:
-            dist, pr = dijkstra(m, directed=True, indices=[pos[nodos[i]] for i in con_nodo],
+            dist, pr = dijkstra(mc, directed=True, indices=[pos[nodos[i]] for i in con_nodo],
                                 return_predecessors=True)
             for fila, i in enumerate(con_nodo):
                 pred[i] = pr[fila]
                 for j in con_nodo:
                     d = dist[fila, pos[nodos[j]]]
                     if np.isfinite(d):
-                        seg[i, j] = int(round(d))
+                        if costo is None:
+                            seg[i, j] = int(round(d))
+                        else:
+                            costo[i, j] = int(round(d))
+                            seg[i, j] = int(round(d - _extra_del_camino(pr[fila], pos[nodos[i]],
+                                                                         pos[nodos[j]], extra)))
         np.fill_diagonal(seg, 0)
+        if costo is not None:
+            np.fill_diagonal(costo, 0)
         claves = [l.clave for l in lugares]
         for i in con_nodo:
             sin = [claves[j] for j in con_nodo if seg[i, j] >= INALCANZABLE]
@@ -169,5 +221,5 @@ def calcular(g: nx.MultiDiGraph, lugares: list[Lugar], cierres: list[dict] | Non
                 avisos.append(f"{tipo}: desde {claves[i]} no hay camino hacia {', '.join(sin)}")
             elif sin:
                 avisos.append(f"{tipo}: {claves[i]} quedó aislado de la red")
-        resultado[tipo] = Matriz(tipo, claves, seg, nodos, avisos, pred, ids, pos)
+        resultado[tipo] = Matriz(tipo, claves, seg, nodos, avisos, pred, ids, pos, costo)
     return resultado
