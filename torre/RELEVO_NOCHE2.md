@@ -1,10 +1,10 @@
 # Relevo · Noche-2
 
-Sábado 21 de noviembre, 00:20. Versión inicial: la final llega antes de las 6:15 a. m. Si esta sesión se corta, quien siga empieza aquí.
+Sábado 21 de noviembre, 00:05. Versión inicial: la final llega antes de las 6:15 a. m. Si esta sesión se corta, quien siga empieza aquí.
 
 ## Estado en una frase
 
-Siete agentes Opus trabajan desde las 00:15, cada uno en su clon y en su rama `n2-*`, y ninguno escribe en `main`. Cada rama pasa por cuatro pasos antes de darse por terminada: el trabajo, una revisión independiente, el arreglo de lo que encuentre la revisión y un cierre que verifica el push.
+Siete agentes Opus trabajan desde la medianoche, cada uno en su clon y en su rama `n2-*`, y ninguno escribe en `main`. Cada rama pasa por cuatro pasos antes de darse por terminada: el trabajo, una revisión independiente, el arreglo de lo que encuentre la revisión y un cierre que verifica el push.
 
 ## Ramas
 
