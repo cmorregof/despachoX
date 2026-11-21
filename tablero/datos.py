@@ -427,6 +427,84 @@ def territorio_csv(datos_territorio: dict) -> bytes:
     return ("﻿" + buf.getvalue()).encode("utf-8")
 
 
+# ---------- informe (solo lectura) ----------
+# lotes.kg no se descuenta al despachar en ningún módulo: es «inventario cargado», no existencia real.
+ESTADOS_DESPACHADOS = ("en_ruta", "entregado")
+
+
+def informe(con: sqlite3.Connection, ahora: datetime | None = None) -> dict:
+    """Cifras de lo mandado y de la bodega, tal como las registra la base. Nada se estima."""
+    ahora = _ahora(ahora)
+    abiertos = con.execute(
+        "SELECT COUNT(*) FROM pedidos WHERE estado IN ('nuevo','confirmado','asignado') AND duplicado_de IS NULL "
+        "AND COALESCE(origen,'mensaje') != ?", (ORIGEN_SILENCIO,)).fetchone()[0]
+    atendidos = con.execute("SELECT COUNT(*) FROM pedidos WHERE estado='entregado' AND duplicado_de IS NULL "
+                            "AND COALESCE(origen,'mensaje') != ?", (ORIGEN_SILENCIO,)).fetchone()[0]
+    kg = {e: con.execute("SELECT COALESCE(SUM(kg),0) FROM paquetes WHERE estado IN (%s)" % ",".join("?" * len(e)),
+                         e).fetchone()[0] for e in (ESTADOS_DESPACHADOS, ("entregado",))}
+    lotes = filas(con, "SELECT l.id, l.producto, l.kg, l.perecedero, l.vence_en, a.nombre AS acopio "
+                       "FROM lotes l LEFT JOIN acopios a ON a.id = l.acopio_id")
+    vence = {12: 0.0, 24: 0.0}
+    for l in lotes:
+        f = _fecha(l["vence_en"])
+        horas = (f - ahora).total_seconds() / 3600 if f else None
+        l["horas_para_vencer"] = round(horas, 1) if horas is not None else None
+        l["vence_pronto"] = bool(l["perecedero"] and horas is not None and 0 <= horas <= HORAS_VENCE_PRONTO)
+        for h in vence:
+            if l["perecedero"] and horas is not None and 0 <= horas <= h:
+                vence[h] += l["kg"] or 0
+    lotes.sort(key=lambda l: (l["vence_en"] is None, l["vence_en"] or "", l["id"]))
+    por_producto = filas(con, """
+        SELECT COALESCE(l.producto, 'sin lote') AS producto,
+               SUM(CASE WHEN pa.estado IN ('en_ruta','entregado') THEN pa.kg ELSE 0 END) AS kg_despachado,
+               SUM(CASE WHEN pa.estado = 'entregado' THEN pa.kg ELSE 0 END) AS kg_entregado
+        FROM paquetes pa LEFT JOIN lotes l ON l.id = pa.lote_id
+        WHERE pa.estado IN ('en_ruta','entregado') GROUP BY 1 ORDER BY 2 DESC""")
+    vehiculos = filas(con, """
+        SELECT v.nombre AS vehiculo, v.tipo, v.estado, COUNT(pa.id) AS paradas, COALESCE(SUM(pa.kg),0) AS kg
+        FROM paradas pa JOIN planes p ON p.id = pa.plan_id AND p.estado = 'aprobado'
+        LEFT JOIN vehiculos v ON v.id = pa.vehiculo_id GROUP BY pa.vehiculo_id ORDER BY v.nombre""")
+    bodega = filas(con, "SELECT l.producto, COALESCE(a.nombre,'sin acopio') AS acopio, SUM(l.kg) AS kg "
+                        "FROM lotes l LEFT JOIN acopios a ON a.id = l.acopio_id GROUP BY 1, 2 ORDER BY 1, 2")
+    terr = territorio(con, ahora)
+    por_territorio = [{"territorio": f["territorio"], "kg_pedidos": f.get("kg_pedidos"),
+                       "kg_entregados": f.get("kg_entregados")} for f in terr["tabla"]
+                      if f.get("kg_pedidos") or f.get("kg_entregados")]
+    crit_ok = sum(f.get("criticos_a_tiempo") or 0 for f in terr["tabla"])
+    crit_ev = sum(f.get("criticos_evaluados") or 0 for f in terr["tabla"])
+    return {"resumen": {"pedidos_atendidos": atendidos, "pedidos_pendientes": abiertos,
+                        "kg_despachados": round(kg[ESTADOS_DESPACHADOS], 1), "kg_entregados": round(kg[("entregado",)], 1),
+                        "kg_inventario_cargado": round(sum(l["kg"] or 0 for l in lotes), 1),
+                        "kg_vencen_12h": round(vence[12], 1), "kg_vencen_24h": round(vence[24], 1),
+                        "criticos_a_tiempo": crit_ok, "criticos_evaluados": crit_ev,
+                        "pct_criticos_a_tiempo": round(100 * crit_ok / crit_ev, 1) if crit_ev else None},
+            "por_producto": por_producto, "vehiculos": vehiculos, "por_territorio": por_territorio,
+            "bodega": bodega, "lotes": lotes}
+
+
+def informe_csv(inf: dict) -> bytes:
+    """Todas las tablas del informe en un CSV, con una columna `seccion`."""
+    import csv
+    import io
+    buf = io.StringIO()
+    w = csv.writer(buf)
+    w.writerow(["resumen"])
+    w.writerow(["indicador", "valor"])
+    for k, v in inf["resumen"].items():
+        w.writerow([k, v])
+    for nombre in ("por_producto", "vehiculos", "por_territorio", "bodega", "lotes"):
+        w.writerow([])
+        w.writerow([nombre])
+        if not inf[nombre]:
+            w.writerow(["sin datos todavía"])
+            continue
+        columnas = list(inf[nombre][0].keys())
+        w.writerow(columnas)
+        for fila in inf[nombre]:
+            w.writerow([fila.get(c) for c in columnas])
+    return ("﻿" + buf.getvalue()).encode("utf-8")
+
+
 # ---------- bitácora ----------
 
 def bitacora(con: sqlite3.Connection, n: int = 50) -> list[dict]:

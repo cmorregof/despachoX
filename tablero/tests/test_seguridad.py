@@ -34,7 +34,8 @@ def test_tooltip_con_script_sale_escapado_en_el_mapa():
 
 def test_todos_los_tooltips_del_tablero_pasan_por_seguro():
     fuente = (CARPETA / "app.py").read_text(encoding="utf-8")
-    tooltips = re.findall(r"tooltip=([^\s,)]{1,3})", fuente)
+    # Los tooltips de folium van como HTML; los de altair (tooltip=[...]) los dibuja Vega escapados.
+    tooltips = [t for t in re.findall(r"tooltip=([^\s,)]{1,3})", fuente) if not t.startswith("[")]
     assert tooltips and all(t.startswith("S(") for t in tooltips), tooltips
     assert "popup=" not in fuente
     assert "html.escape(plan['aprobado_por']" in fuente          # nombre de quien aprobó
