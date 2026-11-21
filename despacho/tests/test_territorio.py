@@ -130,3 +130,21 @@ def test_linea_de_ordenes_sobre_la_semilla(con, tmp_path, monkeypatch, capsys):
     assert sum(int(f["pedidos"]) for f in filas) == 20       # los 20 pedidos de la semilla
     with open(tmp_path / "territorio_sin_pedidos.csv", encoding="utf-8") as f:
         assert list(csv.DictReader(f))[0]["estado"] == "sin pedidos registrados"
+
+
+@pytest.mark.parametrize("origen", [None, "datos_publicos"])
+def test_piloto_el_manantial_y_ciudadela_del_norte(con, origen):
+    """Las dos zonas del piloto salen en la tabla; las veredas de El Manantial, en la lista sin pedidos."""
+    from pathlib import Path
+    from despacho import semilla
+    raiz = Path(territorio.__file__).resolve().parent.parent
+    semilla.cargar(reiniciar=True, con=con, origen=raiz / origen if origen else None)
+    nombres = [f["territorio"] for f in territorio.resumen(con)]
+    assert "El Manantial" in nombres and "Ciudadela del Norte" in nombres
+    veredas = {(s["nombre"], s["comuna"]) for s in territorio.silencio(con) if s["tipo"] == "vereda"}
+    assert {("Alto Bonito", "El Manantial"), ("Pueblo Hondo", "El Manantial"),
+            ("El Águila", "El Manantial")} <= veredas
+    assert ("Pueblo Hondo", "Neira") not in veredas          # manda la Alcaldía, no OpenStreetMap
+    if origen:                                                # la Casa de la Cultura Alto Bonito (id 46)
+        fila = con.execute("SELECT barrio, comuna FROM puntos WHERE id = 46").fetchone()
+        assert tuple(fila) == ("Alto Bonito", "El Manantial")
