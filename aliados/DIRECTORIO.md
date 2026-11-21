@@ -4,7 +4,7 @@ Fichas para las llamadas del sábado 21 de noviembre de 2026, desde las 8:00 a. 
 
 **Cómo se armó.** Cada canal sale del sitio, de las redes o de un documento de la propia entidad o de su entidad madre, y la columna «Fuente» dice de cuál. Cuando el dato lo publica otra entidad, por ejemplo ABACO sobre el Banco, la tabla lo dice. Un directorio de terceros o una ficha de buscador no cuenta, así que lo que solo aparece ahí figura como «no encontrado». Tampoco se copian teléfonos ni correos de personas, aunque estén en un directorio oficial. De cada funcionario va el cargo, y el nombre solo cuando una entidad oficial lo publica. Todo se consultó el 21 de noviembre de 2026, entre la medianoche y la 1:00 a. m., con un lector automático, y falta la revisión de una persona.
 
-**Marcas.** [F] lo dice la fuente enlazada. [I] es inferencia nuestra. [P] es una pregunta para la llamada. «Vía investigación 10» señala una fuente que encontró otro agente y que esta noche no se volvió a abrir.
+**Marcas.** [F] lo dice la fuente enlazada, y cada una de esas fuentes se abrió esta noche. [I] es inferencia nuestra. [P] es una pregunta para la llamada. Las direcciones de redes sociales se copiaron de la página oficial que las enlaza, sin abrirlas.
 
 **Líneas que no se usan.** La 119 de Bomberos, la 132 de la Cruz Roja y la 144 de la Defensa Civil son líneas de emergencia. Ninguna sirve para ofrecer un piloto.
 
@@ -69,7 +69,7 @@ Fichas para las llamadas del sábado 21 de noviembre de 2026, desde las 8:00 a. 
 | Instagram | https://www.instagram.com/bancodealimentosmanizales | [Sitio del Banco](https://bancodealimentosmanizales.org/) | 21 nov 2026 |
 | Facebook | https://www.facebook.com/bancodealimentosmanizales | [Sitio del Banco](https://bancodealimentosmanizales.org/). ABACO enlaza otra página, https://www.facebook.com/PastoralSocialCaritasManizales | 21 nov 2026 |
 | YouTube | https://www.youtube.com/@bancodealimentosmanizales | Lo publica ABACO en los [datos de su mapa](https://abaco.org.co/tei/pages/comunicaciones/mapa_bancos/data/bancos.json) | 21 nov 2026 |
-| Dirección | Calle 49 #27A-85, Manizales | [Sitio del Banco](https://bancodealimentosmanizales.org/). Coincide con Minuto60 (vía investigación 10) | 21 nov 2026 |
+| Dirección | Calle 49 #27A-85, Manizales | [Sitio del Banco](https://bancodealimentosmanizales.org/). Coincide con [Minuto60, 10 ago 2026](https://www.minuto60.com/colombia/puntos-acopio-llevar-ayudas-terremoto-colombia/13301) | 21 nov 2026 |
 | Horario | No encontrado. El asistente del sitio no tiene el dato y remite al 310 418 4472 | [Sitio del Banco](https://bancodealimentosmanizales.org/), botón «¿Dónde están?» del asistente | 21 nov 2026 |
 | ¿Abre el sábado 21? | No encontrado | | 21 nov 2026 |
 | Informe de gestión 2025 | [PDF de 15 páginas](https://zhbqngzqxawyxdeyjymr.supabase.co/storage/v1/object/public/site-docs/informes_gestion/Informe%20de%20gestion%202025.pdf) | Sitio del Banco, botón «Informes de gestión», que trae también los de 2020 a 2024 | 21 nov 2026 |
@@ -143,7 +143,7 @@ Fichas para las llamadas del sábado 21 de noviembre de 2026, desde las 8:00 a. 
 | Teléfono | PBX (57) 6068982444. El pie de página lo escribe +57 68 98 24 44 | [Canales de atención](https://caldas.gov.co/atencion-y-servicio-a-la-ciudadania) | 21 nov 2026 |
 | Celular de atención | 313 8045000 | [Canales de atención](https://caldas.gov.co/atencion-y-servicio-a-la-ciudadania) | 21 nov 2026 |
 | Correo | atencionalciudadano@caldas.gov.co, para radicar peticiones. Su horario publicado es de lunes a viernes, de 8:00 a. m. a 6:00 p. m. | [Canales de atención](https://caldas.gov.co/atencion-y-servicio-a-la-ciudadania) | 21 nov 2026 |
-| Chat | https://chatgobernacion.peoplecontact.com.co:9564/chatgobernacion.html, enlazado como «Chat Gobernación». Horario no encontrado | [Gobernación](https://caldas.gov.co/) | 21 nov 2026 |
+| Chat | https://chatgobernacion.peoplecontact.com.co:9564/chatgobernacion.html, enlazado como «Chat Gobernación». Horario no encontrado, y el enlace no respondió a las 12:40 a. m. | [Gobernación](https://caldas.gov.co/) | 21 nov 2026 |
 | Redes | https://www.facebook.com/GobernaciondeCaldas/, https://twitter.com/GoberCaldas y https://www.instagram.com/gobercaldas/ | [Gobernación](https://caldas.gov.co/) | 21 nov 2026 |
 | Dirección | Carrera 21 entre calles 22 y 23, Palacio Amarillo, Manizales | [Canales de atención](https://caldas.gov.co/atencion-y-servicio-a-la-ciudadania) | 21 nov 2026 |
 | Horario | Lunes a jueves de 8:00 a. m. a 12:00 m. y de 2:00 a 6:00 p. m. Viernes de 7:00 a. m. a 3:00 p. m. en jornada continua | [Canales de atención](https://caldas.gov.co/atencion-y-servicio-a-la-ciudadania) | 21 nov 2026 |
@@ -327,6 +327,6 @@ Estas cifras salieron esta noche de fuentes oficiales y todas son del tipo F. La
 - **Bomberos de Manizales.** No se encontraron un canal administrativo, la dirección de sus estaciones ni el nombre del comandante en 2026.
 - **Horarios del IDEA y del chat de la Gobernación.**
 - **Si el profesor Néstor del P5 es Néstor Darío Duque Méndez.**
-- **Minuto60, citado «vía investigación 10» para la dirección del Banco.** Esta noche no se volvió a abrir, aunque el sitio del Banco da la misma dirección. Las demás notas de prensa de este directorio sí se abrieron.
+- **Las páginas de Facebook del Banco** no se pudieron leer sin iniciar sesión, así que tampoco dieron un horario.
 - **La forma de marcar el PBX del IDEA desde un celular**, que es una conversión nuestra al plan de numeración vigente [I].
 - **La página de la Defensa Civil muestra texto de un conflicto de versiones** en el bloque nacional. El bloque de la Seccional Caldas se lee completo.
