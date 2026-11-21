@@ -8,13 +8,14 @@ Rama `qa-noche`, sobre `main` en 917b42b. La hizo un agente de Fable entre las 1
 - Arreglé seis fallas, cada una con su prueba; la del HTML, solo del lado de la entrada. La más visible: con el modelo activo, «ENTREGADO DX-XXXX» por Telegram no registraba la entrega.
 - Quedan cuatro riesgos que un jurado técnico puede encontrar y que no se arreglan esta noche: el tablero público sin clave, los códigos de entrega adivinables, el HTML sin escapar en el mapa y los apodos que se aprenden del pin de cualquier chat.
 - Antes de cada presentación hay que reiniciar los datos de la nube y luego reiniciar el servicio. En `main` no existe el botón «Reiniciar datos de prueba».
-- Carlos decide cinco cosas, listadas al final.
+- Carlos decide seis cosas, listadas al final.
 
 ## Qué se probó
 
 | Prueba | Resultado |
 |---|---|
 | Suite en un venv propio con Python 3.12.3 (el Dockerfile usa `python:3.12-slim`) y las versiones de PyPI de las 11:31 p. m. | `main` 917b42b: 342 pasan y 3 se omiten, en 1 min 25 s. Rama `qa-noche`: 378 pasan y 3 se omiten, entre 1 min 20 s y 1 min 36 s |
+| Fusión de prueba de `qa-noche` con el `main` de las 12:15 a. m. (2073997, 12 commits más) | Sin conflictos. 379 pasan y 3 se omiten |
 | Las 3 que se omiten | Dos de la simulación piden `despacho/cache/manizales.graphml`, que no está en el repositorio. Una mide el extractor real y pide `ANTHROPIC_API_KEY`. Ninguna corre en Railway |
 | Dependencias de sistema de zxing-cpp y pypdfium2, con `ldd` | Solo piden `libstdc++.so.6`, `libgcc_s.so.1` y la libc, que ya vienen en `python:3.12-slim` porque `apt` depende de ellas. El Dockerfile no necesita `apt-get`. Aquí no hay Docker para construir la imagen |
 | `despliegue/arranque.sh` con base y red vial en una carpeta temporal, sin `TELEGRAM_BOT_TOKEN`, sin `ANTHROPIC_API_KEY` y sin opcionales | Copia la red vial, carga la semilla (15 puntos, 20 pedidos, 450 apodos), avisa que el bot no arranca, y el tablero responde `ok` en `/_stcore/health` a los 3 s |
@@ -46,7 +47,9 @@ El bot revisa el silencio cada 10 minutos. Con la semilla, los tres albergues cr
 
 ### 1.4 No existe el botón «Reiniciar datos de prueba»
 
-No está en `tablero/app.py` de `main` ni en ninguna de las 10 ramas remotas. Si el rediseño de Jacobo no lo trae, se reinicia como el viernes a las 4:55 p. m.: `railway ssh -- 'python -m despacho.semilla --cargar --reiniciar'`. Después hay que reiniciar el servicio en Railway, por dos razones. El bot guarda en memoria las conversaciones a medias, y como los ids vuelven a empezar tras el borrado, una conversación vieja puede confirmar la ubicación del reporte nuevo de otra persona. Además, el guion cuenta con que el pedido nuevo sea el 21: nadie debe escribirle al bot entre el reinicio y la demo.
+No está en `tablero/app.py` de `main` ni en ninguna de las 10 ramas remotas; Fable lo corrigió en el canal a las 12:12 a. m. Si el rediseño de Jacobo no lo trae, hay dos vías. La del canal: poner `DESPACHOX_REINICIAR=1` en Railway, esperar el redespliegue y quitar la variable. La del viernes a las 4:55 p. m.: `railway ssh -- 'python -m despacho.semilla --cargar --reiniciar'`, que no redespliega.
+
+Con la segunda vía hay que reiniciar después el servicio en Railway. El bot guarda en memoria las conversaciones a medias, y como los ids vuelven a empezar tras el borrado, una conversación vieja puede confirmar la ubicación del reporte nuevo de otra persona. La primera vía ya reinicia el bot. En las dos, el guion cuenta con que el pedido nuevo sea el 21: nadie debe escribirle al bot entre el reinicio y la demo.
 
 ### 1.5 Railway instalaba la última versión de cada paquete. Arreglado en un commit aparte; decide Carlos
 
@@ -115,12 +118,12 @@ El pin de Telegram puede ser la casa de quien pide. Se guarda en `ubicaciones`; 
 
 ## 3. Deuda
 
-- **Tres definiciones de silencio.**
-  - (a) `entrada/silencio.py` es la alerta operativa: un punto crítico sin un pedido de origen `mensaje` en 6 h, contadas desde las 06:00 si nunca escribió. Escribe una fila en `pedidos`.
+- **Silencio: la definición única del canal todavía no coincide con el código.** Hay tres lugares que lo calculan.
+  - (a) `entrada/silencio.py` es la alerta operativa: un punto crítico sin un pedido de origen `mensaje` en 6 h, contadas desde las 06:00 si nunca escribió. Es la única que escribe, una fila en `pedidos`.
   - (b) `silencio()` en `despacho/territorio.py:175` es una lista de cobertura: barrios y veredas del nomenclátor sin pedidos en el periodo. Solo lee.
-  - (c) `triage/debiles.py:19` es un silencio estadístico, `exp(−μ) < α`, dentro del prototipo de triage, que no está conectado al bot ni al tablero.
+  - (c) `triage/debiles.py`, en el prototipo de triage, que no está conectado al bot ni al tablero. En `main` usa una prueba de Poisson (`:19`); en la rama `jacobo-silencio`, sin fusionar, ya usa las 6 h y la de Poisson solo ordena.
 
-  No son lo mismo y no chocan en la base. Pero (a) y (b) no cuentan igual el contacto: (a) cuenta un pedido descartado o duplicado (`entrada/silencio.py:58`) y (b) no lo cuenta (`despacho/territorio.py:105`). Así, si el despachador descarta un mensaje de un albergue, la alerta se apaga 6 horas y el albergue sigue «sin pedidos registrados». Debe mandar (a): es la única que crea alertas, la que aparta el optimizador (`despacho/optimizar.py:306`) y la que se prueba de punta a punta. Propuesta: renombrar (b) a `sin_pedidos`, cuya pantalla ya dice «sin pedidos registrados»; que (a) no cuente los descartados como contacto; y dejar (c) como propuesta de umbral para el piloto, en lugar de las 6 h fijas.
+  A las 11:30 p. m. el canal acordó una sola definición, con (a) como fuente: 6 h sin un pedido de origen `mensaje` con lugar confirmado, desde la más tardía entre las 06:00 y la hora del evento. Debe mandar (a), porque es la única que crea alertas, la que aparta el optimizador (`despacho/optimizar.py:306`) y la que se prueba de punta a punta. Pero quedan tres diferencias. Primera: ¿cuenta como contacto un mensaje descartado? (a) dice que sí, porque cuenta cualquier estado (`entrada/silencio.py:58`). (b) dice que no, y tampoco cuenta duplicados (`despacho/territorio.py:105`). (c) en `jacobo-silencio` dice que no, aunque su docstring dice «igual que entrada/silencio.py». Efecto: si el despachador descarta el único mensaje de un albergue, la alerta se apaga 6 horas y el albergue sigue «sin pedidos registrados». Segunda: (a) cuenta desde las 06:00 y no mira la hora del evento. Tercera: (b) no usa el umbral de 6 h, sino el periodo que se le pide. Propuesta: que Carlos decida si un descarte cuenta como contacto y que (a) lo siga; es una condición en la consulta de `entrada/silencio.py:58`, más su prueba. Y que (b) se presente como «sin pedidos registrados en el periodo», que es lo que mide.
 - El tablero cuenta las alertas de silencio en «Pedidos pendientes» (`tablero/datos.py:260`). Una vez confirmadas, solo aparecen como aviso en «Plan en detalle»: falta mostrar `resumen.verificar`, como pidió el canal a las 11:15 p. m.
 - Mensajes internos a la vista. Si el optimizador falla, el plan vacío dice «error interno: Tipo: mensaje» (`despacho/optimizar.py:592`) y el tablero lo muestra (`tablero/app.py:262`). También muestra la última línea de error del subproceso (`tablero/datos.py:368`). No llevan datos personales, pero pueden mostrar rutas del servidor.
 - La hoja impresa dice que las entregas se registran también «en el tablero» (`despacho/hoja.py:50`), y el tablero no tiene cómo. Hay que agregar el botón o quitar la frase.
@@ -136,7 +139,7 @@ El pin de Telegram puede ser la casa de quien pide. Se guarda en `ubicaciones`; 
 1. **8:00 a. m., fusión.** Incluir `qa-noche` y decidir si entra el commit 341aa81 (versiones fijas). Correr `python -m pytest -q`: con la rama, 378 pasan y 3 se omiten. Samuel revisa los cambios en sus archivos de `entrada/` (sección 6).
 2. **Registros de Railway después del despliegue.** Deben verse la red vial, los datos, «Bot en marcha» y la dirección de Streamlit, y no debe aparecer `Conflict: terminated by other getUpdates`. Nadie corre el bot local con el token de producción.
 3. **Después de la última fusión,** desactivar el despliegue automático (`docs/DESPLIEGUE.md`).
-4. **Antes de cada presentación, pulsar «Reiniciar datos de prueba».** Si el tablero de Jacobo no trae ese botón, usar `railway ssh -- 'python -m despacho.semilla --cargar --reiniciar'`. En los dos casos, después, «Restart» del servicio en Railway, para que el bot olvide las conversaciones viejas. Hacerlo menos de 3 horas antes de la presentación, o ajustar `DESPACHOX_SILENCIO_HORAS` (punto 1.3).
+4. **Antes de cada presentación, pulsar «Reiniciar datos de prueba».** Si el tablero de Jacobo no trae ese botón, poner `DESPACHOX_REINICIAR=1` en Railway, esperar el redespliegue y quitar la variable. Si se reinicia por `railway ssh`, hacer después «Restart» del servicio, para que el bot olvide las conversaciones viejas (punto 1.4). Hacerlo menos de 3 horas antes de la presentación, o ajustar `DESPACHOX_SILENCIO_HORAS` (punto 1.3).
 5. **Entre el reinicio y la demo, nadie le escribe al bot de la nube.** El guion cuenta con que el pedido nuevo sea el 21 y con que nadie haya enseñado apodos.
 6. **En los ensayos, tocar «Sí, es ahí»** para el cierre de la avenida del Centro, nunca «Enviar mi ubicación». Si se ensaya en la nube, reiniciar otra vez antes del pitch.
 7. **Si se muestra la trazabilidad con QR:** con `qa-noche` fusionada, «ENTREGADO DX-XXXX» por Telegram registra la entrega. Probarlo una vez con un código de la hoja impresa.
@@ -150,6 +153,7 @@ El pin de Telegram puede ser la casa de quien pide. Se guarda en `ubicaciones`; 
 3. ¿Se le pone clave al tablero mañana (Jacobo, unas 10 líneas), o se acepta el riesgo y se responde con el plan del piloto?
 4. Para el piloto: ¿ENTREGADO solo desde el destino o desde un conductor registrado, con tope de intentos y códigos de 6 signos?
 5. Para el piloto: ¿los pines de los remitentes enseñan apodos? ¿Se redondean a unos 100 m?
+6. ¿Un mensaje descartado cuenta como contacto para la alerta de silencio? Hoy `entrada/silencio.py` dice que sí, y territorio y triage dicen que no (sección 3).
 
 ## 6. Archivos de esta rama
 
