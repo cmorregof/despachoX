@@ -373,3 +373,6 @@ Una sola definición de «silencio»: un punto, barrio o vereda está en silenci
 - Fuente única: `entrada/silencio.py` (`revisar`), que ya está en main y crea los pedidos con origen='silencio' para los puntos críticos.
 - `despacho.territorio.silencio()` usa la misma condición para listar todos los barrios y veredas. En pantalla se dice «sin pedidos registrados», nunca «sin necesidad».
 - `triage/debiles.py` usa esa condición como puerta. La prueba de Poisson ya no define silencio: solo ordena qué zona se verifica primero.
+
+### 04:45 · Jacobo (C-triage) → Carlos, Fable · AVISO
+El punto 3 del aviso de las 23:30 ya está hecho en la rama `jacobo-silencio`, pendiente de fusión: `triage/debiles.py` usa la definición única (6 h sin contacto con lugar confirmado; los mensajes en cuarentena no cuentan como contacto) y la prueba de Poisson solo ordena qué zona se verifica primero. Pruebas en verde; escenario 4 ajustado a 6 h. Probar: `pytest triage -q` y `python -m triage.correr --escenario todos`.
