@@ -107,12 +107,25 @@ Lectura:
 ## Parte 3 · El resumen del modelo y la vista
 
 - `despacho/resumen_grupo.py`: arma el texto de entrada (cabecera con familias y kilos sumados por código, y los textos de los pedidos pasados por `entrada/privacidad.limpiar`, hasta 60) y guarda el resumen en la tabla nueva `resumenes_grupo`. El extractor se inyecta; en las pruebas es falso. **No se llamó al modelo real en esta sesión** y nadie llama todavía a `resumir_y_guardar` en producción: el tablero muestra «sin resumen todavía».
-- Tablero: con `DESPACHOX_AGRUPAR=1`, «Por revisar» muestra una tarjeta por grupo de pedidos nuevos con familias (y el tope si recortó), kilos, urgencia, el resumen marcado «leído por el modelo», «Ver los pedidos del grupo» y los botones «Confirmar grupo» y «Descartar grupo», que confirman o descartan pedido por pedido con bitácora. Los pedidos agrupados no se repiten sueltos. Apagada, la columna es la de hoy. **No se midió el tablero con la vista de grupos encendida.**
+- Tablero: con `DESPACHOX_AGRUPAR=1`, «Por revisar» muestra una tarjeta por grupo de pedidos nuevos con familias (y el tope si recortó), kilos, urgencia, el resumen marcado «leído por el modelo», «Ver los pedidos del grupo» y los botones «Confirmar grupo» y «Descartar grupo», que confirman o descartan pedido por pedido con bitácora. Los pedidos agrupados no se repiten sueltos. Apagada, la columna es la de hoy.
+
+### El tablero con la vista de grupos encendida (12:02, misma base de 15.000)
+
+| | Variable apagada | `DESPACHOX_AGRUPAR=1` |
+|---|---:|---:|
+| Corrida completa de `tablero/app.py` | 13,2 s | 9,9 s |
+| `por_revisar` | 6,1 s | 5,6 s |
+| `grupos_por_revisar` (agrupar 7.584 pedidos nuevos) | — | 0,07 s |
+| Pintar | 6,7 s | 4,0 s |
+| Botones en pantalla | 15.170 | 278 (138 grupos) |
+| Memoria del proceso al final | 666 MB | 522 MB |
+
+Agrupar cuesta 0,07 s y deja 138 tarjetas en vez de 7.584. Lo que queda de los 9,9 s son dos cosas que la vista de grupos no toca: `por_revisar`, que la mesa sigue llamando con su consulta por pedido (5,6 s), y el mapa, que sigue poniendo un círculo por cada uno de los 15.000 pedidos (dentro de los 4,0 s de pintar). Las dos están en la lista de abajo.
 
 ## Qué haría falta
 
 1. En `por_revisar`, leer los repetidos en una sola consulta (`GROUP BY duplicado_de`): se ahorran casi 6 de los 13 s.
-2. No pintar miles de tarjetas: con la variable encendida la mesa muestra grupos; sin ella, paginar o mostrar solo los primeros.
+2. Con la variable encendida la mesa ya muestra grupos (278 botones en vez de 15.170); falta que el mapa dibuje por punto y no por pedido, y que `por_revisar` no cargue los pedidos sueltos cuando van agrupados.
 3. Permitir que un grupo salga en varios viajes o se parta por capacidad del vehículo. Hoy un grupo de 856 kg en un punto al que solo llega el campero no sale.
 4. Decidir la ventana de tiempo del grupo: encadenada (como ahora) o en bloques.
 5. Conectar `resumir_y_guardar` a un proceso que corra con el modelo real y medir su costo.
@@ -121,6 +134,7 @@ Lectura:
 
 ```bash
 .venv/bin/python -m despacho.escala --tablero --pedidos 15000
+.venv/bin/python -m despacho.escala --tablero --pedidos 15000 --agrupar
 .venv/bin/python -m despacho.escala --planificar 50 100 250 500 1000
 .venv/bin/python -m despacho.escala --planificar 50 100 250 500 1000 15000 --agrupar
 .venv/bin/python -m pytest despacho/tests/test_agrupar.py despacho/tests/test_agrupar_plan.py despacho/tests/test_resumen_grupo.py tablero/tests/test_grupos.py -q

@@ -1,5 +1,5 @@
 # Torre de control · Carlos · sesión de Claude Code para el encargo S3 (rama `escala`)
-Última actualización: sábado 21 de noviembre de 2026, 12:10
+Última actualización: sábado 21 de noviembre de 2026, 12:20
 
 Torre aparte de `TORRE_CAPITAN.md` para no chocar con las otras sesiones de Carlos. Fable revisa y fusiona la rama.
 
@@ -21,9 +21,10 @@ Las tres partes del encargo S3 están hechas en la rama `escala` y medidas: 15.0
 - Pedidos sintéticos de las últimas 3 h (no 6) para que ningún crítico nazca vencido: la primera corrida daba 4 de 7 críticos a tiempo por ese artefacto.
 - Tabla nueva `resumenes_grupo`: avisado en el canal.
 
+- 12:02 · Tablero con grupos encendidos, 15.000 pedidos: 9,9 s en vez de 13,2; 278 botones en vez de 15.170; agrupar 0,07 s; memoria 522 MB. Quedan `por_revisar` (5,6 s) y el mapa por pedido.
+
 ## Lo que no se hizo o no se midió
 - `planificar` con 15.000 pedidos sueltos (tabla de tiempos de unos 20 GB).
-- Tablero con la vista de grupos encendida.
 - El modelo real resumiendo grupos.
 - Un grupo que no cabe en el vehículo que llega al punto queda sin atender; hoy el modelo es un viaje por vehículo.
 

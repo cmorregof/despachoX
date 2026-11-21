@@ -141,6 +141,7 @@ def medir_consultas(con) -> dict:
         ("plan_vigente", T.plan_vigente, (con,)),
         ("rutas", T.rutas, (con, plan)),
         ("por_revisar", T.por_revisar, (con,)),
+        ("grupos_por_revisar", T.grupos_por_revisar, (con,)),
         ("indicadores", T.indicadores, (con, plan)),
         ("sin_atender", T.sin_atender, (con, plan)),
         ("cierres_sin_aplicar", T.cierres_sin_aplicar, (con, plan)),
@@ -150,7 +151,8 @@ def medir_consultas(con) -> dict:
     ]:
         s, r = _cronometrar(f, *args)
         medidas[nombre] = round(s, 3)
-    pestanas = {"Mesa": ["plan_vigente", "rutas", "por_revisar", "indicadores", "cierres_sin_aplicar"],
+    pestanas = {"Mesa": ["plan_vigente", "rutas", "por_revisar", "grupos_por_revisar", "indicadores",
+                         "cierres_sin_aplicar"],
                 "Plan en detalle": ["sin_atender"], "Territorio": ["territorio"],
                 "Informe": ["informe"], "Bitácora": ["bitacora"]}
     return {"consultas_s": medidas,
@@ -181,8 +183,8 @@ def medir_apptest(ruta: Path, espera_s: int = 900) -> dict:
         return original, medida
 
     # `filas` no se envuelve: la llaman las otras funciones y se contaría dos veces.
-    nombres = ["plan_vigente", "rutas", "por_revisar", "indicadores", "sin_atender", "cierres_sin_aplicar",
-               "cambios_del_recalculo", "territorio", "informe", "bitacora"]
+    nombres = ["plan_vigente", "rutas", "por_revisar", "grupos_por_revisar", "indicadores", "sin_atender",
+               "cierres_sin_aplicar", "cambios_del_recalculo", "territorio", "informe", "bitacora"]
     originales = {}
     for n in nombres:
         originales[n], medida = envolver(n)
@@ -204,15 +206,25 @@ def medir_apptest(ruta: Path, espera_s: int = 900) -> dict:
             "memoria_mb_antes": antes and round(antes), "memoria_mb_despues": _memoria_mb() and round(_memoria_mb())}
 
 
-def medir_tablero(n_pedidos: int, fraccion_nuevo: float = 0.5, apptest: bool = True) -> dict:
+def medir_tablero(n_pedidos: int, fraccion_nuevo: float = 0.5, apptest: bool = True,
+                  agrupar: bool = False) -> dict:
+    """Con `agrupar`, la medición corre con DESPACHOX_AGRUPAR=1: «Por revisar» muestra grupos."""
     ruta = _ruta_temporal(f"tablero_{n_pedidos}")
     t = time.perf_counter()
     con, ahora, base = base_escala(ruta, n_pedidos, fraccion_nuevo)
     base["segundos_generar"] = round(time.perf_counter() - t, 1)
-    r = {"base": base, "consultas": medir_consultas(con)}
-    con.close()
-    if apptest:
-        r["apptest"] = medir_apptest(ruta)
+    previo = os.environ.get("DESPACHOX_AGRUPAR")
+    os.environ["DESPACHOX_AGRUPAR"] = "1" if agrupar else "0"
+    try:
+        r = {"base": base, "agrupar": agrupar, "consultas": medir_consultas(con)}
+        con.close()
+        if apptest:
+            r["apptest"] = medir_apptest(ruta)
+    finally:
+        if previo is None:
+            os.environ.pop("DESPACHOX_AGRUPAR", None)
+        else:
+            os.environ["DESPACHOX_AGRUPAR"] = previo
     return r
 
 
@@ -306,13 +318,13 @@ def main(argv=None) -> int:
     ap.add_argument("--sin-apptest", action="store_true")
     ap.add_argument("--planificar", type=int, nargs="*", help="tamaños para medir planificar")
     ap.add_argument("--segundos", type=int, default=8, help="límite del solver (el de hoy: 8)")
-    ap.add_argument("--agrupar", action="store_true", help="planificar con DESPACHOX_AGRUPAR=1")
+    ap.add_argument("--agrupar", action="store_true", help="tablero y planificar con DESPACHOX_AGRUPAR=1")
     ap.add_argument("--todo", action="store_true")
     ap.add_argument("--json", help="guarda todo el resultado")
     a = ap.parse_args(argv)
     salida = {"maquina": maquina(), "tablero": None, "planificar": []}
     if a.tablero or a.todo:
-        salida["tablero"] = medir_tablero(a.pedidos, apptest=not a.sin_apptest)
+        salida["tablero"] = medir_tablero(a.pedidos, apptest=not a.sin_apptest, agrupar=a.agrupar)
         print(json.dumps(salida["tablero"], ensure_ascii=False, indent=1))
     tamanos = a.planificar if a.planificar else ([50, 100, 250, 500, 1000] if a.todo else [])
     if tamanos:
