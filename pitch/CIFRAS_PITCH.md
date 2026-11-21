@@ -53,10 +53,11 @@ Versión 1, sábado 21 de noviembre, poco después de la medianoche, rama `pitch
 
 ## Versión de un minuto
 
-Repite C02, C03, C17 y C19. Añade dos frases, sin cifras nuevas.
+Repite C02, C03, C06, C17 y C19. Añade tres frases, sin cifras nuevas.
 
 | Frase exacta | Fuente | Tipo | Estado |
 |---|---|---|---|
+| «Comedores, hogares y juntas piden por chat o SMS, y los conductores reportan los derrumbes» | `entrada/` (bot de Telegram y lector de SMS); `docs/FICHA_CORTA.md`, componente 2 | Medido | Por chat, medido. Por SMS, con la salvedad de C13 |
 | «El optimizador reparte entre camión, campero y moto, saca primero lo que vence primero y recalcula si se cierra una vía» | `despacho/optimizar.py` y `despacho/recalcular.py`; `docs/FICHA_CORTA.md`, componente 2 | Medido | Corre en la demo |
 | «Todo se mide contra la línea base del propio Banco» | `docs/FICHA_CORTA.md`, componentes 4 y 6; `docs/PLAN_30_90.md` (rama `defensa-noche`), sección 5 | Plan | No aplica |
 
@@ -108,7 +109,7 @@ Repite C02, C03, C17 y C19. Añade dos frases, sin cifras nuevas.
 ## Cifras que no se dicen, y por qué
 
 - **«Desabastecimiento en 48 horas»**, de la ficha de la vertical. No tiene fuente para este sismo (`docs/PROBLEMA.md`, sección 2).
-- **Toda la primera corrida de la simulación**, con el +28,6, el 12 a 46, el empate con la experta, los 47 a 75 km, el 0,0 % de vencidos y el 69,1 % y 98,5 % de la ficha. Están en revisión por las velocidades y la vida útil (`docs/FUENTES.md`, `fuentes-noche`, sección 14). En su lugar va [SIM].
+- **La primera corrida y la segunda ronda de la simulación**, con el +28,6, el 12 a 46, el empate con la experta, los 47 a 75 km, el 0,0 % de vencidos y el 69,1 % y 98,5 % de la ficha. Están en revisión por las velocidades y la vida útil (`docs/FUENTES.md`, `fuentes-noche`, sección 14). En su lugar va [SIM].
 - **«Manizales, el principal punto de acopio»** o **«para el Eje Cafetero»**. RCN dice «uno de los principales» (D1).
 - **«En todo el país»** y **«al sexto día»** como palabras de la nota de Portafolio. No están en ella (D3).
 - **«Autopista del Café»** para el cierre del 21 de octubre. El registro nombra otro tramo, y en voz alta se dice «vía a Pereira».

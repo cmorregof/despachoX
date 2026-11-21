@@ -1,6 +1,6 @@
 # Diapositivas del pitch · DespachoX
 
-Versión 1, viernes 20 de noviembre en la noche, rama `pitch-noche`. Contenido de cada diapositiva, listo para montar. El orden y los tiempos salen de `pitch/GUION.md`, y las cifras, de `pitch/CIFRAS_PITCH.md`.
+Versión 1, noche del viernes 20 al sábado 21 de noviembre, rama `pitch-noche`. Contenido de cada diapositiva, listo para montar. El orden y los tiempos salen de `pitch/GUION.md`, y las cifras, de `pitch/CIFRAS_PITCH.md`.
 
 ## Cómo usar este documento
 
@@ -23,8 +23,8 @@ Versión 1, viernes 20 de noviembre en la noche, rama `pitch-noche`. Contenido d
 | 4 · Lo que existe | 4 | 0:51 a 1:06 |
 | 5 · En vivo, y luego el tablero | 5 | 1:06 a 2:09 |
 | 6 · Qué medimos | 6 | 2:09 a 2:30 |
-| 7 · El piloto | 7 y 8 | 2:30 a 2:57 |
-| 8 · Cierre | 8 | 2:57 a 3:00 |
+| 7 · El piloto | 7 y la regla de cambio del 8 | 2:30 a 2:57 |
+| 8 · Cierre | La última frase del 8 | 2:57 a 3:00 |
 
 Las diapositivas A a H son de respaldo. Solo salen si un jurado pregunta, o en la versión de cinco minutos.
 
@@ -34,13 +34,13 @@ Las diapositivas A a H son de respaldo. Solo salen si un jurado pregunta, o en l
 
 **Texto en pantalla (9 palabras).** «La comida llegó. Lo que se atascó fue despacharla.»
 
-**Visual.** Figura existente `docs/informe/figuras/barras_abaco.pdf`, la figura 2 del informe corto. Son tres barras horizontales con los kilos de la red de bancos de alimentos al sexto día: 404.587 en acopio, 157.164 en tránsito y 41.163 entregados*. La genera `docs/informe/figuras/scripts/barras_abaco.py`.
+**Visual.** Figura existente `docs/informe/figuras/barras_abaco.pdf`, la figura 2 del informe corto. Son tres barras horizontales con los kilos de los bancos de alimentos el 16 de agosto, seis días después del sismo: 404.587 en acopio, 157.164 en tránsito y 41.163 entregados*. La genera `docs/informe/figuras/scripts/barras_abaco.py`.
 
 **Pie de fuente.** «Bancos de alimentos, seis días después del sismo. Portafolio, 16 de agosto de 2026*.»
 
 **Nota del orador.** La nota atribuye las cifras a «los Bancos de Alimentos» y no las limita a Manizales, aunque tampoco dice «en todo el país» de forma explícita (discrepancia D3 de `docs/FUENTES.md`, rama `fuentes-noche`). Por eso se dice «los bancos de alimentos» y nunca «Manizales». Si preguntan por Manizales, la ciudad fue uno de los principales puntos de acopio de la red (Noticias RCN, 10 de agosto*). No hay cifra pública de lo que despachó el Banco de Manizales, y eso se dice así.
 
-**Criterio.** 1, problema y vertical: evidencia.
+**Criterio.** 1, problema y vertical, por la evidencia.
 
 **Evidencia que deja.** Una cifra con fuente citada, en pantalla.
 
@@ -63,7 +63,7 @@ No conviene una gráfica de registros por año, porque esos conteos son mínimos
 
 **Nota del orador.** Son registros y no eventos, y hay registros todos los años desde 2017. Si preguntan cuánto dura un cierre, el patrón es un cierre total de horas seguido de semanas a un carril. Por ejemplo, el 15 de noviembre de 2025, en el km 14+700 de la vía a Fresno, hubo 3,6 horas de cierre total y luego 37 días a un carril*.
 
-**Criterio.** 1, problema y vertical: la ficha de la vertical 04 habla de derrumbes en las vías de acceso.
+**Criterio.** 1, problema y vertical, porque la ficha de la vertical 04 habla de derrumbes en las vías de acceso.
 
 **Evidencia que deja.** Un conteo propio sobre una fuente pública, que se repite con el CSV del repositorio.
 
@@ -170,7 +170,7 @@ Debajo de la línea, la regla de cambio: «Si el Banco no reparte, el piloto pas
 
 **Criterio.** 4, hitos, entregables y validación; 5, aliados y riesgo, por la regla de cambio; 3, el A25.
 
-**Evidencia que deja.** Un plan con hito y validación en cada tramo, y un territorio con nombre y con fuente.
+**Evidencia que deja.** Un plan con hito, decisión y responsable en cada tramo, y un territorio con nombre y con fuente.
 
 ---
 
@@ -245,7 +245,7 @@ Debajo, métodos y datos: ruteo con capacidad y ventanas de tiempo en OR-Tools s
 
 **Texto en pantalla (12 palabras).** «Qué le pedimos a cada aliado y en qué va cada conversación.»
 
-**Visual.** La tabla de aliados de `docs/FICHA_CORTA.md`, componente 5 (Banco, UGR, Gobernación, Cruz Roja e IDEA con SIMAC), con la columna «Estado» actualizada el sábado a la 1:00 p. m. No lleva nombres ni teléfonos de personas que no hayan dado permiso.
+**Visual.** La tabla de aliados de `docs/PLAN_30_90.md`, sección 3 (rama `defensa-noche`), que añade a ABACO y a la organización de la hackathon. Si esa rama no se fusiona, la de `docs/FICHA_CORTA.md`, componente 5 (Banco, UGR, Gobernación, Cruz Roja e IDEA con SIMAC). La columna «Estado» se actualiza el sábado a la 1:00 p. m. No lleva nombres ni teléfonos de personas que no hayan dado permiso.
 
 **Pie de fuente.** «Estado al sábado 21 de noviembre, [hora]. El Banco recibe el informe con sus números y la herramienta con sus datos, que siguen siendo suyos.»
 
@@ -271,9 +271,9 @@ Debajo, métodos y datos: ruteo con capacidad y ventanas de tiempo en OR-Tools s
 
 ### F · Indicadores del piloto
 
-**Texto en pantalla (10 palabras).** «Seis indicadores, todos contra la línea base del propio Banco.»
+**Texto en pantalla (11 palabras).** «Indicadores del piloto, todos contra la línea base del propio Banco.»
 
-**Visual.** La tabla de indicadores de `docs/FICHA_CORTA.md`, componente 6, con indicador, línea base, meta y verificación. Las cifras de simulación de esa tabla son de la primera corrida y se cambian por [SIM].
+**Visual.** La tabla de indicadores de `docs/PLAN_30_90.md`, sección 5 (rama `defensa-noche`), con definición, línea base y meta. Si esa rama no se fusiona, la de `docs/FICHA_CORTA.md`, componente 6, con indicador, línea base, meta y verificación. Las cifras de simulación de la tabla de la ficha son de la primera corrida y se cambian por [SIM].
 
 **Pie de fuente.** «Indicadores del reto: entregas a tiempo en puntos críticos y desperdicio de perecederos por debajo del 5 %.»
 
@@ -307,4 +307,4 @@ Debajo, métodos y datos: ruteo con capacidad y ventanas de tiempo en OR-Tools s
 
 **Evidencia que deja.** La arquitectura declarada, que se puede comprobar en el código.
 
-La matriz de riesgos y el banco de preguntas los prepara otro agente en otra rama. Si llegan, entran aquí como diapositivas de respaldo.
+La matriz de riesgos (`docs/RIESGOS.md`) y el banco de preguntas (`pitch/PREGUNTAS_JURADO.md`) están en la rama `defensa-noche`. Si Fable los fusiona, la matriz entra aquí como diapositiva de respaldo.

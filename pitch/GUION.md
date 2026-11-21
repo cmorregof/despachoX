@@ -116,7 +116,7 @@ La comparación con un despachador con oficio va siempre en la diapositiva. Deci
 
 ### Bloque 8 · Regla de cambio y cierre · 2:52 a 3:00 · criterios 4 y 5
 
-**Habla:** Voz 2 y luego Voz 1. **Pantalla:** diapositiva 8.
+**Habla:** Voz 2 y luego Voz 1. **Pantalla:** la diapositiva 7 sigue mientras Voz 2 dice la regla de cambio, que está debajo de la línea de tiempo, y la 8 sale con la última frase.
 
 > **Voz 2:** Si el Banco no reparte, el piloto pasa al flujo de requerimientos de la UGR y la Gobernación.
 >
