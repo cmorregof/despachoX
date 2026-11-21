@@ -1,5 +1,5 @@
 # Torre de control · A-entrada · rol A (entrada)
-Última actualización: 2026-11-20 23:00 (hora de Colombia)
+Última actualización: 2026-11-20 23:30 (hora de Colombia)
 
 Desde las 16:05 el módulo lo dirige Samuel con `encargos/A2_BOT_SAMUEL.md`. Se trabaja en la rama `samuel-bot`; Carlos fusiona a `main` a las 6:30 p. m., 11:00 p. m. y 8:00 a. m.
 
@@ -35,6 +35,8 @@ Etapa 1 del encargo A2 hecha en `samuel-bot` y probada con el extractor falso: �
 - 22:30 · Verificación de las trece cifras candidatas en `docs/FUENTES.md`, con frase literal, publicación, corte y resultado. Abierta por tres agentes lectores, **pendiente de visto bueno de Samuel**. Nueve coinciden; cuatro CIFRA DUDOSA en el canal (formato azul «después de revisar la vivienda», 204 JAC por PDF escaneado, Banco de Manizales en ABACO por 403, «tres camiones en ruta»); los 87 registros de Letras son cálculo propio, por recalcular.
 
 - 23:00 · Raciones con fuente en `entrada/raciones.py` (de `docs/datos/demanda.md`, sección 7): 555 g de ración seca por persona y día (ACNUR, Logistics Cluster), cereal 6:2:2 (ICBF), 2,9 personas por hogar (DANE 2018), pedido de 7 días (OPS/INCAP), agua de 1 día; frescos con la referencia del ICBF; pollo, pan, atún, azúcar, café, chocolate y papa se reconocen sin kilos. `despacho/semilla.py` no se tocó: la bodega sigue con la tabla vieja (aviso en el canal). Pruebas ahora leen las constantes. 110 pasan, 1 se omite.
+
+- 23:30 · `ENTREGADO` solo desde el destino o el conductor (`guardar.quien_confirma`, `flujo._entregar`): vale quien hizo el pedido o quien ya pidió para el mismo punto con origen `mensaje`; el conductor, cuando exista `vehiculos.conductor_hash` (pedida a B). Misma respuesta para código inexistente y no autorizado; rechazos en la bitácora. `test_entregado.py`: 6 pruebas. 116 pasan, 1 se omite. Es arreglo de seguridad: puede entrar después del congelamiento.
 
 ## En curso (qué, hasta dónde llegó, qué falta)
 - Prueba desde un teléfono con el bot real: nadie le ha escrito todavía.

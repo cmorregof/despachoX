@@ -19,6 +19,7 @@ from dataclasses import dataclass, field
 from typing import Callable
 
 import lugares
+from datos import db
 from entrada import guardar, raciones, silencio
 from entrada.extraer import Extraccion, Producto, extraer as extraer_con_modelo
 from entrada.privacidad import hash_remitente, limpiar
@@ -290,13 +291,20 @@ class Mesa:
     # ---------- ENTREGADO DX-7KQ3 ----------
 
     def _entregar(self, rem: str, codigo: str) -> Respuesta:
-        """Confirmación de entrega por chat o SMS. La marca la hace despacho/, que la anota en la
-        bitácora con un código del remitente (nunca su número)."""
-        from despacho.paquetes import entregar
-        if entregar(self.con, codigo, quien=f"remitente {rem[:8]}"):
+        """Confirmación de entrega por chat o SMS. Solo vale si la manda el destino (quien pidió para
+        ese punto) o el conductor asignado. La marca la hace despacho/, que la anota en la bitácora
+        con un código del remitente (nunca su número). Un código inexistente y uno que este remitente
+        no puede confirmar reciben la misma respuesta, para que nadie pueda probar códigos a ciegas."""
+        from despacho.paquetes import entregar, normalizar_codigo
+        codigo = normalizar_codigo(codigo)
+        quien = f"remitente {rem[:8]}"
+        como = guardar.quien_confirma(self.con, codigo, rem)
+        if como and entregar(self.con, codigo, quien=f"{quien} ({como})"):
             return Respuesta(f"Gracias. El paquete {codigo} quedó entregado.")
-        return Respuesta(f"No encontré un paquete en camino con el código {codigo}. Revísalo y escríbelo "
-                         "de nuevo, por ejemplo: ENTREGADO DX-7KQ3.")
+        db.anotar(self.con, quien, "entrega rechazada",
+                                      f"{codigo}: {'paquete no vivo' if como else 'no es el destino ni el conductor, o no existe'}")
+        return Respuesta(f"No pude confirmar el paquete {codigo}. Revisa el código. Solo lo puede confirmar "
+                         "quien pidió para ese punto o el conductor que lo lleva, desde su propio chat o número.")
 
     # ---------- ¿para cuántas familias? ----------
 
