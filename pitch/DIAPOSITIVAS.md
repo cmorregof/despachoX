@@ -55,7 +55,7 @@ Las diapositivas A a H son de respaldo. Solo salen si un jurado pregunta, o en l
 **Visual.** Figura existente `docs/informe/figuras/mapa_manizales.pdf`, la figura 1 del informe corto. Muestra la red vial, los 50 puntos de entrega reales del escenario público (35 críticos), los dos acopios y dos flechas hacia los corredores cerrados del 10 al 12 de agosto. Las dos etiquetas se añaden en el editor de diapositivas, sin tocar el script. Datos de las etiquetas:
 
 - Letras: `docs/datos/vias_y_riesgo.md`, sección 3, tabla por corredor, fila «salida a Letras» (total 87). Las 4 del sismo son las filas S04, S09, S10 y S11 de `datos_publicos/cierres_historicos.csv` (conteo nuestro sobre ese archivo).
-- Vía a Pereira: `docs/datos/vias_y_riesgo.md`, sección 2, «Septiembre a noviembre», y la fila S22 del mismo archivo. El registro de INVÍAS nombra el tramo «Puente La Libertad – Tres Puertas», PR 19+300, en Risaralda, con ruta alterna por La Siria. Llamarlo autopista del Café es lectura nuestra (`docs/FUENTES.md`, rama `fuentes-noche`, sección 6), y por eso en voz alta se dice «la vía a Pereira».
+- Vía a Pereira: `docs/datos/vias_y_riesgo.md`, sección 2, «Septiembre a noviembre», y la fila S22 del mismo archivo. El registro de INVÍAS nombra el tramo «Puente La Libertad-Tres Puertas», PR 19+300, en Risaralda, con ruta alterna por La Siria. Llamarlo autopista del Café es lectura nuestra (`docs/FUENTES.md`, rama `fuentes-noche`, sección 6), y por eso en voz alta se dice «la vía a Pereira».
 
 No conviene una gráfica de registros por año, porque esos conteos son mínimos y no sirven para comparar años (`docs/datos/vias_y_riesgo.md`, sección 3).
 
@@ -198,7 +198,7 @@ Debajo de la línea, la regla de cambio: «Si el Banco no reparte, el piloto pas
 
 | Capacidad | Qué es | Dónde entra | Estado |
 |---|---|---|---|
-| A25 del IDEA, Sede Manizales | Lluvia acumulada de 25 días por estación. Alerta amarilla desde 200 mm, naranja desde 300 y roja desde 400* | Sube el costo de cada tramo según la alerta de la estación más cercana | Días 60 a 90 del piloto; hoy no está en el código. Se actualiza si entra antes de las 8:30 a. m. |
+| A25 del IDEA, Sede Manizales | Lluvia acumulada de 25 días por estación. Alerta amarilla desde 200 mm, naranja desde 300 y roja desde 400* | Sube el costo de cada tramo según la alerta de la estación más cercana, solo en naranja o roja, y nunca lo cierra | Hecho en la rama `a25` con lluvia sintética y apagado por defecto; entra a `main` si Carlos lo fusiona. En el piloto, días 60 a 90, con lluvia real |
 | Patente 37476, composición que captura etileno | Alarga la vida útil de un lote | Parámetro supuesto de 1,2, solo en fruta perecedera de un acopio con frío | En el código como supuesto. Único respaldo: cota inferior en gulupa a 8 °C* |
 | Tesis de maestría, UNAL Manizales, 2019 | 22,6 km/h medidos con GPS en un bus de la ciudad* | Recalibra las velocidades de la simulación | Confirmar que la corrida nueva la usa [SIM] |
 | Tesis de maestría, UNAL Manizales, 2017, dirigida por William Ariel Sarache Castro | Análisis de la red de ayuda humanitaria de Manizales* | Orienta el mapa de actores del piloto | Por verificar |

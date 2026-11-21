@@ -1,6 +1,6 @@
 # Guion del pitch · DespachoX
 
-Versión 2, viernes 20 de noviembre en la noche, rama `pitch-noche`. Reemplaza el borrador 1 de las 11:00 a. m. Sigue lo que pidió la mentoría 1 (`docs/MENTORIA_1.md`) y el orden del pitch de la decisión 4 (`docs/DECISIONES_9PM.md`). Las diapositivas están en `pitch/DIAPOSITIVAS.md`, y cada cifra dicha en voz alta, en `pitch/CIFRAS_PITCH.md`.
+Versión 2, noche del viernes 20 al sábado 21 de noviembre, rama `pitch-noche`. Reemplaza el borrador 1 de las 11:00 a. m. Sigue lo que pidió la mentoría 1 (`docs/MENTORIA_1.md`) y el orden del pitch de la decisión 4 (`docs/DECISIONES_9PM.md`). Las diapositivas están en `pitch/DIAPOSITIVAS.md`, y cada cifra dicha en voz alta, en `pitch/CIFRAS_PITCH.md`.
 
 **Duración.** Ningún documento del repositorio da la duración oficial. `docs/PLATAFORMA_INNOVO.md` solo trae la franja de la preselección, el sábado de 2:30 a 3:30 p. m., y `docs/ESTRATEGIA.md` la deja «sin definir todavía». **Supuesto: tres minutos.** Si los 22 equipos pasan por una sola sala en esa hora, a cada uno le tocan menos de tres minutos con los cambios de equipo (inferencia nuestra). Por eso hay un corte de dos minutos y una versión de un minuto. Lo primero que hay que preguntar en la mesa a las 8:30 a. m. es la duración.
 
@@ -48,11 +48,11 @@ Los tiempos suponen 2,5 palabras por segundo y suman 3:00 con la demo. El ensayo
 
 ### Bloque 1 · Por qué · 0:00 a 0:19 · criterio 1
 
-**Habla:** Voz 1. **Pantalla:** diapositiva 1, las barras de la red de bancos de alimentos al sexto día.
+**Habla:** Voz 1. **Pantalla:** diapositiva 1, las barras de los bancos de alimentos seis días después del sismo.
 
 > Después del sismo, Manizales fue uno de los principales puntos de acopio de la red de bancos de alimentos*. La comida llegó. Lo que se atascó fue despacharla. Seis días después, los bancos de alimentos tenían 404 toneladas en acopio y habían entregado 41*.
 
-Las toneladas se dicen truncadas, y en pantalla van los kilos exactos, 404.587 y 41.163. La nota de Portafolio atribuye las cifras a «los Bancos de Alimentos» y no dice «en todo el país» de forma explícita (discrepancia D3 de `docs/FUENTES.md` en la rama `fuentes-noche`). Por eso no se dice «Manizales» ni «en todo el país». «Seis días después» sale de la fecha de la nota, el 16 de agosto.
+Las toneladas se dicen truncadas, y en pantalla van los kilos exactos, 404.587 y 41.163. La nota de Portafolio atribuye las cifras a «los Bancos de Alimentos» y no dice «en todo el país» de forma explícita (discrepancia D3 de `docs/FUENTES.md` en la rama `fuentes-noche`). Por eso esas dos cifras no se le atribuyen a Manizales, y tampoco se dice «en todo el país». «Seis días después» sale de la fecha de la nota, el 16 de agosto.
 
 ### Bloque 2 · Las vías se cierran sin sismo · 0:19 a 0:33 · criterio 1
 
@@ -111,7 +111,7 @@ La comparación con un despachador con oficio va siempre en la diapositiva. Deci
 > El piloto es para la recuperación del territorio. Dura 90 días en la rutina del Banco, con la Unidad de Gestión del Riesgo, en La Macarena y El Tablazo. Así la capacidad queda en Manizales y se usa entre desastres. Al final suma, tramo por tramo, la alerta de lluvia A25 del IDEA de la UNAL.
 
 - **Territorio.** La Macarena y El Tablazo es la propuesta 1 de `docs/PILOTO_TERRITORIOS.md`: una comuna y un corregimiento sobre la misma ruta. Al final decide el Banco [DECIDE CARLOS].
-- **A25.** Si el A25 entra al código antes de las 8:30 a. m. y se ve en el tablero, la última frase pasa a ser «La alerta de lluvia A25 del IDEA de la UNAL ya encarece los tramos en alerta». Si no, queda como está, porque hoy entra en los días 60 a 90 (`docs/FICHA_CORTA.md`, componente 3).
+- **A25.** La rama `a25` lo trae al optimizador con lluvia sintética y apagado por defecto. Encendido, encarece los tramos en alerta naranja o roja y nunca los cierra (`despacho/a25.py` en esa rama). Si Carlos la fusiona antes de las 8:30 a. m., la última frase pasa a ser «La alerta de lluvia A25 del IDEA de la UNAL ya está en el código, por ahora con lluvia de prueba». Si no, queda como está, porque entra en los días 60 a 90 (`docs/FICHA_CORTA.md`, componente 3).
 - **Visita al Banco.** Si hubo conversación el sábado y la persona dio permiso, esta frase reemplaza a «Así la capacidad queda...»: «Esta mañana se lo mostramos a [cargo] del Banco, que nos dijo: «[frase textual]».» Sin permiso o sin conversación, no se menciona.
 
 ### Bloque 8 · Regla de cambio y cierre · 2:52 a 3:00 · criterios 4 y 5
@@ -164,7 +164,7 @@ Se añaden estos textos, en este orden. Sus cifras están en `pitch/CIFRAS_PITCH
 7. **En el bloque 7 (20 s).** «Del día 0 al 15, acuerdo y línea base. Del 15 al 30, reconstruimos un mes de despachos del Banco. Del 30 al 60, el Banco reparte como siempre y DespachoX planea en sombra. Del 60 al 90, simulacro con la UGR y decisión escrita del Banco. El piloto cabe en la calamidad pública de Manizales, vigente hasta el 9 de agosto de 2027*.»
 8. **Antes del bloque 8 (15 s).** «Al Banco le pedimos tres datos sin información personal: sus puntos de entrega, su inventario con vencimientos y un mes de despachos. Sin internet, el plan sale en un portátil y la ruta se imprime con un QR por paquete*. No guardamos el teléfono de quien escribe. Queda como un código.»
 
-Las fases del añadido 7 salen de `docs/FICHA_CORTA.md`, componente 4. Si el plan que escribe otro agente esta noche cambia las fechas, se cambian aquí.
+Las fases del añadido 7 salen de `docs/FICHA_CORTA.md`, componente 4, y coinciden con los hitos de los días 0, 15, 30, 60 y 90 de `docs/PLAN_30_90.md` (rama `defensa-noche`).
 
 ## Versión de un minuto
 
@@ -197,4 +197,4 @@ Sirve para un turno de un minuto, una presentación rápida en Conecta+ o un pas
 5. Dos ensayos cronometrados con la demo real, el segundo con datos móviles.
 6. Una persona que repita el ensayo de la demo en la mañana. El último lo hizo el agente B-noche a las 11:15 p. m. y dio 18 de 18 pedidos, 3 de 3 críticos y el campero a San José (`torre/TORRE_CAPITAN.md`).
 
-El banco de preguntas del jurado, el plan detallado de 30 a 90 días y la matriz de riesgos los prepara otro agente en otra rama esta noche. Fable los integra.
+El plan detallado de 30 a 90 días, la matriz de riesgos y el banco de preguntas del jurado están en la rama `defensa-noche` (`docs/PLAN_30_90.md`, `docs/RIESGOS.md` y `pitch/PREGUNTAS_JURADO.md`). Fable los integra.
