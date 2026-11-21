@@ -6,6 +6,10 @@ Sábado 21 de noviembre, 6:25 a. m. Reemplaza al relevo de las 23:38. Si este ch
 
 `main` (c4ce320) tiene el tablero Convite de Jacobo, la clave del tablero y los documentos y evaluaciones de la noche, y pasan 467 pruebas. A las 6:10 Carlos decidió: de las ramas de código solo entra `jacobo-tablero`; el tablero lleva clave; Samuel arregla H6 antes de las 8:30; el piloto va en el territorio P2 (Ciudadela del Norte y El Manantial).
 
+## Traspaso de las 6:30
+
+Carlos abre un chat nuevo de Claude Code con el modelo Fable como orquestador principal, desde las 6:30 hasta el pitch. Desde ese momento, las fusiones a `main` y la coordinación son de ese chat. Esta sesión (Opus) sigue viva solo para terminar sus dos agentes y empujar sus ramas, `simulacion` y `territorio-p2`, con un aviso en el canal. No fusiona nada más.
+
 ## Corriendo
 
 - Simulación. A la 1 a. m. se detuvo el servidor de la sesión. La corrida principal ya había terminado (factor 3, velocidades de la tesis, 30 semillas por carga, rama `simulacion`). A las 6:03 se relanzó la corrida con velocidades del modelo en la misma red, que termina hacia las 7:25 (`/tmp/simnoche/cadena.log`). Su agente escribe la §9 de `docs/SIMULACION.md` en la rama `simulacion`.
@@ -30,7 +34,7 @@ Sábado 21 de noviembre, 6:25 a. m. Reemplaza al relevo de las 23:38. Si este ch
 
 ## Dónde está el detalle
 
-- Revisión de cada rama de la noche: `/home/claude/wt/REVISION_NOCHE.md` (notas locales del contenedor de esta sesión).
+- Revisión de cada rama de la noche: `torre/REVISION_NOCHE.md`.
 - Noche-2: `torre/RELEVO_NOCHE2.md`.
 - Directorio de aliados en PDF: se le envió a Carlos para la llamada de las 8:00 (`aliados/DIRECTORIO.md`).
 
