@@ -143,7 +143,7 @@ Fichas para las llamadas del sábado 21 de noviembre de 2026, desde las 8:00 a. 
 | Teléfono | PBX (57) 6068982444. El pie de página lo escribe +57 68 98 24 44 | [Canales de atención](https://caldas.gov.co/atencion-y-servicio-a-la-ciudadania) | 21 nov 2026 |
 | Celular de atención | 313 8045000 | [Canales de atención](https://caldas.gov.co/atencion-y-servicio-a-la-ciudadania) | 21 nov 2026 |
 | Correo | atencionalciudadano@caldas.gov.co, para radicar peticiones. Su horario publicado es de lunes a viernes, de 8:00 a. m. a 6:00 p. m. | [Canales de atención](https://caldas.gov.co/atencion-y-servicio-a-la-ciudadania) | 21 nov 2026 |
-| Chat | https://chatgobernacion.peoplecontact.com.co:9564/chatgobernacion.html, enlazado como «Chat Gobernación». Horario no encontrado, y el enlace no respondió a las 12:40 a. m. | [Gobernación](https://caldas.gov.co/) | 21 nov 2026 |
+| Chat | https://chatgobernacion.peoplecontact.com.co:9564/chatgobernacion.html, enlazado como «Chat Gobernación». Horario no encontrado, y el enlace no respondió hacia las 12:40 a. m. | [Gobernación](https://caldas.gov.co/) | 21 nov 2026 |
 | Redes | https://www.facebook.com/GobernaciondeCaldas/, https://twitter.com/GoberCaldas y https://www.instagram.com/gobercaldas/ | [Gobernación](https://caldas.gov.co/) | 21 nov 2026 |
 | Dirección | Carrera 21 entre calles 22 y 23, Palacio Amarillo, Manizales | [Canales de atención](https://caldas.gov.co/atencion-y-servicio-a-la-ciudadania) | 21 nov 2026 |
 | Horario | Lunes a jueves de 8:00 a. m. a 12:00 m. y de 2:00 a 6:00 p. m. Viernes de 7:00 a. m. a 3:00 p. m. en jornada continua | [Canales de atención](https://caldas.gov.co/atencion-y-servicio-a-la-ciudadania) | 21 nov 2026 |
@@ -272,7 +272,7 @@ Esta entidad también es de segunda línea, y se le llega por medio de la UGR.
 - Es la unidad académica de la Sede que articula conocimiento sobre gestión del riesgo, adaptación al cambio climático y análisis territorial [F] ([El IDEA](https://idea.manizales.unal.edu.co/the-idea)).
 - Enlaza el Geoportal SIMAC desde su portada [F] ([IDEA](https://idea.manizales.unal.edu.co/)).
 - Publica el indicador A25, con alertas de 200, 300 y 400 mm de lluvia acumulada en 25 días. Su reporte de 2020 cubre 14 estaciones (`docs/PILOTO.md`, sección 3; por verificar).
-- El enlace a ese reporte de 2020, que cita el equipo, devolvió 404 cuando lo probamos a las 12:40 a. m. Tampoco abren otras rutas viejas de `/publicaciones/`, y los PDF de la página de boletines del sitio nuevo apuntan a `localhost:9000` [F] ([boletines del IDEA](https://idea.manizales.unal.edu.co/boletin)). Un buscador web todavía indexa el reporte.
+- El enlace a ese reporte de 2020, que cita el equipo, devolvió 404 cuando lo probamos, hacia las 12:40 a. m. Tampoco abren otras rutas viejas de `/publicaciones/`, y los PDF de la página de boletines del sitio nuevo apuntan a `localhost:9000` [F] ([boletines del IDEA](https://idea.manizales.unal.edu.co/boletin)). Un buscador web todavía indexa el reporte.
 - No distribuye ayuda. La Sede montó en agosto un acopio en el edificio S3 de La Nubia, con unos 240 voluntarios y transporte propio para recoger donaciones [F] ([La Patria, 23 ago 2026](https://www.lapatria.com/educacion/universidad-nacional-en-manizales-240-voluntarios-y-un-mundo-de-solidaridad-por-sus)).
 
 **Qué ganaría [I].** Un uso logístico del A25 con datos de campo, por ejemplo rutas que evitan tramos en alerta durante una semana de lluvia registrada (`docs/PILOTO.md`, hito de los días 60 a 75).
