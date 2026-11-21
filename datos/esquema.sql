@@ -95,3 +95,11 @@ CREATE TABLE IF NOT EXISTS ubicaciones (   -- una propuesta de ubicación por pe
   estado TEXT DEFAULT 'propuesta' CHECK(estado IN ('propuesta','confirmada','rechazada')),
   confirmado_por TEXT, confirmado_en TEXT
 );
+
+-- ---------- Resumen de grupos de pedidos (despacho/resumen_grupo.py lo lee y escribe; el tablero lo muestra) ----------
+CREATE TABLE IF NOT EXISTS resumenes_grupo (   -- lo que el modelo leyó de un grupo de pedidos; no decide nada
+  clave TEXT PRIMARY KEY, punto_id INTEGER REFERENCES puntos(id),
+  pedido_ids TEXT NOT NULL,                    -- JSON ordenado
+  resumen TEXT NOT NULL, modelo TEXT,          -- 'falso' en pruebas
+  creado_en TEXT NOT NULL
+);

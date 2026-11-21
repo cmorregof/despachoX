@@ -15,13 +15,18 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 log = logging.getLogger("entrada.extraer")
-MODELO = os.environ.get("DESPACHOX_MODELO_ENTRADA") or "claude-haiku-5-5"   # vacío en .env cuenta como ausente
+# Sonnet lee los mensajes del bot (decisión de Carlos, 21 nov 12:40). Se cambia con DESPACHOX_MODELO_ENTRADA.
+MODELO = os.environ.get("DESPACHOX_MODELO_ENTRADA") or "claude-sonnet-5-5"   # vacío en .env cuenta como ausente
 SEGUNDOS = 8.0          # la meta del encargo es responder en menos de diez segundos
 # Reintentos del SDK: 429, 5xx (529 = sobrecarga) y errores de conexión, con espera creciente y
 # respetando `retry-after`. 2 reintentos = 3 intentos; si fallan los tres, el mensaje se guarda crudo.
 REINTENTOS = 2
-# Precio público por millón de tokens de claude-haiku-5-5 (prompts de hasta 100 000 tokens), en USD.
-PRECIO_ENTRADA_MTOK, PRECIO_SALIDA_MTOK = 0.10, 0.50
+# Precio público por millón de tokens (entrada, salida) en USD, por modelo, consultado el 21 nov 2026.
+# Solo sirve para estimar el costo en entrada/carga.py y evaluacion/lector; no afecta la lectura.
+PRECIOS_MTOK = {"claude-haiku-5-5": (0.10, 0.50), "claude-haiku-4-5": (1.00, 5.00),
+                "claude-sonnet-5-5": (2.00, 10.00), "claude-sonnet-4-6": (3.00, 15.00),
+                "claude-opus-5-5": (4.00, 20.00), "claude-opus-4-6": (5.00, 25.00)}
+PRECIO_ENTRADA_MTOK, PRECIO_SALIDA_MTOK = PRECIOS_MTOK.get(MODELO, (None, None))
 USO = {"llamadas": 0, "fallos": 0, "entrada": 0, "salida": 0}     # lo lee entrada/carga.py
 _candado = threading.Lock()
 _cliente_compartido = None
@@ -164,6 +169,7 @@ def extraer(texto: str) -> Extraccion:
 if __name__ == "__main__":   # python -m entrada.extraer "somos 40 familias en san jose"
     import sys
     from dotenv import load_dotenv
-    load_dotenv()
+    from datos import db
+    load_dotenv(db.ruta_env())
     for t in sys.argv[1:]:
         print(extraer(t).model_dump_json(indent=2))

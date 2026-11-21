@@ -24,6 +24,12 @@ try:            # parte B de encargos/T1_TERRITORIO.md; si no ha llegado, la pes
 except Exception:  # noqa: BLE001 - cualquier fallo de importación deja la pestaña en «pendiente»
     _territorio = None
 
+try:            # parte 3 de encargos/S3_MUCHOS_PEDIDOS.md; sin estos módulos no hay vista de grupos
+    from despacho import agrupar as _agrupar
+    from despacho import resumen_grupo as _resumen_grupo
+except Exception:  # noqa: BLE001 - cualquier fallo de importación deja la vista de grupos vacía
+    _agrupar = _resumen_grupo = None
+
 RAIZ = Path(__file__).resolve().parent.parent
 HORAS_VENCE_PRONTO = 12
 # Meta de críticos a tiempo: la misma de la ficha de puntualidad, que se marca en alerta por debajo
@@ -305,13 +311,20 @@ def por_revisar(con: sqlite3.Connection) -> dict:
         pu = puntos.get(d["punto_id"])
         d["punto"] = pu["nombre"] if pu else None
         d["critico"] = int(pu["critico"] or 0) if pu else 0
+    # Los repetidos de todos los pedidos nuevos en una sola consulta: con miles de pedidos, una
+    # consulta por pedido tardaba 5,6 s (docs/ESCALA_DESPACHO.md).
+    repetidos: dict[int, list[dict]] = {}
+    for r in filas(con, "SELECT d.id, d.texto_original, d.duplicado_de FROM pedidos d "
+                        "JOIN pedidos m ON m.id = d.duplicado_de "
+                        "WHERE m.estado='nuevo' AND m.duplicado_de IS NULL AND d.estado != 'descartado' "
+                        "ORDER BY d.id"):
+        repetidos.setdefault(r.pop("duplicado_de"), []).append(r)
     for d in pedidos:
         pu = puntos.get(d["punto_id"])
         d["punto"] = pu["nombre"] if pu else None
         d["critico"] = int(pu["critico"] or 0) if pu else 0
         d["sin_ubicar"] = pu is None
-        d["duplicados"] = filas(con, "SELECT id, texto_original FROM pedidos WHERE duplicado_de=? "
-                                     "AND estado != 'descartado' ORDER BY id", (d["id"],))
+        d["duplicados"] = repetidos.get(d["id"], [])
     # Un pedido confirmado sin punto no entra al plan: también hay que mostrarlo.
     sin_ubicar = filas(con, "SELECT * FROM pedidos WHERE estado='confirmado' AND punto_id IS NULL ORDER BY id")
     cierres = filas(con, "SELECT * FROM cierres WHERE estado='reportado' ORDER BY id")
@@ -326,6 +339,91 @@ def por_revisar(con: sqlite3.Connection) -> dict:
         u["texto_completo"] = origen["texto_original"] if origen else None
     return {"pedidos": pedidos, "confirmados_sin_ubicar": sin_ubicar, "cierres": cierres,
             "ubicaciones": ubicaciones, "silencio": silencio}
+
+
+def grupos_por_revisar(con: sqlite3.Connection, ahora: datetime | None = None) -> list[dict]:
+    """Grupos de pedidos nuevos por punto, detrás de DESPACHOX_AGRUPAR. Apagada, lista vacía.
+
+    Las sumas las hace despacho/agrupar.py con código; el resumen es lo que leyó el modelo y no cambia
+    ningún número. El despachador confirma o descarta el grupo entero.
+    """
+    if _agrupar is None or not _agrupar.activo():
+        return []
+    puntos = {r["id"]: r["nombre"] for r in con.execute("SELECT id, nombre FROM puntos")}
+    salida = []
+    for g in _agrupar.grupos_nuevos(con, ahora=ahora):
+        r = _resumen_grupo.leer(con, g.clave) if _resumen_grupo is not None else None
+        salida.append({
+            "clave": g.clave, "punto_id": g.punto_id, "punto": puntos.get(g.punto_id),
+            "critico": bool(g.critico), "n_pedidos": len(g.pedido_ids), "pedido_ids": list(g.pedido_ids),
+            "familias": g.familias, "familias_declaradas": g.familias_declaradas, "sobre_tope": g.sobre_tope,
+            "tope_familias": g.tope_familias, "kg": g.kg, "urgencia": g.urgencia, "limite_en": g.limite_en,
+            "resumen": r["resumen"] if r else None, "resumen_modelo": r["modelo"] if r else None,
+            "pedidos": [{k: p.get(k) for k in ("id", "texto_original", "familias", "kg_estimado", "urgencia")}
+                        for p in g.pedidos]})
+    return salida
+
+
+def resumen_mesa(con: sqlite3.Connection, ahora: datetime | None = None) -> dict | None:
+    """El resumen de toda la mesa que leyó el modelo para los grupos vigentes, o None si no hay o la
+    variable está apagada. Cambia de clave cuando cambian los grupos, así no se muestra uno viejo."""
+    if _agrupar is None or _resumen_grupo is None or not _agrupar.activo():
+        return None
+    grupos = _agrupar.grupos_nuevos(con, ahora=ahora)
+    r = _resumen_grupo.leer_mesa(con, grupos)
+    if not r:
+        return None
+    return {"resumen": r["resumen"], "modelo": r["modelo"], "creado_en": r["creado_en"], "grupos": len(grupos)}
+
+
+RESUMIR = ("despacho.resumen_grupo", "--resumir")
+ESPERA_RESUMIR_S = 600
+
+
+def resumir_grupos(correr=subprocess.run, espera_s: int = ESPERA_RESUMIR_S, falso: bool = False) -> Corrida:
+    """Ejecuta `python -m despacho.resumen_grupo --resumir` (hereda DESPACHOX_DB y la clave del modelo)."""
+    args = [sys.executable, "-m", *RESUMIR] + (["--falso"] if falso else [])
+    try:
+        r = correr(args, cwd=RAIZ, capture_output=True, text=True, timeout=espera_s)
+    except subprocess.TimeoutExpired:
+        return Corrida(False, None, f"el resumen no terminó en {espera_s} s")
+    except OSError as e:
+        return Corrida(False, None, f"no se pudo ejecutar despacho.resumen_grupo: {e}")
+    ultima = ((r.stdout or "").strip().splitlines() or [""])[-1]
+    error = ((r.stderr or "").strip().splitlines() or [""])[-1]
+    try:
+        cifras = json.loads(ultima)
+    except ValueError:
+        return Corrida(False, None, error or "el resumen no devolvió cifras")
+    if r.returncode != 0:
+        return Corrida(False, None, f"{cifras.get('sin_resumen', cifras.get('fallos', '?'))} grupos quedaron sin "
+                                    f"resumen ({cifras.get('fallos', '?')} llamadas fallaron); {error}")
+    modelos = cifras.get("modelo", "?")
+    if cifras.get("modelo_mesa") and cifras["modelo_mesa"] != modelos:
+        modelos += f" y {cifras['modelo_mesa']} para la mesa"
+    return Corrida(True, None, f"{cifras.get('resumidos', 0)} grupos resumidos de {cifras.get('grupos', 0)}"
+                   + (", y la mesa" if cifras.get("mesa") else "") + f" con {modelos}"
+                   + (f"; {cifras.get('tokens_entrada', 0):,} tokens de entrada, "
+                      f"{cifras.get('costo_usd', 0):.4f} USD estimados" if cifras.get("modelo") != "falso" else ""))
+
+
+def _decidir_grupo(con: sqlite3.Connection, pedido_ids: list[int], estado: str, quien: str,
+                   clave: str | None) -> int:
+    n = sum(cambiar_estado(con, "pedidos", int(i), estado, quien) for i in pedido_ids)
+    accion = {"confirmado": "confirmar grupo", "descartado": "descartar grupo"}[estado]
+    db.anotar(con, quien or "despachador", accion,
+              f"grupo {clave or '?'} pedidos {json.dumps([int(i) for i in pedido_ids])} -> {estado} ({n})")
+    return n
+
+
+def confirmar_grupo(con: sqlite3.Connection, pedido_ids: list[int], quien: str, clave: str | None = None) -> int:
+    """Confirma cada pedido del grupo (cada uno queda en la bitácora) y anota el grupo. Devuelve cuántos."""
+    return _decidir_grupo(con, pedido_ids, "confirmado", quien, clave)
+
+
+def descartar_grupo(con: sqlite3.Connection, pedido_ids: list[int], quien: str, clave: str | None = None) -> int:
+    """Descarta cada pedido del grupo y anota el grupo. Devuelve cuántos cambiaron."""
+    return _decidir_grupo(con, pedido_ids, "descartado", quien, clave)
 
 
 # ---------- cambios de estado ----------

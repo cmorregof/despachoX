@@ -11,6 +11,24 @@ RUTA_DB = Path(os.environ.get("DESPACHOX_DB") or RAIZ / "despachox.db")
 BOGOTA = timezone(timedelta(hours=-5))
 
 
+def ruta_env() -> Path:
+    """El `.env` de la raíz del repositorio. Desde una copia de trabajo (git worktree) sin `.env`
+    propio, el de la carpeta principal del repositorio."""
+    propio = RAIZ.parent / ".env"
+    if propio.exists():
+        return propio
+    punto_git = RAIZ.parent / ".git"
+    if punto_git.is_file():                     # worktree: «gitdir: /ruta/.git/worktrees/x»
+        try:
+            gitdir = Path(punto_git.read_text(encoding="utf-8").split(":", 1)[1].strip())
+            principal = gitdir.parent.parent.parent / ".env"
+            if principal.exists():
+                return principal
+        except (OSError, IndexError):
+            pass
+    return propio
+
+
 def ahora() -> str:
     """Hora de Colombia en ISO 8601, el formato de todas las columnas de tiempo."""
     return datetime.now(BOGOTA).isoformat(timespec="seconds")
