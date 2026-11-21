@@ -1,0 +1,10 @@
+grupo,politica,n,a_tiempo_criticos_pct_media,a_tiempo_criticos_pct_sd,a_tiempo_criticos_pct_ic_bajo,a_tiempo_criticos_pct_ic_alto,perecedero_vencido_pct_media,perecedero_vencido_pct_sd,perecedero_vencido_pct_ic_bajo,perecedero_vencido_pct_ic_alto,a_tiempo_criticos_pct_dif_vs_ingenua,a_tiempo_criticos_pct_dif_ic_bajo,a_tiempo_criticos_pct_dif_ic_alto,a_tiempo_criticos_pct_semillas_mejor,a_tiempo_criticos_pct_semillas_igual,perecedero_vencido_pct_dif_vs_ingenua,perecedero_vencido_pct_dif_ic_bajo,perecedero_vencido_pct_dif_ic_alto,perecedero_vencido_pct_semillas_mejor,perecedero_vencido_pct_semillas_igual
+holgada,ingenua,30,75.9159,15.3993,70.1657,81.6661,1.4376,1.8214,0.7575,2.1178,,,,,,,,,,
+holgada,experta,30,97.6642,3.8628,96.2218,99.1066,0.0000,0.0000,0.0000,0.0000,21.7484,16.0225,27.4742,27.0000,1.0000,-1.4376,-2.1178,-0.7575,20.0000,10.0000
+holgada,despachox,30,99.1682,2.9771,98.0566,100.2799,0.0000,0.0000,0.0000,0.0000,23.2523,17.4129,29.0918,26.0000,4.0000,-1.4376,-2.1178,-0.7575,20.0000,10.0000
+media,ingenua,30,53.5994,18.1665,46.8159,60.3829,3.4387,2.6892,2.4345,4.4429,,,,,,,,,,
+media,experta,30,94.5881,5.7553,92.4390,96.7371,0.0000,0.0000,0.0000,0.0000,40.9887,34.6663,47.3110,29.0000,1.0000,-3.4387,-4.4429,-2.4345,25.0000,5.0000
+media,despachox,30,98.2759,2.9632,97.1694,99.3824,0.0000,0.0000,0.0000,0.0000,44.6765,37.7108,51.6421,30.0000,0.0000,-3.4387,-4.4429,-2.4345,25.0000,5.0000
+alta,ingenua,30,40.5380,13.4191,35.5272,45.5488,5.5603,3.3103,4.3242,6.7964,,,,,,,,,,
+alta,experta,30,91.8679,6.8918,89.2944,94.4413,0.0000,0.0000,0.0000,0.0000,51.3299,46.7367,55.9231,30.0000,0.0000,-5.5603,-6.7964,-4.3242,29.0000,1.0000
+alta,despachox,30,98.3952,2.7815,97.3566,99.4338,0.0000,0.0000,0.0000,0.0000,57.8572,52.6616,63.0528,30.0000,0.0000,-5.5603,-6.7964,-4.3242,29.0000,1.0000
