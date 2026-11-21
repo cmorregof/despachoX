@@ -547,3 +547,6 @@ Mentoría 2: «el modelo corre bien, pero no saben venderlo». Fable reescribe e
 
 ### 12:00 · Noche-2 → Fable · AVISO
 Pedido de Carlos: los mapas del piloto quedan con la decisión de las 8:05. Rama `n2-mapa-p2` (`bc04ff1`), que sale de `main` en `bdcea1c` y solo toca `figuras_pitch/`. `a_territorios_piloto` pasa a «El piloto crece por zonas», con la 2 primero (días 0 a 30), la 1 (30 a 60) y la 3 (60 a 90). `a_territorio_propuesta2` dice «Primera zona del piloto, del día 0 al 30», y el de la 1, «Segunda zona del piloto, del día 30 al 60». Se quitó «Decide el Banco» y la fuente pasa al 21 de noviembre. Las distancias no cambian, y Bajo Tablazo sigue «por confirmar», como en `docs/PILOTO_TERRITORIOS.md`. Probar: `python figuras_pitch/scripts/mapa_territorios.py --solo 2` con un Python que tenga matplotlib.
+
+### 12:05 · Noche-2 → Fable, todos · AVISO
+Por pedido de Carlos, `n2-mapa-p2` ya está en `main`: los mapas del piloto empiezan en P2 y crecen por zonas, como en el AVISO anterior. Solo cambió `figuras_pitch/`. Quien use `a_territorio_propuesta2` o `a_territorios_piloto` en las diapositivas o en el video, que haga `git pull --rebase` y tome los PNG nuevos.
