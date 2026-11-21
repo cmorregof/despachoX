@@ -50,9 +50,9 @@ Los tiempos suponen 2,5 palabras por segundo y suman 3:00 con la demo. El ensayo
 
 **Habla:** Voz 1. **Pantalla:** diapositiva 1, las barras de los bancos de alimentos seis días después del sismo.
 
-> Después del sismo, Manizales fue uno de los principales puntos de acopio de la red de bancos de alimentos*. La comida llegó. Lo que se atascó fue despacharla. Seis días después, los bancos de alimentos tenían 404 toneladas en acopio y habían entregado 41*.
+> Después del sismo, Manizales fue uno de los principales puntos de acopio de la red de bancos de alimentos*. La comida llegó. Lo que se atascó fue despacharla. Seis días después, los bancos de alimentos tenían 404 toneladas en acopio y 157 en camino, y habían entregado 41*.
 
-Las toneladas se dicen truncadas, y en pantalla van los kilos exactos, 404.587 y 41.163. La nota de Portafolio atribuye las cifras a «los Bancos de Alimentos» y no dice «en todo el país» de forma explícita (discrepancia D3 de `docs/FUENTES.md` en la rama `fuentes-noche`). Por eso esas dos cifras no se le atribuyen a Manizales, y tampoco se dice «en todo el país». «Seis días después» sale de la fecha de la nota, el 16 de agosto.
+Las toneladas se dicen truncadas, y en pantalla van los kilos exactos, 404.587, 157.164 y 41.163. La nota de Portafolio atribuye las cifras a «los Bancos de Alimentos» y no dice «en todo el país» de forma explícita (discrepancia D3 de `docs/FUENTES.md` en la rama `fuentes-noche`). Por eso esas cifras no se le atribuyen a Manizales, y tampoco se dice «en todo el país». La misma nota da los 157.164 kg en tránsito, así que la frase los nombra y la comparación no los deja por fuera. «Seis días después» es cálculo nuestro con la fecha de la nota, el 16 de agosto, porque la nota no da fecha de corte. Lo que va en camino suma unos 3 segundos al bloque, y el ensayo cronometrado dice si hay que recortar con la sección «Qué cortar».
 
 ### Bloque 2 · Las vías se cierran sin sismo · 0:19 a 0:33 · criterio 1
 
@@ -172,7 +172,7 @@ Sirve para un turno de un minuto, una presentación rápida en Conecta+ o un pas
 
 | Tiempo | Qué se dice |
 |---|---|
-| 0:00 a 0:16 | «Después del sismo, la comida llegó a la región. Lo que se atascó fue despacharla. Seis días después, los bancos de alimentos tenían 404 toneladas en acopio y habían entregado 41*.» |
+| 0:00 a 0:16 | «Después del sismo, la comida llegó a la región. Lo que se atascó fue despacharla. Seis días después, los bancos de alimentos tenían 404 toneladas en acopio y 157 en camino, y habían entregado 41*.» |
 | 0:16 a 0:20 | «Y en Manizales las vías se cierran también sin sismo.» |
 | 0:20 a 0:41 | «DespachoX es una mesa de despacho para el Banco Arquidiocesano de Alimentos. Comedores, hogares y juntas piden por chat o SMS, y los conductores reportan los derrumbes. El optimizador reparte entre camión, campero y moto, saca primero lo que vence primero y recalcula si se cierra una vía. El despachador aprueba cada plan.» |
 | 0:41 a 0:58 | «El piloto de 90 días entra a la rutina del Banco en La Macarena y El Tablazo, con la Unidad de Gestión del Riesgo y el A25 del IDEA de la UNAL. Todo se mide contra la línea base del propio Banco.» |
