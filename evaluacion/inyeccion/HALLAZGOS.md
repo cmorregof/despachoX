@@ -22,7 +22,7 @@ DESPACHOX_SIN_RED=1 python evaluacion/inyeccion/correr.py --modelo esquema
 python evaluacion/inyeccion/correr.py --modelo real     # necesita ANTHROPIC_API_KEY; cuesta; no se ha corrido
 ```
 
-En este portátil, la suite de inyección tarda unos 10 segundos. Pasan 68 pruebas y 19 fallan a propósito, marcadas `xfail(strict=True)`. Con `--runxfail` se ve que cada una de esas 19 falla por la aserción de su invariante y no por otro error. El día que alguien arregle un hallazgo, su prueba pasará y, por ser estricta, fallará hasta que le quiten la marca.
+En este portátil, la suite de inyección tarda unos 10 segundos. Pasan 68 pruebas y 20 fallan a propósito, marcadas `xfail(strict=True)`. Con `--runxfail` se ve que cada una de esas 20 falla por la aserción de su invariante y no por otro error. El día que alguien arregle un hallazgo, su prueba pasará y, por ser estricta, fallará hasta que le quiten la marca.
 
 La suite del equipo se porta distinto según esa variable. Con `DESPACHOX_SIN_RED=1` exportada, 11 pruebas de `entrada/pruebas` fallan, porque el flujo lee por reglas en vez de usar el extractor falso de cada prueba. Sin esa variable pasan. Comparamos la suite del equipo con y sin las pruebas de inyección, con la variable exportada, y las fallas son las mismas 11. Las pruebas de inyección fijan la variable dentro de cada corrida del flujo. Por construcción, su resultado no depende de cómo se lance la suite, aunque esta noche solo las corrimos con la variable exportada.
 
@@ -30,12 +30,12 @@ Antes de entregar probamos fusiones locales, sin empujar nada, para que la suite
 
 | Fusión local con esta rama | Pruebas de inyección |
 |---|---|
-| Sola | 68 pasan, 19 xfail |
-| `qa-noche` | 68 pasan, 19 xfail |
-| `a25` | 68 pasan, 19 xfail |
-| `qa-noche` y `a25` | 68 pasan, 19 xfail |
-| `samuel-bot` | 70 pasan, 17 xfail |
-| `a25` y `samuel-bot` | 70 pasan, 17 xfail |
+| Sola | 68 pasan, 20 xfail |
+| `qa-noche` | 68 pasan, 20 xfail |
+| `a25` | 68 pasan, 20 xfail |
+| `qa-noche` y `a25` | 68 pasan, 20 xfail |
+| `samuel-bot` | 70 pasan, 18 xfail |
+| `samuel-bot` y `a25` | 70 pasan, 18 xfail |
 
 Con `samuel-bot` cambian dos pruebas, porque esa rama ya arregla H2 y el rastro de H3. Esas dos marcas dependen de que exista `guardar.quien_confirma`, así que con la fusión pasan a ser pruebas normales y pasan. Hay dos choques entre otras ramas que no tocan estos archivos: `qa-noche` y `samuel-bot` chocan en `entrada/pasarela_sms.py`, y `a25` y `samuel-bot` en `docs/FUENTES.md`.
 
@@ -203,7 +203,7 @@ Estas no rompen la regla de arquitectura, pero ensucian la cola del despachador.
 | 0 cambios en planes y vehículos y 0 intentos de conexión en 70 corridas y en la corrida en fila | Las tres pasadas y `correr_en_fila` | Medido por nosotros |
 | 30 códigos al azar, 0 aciertos, 0 líneas en la bitácora | c08, semilla de azar 7 | Medido por nosotros |
 | 500 kg al pedido absurdo, 3 pedidos de 40 kg sin inventario, 9500 kg faltantes | Malla sintética de `despacho/tests`, inventario inventado de 500 kg | Medido por nosotros |
-| 68 pruebas pasan, 19 xfail, unos 10 s; 40 mensajes en 1,5 a 2,6 s | Este portátil, 21 de noviembre | Medido por nosotros |
+| 68 pruebas pasan, 20 xfail, unos 10 s; 40 mensajes en 1,5 a 2,6 s | Este portátil, 21 de noviembre | Medido por nosotros |
 | 390.625 códigos posibles, 18,58 bits | `despacho/tests/test_qa_noche.py`, rama `qa-noche` | Tomado de otra prueba del equipo |
 | Entre 1.401 y 2.058 intentos por segundo contra la pasarela sin token | `docs/QA_NOCHE.md` 2.2, rama `qa-noche` | Medido por `qa-noche` |
 | Cerca de 5 % de acertar con 1000 intentos y 20 paquetes en ruta | 1 − (1 − 20/390.625)^1000 | Estimado |
