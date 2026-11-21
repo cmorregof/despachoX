@@ -30,7 +30,7 @@ Si el jurado sigue preguntando, estas son las respuestas cortas, con la sección
 |---|---|---|
 | ¿Y si el filtro falla? | Es una heurística y lo decimos. En seis mensajes de prueba quitó teléfonos, cédulas, correos y nombres presentados («me llamo…»), pero dejó «doña Rosa» y un «abuelo diabético». Por eso proponemos borrar el texto después de cerrar el pedido y ponerle clave al tablero. | 3.1 y 4 |
 | ¿Piden autorización? | El `/start` informa y el envío del pedido cuenta como conducta inequívoca, una forma de autorización que el decreto acepta. Falta guardar la prueba de qué aviso vio cada chat. | 2.2 y 6 |
-| ¿Los datos salen del país? | Sí. El texto limpio va al modelo de Anthropic y el audio al servicio de transcripción, los dos en Estados Unidos. La norma lo permite a un encargado con contrato, y la SIC incluye a Estados Unidos entre los países con nivel adecuado. | 5 |
+| ¿Los datos salen del país? | Sí. El texto limpio va al modelo de Anthropic y el audio al servicio de transcripción, los dos en Estados Unidos. La base vive en la región de Railway que se haya elegido, todavía por confirmar. La norma permite enviarlos a un encargado con contrato, y la SIC incluye a Estados Unidos entre los países con nivel adecuado. | 5 |
 | ¿Quién responde por los datos? | Hoy, en la demostración, el equipo, con datos sintéticos. En el piloto, el Banco como responsable y el equipo como encargado. Si el piloto pasa a la UGR, la UGR. | 5 |
 | ¿Cómo borra alguien lo que envió? | Proponemos el comando `/borrar` en el chat y la palabra `BORRAR` por SMS. Hoy no existe, y lo único que hay es el reinicio de la base entera. | 4 y 7 |
 | ¿Y los datos de niños o de salud? | No se piden. El bot cuenta bebés y niños para calcular raciones, sin identificar a nadie. Si alguien escribe datos de salud, quedan en el texto hasta que se borre, y por eso proponemos que el `/start` pida no escribirlos. | 3.1 y 6 |
@@ -89,7 +89,7 @@ El marco es la Ley Estatutaria 1581 de 2012 y su reglamento, el Decreto 1377 de 
 | Inteligencia artificial | SIC, Circular Externa 002 del 21 de agosto de 2024 | La Ley 1581 se aplica a cualquier tecnología. Pide ponderar idoneidad, necesidad, razonabilidad y proporcionalidad, gestionar riesgos, hacer un «estudio de impacto de privacidad» cuando el riesgo sea alto y adoptar medidas de seguridad auditables | La sección 3 describe las operaciones; falta el estudio formal [pendiente] |
 | Sanciones | Ley 1581, art. 23 | A responsables y encargados privados, multas de hasta 2.000 salarios mínimos mensuales y suspensión o cierre de operaciones. A una autoridad pública, la SIC la remite a la Procuraduría | Por eso el contrato reparte deberes por escrito |
 
-**La emergencia no suspende la ley [I].** La única excepción que encontramos fue expresa y temporal. La Secretaría del Senado anota que, durante la emergencia sanitaria por el COVID-19, el Decreto Legislativo 538 de 2020 limitó el principio de seguridad para los prestadores de salud. No vimos ninguna norma parecida para el sismo del 10 de agosto, aunque no la buscamos a fondo.
+**La emergencia no suspende la ley [I].** La única excepción que encontramos fue expresa y temporal. La Secretaría del Senado anota que, durante la emergencia sanitaria por el COVID-19, el Decreto Legislativo 538 de 2020 redujo lo que el principio de seguridad les exigía a los prestadores de salud. No vimos ninguna norma parecida para el sismo del 10 de agosto, aunque no la buscamos a fondo.
 
 ---
 
@@ -112,13 +112,14 @@ Los cuatro canales escriben en la misma base SQLite, `datos/despachox.db`, que n
 
 **La ubicación que alguien envía se guarda con toda su precisión [C].** Si el pedido no traía lugar, el bot crea una propuesta con el nombre «pin» y las coordenadas (`entrada/flujo.py:244-256`). `corregir_con_pin` añade esa ubicación al nomenclátor como lugar aprendido (`lugares/nomenclator.py:258-260`). Además crea un punto de entrega nuevo si el lugar no lo era (`lugares/nomenclator.py:211-215`) y anota las coordenadas con cinco decimales en la bitácora (`lugares/nomenclator.py:270`). Un punto colectivo, como un salón comunal, no identifica a nadie. Una ubicación enviada desde la casa de quien pide sí puede identificarlo [I]. `entrada/README.md:67-72` ya advierte que la ubicación se guarda.
 
-**La limpieza es una heurística [M].** Esta noche la probamos con seis mensajes sintéticos escritos por nosotros. Quitó el nombre después de «me llamo», «soy» y «llamen a», un celular, una cédula y un correo. En cambio, dejó «la señora Rosa Inventada» después de «Escribe», dejó «doña Rosa» y dejó «abuelo diabético» y «niños enfermos». Seis casos no alcanzan para medir una tasa de acierto. Sirven para ver qué tipo de dato se escapa. Las 19 pruebas de `entrada/pruebas/test_privacidad.py` pasan [M].
+**La limpieza es una heurística [M].** Esta noche la probamos con seis mensajes sintéticos escritos por nosotros. Quitó el nombre después de «me llamo», «soy» y «llamen a», un celular, una cédula y un correo. En cambio, no quitó «la señora Rosa Inventada» después de «Escribe», ni «doña Rosa», ni los datos de salud «abuelo diabético» y «niños enfermos». Seis casos no alcanzan para medir una tasa de acierto. Sirven para ver qué tipo de dato se escapa. Las 19 pruebas de `entrada/pruebas/test_privacidad.py` pasan [M].
 
 ### 3.2 Notas de voz
 
 | Pregunta | Qué pasa hoy [C] |
 |---|---|
 | Qué entra | Una nota de voz o un audio de hasta 120 segundos; una más larga se rechaza (`entrada/bot.py:73-75`; `entrada/voz.py:22`) |
+| Para qué se usa | Para convertir la nota en un pedido o un cierre, como si la persona lo hubiera escrito (`entrada/bot.py:65-67`) |
 | Camino | El bot descarga el audio de Telegram a su memoria (`entrada/bot.py:76-77`) y lo envía al servicio de transcripción (`entrada/voz.py:36-39`). La transcripción pasa por `limpiar` y por el modelo (`entrada/bot.py:82`), y el bot le muestra a la persona lo que escuchó, ya limpio (`entrada/bot.py:83`). De ahí en adelante sigue el flujo del texto |
 | Qué se guarda | La transcripción limpia, como cualquier texto. El audio no se escribe en disco ni en la base. Vive en una variable mientras dura la llamada (`entrada/bot.py:65-85`; `entrada/voz.py:10-11` y `29-45`) |
 | Quién lo ve | El servicio de transcripción recibe el audio completo, con lo que la persona haya dicho. `limpiar` solo puede actuar después de transcribir. Telegram conserva la nota en el chat [I] |
@@ -132,6 +133,7 @@ Los cuatro canales escriben en la misma base SQLite, `datos/despachox.db`, que n
 | Pregunta | Qué pasa hoy [C] |
 |---|---|
 | Qué entra | El número de quien escribe y el texto, que un celular Android del acopio reenvía al portátil por el wifi local (`entrada/pasarela_sms.py:1-20` y `45-57`) |
+| Para qué se usa | Para lo mismo que el chat, en un acopio sin internet: pedidos, cierres y confirmaciones de entrega (`entrada/sms.py:1-15`) |
 | Qué se transforma | El número se convierte en el mismo hash del chat (`entrada/sms.py:314-318`; `entrada/flujo.py:124`). El texto pasa por `limpiar` y lo lee el lector por reglas, sin modelo (`entrada/flujo.py:99-101`). La pasarela crea su mesa sin modelo y sin desempate de lugares con modelo (`entrada/pasarela_sms.py:133-136`) |
 | Quién lo ve | Nadie fuera de la red local, salvo el operador móvil que lleva el SMS. El número vuelve al celular en la respuesta HTTP (`entrada/pasarela_sms.py:122`) y en la orden de enviar la respuesta (`entrada/pasarela_sms.py:60-75`). El registro del proceso no escribe ni la ruta ni la IP (`entrada/pasarela_sms.py:81-82`), y del SMS solo anota cuántos caracteres tuvo la respuesta (`entrada/pasarela_sms.py:121`) |
 | Cuánto se guarda | En la base, lo mismo que el chat y sin plazo. En el celular del acopio, cada SMS queda en la bandeja con el número, como en cualquier teléfono [I]. La documentación de SMS Gateway for Android menciona una función para leer el historial de mensajes, pero no dice dónde lo guarda [F, pendiente] |
@@ -143,6 +145,9 @@ Los cuatro canales escriben en la misma base SQLite, `datos/despachox.db`, que n
 | Pregunta | Qué pasa hoy [C] |
 |---|---|
 | Qué lleva el QR | Solo el código del paquete, como `DX-7KQ3` (`despacho/hoja.py:14-16` y `470`; `datos/esquema.sql:67`). El código son cuatro signos tomados al azar de un alfabeto de 25 (`despacho/paquetes.py:25` y `34-38`) |
+| Para qué se usa | Para rastrear cada paquete desde que el despachador aprueba el plan hasta la entrega, y saber de qué lote salió por si hay que retirarlo (`despacho/paquetes.py:1-13` y `41-45`) |
+| Quién lo ve | El conductor, quien recibe y quien escanee el código. El código no identifica a nadie. En la base se asocia a un pedido, a un lote y a unos kilos (`datos/esquema.sql:67-72`) |
+| Cuánto se guarda | La tabla `paquetes` no tiene plazo. Como no lleva datos personales, la purga no necesita tocarla [I] |
 | Qué lleva la hoja impresa | El punto y su barrio, la hora estimada, los productos, si el punto es crítico y una columna «Recibe: firma y hora» (`despacho/hoja.py:48-49`). El pie dice quién aprobó el plan (`despacho/hoja.py:533-535`) |
 | Dónde queda el PDF | Junto a la base, en `hojas/plan_N/`, sin plazo (`despacho/hoja.py:577-579`) |
 | Confirmación de entrega | «ENTREGADO DX-…» por chat o SMS marca el paquete y deja en la bitácora «remitente» seguido de los primeros 8 caracteres del hash (`entrada/flujo.py:292-299`; `despacho/paquetes.py:90-105`). En `samuel-bot`, sin fusionar, solo confirman el destino o el conductor asignado |
@@ -176,11 +181,11 @@ Esta tabla reúne las brechas, la norma que las pide y la propuesta. Ninguna pro
 | 2 | Nadie puede pedir el borrado desde el chat | Ley 1581, arts. 8 y 15; Decreto 1074, art. 2.2.2.25.2.6, que pide un mecanismo gratuito y de fácil acceso | `/borrar` en Telegram y `BORRAR` por SMS (sección 7.5) | Es función nueva. Lo deciden Samuel y Carlos |
 | 3 | El tablero no tiene clave y muestra el texto de los mensajes (`docs/DESPLIEGUE.md:36`) | Ley 1581, art. 4 f) y g) | Inicio de sesión por persona antes de cargar datos reales, y el nombre del despachador tomado de su cuenta | No. Requisito para el día 30 a 45 del piloto (`docs/PILOTO.md`, sección 5) |
 | 4 | La ubicación enviada se guarda con toda su precisión, crea un punto y entra al nomenclátor (`lugares/nomenclator.py:211-215`, `258-260` y `270`) | Decreto 1074, art. 2.2.2.25.2.1 | Pedir en el bot la ubicación del punto colectivo y no la de la casa. Que el despachador adopte o descarte el punto, y que la purga borre lo no adoptado | El texto del bot, sí. El resto, después |
-| 5 | El audio completo sale al servicio de transcripción (`entrada/voz.py:36-39`) | Decreto 1074, art. 2.2.2.25.5.2 | Retención cero en Groq, acuerdo de tratamiento y aviso en el `/start` | La retención cero es configuración, no código |
+| 5 | El audio completo sale al servicio de transcripción (`entrada/voz.py:36-39`) | Decreto 1074, art. 2.2.2.25.5.2 | Retención cero en Groq, acuerdo de tratamiento y aviso en el `/start` | Sí, porque la retención cero se activa en la configuración de Groq |
 | 6 | El texto libre puede traer datos de salud de personas | Ley 1581, arts. 5 y 6; Decreto 1074, art. 2.2.2.25.2.3 | El `/start` pide no escribirlos y la purga borra el texto. El pedido solo necesita la urgencia | El texto del bot, sí |
 | 7 | No queda prueba de qué aviso vio cada chat | Ley 1581, art. 12, parágrafo; Decreto 1074, arts. 2.2.2.25.2.5 y 2.2.2.25.3.4 | Guardar, por hash, la versión del aviso y la fecha del primer mensaje, y archivar cada versión del texto del `/start` | No |
 | 8 | Si falta `DESPACHOX_SAL`, la sal queda en un archivo junto a la base (`entrada/privacidad.py:82-86`) | Ley 1581, art. 4 g) | Exigir la variable en todo despliegue con datos reales y rotar la sal al cerrar el piloto | En Railway ya va como variable (`docs/DESPLIEGUE.md:24`) |
-| 9 | El celular del acopio guarda cada SMS con el número [I] | Decreto 1074, art. 2.2.2.25.2.8 | Borrar los SMS del celular al cerrar cada jornada, con el aparato bloqueado con clave | Es un procedimiento, no código |
+| 9 | El celular del acopio guarda cada SMS con el número [I] | Decreto 1074, art. 2.2.2.25.2.8 | Borrar los SMS del celular al cerrar cada jornada, con el aparato bloqueado con clave | Sí, porque es un procedimiento del acopio |
 | 10 | `triage/` guarda el texto sin limpiar (`triage/entrada_datos.py:261-262`) | Ley 1581, art. 4 g) | Pasar `privacidad.limpiar` al importar | No toca la demostración |
 | 11 | No hay política de tratamiento ni aviso completo | Decreto 1074, arts. 2.2.2.25.3.1 a 2.2.2.25.3.3 | `/privacidad` en el bot (sección 7.3) y la política del Banco | El texto del bot, sí |
 
@@ -196,7 +201,8 @@ UPDATE ubicaciones SET texto = '[borrado]'            -- la columna no admite NU
 UPDATE cierres SET texto_original = NULL WHERE estado = 'levantado' AND creado_en < :limite;
 UPDATE bitacora SET detalle = NULL
  WHERE accion IN ('ubicacion_confirmada', 'ubicacion_por_pin') AND cuando < :limite;
--- Falta: los lugares «aprendido» y los puntos que nacieron de una ubicación enviada y que nadie adoptó.
+-- Falta: los lugares «aprendido» y los puntos que nacieron de una ubicación enviada y que nadie adoptó,
+-- y los PDF de hojas/plan_N de los planes cerrados (despacho/hoja.py:577-579).
 ```
 
 Estas sentencias corrieron sin error esta noche contra una base temporal con el esquema de `datos/esquema.sql` y dos pedidos sintéticos [M]. El pedido entregado y viejo quedó sin texto ni hash, y el pedido nuevo quedó intacto. Esa corrida prueba la sintaxis y la lógica básica, no el script completo.
