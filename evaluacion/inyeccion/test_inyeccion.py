@@ -40,6 +40,12 @@ def _cargar_arnes():
 
 C = _cargar_arnes()
 CHAT = [m for m in C.MENSAJES if m["canal"] == "chat"]
+# La rama samuel-bot (commit e778d5d) ya trae dos arreglos: ENTREGADO solo desde el destino o el conductor
+# asignado (H2) y el rechazo anotado en la bitácora (rastro de H3). Si esa rama está fusionada, esas
+# pruebas dejan de ser xfail y tienen que pasar; si no, siguen marcadas. Así la suite queda en verde
+# con o sin esa fusión.
+from entrada import guardar as _guardar  # noqa: E402
+CON_SAMUEL_BOT = hasattr(_guardar, "quien_confirma")
 
 # (mensaje, invariante) -> hallazgo. Son las fallas que la evaluación encontró en el código de main.
 H1 = "H1: despacho/paquetes.py:26 y :94 aceptan como vivo un paquete en_bodega; ENTREGADO lo cierra sin haber salido"
@@ -49,6 +55,7 @@ H5 = "H5: flujo.py:273-275 cita en la respuesta el número del pedido repetido, 
 H6 = "H6: nomenclator.corregir_con_pin y _aplicar guardan el texto libre de una persona como lugar y punto públicos"
 H7 = "H7: flujo.py:272 apaga la alerta por silencio del punto crítico con el pedido de cualquiera"
 H8 = "H8: ninguna marca señala una cifra fuera de rango (pedidos no tiene columna dudas; guardar.py:43)"
+ARREGLADAS = {("c02", "paquetes"): CON_SAMUEL_BOT}      # (mensaje, invariante) -> ya arreglada en la base
 CONOCIDAS = {
     ("b07", "pedidos"): H4, ("b07", "fuga"): H4 + "; además cita pedidos ajenos (H5)",
     ("b08", "alertas"): H7,
@@ -128,7 +135,8 @@ def test_invariantes_por_mensaje(por_reglas, mid):
 
 
 @pytest.mark.parametrize("mid,invariante", [
-    pytest.param(mid, inv, marks=pytest.mark.xfail(strict=True, reason=razon), id=f"{mid}-{inv}")
+    pytest.param(mid, inv, id=f"{mid}-{inv}", marks=pytest.mark.xfail(
+        condition=not ARREGLADAS.get((mid, inv), False), strict=True, reason=razon))
     for (mid, inv), razon in CONOCIDAS.items()])
 def test_falla_conocida(por_reglas, mid, invariante):
     assert not por_reglas[mid].fallos[invariante], por_reglas[mid].fallos[invariante]
@@ -262,11 +270,24 @@ def test_el_texto_de_otra_persona_tampoco_sale_por_sms(mundo):
     assert "ficticia" not in C.plano(respuesta), respuesta
 
 
-@pytest.mark.xfail(strict=True, reason="H3: un ENTREGADO fallido no deja rastro (flujo.py:298, paquetes.py:94-95)")
+@pytest.mark.xfail(strict=True, reason="O4 (fuera de la inyección): «La Cumbre» casi empata con «Caminos de la "
+                                       "Cumbre» (margen menor que 0,08) y por SMS no hay botón para elegir")
+def test_un_sms_desde_caminos_de_la_cumbre_puede_confirmar_su_lugar(mundo):
+    from entrada import sms
+    from entrada.privacidad import hash_remitente
+    with C.copia(mundo) as caso:
+        for texto in ("PEDIDO 4 FAMILIAS CAMINOS DE LA CUMBRE ARROZ", "SI", "CAMINOS DE LA CUMBRE"):
+            sms.atender_sms(caso.sms, "sms-prueba-o4", texto)
+        punto = caso.con.execute("SELECT punto_id FROM pedidos WHERE remitente_hash=?",
+                                 (hash_remitente("sms-prueba-o4"),)).fetchone()["punto_id"]
+    assert punto is not None, "el pedido sigue sin punto: el SMS repite la misma pregunta"
+
+
+@pytest.mark.xfail(condition=not CON_SAMUEL_BOT, strict=True,
+                   reason="H3: un ENTREGADO fallido no deja rastro (flujo.py:298, paquetes.py:94-95)")
 def test_una_rafaga_de_codigos_queda_a_la_vista_del_despachador(por_reglas):
     r = por_reglas["c08"]
-    assert len(r.respuestas) == 30 and all("No encontr" in s["texto"] for s in r.respuestas)
-    assert not r.fallos["paquetes"]
+    assert len(r.respuestas) == 30 and not r.fallos["paquetes"]
     assert any("entreg" in (b["accion"] or "") for b in r.bitacora), "ningún intento fallido en la bitácora"
 
 

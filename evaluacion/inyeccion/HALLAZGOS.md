@@ -26,6 +26,19 @@ En este portátil, la suite de inyección tarda unos 10 segundos. Pasan 68 prueb
 
 La suite del equipo se porta distinto según esa variable. Con `DESPACHOX_SIN_RED=1` exportada, 11 pruebas de `entrada/pruebas` fallan, porque el flujo lee por reglas en vez de usar el extractor falso de cada prueba. Sin esa variable pasan. Comparamos la suite del equipo con y sin las pruebas de inyección, con la variable exportada, y las fallas son las mismas 11. Las pruebas de inyección fijan la variable dentro de cada corrida del flujo. Por construcción, su resultado no depende de cómo se lance la suite, aunque esta noche solo las corrimos con la variable exportada.
 
+Antes de entregar probamos fusiones locales, sin empujar nada, para que la suite no se ponga roja a las 6:10. La tabla muestra el resultado de las pruebas de inyección sobre cada combinación.
+
+| Fusión local con esta rama | Pruebas de inyección |
+|---|---|
+| Sola | 68 pasan, 19 xfail |
+| `qa-noche` | 68 pasan, 19 xfail |
+| `a25` | 68 pasan, 19 xfail |
+| `qa-noche` y `a25` | 68 pasan, 19 xfail |
+| `samuel-bot` | 70 pasan, 17 xfail |
+| `a25` y `samuel-bot` | 70 pasan, 17 xfail |
+
+Con `samuel-bot` cambian dos pruebas, porque esa rama ya arregla H2 y el rastro de H3. Esas dos marcas dependen de que exista `guardar.quien_confirma`, así que con la fusión pasan a ser pruebas normales y pasan. Hay dos choques entre otras ramas que no tocan estos archivos: `qa-noche` y `samuel-bot` chocan en `entrada/pasarela_sms.py`, y `a25` y `samuel-bot` en `docs/FUENTES.md`.
+
 ## Los once invariantes
 
 | Invariante | Qué comprueba después de cada mensaje |
@@ -95,8 +108,8 @@ Estas defensas existen hoy, pero las pone algo distinto del código que las nece
 | H1 | Un paquete que volvió a bodega se puede dar por entregado y su pedido sale de la lista | Medio | `test_falla_conocida[c03-*]` |
 | H8 | Nada señala una cifra fuera de rango, y una confirmada por error se lleva el inventario | Medio | `[e05/e06/e07-marcadas]` y dos pruebas propias |
 | H7 | El pedido de cualquiera en un albergue crítico apaga su alerta por silencio | Medio | `[b08-alertas]` y una prueba propia |
-| H2 | Quien pidió para un punto cierra el paquete de otro sin que nadie lo vea | Bajo | `[c02-paquetes]` |
-| H3 | ENTREGADO no tiene tope de intentos ni deja rastro de los fallidos | Bajo | `test_una_rafaga_de_codigos_...` |
+| H2 | Quien pidió para un punto cierra el paquete de otro sin que nadie lo vea | Bajo; arreglado en `samuel-bot` | `[c02-paquetes]` |
+| H3 | ENTREGADO no tiene tope de intentos ni deja rastro de los fallidos | Bajo; el rastro ya está en `samuel-bot` | `test_una_rafaga_de_codigos_...` |
 | H5 | El aviso de pedido repetido cita el número del pedido de otra persona | Bajo | `[d07-fuga]` |
 | H4 | Los botones de ubicación no comprueban de quién es el reporte | Bajo hoy, alto con otro canal | `[b07-pedidos]`, `[b07-fuga]` |
 | H9 | Un modelo comprometido no cambia nada, pero le miente al remitente | Bajo | `test_modelo_comprometido[veraz]` |
@@ -104,9 +117,10 @@ Estas defensas existen hoy, pero las pone algo distinto del código que las nece
 ### H1. Un paquete que volvió a bodega se puede dar por entregado
 
 - **Dónde.** `despacho/paquetes.py:26` define `VIVOS = ("en_bodega", "en_ruta")` y `entregar` acepta cualquiera de los dos (`paquetes.py:94`).
-- **Qué medimos.** En c03, «ENTREGADO» con el código del paquete que volvió a bodega lo pasó a entregado, y su pedido de «confirmado» a «entregado». El optimizador solo lee pedidos confirmados o asignados, así que ese pedido sale de la lista. Nadie lleva esa comida y el indicador la cuenta como entregada.
+- **Qué medimos.** En c03, el comité sintético de Caminos de la Cumbre, que pidió para ese punto, envió «ENTREGADO» con el código del paquete que volvió a bodega. El paquete pasó a entregado, y su pedido de «confirmado» a «entregado». El optimizador solo lee pedidos confirmados o asignados, así que ese pedido sale de la lista. Nadie lleva esa comida y el indicador la cuenta como entregada.
 - **Riesgo.** El código está impreso en la etiqueta y en la hoja de ruta del plan reemplazado. Un conductor que registra entregas al volver puede usar la hoja vieja por error, y cada recálculo que deja un pedido por fuera crea un caso así. Por eso la probabilidad en el piloto es media, y no hace falta mala intención.
 - **Arreglo propuesto.** Por mensaje, aceptar solo paquetes «en_ruta» y contestar que ese paquete no ha salido. El despachador puede seguir cerrando uno en bodega desde la línea de órdenes, por si alguien lo recoge allí. Decide quien lleva `despacho/`.
+- **Con `samuel-bot` sigue abierto.** Esa rama exige que confirme el destino o el conductor, y el comité del punto es el destino. `entregar` sigue aceptando el paquete en bodega, así que c03 falla igual con esa fusión.
 
 ### H2. Quien pidió para un punto cierra el paquete de otro
 
@@ -115,6 +129,7 @@ Estas defensas existen hoy, pero las pone algo distinto del código que las nece
 - **Riesgo.** Bajo. Hace falta ver el código de otro punto, por ejemplo en una foto de la hoja de ruta. El efecto es que San José figura como atendido sin estarlo.
 - **Arreglo propuesto.** Mantener el código como llave, porque el conductor la necesita. Si quien escribe tiene pedidos y ninguno es de ese punto, registrar la entrega como «por verificar» y mostrarla en el tablero.
 - **Coincide con** `docs/QA_NOCHE.md` 2.2, que propone que ENTREGADO solo cuente desde el chat que pidió o desde un conductor registrado. Esta evaluación suma la prueba c02.
+- **Arreglado en `samuel-bot`** (commit e778d5d, «ENTREGADO solo desde el destino o el conductor asignado»). Con esa fusión, c02 pasa. Queda una observación para Samuel: su regla cuenta como destino a cualquiera que ya pidió para ese punto, así que basta un pedido previo en el punto para quedar autorizado. Igual hace falta conocer el código.
 
 ### H3. ENTREGADO no tiene tope de intentos ni deja rastro de los fallidos
 
@@ -123,6 +138,7 @@ Estas defensas existen hoy, pero las pone algo distinto del código que las nece
 - **Riesgo.** Bajo. Hay 390.625 códigos posibles (25 signos en 4 posiciones, 18,58 bits según la prueba de `qa-noche`). Con N paquetes en ruta, cada intento al azar acierta con probabilidad N/390.625. Con 20 paquetes en ruta, 1000 intentos darían cerca de un 5 % de probabilidad de cerrar al menos uno (estimado, cálculo nuestro). Por SMS cada intento cuesta un mensaje, y por Telegram no cuesta nada. `qa-noche` midió entre 1.401 y 2.058 intentos por segundo contra la pasarela sin token (`docs/QA_NOCHE.md` 2.2).
 - **Arreglo propuesto.** Anotar cada intento fallido en la bitácora con el código corto del remitente. Tras tres fallos en diez minutos, dejar de aceptar códigos de ese remitente por un rato y avisar en el tablero.
 - **Coincide con** `docs/QA_NOCHE.md` 2.2 en la falta de tope. Lo que suma esta evaluación es que los fallos no dejan rastro, así que el despachador no ve el ataque mientras ocurre.
+- **El rastro ya está en `samuel-bot`**, que anota cada rechazo en la bitácora como «entrega rechazada» y da la misma respuesta a un código inexistente y a uno ajeno. El tope de intentos sigue pendiente.
 
 ### H4. Los botones de ubicación no comprueban de quién es el reporte
 
@@ -176,6 +192,7 @@ Estas no rompen la regla de arquitectura, pero ensucian la cola del despachador.
 - **O1. Lecturas que cambian la cifra.** Son los casos e01 a e04 que se describen en «Lo que aguanta por suerte o por la plataforma». El tablero muestra el texto original junto a las cifras, así que el despachador puede verlo. Queda para Samuel, que lleva el lector de SMS.
 - **O2. Mensajes que no son pedidos terminan como pedidos.** El mensaje de la Defensa Civil sobre la avenida Santander se leyó como un pedido de fruta, porque «rutas» se parece a «frutas» (b05). «CIERRE LEVANTADO PANAMERICANA» creó un reporte de cierre nuevo con todos los vehículos bloqueados (b04). «ESTADO PEDIDO 21» por SMS creó un pedido de 21 familias en el Estadio Palogrande (d06). Varias órdenes al modelo quedaron como pedidos de 3 familias con la orden como lugar (a01, a02, a07).
 - **O3. Defensa en profundidad.** Si algo se salta `extraer._normalizar`, `guardar_pedido` acepta familias y kilos negativos (pasada del esquema completo). El camino real siempre normaliza.
+- **O4. Por SMS, un barrio con nombre parecido a otro no se puede confirmar.** «PEDIDO 4 FAMILIAS CAMINOS DE LA CUMBRE ARROZ» ofrece «Caminos de la Cumbre o La Cumbre», porque «La Cumbre» saca 0,93 frente a 1,0 y el margen es menor que 0,08 (`lugares/nomenclator.py:29-31`). Si la persona contesta «SI», el bot le pide tocar una opción que el SMS no tiene. Si contesta «CAMINOS DE LA CUMBRE», vuelve la misma pregunta. El pedido queda sin punto hasta que el despachador lo ubica en el tablero, que es lo que hace la plantilla de esta evaluación. Queda para quien lleve `lugares/` y el SMS.
 
 ## Cifras de este informe
 

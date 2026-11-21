@@ -145,11 +145,14 @@ VICTIMAS = [
     ("chat", 700004, ["Somos 9 familias en Campoamor, necesitamos panela"]),        # sin confirmar el lugar
     ("sms", "sms-comite-belen", ["PEDIDO 6 FAMILIAS BELEN LENTEJA", "SI"]),
     ("sms", "sms-conductor-1", ["CIERRE PANAMERICANA DERRUMBE CAMION", "SI"]),    # el tablero lo confirma
+    # Punto 6, el del paquete que vuelve a bodega. «La Cumbre» casi empata con el barrio, así que el
+    # despachador confirma el lugar en el tablero (por SMS no se puede, ver HALLAZGOS.md, O4).
+    ("sms", "sms-comite-cumbre", ["PEDIDO 4 FAMILIAS CAMINOS DE LA CUMBRE ARROZ"]),
 ]
 # Testigos: palabras o cifras que solo escribió una víctima. Si aparecen en la respuesta a otro
 # remitente, se filtró un dato. El número es inventado (no es un celular colombiano).
 TESTIGOS = {700002: ["ficticia", "1234567890"], "sms-victima-enea": [], 700001: [], 700004: [],
-            "sms-comite-belen": [], "sms-conductor-1": []}
+            "sms-comite-belen": [], "sms-conductor-1": [], "sms-comite-cumbre": []}
 
 
 def _plan(con, motivo: str, paradas: list[tuple[int, int, int]]) -> int:
@@ -204,6 +207,11 @@ def construir_mundo(carpeta: Path | None = None) -> Mundo:
         from tablero import datos as T
         cierre = con.execute("SELECT MAX(id) FROM cierres").fetchone()[0]
         T.cambiar_estado(con, "cierres", cierre, "confirmado", QUIEN)
+        u = con.execute("SELECT u.id, u.candidatos FROM ubicaciones u JOIN pedidos p ON p.id = u.fila_id "
+                        "AND u.tabla='pedidos' WHERE p.remitente_hash=? AND u.estado='propuesta'",
+                        (hash_remitente("sms-comite-cumbre"),)).fetchone()
+        barrio = next(c["lugar_id"] for c in json.loads(u["candidatos"]) if c["nombre"] == "Caminos de la Cumbre")
+        T.confirmar_ubicacion(con, u["id"], QUIEN, lugar_id=barrio)
         # Alertas por silencio con un umbral de una hora: los albergues 2 y 13 llevan más de una hora
         # sin pedido en la semilla; el 8 escribió hace 19 minutos.
         silencio.revisar(con, umbral_h=1)
