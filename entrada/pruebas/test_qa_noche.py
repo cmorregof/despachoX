@@ -1,10 +1,17 @@
 """Revisión QA de la noche (rama qa-noche): ENTREGADO con el modelo activo, frases que el lector de SMS
-confundía con una entrega y botones de familias forjados desde otro chat. Ninguna prueba toca la red.
-Detalle y contexto en docs/QA_NOCHE.md."""
+confundía con una entrega, botones de familias forjados desde otro chat y entradas malformadas en la
+pasarela de SMS. Ninguna prueba sale de esta máquina. Detalle y contexto en docs/QA_NOCHE.md."""
+import http.client
+import json
+import socket
+import threading
+import time
+from urllib.request import Request, urlopen
+
 import pytest
 
 from datos import db
-from entrada import sms
+from entrada import pasarela_sms, sms
 from entrada.extraer import Extraccion
 from entrada.flujo import Mesa
 from entrada.privacidad import hash_remitente
@@ -109,3 +116,81 @@ def test_quien_hizo_el_pedido_si_puede_fijar_las_familias(con, mesa):
     _pedido_de(con, 111)
     r = mesa.pulsar(111, "f:5:8")
     assert "quedó para 8 familias" in r.texto and _familias(con) == 8
+
+
+# ---------- 4. Pasarela de SMS: cuerpos y cabeceras malformados ----------
+
+@pytest.fixture
+def receptor(con, tmp_path):
+    servidor = pasarela_sms.Pasarela(("127.0.0.1", 0), ruta_db=tmp_path / "prueba.db")
+    hilo = threading.Thread(target=servidor.serve_forever, daemon=True)
+    hilo.start()
+    yield servidor.server_address
+    servidor.shutdown()
+    servidor.server_close()
+
+
+def _crudo(direccion, cuerpo: bytes, largo: str | None = None) -> int:
+    c = http.client.HTTPConnection(*direccion, timeout=5)
+    c.putrequest("POST", "/sms")
+    c.putheader("Content-Type", "application/json")
+    c.putheader("Content-Length", largo if largo is not None else str(len(cuerpo)))
+    c.endheaders(cuerpo)
+    estado = c.getresponse().status
+    c.close()
+    return estado
+
+
+def _salud(direccion) -> bool:
+    with urlopen(f"http://{direccion[0]}:{direccion[1]}/salud", timeout=5) as r:
+        return json.loads(r.read()) == {"ok": True}
+
+
+@pytest.mark.parametrize("cuerpo", [b"[]", b'"x"', b"5", b'{"event": "sms:received", "payload": "x"}'])
+def test_json_que_no_es_objeto_da_400(receptor, cuerpo):
+    assert _crudo(receptor, cuerpo) == 400 and _salud(receptor)
+
+
+@pytest.mark.parametrize("largo", ["-1", "abc"])
+def test_content_length_invalido_da_400_sin_colgarse(receptor, largo):
+    assert _crudo(receptor, b"", largo) == 400 and _salud(receptor)
+
+
+def test_un_cliente_lento_no_bloquea_el_receptor(receptor, monkeypatch):
+    assert pasarela_sms.Receptor.timeout and pasarela_sms.Receptor.timeout <= 30   # sin él, se colgaba
+    monkeypatch.setattr(pasarela_sms.Receptor, "timeout", 0.5)                    # para que la prueba sea corta
+    lento = socket.create_connection(receptor, timeout=5)        # anuncia 100 bytes y no manda ninguno
+    lento.sendall(b"POST /sms HTTP/1.1\r\nHost: x\r\nContent-Type: application/json\r\nContent-Length: 100\r\n\r\n")
+    inicio = time.monotonic()
+    assert _salud(receptor) and time.monotonic() - inicio < 3
+    lento.close()
+
+
+def test_token_por_la_direccion_y_en_el_registro_del_celular(receptor, monkeypatch):
+    monkeypatch.setenv("DESPACHOX_SMS_TOKEN", "se cret/&")
+    base = f"http://{receptor[0]}:{receptor[1]}/sms"
+    datos = json.dumps({"de": "sms-qa-3", "texto": "PEDIDO 5 CHIPRE AGUA"}).encode()
+    for sufijo, esperado in (("?token=malo", 401), ("?token=se%20cret%2F%26", 200)):
+        try:
+            with urlopen(Request(base + sufijo, data=datos, headers={"Content-Type": "application/json"}),
+                         timeout=5) as r:
+                estado = r.status
+        except Exception as e:                                   # HTTPError trae el código
+            estado = getattr(e, "code", None)
+        assert estado == esperado
+    registrados = []
+
+    class Respuesta:
+        status = 201
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+        def read(self):
+            return b"{}"
+    monkeypatch.setattr(pasarela_sms, "urlopen", lambda req, timeout=0: registrados.append(json.loads(req.data)) or Respuesta())
+    pasarela_sms.registrar("http://celular.local:8080", "sms", "c", 8081, ip="192.168.1.10")
+    assert registrados[0]["url"] == "http://192.168.1.10:8081/sms?token=se%20cret%2F%26"

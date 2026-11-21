@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import hmac
 import json
 import logging
 import os
@@ -30,7 +31,7 @@ import socket
 import sys
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, quote, urlparse
 from urllib.request import Request, urlopen
 
 from datos import db
@@ -47,10 +48,14 @@ def extraer_sms(cuerpo: bytes, tipo: str) -> tuple[str | None, str | None, bool]
     que no son un SMS recibido (por ejemplo, «sms:sent»), que se contestan sin hacer nada."""
     if "json" in tipo:
         d = json.loads(cuerpo or b"{}")
+        if not isinstance(d, dict):                        # «[]», «"x"» o «5»: ilegible, no un error 500
+            raise ValueError("se esperaba un objeto JSON")
         if "event" in d:                                   # SMS Gateway for Android
             if d.get("event") != "sms:received":
                 return None, None, False
             p = d.get("payload") or {}
+            if not isinstance(p, dict):
+                raise ValueError("payload no es un objeto JSON")
             return p.get("sender") or p.get("phoneNumber"), p.get("message") or p.get("text"), True
         return d.get("de") or d.get("from"), d.get("texto") or d.get("message") or d.get("text"), True
     f = {k: v[0] for k, v in parse_qs(cuerpo.decode("utf-8", "replace")).items()}
@@ -77,6 +82,7 @@ def enviar_por_el_celular(numero: str, texto: str) -> bool:
 
 class Receptor(BaseHTTPRequestHandler):
     server_version = "DespachoX-SMS"
+    timeout = 15        # el servidor tiene un solo hilo: un cliente que no termina de enviar no lo bloquea
 
     def log_message(self, formato, *args):           # el registro por defecto escribiría la ruta y la IP
         pass
@@ -99,11 +105,17 @@ class Receptor(BaseHTTPRequestHandler):
             return self._responder(404, {"error": "use POST /sms"})
         # El cuerpo se lee siempre antes de contestar: si se contesta con datos sin leer, Windows corta la
         # conexión y la pasarela ve un error de red en vez del 401 o el 413.
-        largo = int(self.headers.get("Content-Length") or 0)
+        try:
+            largo = int(self.headers.get("Content-Length") or 0)
+        except ValueError:
+            largo = -1
+        if largo < 0:               # con -1, rfile.read esperaría hasta que el cliente cierre
+            self.close_connection = True
+            return self._responder(400, {"error": "Content-Length inválido"})
         cuerpo = self.rfile.read(min(largo, 1_000_000))
         token = os.environ.get("DESPACHOX_SMS_TOKEN")
         dado = self.headers.get("X-Token") or parse_qs(urlparse(self.path).query).get("token", [None])[0]
-        if token and dado != token:
+        if token and not hmac.compare_digest(str(dado or "").encode(), token.encode()):
             return self._responder(401, {"error": "token"})
         if largo > MAX_BYTES:
             self.close_connection = True
@@ -152,6 +164,8 @@ def registrar(celular: str, usuario: str, clave: str, puerto: int, ip: str | Non
     """Le pide a SMS Gateway for Android (modo servidor local) que reenvíe cada SMS recibido a este
     portátil. Devuelve el código HTTP y lo que contestó el celular, para leer un error si lo hay."""
     destino = f"http://{ip or _ip_local()}:{puerto}/sms"
+    if os.environ.get("DESPACHOX_SMS_TOKEN"):           # sin esto, con token el celular recibiría 401
+        destino += "?token=" + quote(os.environ["DESPACHOX_SMS_TOKEN"], safe="")
     cuerpo = json.dumps({"id": "despachox", "url": destino, "event": "sms:received"}).encode()
     credencial = base64.b64encode(f"{usuario}:{clave}".encode()).decode()
     req = Request(celular.rstrip("/") + "/webhooks", data=cuerpo, method="POST",
@@ -182,6 +196,9 @@ def main(argv=None) -> int:
     from dotenv import load_dotenv
     load_dotenv(db.RAIZ.parent / ".env")
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(message)s")
+    if not os.environ.get("DESPACHOX_SMS_TOKEN"):
+        log.warning("Sin DESPACHOX_SMS_TOKEN: cualquiera en este wifi puede enviar SMS falsos, también "
+                    "«ENTREGADO». Defínalo antes de --registrar el celular.")
     servidor = Pasarela(("0.0.0.0", a.puerto))
     print(f"Receptor de SMS en http://{_ip_local()}:{a.puerto}/sms  (configure esa dirección en el celular)")
     try:
