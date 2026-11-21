@@ -131,6 +131,18 @@ No editamos `entrada/` ni `lugares/`. Cada arreglo se puede medir otra vez con `
 11. **Para fusionar `samuel-bot`.** Corrimos el mismo conjunto contra `origin/samuel-bot` (commit 8bb5313), que amplía el catálogo con atún, azúcar, café, pasta, sal, chocolate y papa. El difícil d28 («atun, azucar y cafe») pasa a salir bien. En cambio, «café» rompe el barrio Villa Café: g101, g296 y g298 salían bien y ahora dan el lugar «villa» y un café que nadie pidió. Los generados sin errores bajan de 151 a 148 y los difíciles suben de 11 a 12. Conviene que una palabra que forma parte de un lugar conocido no se lea como producto.
 12. **Para quien lleva `lugares/`.** En `buscar()` (`lugares/nomenclator.py:116-119`), fusionar los candidatos que comparten `punto_id`. Así el barrio y su albergue dejarían de competir entre sí, que es lo que pasa en 19 de los 43 pedidos por opciones.
 
+## Otras ramas de la noche
+
+Corrimos el mismo conjunto, sin cambiarlo, contra el código de dos ramas que tocan el lector. Ninguna se fusionó; el código se copió a una carpeta temporal.
+
+| Rama (commit) | Generados sin errores | Difíciles sin errores | Mensajes con otra lectura |
+|---|---|---|---|
+| `main` (lo medido aquí) | 151/300 | 11/30 | |
+| `samuel-bot` (8bb5313) | 148/300 | 12/30 | 4: g101, g296 y g298 empeoran por «café» en Villa Café; d28 mejora |
+| `qa-noche` (ca195b4) | 151/300 | 11/30 | ninguno |
+
+Los cambios de `qa-noche` en `entrada/sms.py` y `entrada/privacidad.py` no cambian ninguna lectura de los 330. Los de `samuel-bot` están descritos en el arreglo 11.
+
 ## El extractor con modelo
 
 No se midió. Esta noche no había `ANTHROPIC_API_KEY` y no se llamó a la API. `medir_modelo.py` queda listo: lee cada mensaje como el bot con red (modelo y, si falla, reglas), con un tope duro de 330 llamadas y sin reintentos, para que cada llamada sea una sola petición. Sin `--confirmo-gasto` solo dice qué haría. Con los supuestos de `entrada/ESCALA.md`, el costo estimado de las 330 llamadas va de 0,06 a 0,15 USD. La única medición previa del modelo es la del equipo sobre sus 15 mensajes de ejemplo (62 de 64 campos, `entrada/pruebas/reporte_campos.md`), que no se puede comparar con esta porque los mensajes y los campos son otros.
@@ -159,6 +171,16 @@ export DESPACHOX_SIN_RED=1 PYTHONPATH=.            # desde la raíz del reposito
 python evaluacion/lector/generar.py --verificar   # la parte generada sale igual, byte a byte
 python -m evaluacion.lector.evaluar               # resultados.json, lecturas.jsonl y tablas.md
 python -m pytest evaluacion/lector/tests -q       # 21 pruebas, menos de un segundo
+```
+
+Para medir otra rama sin fusionarla, como se hizo con `samuel-bot` y `qa-noche`:
+
+```bash
+T=$(mktemp -d)
+git archive origin/samuel-bot entrada lugares datos despacho/__init__.py despacho/paquetes.py | tar -x -C "$T"
+mkdir -p "$T/evaluacion/lector" && cp evaluacion/lector/*.py evaluacion/lector/conjunto.jsonl \
+  evaluacion/lector/dificiles.jsonl evaluacion/lector/lugares_base.csv "$T/evaluacion/lector/"
+(cd "$T" && DESPACHOX_SIN_RED=1 PYTHONPATH="$T" python -m evaluacion.lector.evaluar --salida "$T/salida")
 ```
 
 | Archivo | Qué es |
