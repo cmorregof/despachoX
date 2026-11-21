@@ -1,5 +1,5 @@
 # Torre de control · A-entrada · rol A (entrada)
-Última actualización: 2026-11-20 20:00 (hora de Colombia)
+Última actualización: 2026-11-20 21:00 (hora de Colombia)
 
 Desde las 16:05 el módulo lo dirige Samuel con `encargos/A2_BOT_SAMUEL.md`. Se trabaja en la rama `samuel-bot`; Carlos fusiona a `main` a las 6:30 p. m., 11:00 p. m. y 8:00 a. m.
 
@@ -27,6 +27,8 @@ Etapa 1 del encargo A2 hecha en `samuel-bot` y probada con el extractor falso: �
 - 19:00 · Alerta por silencio, pedida por Samuel (rama `samuel-bot`): columna `pedidos.origen` ('mensaje' | 'silencio') en `datos/esquema.sql`, con migración idempotente en `datos/db.py` (`_migrar`); `entrada/silencio.py` (umbral 6 h, jornada desde las 06:00, solo puntos críticos, una alerta viva por punto, urgencia 2, sin familias ni kilos); un pedido real ubicado en el punto la descarta; reloj en el bot cada 10 minutos; `python -m entrada.silencio`. `entrada/pruebas/test_silencio.py`: 8 pruebas. Suite completa del repositorio: 146 pasan, 3 se omiten.
 
 - 20:00 · `docs/PILOTO.md`, pedido por Samuel: tesis del uso diario (banco de alimentos), casos RUD, Providencia y Salva RS, cierres viales de 2017 a 2023 con enlace, A25, doble propuesta de valor con las cifras de `docs/SIMULACION.md`, plan 30/60/90 con el día 60 como día normal de reparto en paralelo y los tres datos que se le piden al operador. Tres cifras nuevas en `docs/FUENTES.md` (DNP 2016, ABACO 2025, Banco de Manizales en ABACO), todas de resumen de búsqueda y sin abrir. Pendiente: el escenario sin cierres, que corre simulacion.
+
+- 21:00 · Encargo A3, parte 1 (rama `samuel-bot`): `entrada/sms.py`, lector por reglas que devuelve el mismo `Extraccion`; `ENTREGADO CODIGO` llama a `despacho.paquetes.entregar`; respaldo del bot cuando el modelo falla o con `DESPACHOX_SIN_RED=1`; respuesta en un SMS ≤160 caracteres sin tildes (GSM-7). `entrada/pruebas/test_sms.py`: 20 SMS con errores, 20 de 20 bien, **no independiente** (casos y reglas de la misma sesión). Suite de entrada: 104 pasan, 1 se omite.
 
 ## En curso (qué, hasta dónde llegó, qué falta)
 - Prueba desde un teléfono con el bot real: nadie le ha escrito todavía.

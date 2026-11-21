@@ -162,14 +162,21 @@ def test_lo_que_no_es_nada_no_guarda_fila(con, chat):
     assert una(con, "SELECT COUNT(*) FROM pedidos")[0] + una(con, "SELECT COUNT(*) FROM cierres")[0] == 0
 
 
-def test_sin_modelo_el_bot_no_se_cae_y_guarda_el_texto(con):
+def test_sin_modelo_el_bot_lee_por_reglas_y_no_guarda_datos_personales(con):
     chat = ClienteSimulado(Mesa(con, extraer=E.crudo, elegir=None))
     r, = chat.escribir(TEXTO[15])
+    assert "20 familias en fatima" in r.texto and "reglas" not in r.texto
+    p = una(con, "SELECT * FROM pedidos")
+    assert (p["estado"], p["punto_id"], p["familias"]) == ("nuevo", None, 20)
+    assert "Pedro" not in p["texto_original"] and "3105551234" not in p["texto_original"]
+
+
+def test_sin_modelo_lo_que_no_se_entiende_se_guarda_crudo(con):
+    chat = ClienteSimulado(Mesa(con, extraer=E.crudo, elegir=None))
+    r, = chat.escribir("hola buenas como hago para ser voluntario")
     assert "un despachador lo revisará" in r.texto
     p = una(con, "SELECT * FROM pedidos")
-    assert p["estado"] == "nuevo" and p["punto_id"] is None and p["familias"] is None
-    assert "Pedro" not in p["texto_original"] and "3105551234" not in p["texto_original"]
-    assert "somos 20 familias en fatima" in p["texto_original"]
+    assert p["estado"] == "nuevo" and p["familias"] is None and "voluntario" in p["texto_original"]
 
 
 def test_no_se_guardan_nombre_telefono_ni_chat(con, chat):

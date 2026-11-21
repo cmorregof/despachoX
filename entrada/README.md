@@ -52,6 +52,7 @@ Comandos: `/start` y `/ayuda` explican en tres líneas qué hace el bot y dan do
 | `voz.py` | Transcripción de notas de voz con un servicio externo. Nunca lanza excepción |
 | `carga.py` | Prueba de carga: N mensajes sintéticos por el camino del bot, con concurrencia configurable. Resultados en `ESCALA.md` |
 | `silencio.py` | Alerta por silencio: un punto crítico sin pedidos en 6 horas recibe una fila `origen='silencio'` para que el despachador decida si manda a verificar. `python -m entrada.silencio` |
+| `sms.py` | Lector de SMS por reglas, sin modelo ni red: `PEDIDO 40 SAN JOSE ARROZ LECHE`, `CIERRE AV DEL CENTRO CAMION`, `ENTREGADO DX7K2Q`. Respuesta en un SMS de 160 caracteres. Respaldo del bot si el modelo falla o con `DESPACHOX_SIN_RED=1` |
 | `guardar.py` | Escritura en `pedidos` y `cierres`, duplicados y consulta de `/estado` |
 | `privacidad.py` | Limpieza del texto y hash con sal del id del chat |
 | `pruebas/` | Quince mensajes de ejemplo, Telegram simulado y pruebas |

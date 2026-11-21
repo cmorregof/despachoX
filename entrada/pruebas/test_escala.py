@@ -21,10 +21,13 @@ def test_api_caida_tras_reintentos_guarda_el_texto(con, mesa, monkeypatch):
             raise anthropic.APIConnectionError(request=None)
     monkeypatch.setattr(anthropic, "Anthropic", Caido)
     mesa.extraer = E.extraer
-    r, = ClienteSimulado(mesa).escribir(TEXTO)
+    raro = "hola buenas como hago para ser voluntario"             # tampoco lo leen las reglas
+    r, = ClienteSimulado(mesa).escribir(raro)
     assert creados["max_retries"] == E.REINTENTOS == 2            # 3 intentos con espera creciente del SDK
     assert r.texto == SIN_LEER
-    assert con.execute("SELECT texto_original FROM pedidos").fetchone()[0] == TEXTO
+    assert con.execute("SELECT texto_original FROM pedidos").fetchone()[0] == raro
+    r, = ClienteSimulado(mesa, chat_id=7).escribir(TEXTO)          # este sí lo leen las reglas
+    assert "40 familias en san jose" in r.texto
 
 
 def test_el_cliente_se_reutiliza(monkeypatch):

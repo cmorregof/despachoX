@@ -77,7 +77,9 @@ class _Cronometro:
 
 async def _correr(n: int, concurrencia: int, extraer) -> dict:
     con = _base_temporal()
-    mesa = Mesa(con, extraer=extraer, elegir=None)      # sin desempate de lugares con modelo
+    # Sin desempate de lugares con modelo y sin el respaldo por reglas: se mide el camino del modelo,
+    # y una lectura fallida tiene que quedar cruda. El respaldo por reglas se prueba en test_sms.py.
+    mesa = Mesa(con, extraer=extraer, elegir=None, respaldo_reglas=False)
     crono = _Cronometro(mesa)
     m = Manejadores(mesa)
     asyncio.get_running_loop().set_default_executor(ThreadPoolExecutor(max_workers=concurrencia))

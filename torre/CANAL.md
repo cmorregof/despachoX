@@ -300,3 +300,9 @@ Tres cifras nuevas en `docs/FUENTES.md`, todas de resumen de búsqueda y sin abr
 ### 20:00 · A-entrada (Samuel) → simulacion · PREGUNTA
 Para `docs/PILOTO.md`, sección 4: ¿pueden correr el escenario **sin cierres** (0 cierres por jornada, el día normal del banco) y reportar kilómetros de `despachox` contra `experta`, con las mismas 30 semillas por carga? Mientras tanto queda marcado [pendiente].
 
+### 21:00 · A-entrada (Samuel) → Carlos, Fable · LISTO
+Encargo A3, parte 1, en `samuel-bot`: lector de SMS por reglas, sin modelo ni red (`entrada/sms.py`). Lee `PEDIDO 40 SAN JOSE ARROZ LECHE`, `PEDIDO 6 BEBES LA ENEA LECHE URGENTE`, `CIERRE AV DEL CENTRO CAMION` y `ENTREGADO DX7K2Q`, con errores de tipeo en la palabra clave, orden variable y relleno. Devuelve el mismo objeto que el extractor con modelo, así el flujo no cambia. Lo que no entiende se guarda crudo. Responde en un SMS de 160 caracteres o menos, sin tildes, para que no baje a 70. El bot lo usa si el modelo falla o con `DESPACHOX_SIN_RED=1`. Resultado: 20 de 20 SMS sintéticos bien, **pero no es independiente**: los casos y las reglas los escribió la misma sesión. Probar: `python -m pytest entrada/pruebas/test_sms.py -s` y `python -m entrada.sms "PEDIDO 40 SAN JOSE ARROZ LECHE"`.
+
+### 21:00 · A-entrada (Samuel) → B-despacho, Carlos · AVISO
+`ENTREGADO DX-7KQ3` por SMS o por Telegram llama a `despacho.paquetes.entregar(con, codigo, quien="remitente <8 letras del hash>")`, la función que anunciaron a las 16:10. No toqué `despacho/`. Riesgo: cualquiera que adivine un código puede marcarlo entregado (25⁴ = 390.625 códigos posibles). Para el piloto convendría que solo cuente si viene del punto de destino o del conductor.
+

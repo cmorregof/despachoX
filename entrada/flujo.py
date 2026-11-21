@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import re
 import sqlite3
 import time
@@ -77,8 +78,9 @@ class Pendiente:
 
 class Mesa:
     def __init__(self, con: sqlite3.Connection, extraer: Callable[[str], Extraccion] = extraer_con_modelo,
-                 elegir=_USAR_MODELO, reloj: Callable[[], float] = time.monotonic):
+                 elegir=_USAR_MODELO, reloj: Callable[[], float] = time.monotonic, respaldo_reglas: bool = True):
         self.con = con
+        self.respaldo_reglas = respaldo_reglas      # si el modelo falla, intentar con el lector de SMS
         self.reloj = reloj
         self.por_familias: dict[str, tuple[int, float]] = {}    # remitente -> (pedido, vence)
         self.extraer = extraer
@@ -89,8 +91,20 @@ class Mesa:
     # ---------- mensajes de texto ----------
 
     def leer(self, texto: str) -> Extraccion:
-        """Limpia y extrae. Es el único paso lento (llama al modelo); no toca la base."""
-        return self.extraer(limpiar(texto))
+        """Limpia y extrae. Es el único paso lento (llama al modelo); no toca la base.
+
+        Sin red (`DESPACHOX_SIN_RED=1`) no se llama al modelo: lee el lector de SMS por reglas. Si el
+        modelo falla, también se intenta con las reglas antes de guardar el texto crudo."""
+        from entrada.sms import leer_sms
+        limpio = limpiar(texto)
+        if os.environ.get("DESPACHOX_SIN_RED") == "1":
+            return leer_sms(limpio)
+        x = self.extraer(limpio)
+        if x.fallo and self.respaldo_reglas:
+            por_reglas = leer_sms(limpio)
+            if not por_reglas.fallo:
+                return por_reglas
+        return x
 
     def recibir_texto(self, chat_id, texto: str) -> list[Respuesta]:
         return self.atender(chat_id, self.leer(texto))
@@ -108,6 +122,8 @@ class Mesa:
 
     def atender(self, chat_id, x: Extraccion) -> list[Respuesta]:
         rem = hash_remitente(chat_id)
+        if x.entregado:
+            return [self._entregar(rem, x.entregado)]
         n = self._familias_respondidas(rem, x)
         if n is not None:
             return [self._fijar_familias(rem, self.por_familias.pop(rem)[0], n, f"{n}")]
@@ -154,7 +170,7 @@ class Mesa:
         cabeza = f"{resumen} Queda en revisión del despachador."
         if notas:
             cabeza += "\n" + " ".join(notas)
-        dudas = [d for d in x.dudas if d.strip()][:2]
+        dudas = [d for d in x.dudas if d.strip() and not d.startswith("Leído por reglas")][:2]   # nota interna
         if dudas:
             cabeza += "\nMe falta saber: " + " ".join(dudas)
         if not lugar:
@@ -270,6 +286,17 @@ class Mesa:
             pregunta = f"¿Para cuántas familias es? Calculé unas {est}." if est else "¿Para cuántas familias es?"
             return Respuesta(f"{texto}\n\n{pregunta} Toca una opción o escribe el número.", botones)
         return Respuesta(texto)
+
+    # ---------- ENTREGADO DX-7KQ3 ----------
+
+    def _entregar(self, rem: str, codigo: str) -> Respuesta:
+        """Confirmación de entrega por chat o SMS. La marca la hace despacho/, que la anota en la
+        bitácora con un código del remitente (nunca su número)."""
+        from despacho.paquetes import entregar
+        if entregar(self.con, codigo, quien=f"remitente {rem[:8]}"):
+            return Respuesta(f"Gracias. El paquete {codigo} quedó entregado.")
+        return Respuesta(f"No encontré un paquete en camino con el código {codigo}. Revísalo y escríbelo "
+                         "de nuevo, por ejemplo: ENTREGADO DX-7KQ3.")
 
     # ---------- ¿para cuántas familias? ----------
 

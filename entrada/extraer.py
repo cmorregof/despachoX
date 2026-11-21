@@ -72,6 +72,7 @@ class Extraccion(Lectura):
     dudas: list[str] = Field(default_factory=list)
     texto: str = ""
     fallo: bool = False
+    entregado: str | None = None      # código de paquete de un «ENTREGADO DX-7KQ3»; lo llena el lector de SMS
 
 
 INSTRUCCIONES = (
