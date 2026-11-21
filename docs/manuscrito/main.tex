@@ -178,8 +178,8 @@ Three gates enforce the rule in the data model (Figure~\ref{fig:flow}). An order
 \begin{figure}[ht]
 \centering
 \begin{tikzpicture}[
-  node distance=5mm and 6mm,
-  box/.style={draw, rounded corners=2pt, align=center, font=\footnotesize, minimum height=10mm, text width=24mm, inner sep=2pt},
+  node distance=5mm and 5mm,
+  box/.style={draw, rounded corners=2pt, align=center, font=\footnotesize, minimum height=10mm, text width=27mm, inner sep=2pt, execute at begin node={\hyphenpenalty=10000\exhyphenpenalty=10000\relax}},
   model/.style={box, fill=blue!8},
   rule/.style={box, fill=gray!12},
   human/.style={box, fill=orange!18, thick},
@@ -327,7 +327,7 @@ The solver builds a first solution with the path-cheapest-arc strategy and impro
 Parameter & Value in code & Status \\
 \midrule
 Default speed by road class (km/h) & trunk 50, primary 40, secondary 35, tertiary 30, unclassified 25, residential 20 & Assumed; OSM \code{maxspeed} used when present \\
-Measured speeds (bus with GPS, Manizales) & 21.8 to 24.2 on main roads; 16.2 to 17.5 on collector roads & Sourced \citep{ocampo2019costos}; to replace the defaults \pend{[SIM-CONFIG]} \\
+Speeds of a diesel bus in Manizales, by road class and slope (not in the optimizer) & 21.8 to 24.2 on main roads; 16.2 to 17.5 on collector roads; 22.6 on average & Sourced, Table~14 of \citet{ocampo2019costos}; copied to \code{datos\_publicos/velocidades.csv} to replace the defaults \pend{[SIM-CONFIG]} \\
 Vehicle time factor $\phi_m$ & truck 1.25, 4$\times$4 1.0, motorcycle 0.9 & Assumed \\
 Snapping tolerance & truck 300\,m, others 400\,m & Assumed \\
 Service time $s_i$ & 600\,s per stop & Assumed \\
@@ -621,7 +621,7 @@ Human approval is a safeguard only if the human can evaluate what is approved. A
 
 \subsection{Optimism of the simulation}
 
-The simulation rests on assumptions that favour every policy and some that favour DespachoX (Section~\ref{sec:simdesign}). Demand, stock, fleet and closures are synthetic. Speeds, service and loading times, deadlines by urgency and human delays are assumptions; at the time of writing, the default speeds exceed the speeds measured with GPS in Manizales \citep{ocampo2019costos}. The magnitude of any advantage over the naive policy depends on the load level, which was chosen so that the naive policy is neither idle nor collapsed. No value in the simulation comes from an operation of the food bank or of a relief agency.
+The simulation rests on assumptions that favour every policy and some that favour DespachoX (Section~\ref{sec:simdesign}). Demand, stock, fleet and closures are synthetic. Speeds, service and loading times, deadlines by urgency and human delays are assumptions; at the time of writing, the default speeds of the optimizer exceed the speeds reported for a diesel bus in Manizales, 22.6\,km/h on average \citep{ocampo2019costos}. The magnitude of any advantage over the naive policy depends on the load level, which was chosen so that the naive policy is neither idle nor collapsed. No value in the simulation comes from an operation of the food bank or of a relief agency.
 
 \subsection{Gaps in the data}
 
