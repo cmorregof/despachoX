@@ -1,4 +1,4 @@
-# Diapositivas del pitch · DespachoX
+# Diapositivas del pitch · Convite (antes DespachoX)
 
 Versión 1, noche del viernes 20 al sábado 21 de noviembre, rama `pitch-noche`. Contenido de cada diapositiva, listo para montar. El orden y los tiempos salen de `pitch/GUION.md`, y las cifras, de `pitch/CIFRAS_PITCH.md`.
 
@@ -132,7 +132,7 @@ Sale uno o dos segundos mientras el operador cambia al tablero. Si el cambio es 
 **Visual por hacer, en dos paneles.**
 
 - **Izquierda, la tabla por territorio.** Una captura de la pestaña «Territorio» del tablero, si está lista antes de las 8:30 a. m. Si no, una tabla hecha con `python -m despacho.territorio --csv /tmp/t.csv` sobre la base de la demo, con las columnas `territorio`, `pedidos`, `kg_entregados`, `pct_criticos_a_tiempo` y `espera_mediana_h`. Al lado va la lista de barrios y veredas «sin pedidos registrados», del archivo `_sin_pedidos` que el comando escribe junto a la tabla. Etiqueta obligatoria: «Datos sintéticos de la demo».
-- **Derecha, la simulación.** Barras de entregas a tiempo en puntos críticos por política (orden de llegada, despachador con oficio y DespachoX) en las tres cargas. Holgada, 75,9, 97,7 y 99,2 %. Media, 53,6, 94,6 y 98,3 %. Alta, 40,5, 91,9 y 98,4 %. Datos: `despacho/sim/resultados_velocidades/tablas.md`, críticos a tiempo, y `docs/SIMULACION.md`, sección 9. Etiqueta obligatoria: «En simulación, con 30 escenarios por nivel de carga y 360 jornadas en total, DespachoX sube los críticos a tiempo 23,3, 44,7 y 57,9 puntos frente al despacho por orden de llegada. Cada diferencia compara 30 jornadas por política. Ningún intervalo del 95 % toca el cero. Supuestos en docs/SIMULACION.md, sección 9».
+- **Derecha, la simulación.** Barras de entregas a tiempo en puntos críticos por política (orden de llegada, despachador con oficio y Convite) en las tres cargas. Holgada, 75,9, 97,7 y 99,2 %. Media, 53,6, 94,6 y 98,3 %. Alta, 40,5, 91,9 y 98,4 %. Datos: `despacho/sim/resultados_velocidades/tablas.md`, críticos a tiempo, y `docs/SIMULACION.md`, sección 9. Etiqueta obligatoria: «En simulación, con 30 escenarios por nivel de carga y 360 jornadas en total, Convite sube los críticos a tiempo 23,3, 44,7 y 57,9 puntos frente al despacho por orden de llegada. Cada diferencia compara 30 jornadas por política. Ningún intervalo del 95 % toca el cero. Supuestos en docs/SIMULACION.md, sección 9».
 
 **Pie de fuente.** «Tabla: `despacho/territorio.py`, con datos sintéticos. Simulación del equipo, 21 de noviembre de 2026. 30 escenarios por carga, 360 jornadas. Velocidades de la tesis UNAL de 2019, tabla 14. IC del 95 %: `despacho/sim/resultados_velocidades/tablas.md`.»
 
@@ -176,9 +176,9 @@ Debajo de la línea, la regla de cambio: «Si el Banco no reparte, el piloto pas
 
 ## Diapositiva 8 · Cierre
 
-**Texto en pantalla (12 palabras).** «DespachoX · Equipo 19 · Que la comida llegue aunque la vía se cierre.»
+**Texto en pantalla (12 palabras).** «Convite · Equipo 19 · Que la comida llegue aunque la vía se cierre.»
 
-**Visual.** El nombre en grande. Debajo, en letra pequeña, el repositorio `github.com/cmorregof/despachoX` y los nombres del equipo: Samuel Rosso, Carlos Orrego, Nicolás Ramírez, Jacobo Vasco y José Manuel Aristizábal (`docs/ESTRATEGIA.md`). Si Carlos confirma el nombre «Convite», que propusieron Jacobo y Samuel a las 11:30 p. m., el texto pasa a ser «Convite · Equipo 19 · Que la comida llegue aunque la vía se cierre» (12 palabras), y el nombre cambia en todas las diapositivas.
+**Visual.** El nombre en grande. Debajo, en letra pequeña, el repositorio `github.com/cmorregof/despachoX` y los nombres del equipo: Samuel Rosso, Carlos Orrego, Nicolás Ramírez, Jacobo Vasco y José Manuel Aristizábal (`docs/ESTRATEGIA.md`).
 
 **Nota del orador.** La regla de cambio y la última frase del bloque 8.
 
@@ -194,7 +194,7 @@ Debajo de la línea, la regla de cambio: «Si el Banco no reparte, el piloto pas
 
 **Texto en pantalla (13 palabras).** «Conocimiento UNAL: A25 del IDEA, patente 37476 y dos tesis de la Sede.»
 
-**Visual por hacer.** Una tabla de cuatro filas con la capacidad, qué es, dónde entra en DespachoX y su estado, tomada de `docs/FICHA_CORTA.md`, componente 3.
+**Visual por hacer.** Una tabla de cuatro filas con la capacidad, qué es, dónde entra en Convite y su estado, tomada de `docs/FICHA_CORTA.md`, componente 3.
 
 | Capacidad | Qué es | Dónde entra | Estado |
 |---|---|---|---|
@@ -231,7 +231,7 @@ Debajo, métodos y datos: ruteo con capacidad y ventanas de tiempo en OR-Tools s
 
 **Texto en pantalla (8 palabras).** «Simulación: 360 jornadas, dos líneas base, supuestos escritos.»
 
-**Visual por hacer.** La tabla de la corrida nueva. Por nivel de carga, y para orden de llegada, despachador con oficio y DespachoX: críticos a tiempo, entregas a tiempo en todos los puntos, perecederos vencidos, kilómetros y espera del punto peor atendido, con diferencias pareadas e intervalos del 95 %. Datos: `despacho/sim/resultados_velocidades/tablas.md`, líneas 14 a 52, copiada sin cambios. La columna `despachox` − `experta` de críticos a tiempo lleva al lado esta salvedad: «Esa corrida cambia a la vez la red y la velocidad, y la corrida que los separa (9.3) está pendiente.» Debajo, el supuesto que cambió, que son las velocidades de la tesis UNAL de 2019. La vida útil por producto no se corrió (`docs/SIMULACION.md`, sección 9.5).
+**Visual por hacer.** La tabla de la corrida nueva. Por nivel de carga, y para orden de llegada, despachador con oficio y Convite: críticos a tiempo, entregas a tiempo en todos los puntos, perecederos vencidos, kilómetros y espera del punto peor atendido, con diferencias pareadas e intervalos del 95 %. Datos: `despacho/sim/resultados_velocidades/tablas.md`, líneas 14 a 52, copiada sin cambios. La columna `despachox` − `experta` de críticos a tiempo lleva al lado esta salvedad: «Esa corrida cambia a la vez la red y la velocidad, y la corrida que los separa (9.3) está pendiente.» Debajo, el supuesto que cambió, que son las velocidades de la tesis UNAL de 2019. La vida útil por producto no se corrió (`docs/SIMULACION.md`, sección 9.5).
 
 **Pie de fuente.** «Simulación del equipo, 21 de noviembre de 2026. 30 escenarios por carga, 360 jornadas, y cada diferencia compara 30 jornadas por política. Lo que no prueba: `docs/SIMULACION.md`, sección 7.»
 

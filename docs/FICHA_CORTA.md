@@ -1,4 +1,4 @@
-# DespachoX · Ficha de los seis componentes
+# Convite (antes DespachoX) · Ficha de los seis componentes
 
 Equipo 19 · Hackathon UNAL Manizales 2026 · Vertical 04, Logística y abastecimiento
 Samuel Rosso (líder) · Carlos Orrego · Jacobo Vasco · Nicolás Ramírez · José Manuel Aristizábal
@@ -17,11 +17,11 @@ El anexo técnico, con todas las cifras, supuestos y riesgos, está en `docs/FIC
 
 **Para quién.** El usuario principal es quien despacha en el Banco Arquidiocesano de Alimentos de Manizales, que opera todo el año y fue nodo del corredor en agosto [I]. Piden las 204 juntas de acción comunal de la ciudad, 131 de barrios y 73 de veredas (Alcaldía; por verificar), junto con comedores, hogares y albergues.
 
-**Vertical 04.** La ficha de la vertical pide una plataforma de despacho en tiempo real, con rutas optimizadas y trazabilidad de paquetes, para una flota mixta. Mide entregas a tiempo en puntos críticos y desperdicio de perecederos bajo el 5 %, los mismos indicadores que mide DespachoX.
+**Vertical 04.** La ficha de la vertical pide una plataforma de despacho en tiempo real, con rutas optimizadas y trazabilidad de paquetes, para una flota mixta. Mide entregas a tiempo en puntos críticos y desperdicio de perecederos bajo el 5 %, los mismos indicadores que mide Convite.
 
 ## 2. Prototipo de solución (25 puntos)
 
-**Qué es.** DespachoX es una mesa de despacho de ayuda alimentaria. El modelo de lenguaje lee los mensajes; el optimizador y las reglas calculan; el despachador decide.
+**Qué es.** Convite es una mesa de despacho de ayuda alimentaria. El modelo de lenguaje lee los mensajes; el optimizador y las reglas calculan; el despachador decide.
 
 **Lo que funciona hoy.** El bot de Telegram y el tablero corren en la nube desde el viernes, y las 306 pruebas automáticas del repositorio pasan [M].
 
@@ -37,11 +37,11 @@ El anexo técnico, con todas las cifras, supuestos y riesgos, está en `docs/FIC
 
 **En construcción.** La vista por comuna y vereda está en construcción para antes del congelamiento.
 
-**Simulación.** Con 30 escenarios por nivel de carga y 360 jornadas sobre la red real de Manizales, DespachoX sube los críticos a tiempo en 23,3, 44,7 y 57,9 puntos frente al despacho por orden de llegada [M]. Cada diferencia compara 30 jornadas por política, y ningún intervalo del 95 % toca el cero. Frente a un despachador con oficio, recorre 46,0, 56,0 y 42,2 km menos por jornada. En el total de entregas a tiempo empata con carga holgada y media, y con carga alta gana 3,0 puntos. Los perecederos vencidos quedan en 0,0 %, frente a 1,4 %, 3,4 % y 5,6 % por orden de ingreso, por una regla de bodega que el despachador con oficio también cumple. Priorizar hace esperar al punto peor atendido entre 1,95 y 3,82 horas más que por orden de llegada. Las velocidades son derivadas de mediciones GPS de un bus en Manizales y asignadas por tipo de vía y pendiente (tesis UNAL de 2019, tabla 14, pp. 46 a 48). La simulación usa la media por tipo de vía. La vida útil no se repitió con lo medido, y la corrida le sigue dando al huevo horas cuando dura días.
+**Simulación.** Con 30 escenarios por nivel de carga y 360 jornadas sobre la red real de Manizales, Convite sube los críticos a tiempo en 23,3, 44,7 y 57,9 puntos frente al despacho por orden de llegada [M]. Cada diferencia compara 30 jornadas por política, y ningún intervalo del 95 % toca el cero. Frente a un despachador con oficio, recorre 46,0, 56,0 y 42,2 km menos por jornada. En el total de entregas a tiempo empata con carga holgada y media, y con carga alta gana 3,0 puntos. Los perecederos vencidos quedan en 0,0 %, frente a 1,4 %, 3,4 % y 5,6 % por orden de ingreso, por una regla de bodega que el despachador con oficio también cumple. Priorizar hace esperar al punto peor atendido entre 1,95 y 3,82 horas más que por orden de llegada. Las velocidades son derivadas de mediciones GPS de un bus en Manizales y asignadas por tipo de vía y pendiente (tesis UNAL de 2019, tabla 14, pp. 46 a 48). La simulación usa la media por tipo de vía. La vida útil no se repitió con lo medido, y la corrida le sigue dando al huevo horas cuando dura días.
 
 ## 3. Conocimiento utilizado (15 puntos)
 
-**El A25 del IDEA, capacidad principal.** La capacidad UNAL principal es el indicador A25 del IDEA, Sede Manizales, que mide la lluvia acumulada en 25 días por estación. La Unidad de Gestión del Riesgo lo adoptó a partir de la tesis de Terlien (1996), que asoció unos 200 mm en 25 días con alta probabilidad de deslizamientos (IDEA; por verificar). Sus umbrales de alerta son 200, 300 y 400 mm, y el reporte de 2020 cubre 14 estaciones (IDEA; por verificar). El 16 de febrero de 2026 Manizales declaró alerta amarilla con el umbral de 200 mm (Blu Radio; por verificar). En DespachoX, el optimizador encarece, sin cerrarlas, las vías con historial de deslizamientos en alerta naranja o roja. Ya está en el código, con lluvia de prueba y apagado por defecto, y en los días 60 a 90 del piloto entra con los datos diarios del IDEA. El equipo está pidiendo cinco minutos a un profesor del IDEA para que revise ese uso y dé su visto bueno.
+**El A25 del IDEA, capacidad principal.** La capacidad UNAL principal es el indicador A25 del IDEA, Sede Manizales, que mide la lluvia acumulada en 25 días por estación. La Unidad de Gestión del Riesgo lo adoptó a partir de la tesis de Terlien (1996), que asoció unos 200 mm en 25 días con alta probabilidad de deslizamientos (IDEA; por verificar). Sus umbrales de alerta son 200, 300 y 400 mm, y el reporte de 2020 cubre 14 estaciones (IDEA; por verificar). El 16 de febrero de 2026 Manizales declaró alerta amarilla con el umbral de 200 mm (Blu Radio; por verificar). En Convite, el optimizador encarece, sin cerrarlas, las vías con historial de deslizamientos en alerta naranja o roja. Ya está en el código, con lluvia de prueba y apagado por defecto, y en los días 60 a 90 del piloto entra con los datos diarios del IDEA. El equipo está pidiendo cinco minutos a un profesor del IDEA para que revise ese uso y dé su visto bueno.
 
 **Otras capacidades UNAL.**
 
@@ -54,13 +54,13 @@ El anexo técnico, con todas las cifras, supuestos y riesgos, está en `docs/FIC
 
 ## 4. Plan de 30 a 90 días (15 puntos)
 
-**El piloto.** DespachoX entra a la operación diaria del Banco Arquidiocesano de Alimentos, en una comuna y una vereda [por definir con el Banco]. La Unidad de Gestión del Riesgo (UGR) acompaña los simulacros y la temporada de lluvias, y la Gobernación es la ruta de escalamiento. Así el piloto sirve a la recuperación del territorio, porque deja la capacidad en manos locales y se usa entre desastres. Se mide contra la línea base del Banco, con la tabla por territorio, la bitácora y el QR de cada entrega.
+**El piloto.** Convite entra a la operación diaria del Banco Arquidiocesano de Alimentos, en una comuna y una vereda [por definir con el Banco]. La Unidad de Gestión del Riesgo (UGR) acompaña los simulacros y la temporada de lluvias, y la Gobernación es la ruta de escalamiento. Así el piloto sirve a la recuperación del territorio, porque deja la capacidad en manos locales y se usa entre desastres. Se mide contra la línea base del Banco, con la tabla por territorio, la bitácora y el QR de cada entrega.
 
 | Días | Hito y entregables | Responsables | Recursos | Validación |
 |---|---|---|---|---|
 | 0 a 15 | **Acuerdo y línea base.** Carta de intención del Banco y aval de la UGR. Catálogo de puntos, inventario con vencimientos y un mes de despachos, sin datos personales. Dos semanas de bitácora del despacho actual | Samuel (acuerdo), Jacobo (bitácora), Carlos (datos) | Horas del despachador; acompañamiento previsto para los premiados | Carta firmada; línea base de entregas a tiempo, kilómetros y kilos vencidos |
-| 15 a 30 | **Reconstrucción en frío.** Lo que habría planeado DespachoX para cada día del mes registrado, frente a lo que se hizo. Simulación con velocidades de la tesis | Carlos; por asignar la revisión externa | Registros del Banco y un portátil | Real contra reconstruido. Sin mejora en kilómetros ni desperdicio, se rediseña el piloto |
-| 30 a 60 | **Uso en paralelo.** Las organizaciones piden por chat o SMS. En un día normal, el Banco reparte como siempre y DespachoX planea en sombra | Samuel (juntas), Jacobo (tablero), Carlos (optimizador) | Celular con SIM, impresora y vehículos del Banco | Veinte pedidos reales de punta a punta; kilómetros y kilos vencidos frente a la forma actual |
+| 15 a 30 | **Reconstrucción en frío.** Lo que habría planeado Convite para cada día del mes registrado, frente a lo que se hizo. Simulación con velocidades de la tesis | Carlos; por asignar la revisión externa | Registros del Banco y un portátil | Real contra reconstruido. Sin mejora en kilómetros ni desperdicio, se rediseña el piloto |
+| 30 a 60 | **Uso en paralelo.** Las organizaciones piden por chat o SMS. En un día normal, el Banco reparte como siempre y Convite planea en sombra | Samuel (juntas), Jacobo (tablero), Carlos (optimizador) | Celular con SIM, impresora y vehículos del Banco | Veinte pedidos reales de punta a punta; kilómetros y kilos vencidos frente a la forma actual |
 | 60 a 90 | **Prueba de esfuerzo y decisión.** Simulacro con la UGR y un cierre planeado. A25 por tramo. Dos semanas en sombra e informe para el Consejo Municipal de Gestión del Riesgo | Todo el equipo; por asignar el informe | Datos del IDEA; horas de la UGR y del Banco | Rutas que evitan tramos en alerta; planes aprobados sin cambios; decisión escrita del Banco |
 
 **Regla de cambio.** Si el Banco confirma que las organizaciones recogen en su bodega y nadie reparte, el piloto pasa al flujo de requerimientos de la UGR y de la Gobernación.
@@ -69,7 +69,7 @@ El anexo técnico, con todas las cifras, supuestos y riesgos, está en `docs/FIC
 
 ## 5. Viabilidad y aliados (15 puntos)
 
-**Factibilidad.** DespachoX corre en un servidor pequeño o en un portátil del acopio, con la red vial en disco [M]. Quien pide no instala nada, porque escribe por Telegram o manda un SMS. Con un lector simulado, el bot procesó 914 mensajes por minuto sin perder ninguno [M]. DespachoX entra a la rutina del Banco, porque una herramienta que solo se enciende en el desastre llega sin usuarios entrenados ni datos [I]. El RUD y el registro web de Providencia en 2020 exigieron un trámite nuevo en plena emergencia y dejaron gente por fuera (Vanguardia; El Colombiano; por verificar).
+**Factibilidad.** Convite corre en un servidor pequeño o en un portátil del acopio, con la red vial en disco [M]. Quien pide no instala nada, porque escribe por Telegram o manda un SMS. Con un lector simulado, el bot procesó 914 mensajes por minuto sin perder ninguno [M]. Convite entra a la rutina del Banco, porque una herramienta que solo se enciende en el desastre llega sin usuarios entrenados ni datos [I]. El RUD y el registro web de Providencia en 2020 exigieron un trámite nuevo en plena emergencia y dejaron gente por fuera (Vanguardia; El Colombiano; por verificar).
 
 **Qué pedimos y qué damos.** Al Banco le pedimos el catálogo de puntos, el inventario con vencimientos y un mes de despachos, sin datos personales. A cambio recibe el informe con sus propios números y la herramienta con sus datos, que siguen siendo suyos.
 

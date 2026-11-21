@@ -1,4 +1,4 @@
-# Guion del pitch · DespachoX
+# Guion del pitch · Convite (antes DespachoX)
 
 Versión 2, noche del viernes 20 al sábado 21 de noviembre, rama `pitch-noche`. Reemplaza el borrador 1 de las 11:00 a. m. Sigue lo que pidió la mentoría 1 (`docs/MENTORIA_1.md`) y el orden del pitch de la decisión 4 (`docs/DECISIONES_9PM.md`). Las diapositivas están en `pitch/DIAPOSITIVAS.md`, y cada cifra dicha en voz alta, en `pitch/CIFRAS_PITCH.md`.
 
@@ -66,7 +66,7 @@ Se dice «registros», porque un mismo derrumbe puede tener varios. Los 4 del si
 
 **Habla:** Voz 1. **Pantalla:** diapositiva 3, quién despacha, quién pide, quién reporta las vías y quién avala.
 
-> DespachoX existe para que la comida llegue a quien no puede ir a buscarla, aunque la vía esté cerrada. Es para quien despacha en el Banco Arquidiocesano de Alimentos y para quienes le piden, como comedores, hogares infantiles y juntas de barrio y de vereda.
+> Convite existe para que la comida llegue a quien no puede ir a buscarla, aunque la vía esté cerrada. Es para quien despacha en el Banco Arquidiocesano de Alimentos y para quienes le piden, como comedores, hogares infantiles y juntas de barrio y de vereda.
 
 ### Bloque 4 · Lo que existe y por qué no basta · 0:51 a 1:06 · criterio 1
 
@@ -100,9 +100,9 @@ Al terminar la frase, el operador pasa al tablero.
 
 **Habla:** Voz 2. **Pantalla:** diapositiva 6, la tabla por comuna y vereda y la barra de la simulación.
 
-> Cada paquete lleva un código QR, y la entrega queda registrada cuando ese código llega por chat o SMS. Con esos registros, el prototipo arma una tabla por comuna y vereda que mide el piloto. En simulación, con carga media, comparamos 30 jornadas por política. Frente al despacho por orden de llegada, DespachoX sube los críticos a tiempo de 53,6 % a 98,3 %. Son 44,7 puntos, con un intervalo del 95 % de 37,7 a 51,6.
+> Cada paquete lleva un código QR, y la entrega queda registrada cuando ese código llega por chat o SMS. Con esos registros, el prototipo arma una tabla por comuna y vereda que mide el piloto. En simulación, con carga media, comparamos 30 jornadas por política. Frente al despacho por orden de llegada, Convite sube los críticos a tiempo de 53,6 % a 98,3 %. Son 44,7 puntos, con un intervalo del 95 % de 37,7 a 51,6.
 
-Las cifras son de `despacho/sim/resultados_velocidades/tablas.md`, críticos a tiempo, carga media. La comparación con un despachador con oficio va siempre en la diapositiva. Decirla en voz alta depende de la pregunta 2 de `docs/FICHA_MENTORIA.md`, que se les hace a los mentores en la mentoría 2 [DECIDE CARLOS]. Si se dice, la frase es «En simulación, frente a un despachador con oficio que ya atiende primero lo urgente, DespachoX recorre 56,0 km menos por jornada con carga media. Compara 30 jornadas por política. En el total de entregas a tiempo empatan, con −0,8 puntos y un intervalo de −3,1 a 1,4.» Frente al despachador con oficio solo se dicen los kilómetros y el total de entregas a tiempo. La ventaja en críticos a tiempo no se dice. Esa corrida cambia a la vez la red y la velocidad, y la corrida que separa los dos efectos (`docs/SIMULACION.md`, sección 9.3) no ha llegado.
+Las cifras son de `despacho/sim/resultados_velocidades/tablas.md`, críticos a tiempo, carga media. La comparación con un despachador con oficio va siempre en la diapositiva. Decirla en voz alta depende de la pregunta 2 de `docs/FICHA_MENTORIA.md`, que se les hace a los mentores en la mentoría 2 [DECIDE CARLOS]. Si se dice, la frase es «En simulación, frente a un despachador con oficio que ya atiende primero lo urgente, Convite recorre 56,0 km menos por jornada con carga media. Compara 30 jornadas por política. En el total de entregas a tiempo empatan, con −0,8 puntos y un intervalo de −3,1 a 1,4.» Frente al despachador con oficio solo se dicen los kilómetros y el total de entregas a tiempo. La ventaja en críticos a tiempo no se dice. Esa corrida cambia a la vez la red y la velocidad, y la corrida que separa los dos efectos (`docs/SIMULACION.md`, sección 9.3) no ha llegado.
 
 ### Bloque 7 · El piloto de 30 a 90 días · 2:30 a 2:52 · criterios 3, 4 y 5
 
@@ -120,13 +120,9 @@ Las cifras son de `despacho/sim/resultados_velocidades/tablas.md`, críticos a t
 
 > **Voz 2:** Si el Banco no reparte, el piloto pasa al flujo de requerimientos de la UGR y la Gobernación.
 >
-> **Voz 1:** Somos DespachoX.
-
-**Variante si Carlos confirma el nombre «Convite».** Jacobo y Samuel lo propusieron en el canal a las 11:30 p. m. y le piden a Carlos que lo confirme. Si lo confirma, «DespachoX» se cambia por «Convite» en todo este guion y en las diapositivas, y la última frase pasa a ser esta:
-
 > **Voz 1:** Somos Convite. En el Eje Cafetero, el convite era la forma en que los vecinos se juntaban para abrir un camino.
 
-La explicación del nombre es la que dieron Jacobo y Samuel en el canal. Para que quepa, se corta la frase del 21 de octubre de la demo.
+Carlos confirmó el nombre «Convite», que Jacobo y Samuel propusieron en el canal a las 11:30 p. m. La explicación del nombre es la que dieron Jacobo y Samuel en el canal. Para que quepa, se corta la frase del 21 de octubre de la demo.
 
 ## Qué cortar
 
@@ -160,8 +156,8 @@ Se añaden estos textos, en este orden. Sus cifras están en `pitch/CIFRAS_PITCH
 3. **Después del bloque 4 (12 s).** «En Manizales, la comida del sismo se repartió por listas. Para recibir un mercado había que llevar el formato azul de Bomberos*, y los kits se entregaron por turnos en la sede de la Cruz Roja Seccional Caldas*.»
 4. **Después del añadido 3 (14 s).** «Después del sismo de 1999, según un estudio de la Javeriana de Cali, las gerencias del FOREC actuaron con autonomía frente a las autoridades locales, y eso debilitó la gobernanza del territorio*. Por eso el piloto queda en manos de Manizales.»
 5. **En la demo (60 s más).** La demo completa de tres minutos de `docs/GUION_DEMO.md`, con el pedido de San José enviado en vivo.
-6. **En el bloque 6 (15 s).** «En simulación, con carga media y 30 jornadas por política, frente a un despachador con oficio DespachoX recorre 56,0 km menos por jornada, y en el total de entregas a tiempo empatan. Con los dos, los perecederos vencidos quedan en 0,0 %, y por orden de llegada se vence el 3,4 %. Priorizar tiene un costo, porque el punto peor atendido espera 3,07 horas más que por orden de llegada.» Son unas 65 palabras, más que los 15 s, y el ensayo cronometrado dice si se recorta.
-7. **En el bloque 7 (20 s).** «Del día 0 al 15, acuerdo y línea base. Del 15 al 30, reconstruimos un mes de despachos del Banco. Del 30 al 60, el Banco reparte como siempre y DespachoX planea en sombra. Del 60 al 90, simulacro con la UGR y decisión escrita del Banco. El piloto cabe en la calamidad pública de Manizales, vigente hasta el 9 de agosto de 2027*.»
+6. **En el bloque 6 (15 s).** «En simulación, con carga media y 30 jornadas por política, frente a un despachador con oficio Convite recorre 56,0 km menos por jornada, y en el total de entregas a tiempo empatan. Con los dos, los perecederos vencidos quedan en 0,0 %, y por orden de llegada se vence el 3,4 %. Priorizar tiene un costo, porque el punto peor atendido espera 3,07 horas más que por orden de llegada.» Son unas 65 palabras, más que los 15 s, y el ensayo cronometrado dice si se recorta.
+7. **En el bloque 7 (20 s).** «Del día 0 al 15, acuerdo y línea base. Del 15 al 30, reconstruimos un mes de despachos del Banco. Del 30 al 60, el Banco reparte como siempre y Convite planea en sombra. Del 60 al 90, simulacro con la UGR y decisión escrita del Banco. El piloto cabe en la calamidad pública de Manizales, vigente hasta el 9 de agosto de 2027*.»
 8. **Antes del bloque 8 (15 s).** «Al Banco le pedimos tres datos sin información personal: sus puntos de entrega, su inventario con vencimientos y un mes de despachos. Sin internet, el plan sale en un portátil y la ruta se imprime con un QR por paquete*. No guardamos el teléfono de quien escribe. Queda como un código.»
 
 Las fases del añadido 7 salen de `docs/FICHA_CORTA.md`, componente 4, y coinciden con los hitos de los días 0, 15, 30, 60 y 90 de `docs/PLAN_30_90.md` (rama `defensa-noche`).
@@ -174,9 +170,9 @@ Sirve para un turno de un minuto, una presentación rápida en Conecta+ o un pas
 |---|---|
 | 0:00 a 0:16 | «Después del sismo, la comida llegó a la región. Lo que se atascó fue despacharla. Seis días después, los bancos de alimentos tenían 404 toneladas en acopio y 157 en camino, y habían entregado 41*.» |
 | 0:16 a 0:20 | «Y en Manizales las vías se cierran también sin sismo.» |
-| 0:20 a 0:41 | «DespachoX es una mesa de despacho para el Banco Arquidiocesano de Alimentos. Comedores, hogares y juntas piden por chat o SMS, y los conductores reportan los derrumbes. El optimizador reparte entre camión, campero y moto, saca primero lo que vence primero y recalcula si se cierra una vía. El despachador aprueba cada plan.» |
+| 0:20 a 0:41 | «Convite es una mesa de despacho para el Banco Arquidiocesano de Alimentos. Comedores, hogares y juntas piden por chat o SMS, y los conductores reportan los derrumbes. El optimizador reparte entre camión, campero y moto, saca primero lo que vence primero y recalcula si se cierra una vía. El despachador aprueba cada plan.» |
 | 0:41 a 0:58 | «El piloto de 90 días entra a la rutina del Banco en Ciudadela del Norte y El Manantial, con la Unidad de Gestión del Riesgo y el A25 del IDEA de la UNAL. Todo se mide contra la línea base del propio Banco.» |
-| 0:58 a 1:00 | «Somos DespachoX.» |
+| 0:58 a 1:00 | «Somos Convite.» |
 
 ## Decisiones para Carlos
 
@@ -185,7 +181,7 @@ Sirve para un turno de un minuto, una presentación rápida en Conecta+ o un pas
 3. **Territorio.** Decidido el 21 de noviembre a las 6:10 a. m. El piloto va en Ciudadela del Norte y El Manantial, la propuesta 2 de `docs/PILOTO_TERRITORIOS.md`. Las propuestas 1 y 3 quedan como alternativas.
 4. **Despachador con oficio.** Si los kilómetros y el empate en el total se dicen en voz alta en el bloque 6 o quedan solo en pantalla. Depende de la mentoría 2. La ventaja en críticos no se dice mientras falte la corrida 9.3.
 5. **A25.** Decidido. Está en `main`, y el bloque 7 dice que ya está en el código, por ahora con lluvia de prueba.
-6. **Nombre.** DespachoX o Convite, que propusieron Jacobo y Samuel a las 11:30 p. m. El bloque 8 trae la variante.
+6. **Nombre.** Decidido. El producto se llama Convite, y el bloque 8 cierra con el nombre y su explicación.
 7. **Frase del Banco.** Si hubo visita y permiso, entra en el bloque 7.
 
 ## Lo que falta para que este guion sea verdad

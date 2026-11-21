@@ -1,4 +1,4 @@
-# DespachoX · Preguntas probables del jurado
+# Convite (antes DespachoX) · Preguntas probables del jurado
 
 Banco de 30 preguntas para ensayar la defensa del sábado, agrupadas por criterio de la rúbrica. Versión del sábado 21 de noviembre de 2026, en la madrugada, rama `defensa-noche`. Cada respuesta cabe en dos o tres frases y nombra el archivo que la respalda. Las cinco preguntas que dejó la mentoría 1 llevan la marca «mentoría 1».
 
@@ -68,13 +68,13 @@ No decide solo, porque el modelo lee y estructura, el optimizador y las reglas c
 
 **10. ¿Y sin internet?**
 
-La mañana del 11 de agosto el 28 % de las estaciones base de Caldas estaba sin servicio, según MinTIC. La CRC recomendó priorizar los mensajes de texto, y la página de MinTIC sobre la emergencia también los recomienda [F]. DespachoX recibe pedidos, cierres y entregas por SMS leídos por reglas, y con la red bloqueada un portátil llegó a la hoja de ruta impresa y a una entrega registrada en 23 s [M]. Falta la prueba con el wifi apagado y con un celular real, y el mapa del tablero todavía necesita internet.
+La mañana del 11 de agosto el 28 % de las estaciones base de Caldas estaba sin servicio, según MinTIC. La CRC recomendó priorizar los mensajes de texto, y la página de MinTIC sobre la emergencia también los recomienda [F]. Convite recibe pedidos, cierres y entregas por SMS leídos por reglas, y con la red bloqueada un portátil llegó a la hoja de ruta impresa y a una entrega registrada en 23 s [M]. Falta la prueba con el wifi apagado y con un celular real, y el mapa del tablero todavía necesita internet.
 
 *Respaldo.* `docs/SIN_CONEXION.md`; `docs/investigacion/09_canales_sin_internet.md`, sección 1; `docs/RIESGOS.md`, R1. Noticias RCN, 11 de agosto, cita el informe de MinTIC para las estaciones y a la CRC para los mensajes de texto; la página de MinTIC es del 13 de agosto (`docs/FUENTES.md`, rama `fuentes-noche`, sección 7).
 
 **11. ¿Cuánto mejora frente a como se despacha hoy?**
 
-No sabemos todavía cómo despacha hoy el Banco, y por eso el piloto lo mide con su propia línea base y con la reconstrucción de un mes. En simulación comparamos contra dos líneas base, el despacho por orden de llegada y un despachador con oficio que atiende primero lo urgente y saca primero lo que vence. En simulación, con las velocidades de la tesis UNAL de 2019 y 30 jornadas por política, DespachoX sube los críticos a tiempo 23,3, 44,7 y 57,9 puntos frente al despacho por orden de llegada, según la carga. Frente al despachador con oficio recorre 46,0, 56,0 y 42,2 km menos por jornada. En el total de entregas a tiempo empata con carga holgada y media, y con carga alta gana 3,0 puntos, con un intervalo de 0,7 a 5,3.
+No sabemos todavía cómo despacha hoy el Banco, y por eso el piloto lo mide con su propia línea base y con la reconstrucción de un mes. En simulación comparamos contra dos líneas base, el despacho por orden de llegada y un despachador con oficio que atiende primero lo urgente y saca primero lo que vence. En simulación, con las velocidades de la tesis UNAL de 2019 y 30 jornadas por política, Convite sube los críticos a tiempo 23,3, 44,7 y 57,9 puntos frente al despacho por orden de llegada, según la carga. Frente al despachador con oficio recorre 46,0, 56,0 y 42,2 km menos por jornada. En el total de entregas a tiempo empata con carga holgada y media, y con carga alta gana 3,0 puntos, con un intervalo de 0,7 a 5,3.
 
 *Respaldo.* `docs/SIMULACION.md`, secciones 3 y 9; `docs/PLAN_30_90.md`, días 15 y 30.
 
@@ -90,7 +90,7 @@ Cada paquete nace con un código al aprobar el plan y se cierra cuando alguien e
 
 **13. ¿Qué de la UNAL hay aquí, y qué está ya en el código?**
 
-La capacidad principal es el indicador A25 del IDEA, la lluvia acumulada en 25 días por estación [F]. En DespachoX, el optimizador encarece, sin cerrarlas, las vías con historial de deslizamientos que están en alerta naranja o roja (`docs/A25.md`, sección 2). Ya está en el código con lluvia de prueba y apagado por defecto, y con datos del IDEA entra en los días 60 a 90. Estamos pidiendo el visto bueno de un profesor del instituto. En el código ya está la patente 37476 como parámetro supuesto de vida útil [M], y la simulación ya usa velocidades derivadas de mediciones GPS de un bus en Manizales y asignadas por tipo de vía y pendiente (tesis UNAL de 2019, tabla 14, pp. 46 a 48) [F].
+La capacidad principal es el indicador A25 del IDEA, la lluvia acumulada en 25 días por estación [F]. En Convite, el optimizador encarece, sin cerrarlas, las vías con historial de deslizamientos que están en alerta naranja o roja (`docs/A25.md`, sección 2). Ya está en el código con lluvia de prueba y apagado por defecto, y con datos del IDEA entra en los días 60 a 90. Estamos pidiendo el visto bueno de un profesor del instituto. En el código ya está la patente 37476 como parámetro supuesto de vida útil [M], y la simulación ya usa velocidades derivadas de mediciones GPS de un bus en Manizales y asignadas por tipo de vía y pendiente (tesis UNAL de 2019, tabla 14, pp. 46 a 48) [F].
 
 *Respaldo.* `docs/FICHA.md`, componente 3; `encargos/P5_ALIADO_PILOTO.pdf`, sección 5.
 
@@ -118,7 +118,7 @@ En el prototipo entra solo como parámetro supuesto, un factor de 1,2 sobre el t
 
 **17. ¿Cómo es el piloto para la recuperación del territorio, y cómo miden el efecto si la calamidad fue en agosto?**
 
-DespachoX entra 90 días a la operación diaria del Banco en una comuna y una vereda, con la UGR en el simulacro y las lluvias y con la Gobernación como ruta hacia los municipios. El efecto se mide contra la línea base del propio Banco con cuatro instrumentos, que son su operación diaria, un simulacro con un cierre planeado, los cierres reales de las lluvias y la reconstrucción de agosto. Los datos salen de la tabla por territorio, la bitácora y el código QR de cada entrega.
+Convite entra 90 días a la operación diaria del Banco en una comuna y una vereda, con la UGR en el simulacro y las lluvias y con la Gobernación como ruta hacia los municipios. El efecto se mide contra la línea base del propio Banco con cuatro instrumentos, que son su operación diaria, un simulacro con un cierre planeado, los cierres reales de las lluvias y la reconstrucción de agosto. Los datos salen de la tabla por territorio, la bitácora y el código QR de cada entrega.
 
 *Respaldo.* `docs/PLAN_30_90.md`, secciones 1 y 5; `docs/MENTORIA_1.md`, «En discusión: el piloto».
 
@@ -138,7 +138,7 @@ La regla de cambio está escrita desde ahora. Si el Banco no responde o confirma
 
 **20. ¿Cuándo dirían que el piloto falló, y quién responde por cada hito?**
 
-Cada hito tiene un criterio escrito para seguir, ajustar o parar. El más duro es el del día 30, cuando el día en paralelo se rediseña si DespachoX no ahorra kilómetros ni reduce el desperdicio frente a lo que ya hace el Banco. El integrante de Ingeniería Industrial lleva la relación con el Banco y la medición, Samuel las juntas y la UGR, Jacobo el tablero y la bitácora, y Carlos el optimizador y la simulación.
+Cada hito tiene un criterio escrito para seguir, ajustar o parar. El más duro es el del día 30, cuando el día en paralelo se rediseña si Convite no ahorra kilómetros ni reduce el desperdicio frente a lo que ya hace el Banco. El integrante de Ingeniería Industrial lleva la relación con el Banco y la medición, Samuel las juntas y la UGR, Jacobo el tablero y la bitácora, y Carlos el optimizador y la simulación.
 
 *Respaldo.* `docs/PLAN_30_90.md`, sección 6.
 

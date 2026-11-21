@@ -1,9 +1,9 @@
-# DespachoX · La ficha en una página, para la mentoría 2
+# Convite (antes DespachoX) · La ficha en una página, para la mentoría 2
 
 Equipo 19 · Vertical 04, Logística y abastecimiento · Sábado 21 de noviembre, 10:30 a. m.
 La versión completa, con la fuente y el estado de cada cifra, está en `docs/FICHA.md`. Ninguna fuente ha sido abierta todavía por una persona del equipo, así que toda cifra tomada de una fuente está por verificar.
 
-**Qué cambió desde la mentoría 1.** El piloto ya tiene usuario y territorio. DespachoX entra a la operación diaria del Banco Arquidiocesano de Alimentos de Manizales, en una comuna y una vereda, con la Unidad de Gestión del Riesgo para simulacros y lluvias. El efecto se mide contra la línea base del propio Banco.
+**Qué cambió desde la mentoría 1.** El piloto ya tiene usuario y territorio. Convite entra a la operación diaria del Banco Arquidiocesano de Alimentos de Manizales, en una comuna y una vereda, con la Unidad de Gestión del Riesgo para simulacros y lluvias. El efecto se mide contra la línea base del propio Banco.
 
 | # | Componente | En dos o tres líneas |
 |---|---|---|
@@ -17,5 +17,5 @@ La versión completa, con la fuente y el estado de cada cifra, está en `docs/FI
 **Tres preguntas para los mentores.**
 
 1. La llamada al Banco Arquidiocesano es el sábado a las 8:00 a. m. Para el criterio de viabilidad y aliados, ¿qué evidencia pesa más ante el jurado si no alcanza a llegar una carta: una llamada documentada con nombre y cargo, el interés de la Unidad de Gestión del Riesgo o un correo de intención del Banco?
-2. En la simulación nueva, frente a un despachador con oficio, DespachoX recorre de 42,2 a 56,0 km menos por jornada y empata en el total de entregas a tiempo, salvo con carga alta. En críticos a tiempo, esa corrida cambia a la vez la red y la velocidad, y todavía no separamos los dos efectos. Con la red urbana, le gana cuando hay pedidos mal ubicados. ¿Lo contamos así en el pitch, o el jurado lo va a leer como que el sistema no aporta?
+2. En la simulación nueva, frente a un despachador con oficio, Convite recorre de 42,2 a 56,0 km menos por jornada y empata en el total de entregas a tiempo, salvo con carga alta. En críticos a tiempo, esa corrida cambia a la vez la red y la velocidad, y todavía no separamos los dos efectos. Con la red urbana, le gana cuando hay pedidos mal ubicados. ¿Lo contamos así en el pitch, o el jurado lo va a leer como que el sistema no aporta?
 3. El A25 del IDEA es nuestra capacidad UNAL principal. Ya está en el código, con lluvia de prueba y apagado por defecto, y en los días 60 a 90 del piloto entra con los datos diarios del IDEA. ¿Le basta al jurado el visto bueno de un profesor del IDEA y ese hito, o conviene mostrarlo en el pitch con la alerta amarilla de febrero de 2026?
