@@ -1,1 +1,2 @@
 2026-11-21 00:52:13 commit 7131261 variantes velocidad_x0.8 semillas 20261150-20261165 políticas despachox,optimiza_una_vez,experta,ingenua procesos 7 tareas 64 hechas 64 canceladas 0 errores 0 duración 251 s carga 5.3/6.7/6.7
+2026-11-21 00:57:03 commit 1e74acc variantes velocidad_x0.8 semillas 20261150-20261179 políticas despachox,optimiza_una_vez,experta,ingenua procesos 7 tareas 56 hechas 56 canceladas 0 errores 0 duración 217 s carga 4.9/6.2/6.5

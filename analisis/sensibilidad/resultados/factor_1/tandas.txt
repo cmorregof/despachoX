@@ -1,0 +1,1 @@
+2026-11-21 01:08:09 commit 1e74acc variantes factor_1 semillas 20261150-20261179 políticas despachox,optimiza_una_vez,experta,ingenua procesos 7 tareas 120 hechas 120 canceladas 0 errores 0 duración 431 s carga 5.1/6.5/6.6
