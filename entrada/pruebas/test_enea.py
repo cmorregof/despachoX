@@ -13,6 +13,11 @@ from entrada.pruebas.conftest import extractor_falso
 from entrada.pruebas.simulador import ClienteSimulado
 
 ENEA = "hay 6 bebes sin leche desde ayer en la enea necesitamos urgente"
+LECHE = raciones.KG_POR_FAMILIA["leche"]          # kg por familia y pedido; sale de raciones.py
+
+
+def leche(familias):
+    return round(LECHE * familias, 1)
 
 
 def _p(lugar, productos, urgencia=2, familias=None, personas=None, bebes=None):
@@ -23,15 +28,15 @@ def _p(lugar, productos, urgencia=2, familias=None, personas=None, bebes=None):
 
 # (texto, lectura, familias que deben quedar, kilos de leche esperados o None si no hay leche)
 CASOS = [
-    (ENEA, _p("la enea", ["leche"], 3, bebes=6), 6, 12),
-    ("en la enea hay 6 bebes sin leche urgente", _p("la enea", [], 3), 6, 12),     # el modelo omite leche y bebés
-    ("hay 4 bebes en villa hermosa necesitan pañales y leche", _p("villa hermosa", ["pañal", "leche"], 3, bebes=4), 4, 8),
-    ("somos 12 personas en san jose sin comida", _p("san jose", [], personas=12), 3, None),
-    ("somos 9 adultos mayores en el albergue de san jorge sin arroz", _p("albergue de san jorge", ["arroz"], 3, personas=9), 3, None),
-    ("necesitamos agua para 20 personas en chipre", _p("chipre", ["agua"], personas=20), 5, None),
-    ("hay 3 niños y 2 bebes sin comer en fatima urgente", _p("fatima", [], 3, personas=3, bebes=2), 2, 4),
-    ("somos 30 personas en el carmen sin panela ni frijol", _p("el carmen", ["panela", "frijol"], personas=30), 8, None),
-    ("5 bebes en belen sin formula ni leche", _p("belen", ["fórmula"], 3, bebes=5), 5, 10),        # omite la leche
+    (ENEA, _p("la enea", ["leche"], 3, bebes=6), 6, leche(6)),
+    ("en la enea hay 6 bebes sin leche urgente", _p("la enea", [], 3), 6, leche(6)),     # el modelo omite leche y bebés
+    ("hay 4 bebes en villa hermosa necesitan pañales y leche", _p("villa hermosa", ["pañal", "leche"], 3, bebes=4), 4, leche(4)),
+    ("somos 12 personas en san jose sin comida", _p("san jose", [], personas=12), 5, None),          # 12 / 2,9 -> 5
+    ("somos 9 adultos mayores en el albergue de san jorge sin arroz", _p("albergue de san jorge", ["arroz"], 3, personas=9), 4, None),
+    ("necesitamos agua para 20 personas en chipre", _p("chipre", ["agua"], personas=20), 7, None),
+    ("hay 3 niños y 2 bebes sin comer en fatima urgente", _p("fatima", [], 3, personas=3, bebes=2), 2, leche(2)),
+    ("somos 30 personas en el carmen sin panela ni frijol", _p("el carmen", ["panela", "frijol"], personas=30), 11, None),
+    ("5 bebes en belen sin formula ni leche", _p("belen", ["fórmula"], 3, bebes=5), 5, leche(5)),        # omite la leche
     ("en la enea hay bebes sin leche desde ayer", _p("la enea", ["leche"], 3), None, None),       # sin cifra: se pregunta
 ]
 
@@ -89,16 +94,16 @@ def test_la_enea_de_punta_a_punta(con_dudas, reloj):
     """Hecho cuando: pedido con familias, leche con kilos, una duda anotada y el bot preguntó."""
     chat = ClienteSimulado(_mesa(con_dudas, reloj))
     r, = chat.escribir(ENEA)
-    assert "unas 6 familias en la enea" in r.texto and "leche (12 kg aprox.)" in r.texto and "urgente" in r.texto
+    assert "unas 6 familias en la enea" in r.texto and f"leche ({leche(6):g} kg aprox.)" in r.texto and "urgente" in r.texto
     assert "1 familia por bebé" in r.texto
     fin, = chat.enviar_ubicacion(5.07, -75.49)
     assert "¿Para cuántas familias es? Calculé unas 6." in fin.texto
     ok, = chat.pulsar("6 a 10")
     assert "quedó para 8 familias" in ok.texto
     p = con_dudas.execute("SELECT * FROM pedidos").fetchone()
-    assert (p["familias"], _kg(p, "leche"), p["kg_estimado"], p["urgencia"]) == (8, 16, 16, 3)
+    assert (p["familias"], _kg(p, "leche"), p["kg_estimado"], p["urgencia"]) == (8, leche(8), leche(8), 3)
     dudas = json.loads(p["dudas"])
-    assert any("6 a 10" in d for d in dudas) and any(d.startswith("Kilos de leche estimados: 16") for d in dudas)
+    assert any("6 a 10" in d for d in dudas) and any(d.startswith(f"Kilos de leche estimados: {leche(8):g}") for d in dudas)
     assert not any(d.startswith("Familias estimadas") for d in dudas)          # la estimación vieja se reemplaza
 
 
@@ -111,7 +116,7 @@ def test_numero_escrito_vale_y_tras_dos_minutos_ya_no(con, reloj):
     ok, = chat.escribir("somos 14 familias")
     assert "quedó para 14 familias" in ok.texto
     p = con.execute("SELECT * FROM pedidos").fetchone()
-    assert (p["familias"], _kg(p, "leche")) == (14, 28)
+    assert (p["familias"], _kg(p, "leche")) == (14, leche(14))
 
     otro = ClienteSimulado(mesa, chat_id=2002)
     otro.escribir(CASOS[-1][0])
@@ -134,13 +139,13 @@ def test_sin_columna_dudas_tambien_guarda(con, reloj):
     chat = ClienteSimulado(_mesa(con, reloj))
     chat.escribir(ENEA)
     p = con.execute("SELECT * FROM pedidos").fetchone()
-    assert (p["familias"], _kg(p, "leche")) == (6, 12)
+    assert (p["familias"], _kg(p, "leche")) == (6, leche(6))
 
 
 def test_reglas_de_raciones():
     assert raciones.familias_desde(None, None) == (None, None)
     assert raciones.familias_desde(1, None)[0] == 1                  # mínimo una familia
-    assert raciones.familias_desde(9, None)[0] == 3
+    assert raciones.familias_desde(9, None)[0] == 4                  # 9 / 2,9
     assert raciones.familias_desde(3, 2)[0] == 2
     assert raciones.contar_en_texto("hay 3 niños y 2 bebés sin comer, 6 familias") == (3, 2)
     assert raciones.contar_en_texto("40 familias sin arroz") == (None, None)
@@ -148,4 +153,4 @@ def test_reglas_de_raciones():
     assert raciones.faltantes_para_bebes("no hay panela", []) == []
     lineas = [{"producto": "arroz", "kg": 50}, {"producto": "agua", "kg": None}, {"producto": "pañales", "kg": None}]
     raciones.completar_kilos(lineas, 10)
-    assert [q["kg"] for q in lineas] == [50, 30, None]             # lo dicho no se toca; lo que no está en la tabla tampoco
+    assert [q["kg"] for q in lineas] == [50, round(raciones.KG_POR_FAMILIA["agua"] * 10, 1), None]             # lo dicho no se toca; lo que no está en la tabla tampoco

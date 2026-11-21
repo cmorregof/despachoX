@@ -79,7 +79,7 @@ def _clave(token: str, primera: bool) -> str | None:
 
 def _catalogo() -> dict[str, str]:
     """Cada forma escrita de un producto -> su nombre en la bodega."""
-    nombres = set(raciones.KG_POR_FAMILIA) | set(raciones.PARA_BEBES) | {"mercado"}
+    nombres = set(raciones.KG_POR_FAMILIA) | set(raciones.PARA_BEBES) | raciones.SIN_RACION | {"mercado"}
     tabla = {normalizar(n): n for n in nombres}
     tabla.update({normalizar(k): raciones.canonico(k) for k in raciones.SINONIMOS})
     tabla.update({"panales": "pañales", "panal": "pañales", "formula": "leche de fórmula",

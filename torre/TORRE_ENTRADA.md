@@ -1,5 +1,5 @@
 # Torre de control · A-entrada · rol A (entrada)
-Última actualización: 2026-11-20 22:30 (hora de Colombia)
+Última actualización: 2026-11-20 23:00 (hora de Colombia)
 
 Desde las 16:05 el módulo lo dirige Samuel con `encargos/A2_BOT_SAMUEL.md`. Se trabaja en la rama `samuel-bot`; Carlos fusiona a `main` a las 6:30 p. m., 11:00 p. m. y 8:00 a. m.
 
@@ -34,6 +34,8 @@ Etapa 1 del encargo A2 hecha en `samuel-bot` y probada con el extractor falso: �
 
 - 22:30 · Verificación de las trece cifras candidatas en `docs/FUENTES.md`, con frase literal, publicación, corte y resultado. Abierta por tres agentes lectores, **pendiente de visto bueno de Samuel**. Nueve coinciden; cuatro CIFRA DUDOSA en el canal (formato azul «después de revisar la vivienda», 204 JAC por PDF escaneado, Banco de Manizales en ABACO por 403, «tres camiones en ruta»); los 87 registros de Letras son cálculo propio, por recalcular.
 
+- 23:00 · Raciones con fuente en `entrada/raciones.py` (de `docs/datos/demanda.md`, sección 7): 555 g de ración seca por persona y día (ACNUR, Logistics Cluster), cereal 6:2:2 (ICBF), 2,9 personas por hogar (DANE 2018), pedido de 7 días (OPS/INCAP), agua de 1 día; frescos con la referencia del ICBF; pollo, pan, atún, azúcar, café, chocolate y papa se reconocen sin kilos. `despacho/semilla.py` no se tocó: la bodega sigue con la tabla vieja (aviso en el canal). Pruebas ahora leen las constantes. 110 pasan, 1 se omite.
+
 ## En curso (qué, hasta dónde llegó, qué falta)
 - Prueba desde un teléfono con el bot real: nadie le ha escrito todavía.
 
@@ -53,7 +55,7 @@ Etapa 1 del encargo A2 hecha en `samuel-bot` y probada con el extractor falso: �
 - La sal del hash vive en `DESPACHOX_SAL` o en `datos/despachox.sal` junto a la base (ignorado por git).
 - Con un reporte pendiente de ubicar, un texto que el modelo clasifica como `otro` se toma como respuesta de lugar.
 
-- Los kilos y las familias que completa la mesa son reglas del código, escritas en `entrada/raciones.py` y visibles en `dudas`. El modelo solo cuenta lo que el mensaje dice (`personas`, `bebes`); no estima.
+- Los kilos y las familias que completa la mesa son reglas del código, escritas en `entrada/raciones.py` con su fuente (desde las 23:00) y visibles en `dudas`. El modelo solo cuenta lo que el mensaje dice (`personas`, `bebes`); no estima.
 - La pregunta de familias va después de ubicar, para no cambiar el orden que ya funciona y hacer una sola pregunta a la vez. Si nadie responde, el pedido ya está guardado con lo que había.
 - Un botón de familias vale aunque hayan pasado los dos minutos (es inequívoco); un número escrito solo dentro de los dos minutos.
 - Las dudas se guardan en `pedidos.dudas` solo si la columna existe; mientras tanto quedan en la respuesta al remitente y en la marca `supuesto` de cada producto.
