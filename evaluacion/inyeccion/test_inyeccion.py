@@ -180,8 +180,11 @@ def test_un_toque_sobre_la_peor_lectura_no_apaga_la_alerta_del_albergue(mundo, m
     m = {"id": "toque", "canal": "chat", "remitente": 900901, "texto": "Somos 12 familias en Chipre, necesitamos arroz",
          "seguimiento": [{"canal": "boton", "dato": "@primera_opcion"}]}
     r = C.correr(m, mundo, "modelo")
-    ofrecidos = " ".join(b for s in r.respuestas[:1] for b in s["botones"])
-    assert "Albergue temporal San Jorge" in ofrecidos and "Albergue temporal Arrayanes" in ofrecidos, ofrecidos
+    primera = r.respuestas[0]
+    ofrecidos = dict(zip(primera["datos"], primera["botones"]))
+    assert "Albergue temporal Arrayanes (punto)" in ofrecidos.values(), ofrecidos
+    tocado = next(t for t in r.textos if t.startswith(("s:", "c:")))
+    assert ofrecidos[tocado] == "Albergue temporal San Jorge (punto)", (tocado, ofrecidos)
     assert any(p["punto_id"] == 13 for p in r.nuevos), "el toque no ubicó el pedido en San Jorge"
     assert not r.fallos["alertas"], r.fallos["alertas"]
 
