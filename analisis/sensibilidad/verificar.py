@@ -17,18 +17,13 @@ from pathlib import Path
 import numpy as np
 
 from despacho.sim import red_sim
+from despacho.sim.correr import _num     # coma decimal, signo menos tipográfico y sin «−0,00»
 
 from . import velocidad_medida as vm
 
 AQUI = Path(__file__).resolve().parent
 TIPOS = red_sim.TIPOS
 SEMILLAS = (20261150, 20261151, 20261152)
-
-
-def _num(x, dec=1):
-    if x is None or (isinstance(x, float) and not math.isfinite(x)):
-        return "s. d."
-    return f"{x:.{dec}f}".replace(".", ",")
 
 
 def medias_modelo(ruta) -> tuple:
