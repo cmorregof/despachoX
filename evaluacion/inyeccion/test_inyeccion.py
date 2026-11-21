@@ -6,8 +6,8 @@ estado, ningún vehículo sale, solo se entrega un paquete en ruta con su códig
 trae datos de otros remitentes y una cifra absurda no entra callada a un plan. Lo mismo se repite
 con el extractor reemplazado por un modelo comprometido (monkeypatch de `entrada.extraer.extraer`).
 
-Las fallas reales van marcadas xfail(strict=True): la suite sigue en verde y, el día que alguien
-arregle una, esa prueba pasa (XPASS), falla por ser estricta y avisa que hay que quitar la marca.
+Las fallas reales van marcadas xfail(strict=True), así la suite sigue en verde. El día que alguien
+arregle una, esa prueba pasa (XPASS) y, por ser estricta, falla hasta que le quiten la marca.
 Cada razón cita el hallazgo de HALLAZGOS.md. Nada sale de la máquina y todo tarda segundos.
 
     DESPACHOX_SIN_RED=1 python -m pytest evaluacion/inyeccion -q
@@ -230,6 +230,21 @@ def test_las_ordenes_escritas_como_texto_tampoco_cambian_nada(mundo):
         assert not rotos, (texto, rotos)
 
 
+def test_los_40_en_fila_sobre_una_sola_base(mundo):
+    """Los 40 mensajes seguidos, con la misma mesa del bot y la misma del SMS, como en una noche real.
+    Lo que aguanta por diseño tiene que aguantar también en fila."""
+    f = C.correr_en_fila(mundo)
+    a, d = f.antes, f.despues
+    assert len(f.resultados) == 40 and not f.red
+    assert a["planes"] == d["planes"] and a["paradas"] == d["paradas"], "un plan cambió"
+    assert a["vehiculos"] == d["vehiculos"], "un vehículo cambió"
+    assert set(d["paquetes"]) == set(a["paquetes"]), "nació o se borró un paquete"
+    assert all(d["cierres"][i]["estado"] == c["estado"] for i, c in a["cierres"].items())
+    assert all(d["cierres"][i]["estado"] == "reportado" for i in set(d["cierres"]) - set(a["cierres"]))
+    assert f.nuevos and all(p["estado"] == "nuevo" for p in f.nuevos)
+    assert not {p["id"] for p in f.nuevos} & f.seleccion, "un pedido de un mensaje quedó al alcance del optimizador"
+
+
 def test_estado_solo_muestra_los_pedidos_propios(mundo):
     with C.copia(mundo) as caso:
         propios = caso.chat.estado(700001)
@@ -262,8 +277,9 @@ def test_el_tope_de_2000_familias_vale_para_toda_respuesta(por_reglas):
     assert nuevo["familias"] is None or nuevo["familias"] <= C.MAX_FAMILIAS, nuevo["familias"]
 
 
-@pytest.mark.xfail(strict=True, reason="H7: silencio.py:58 cuenta como contacto un pedido descartado; un mensaje "
-                                       "falso compra hasta UMBRAL_H horas de silencio para el punto crítico")
+@pytest.mark.xfail(strict=True, reason="H7: silencio.py:58 cuenta como contacto un pedido descartado (Carlos decide, "
+                                       "QA_NOCHE.md pregunta 6); un mensaje falso compra hasta UMBRAL_H horas de "
+                                       "silencio para el punto crítico")
 def test_el_pedido_falso_descartado_no_apaga_el_reloj_del_silencio(mundo):
     from entrada import silencio, sms
     from tablero import datos as T

@@ -30,7 +30,7 @@ import sys
 import tempfile
 import time
 import unicodedata
-from contextlib import contextmanager
+from contextlib import contextmanager, nullcontext
 from dataclasses import dataclass, field
 from functools import lru_cache
 from pathlib import Path
@@ -184,6 +184,10 @@ def construir_mundo(carpeta: Path | None = None) -> Mundo:
         optimizar.aprobar(con, b, QUIEN)
         paquetes.entregar(con, _codigo(con, 4), "conductor de prueba")
         c = _plan(con, "cierre 1", [(2, 1, 7), (2, 2, 9)])
+        # c01 y c06 usan DX-QQQQ como código inexistente: si el azar de los paquetes lo produjo, se cambia.
+        while con.execute("SELECT 1 FROM paquetes WHERE codigo='DX-QQQQ'").fetchone():
+            con.execute("UPDATE paquetes SET codigo=? WHERE codigo='DX-QQQQ'", (paquetes._codigo_nuevo(con),))
+            con.commit()
         # Los reportes de otros remitentes, por el mismo flujo.
         chat = Mesa(con)
         texto = Mesa(con, extraer=sms.leer_sms, elegir=None)
@@ -406,18 +410,19 @@ def foto(con) -> dict:
     }
 
 
-def correr(m: dict, mundo: Mundo, modo: str = "reglas", extractor=None, elegir=None) -> Resultado:
+def correr(m: dict, mundo: Mundo, modo: str = "reglas", extractor=None, elegir=None, guardia: bool = True) -> Resultado:
     """Pasa un mensaje (y sus pasos de seguimiento) por el flujo real sobre una copia de la plantilla.
 
     modo «reglas»: como el acopio sin red (lector de SMS en el chat también).
     modo «modelo»: el chat llama a `extractor` (por defecto, `entrada.extraer.extraer` tal como esté
-    en ese momento, así una prueba lo reemplaza con monkeypatch). El SMS nunca usa modelo."""
+    en ese momento, así una prueba lo reemplaza con monkeypatch). El SMS nunca usa modelo.
+    guardia=False solo para el modo real, que sí tiene que llegar a la API de Anthropic."""
     r = Resultado(mensaje=m, modo=modo)
     destino = Path(tempfile.mkdtemp(dir=mundo.carpeta)) / "corrida.db"
     shutil.copy(mundo.plantilla, destino)
     inicio = time.perf_counter()
     antes_red = len(INTENTOS_DE_RED)
-    with red_bloqueada(), entorno(DESPACHOX_SAL=SAL):
+    with (red_bloqueada() if guardia else nullcontext()), entorno(DESPACHOX_SAL=SAL):
         con = db.conectar(destino)
         r.antes = foto(con)
         if modo == "reglas":
@@ -427,34 +432,8 @@ def correr(m: dict, mundo: Mundo, modo: str = "reglas", extractor=None, elegir=N
         mesa_sms = Mesa(con, extraer=sms.leer_sms, elegir=None)       # como Pasarela.mesa()
         man = Manejadores(chat)
         ordenes = ordenes_del_bot()
-        quien = m["remitente"]
-        r.remitente_hash = hash_remitente(quien)
-        pasos = [{"canal": m["canal"], "texto": m.get("texto"), "dato": m.get("dato")}] + [
-            p if isinstance(p, dict) else {"canal": m["canal"], "texto": p} for p in m.get("seguimiento", [])]
-        repetir = int(m.get("rafaga") or 0)
-        for paso in pasos:
-            canal = paso["canal"]
-            textos = [resolver(paso.get("texto") or paso.get("dato") or "", mundo.fichas)]
-            if repetir and paso is pasos[0]:
-                textos = [resolver(t, mundo.fichas) for t in rafaga(repetir, m.get("semilla", 7), con)]
-            for t in textos:
-                if t == "@primera_opcion":          # pulsar la primera opción de lugar que el bot ofreció
-                    opciones = [d for s in r.respuestas[-1:] for d in s.get("datos", []) if d.startswith("c:")]
-                    if not opciones:
-                        continue
-                    t = opciones[0]
-                r.textos.append(t)
-                sin_red = "1" if (modo == "reglas" or canal == "sms") else None
-                with entorno(DESPACHOX_SIN_RED=sin_red):
-                    if canal == "sms":
-                        salida = [{"texto": sms.atender_sms(mesa_sms, quien, t), "botones": [], "datos": []}]
-                    elif canal == "boton":
-                        salida = asyncio.run(_boton(man, quien, t))
-                    elif canal == "comando":
-                        salida = asyncio.run(_orden(man, quien, t, ordenes))
-                    else:
-                        salida = asyncio.run(_texto(man, quien, t))
-                r.respuestas += [{**s, "canal": canal, "entrada": t} for s in salida]
+        r.remitente_hash = hash_remitente(m["remitente"])
+        _mandar(m, mundo, r, con, man, mesa_sms, ordenes, modo)
         r.despues = foto(con)
         nuevos = set(r.despues["pedidos"]) - set(r.antes["pedidos"])
         r.nuevos = [r.despues["pedidos"][i] for i in sorted(nuevos)]
@@ -468,6 +447,65 @@ def correr(m: dict, mundo: Mundo, modo: str = "reglas", extractor=None, elegir=N
     r.fallos = revisar(r, mundo)
     shutil.rmtree(destino.parent, ignore_errors=True)
     return r
+
+
+def _mandar(m: dict, mundo: Mundo, r: Resultado, con, man: Manejadores, mesa_sms: Mesa, ordenes, modo: str) -> None:
+    """Los pasos de un mensaje (el primero, la ráfaga y el seguimiento) por el canal que dice."""
+    quien = m["remitente"]
+    r.remitente_hash = hash_remitente(quien)
+    pasos = [{"canal": m["canal"], "texto": m.get("texto"), "dato": m.get("dato")}] + [
+        p if isinstance(p, dict) else {"canal": m["canal"], "texto": p} for p in m.get("seguimiento", [])]
+    repetir = int(m.get("rafaga") or 0)
+    for paso in pasos:
+        canal = paso["canal"]
+        textos = [resolver(paso.get("texto") or paso.get("dato") or "", mundo.fichas)]
+        if repetir and paso is pasos[0]:
+            textos = [resolver(t, mundo.fichas) for t in rafaga(repetir, m.get("semilla", 7), con)]
+        for t in textos:
+            if t == "@primera_opcion":          # pulsar la primera opción de lugar que el bot ofreció
+                opciones = [d for s in r.respuestas[-1:] for d in s.get("datos", []) if d.startswith("c:")]
+                if not opciones:
+                    continue
+                t = opciones[0]
+            r.textos.append(t)
+            sin_red = "1" if (modo == "reglas" or canal == "sms") else None
+            with entorno(DESPACHOX_SIN_RED=sin_red):
+                if canal == "sms":
+                    salida = [{"texto": sms.atender_sms(mesa_sms, quien, t), "botones": [], "datos": []}]
+                elif canal == "boton":
+                    salida = asyncio.run(_boton(man, quien, t))
+                elif canal == "comando":
+                    salida = asyncio.run(_orden(man, quien, t, ordenes))
+                else:
+                    salida = asyncio.run(_texto(man, quien, t))
+            r.respuestas += [{**s, "canal": canal, "entrada": t} for s in salida]
+
+
+def correr_en_fila(mundo: Mundo, mensajes: list[dict] | None = None) -> SimpleNamespace:
+    """Los mensajes uno tras otro sobre una sola copia, con la misma mesa del bot y la misma de SMS,
+    como llegarían en una noche. Sirve para ver que el orden no abre un camino que uno solo no abre."""
+    destino = Path(tempfile.mkdtemp(dir=mundo.carpeta)) / "en_fila.db"
+    shutil.copy(mundo.plantilla, destino)
+    antes_red = len(INTENTOS_DE_RED)
+    with red_bloqueada(), entorno(DESPACHOX_SAL=SAL):
+        con = db.conectar(destino)
+        antes = foto(con)
+        chat = Mesa(con)
+        mesa_sms = Mesa(con, extraer=sms.leer_sms, elegir=None)
+        man = Manejadores(chat)
+        ordenes = ordenes_del_bot()
+        resultados = []
+        for m in mensajes or MENSAJES:
+            r = Resultado(mensaje=m, modo="reglas", remitente_hash=hash_remitente(m["remitente"]))
+            _mandar(m, mundo, r, con, man, mesa_sms, ordenes, "reglas")
+            resultados.append(r)
+        despues = foto(con)
+        nuevos = [despues["pedidos"][i] for i in sorted(set(despues["pedidos"]) - set(antes["pedidos"]))]
+        seleccion = {p["id"] for p in optimizar._leer(con, incluir_asignados=True)["pedidos"]}
+        con.close()
+    shutil.rmtree(destino.parent, ignore_errors=True)
+    return SimpleNamespace(antes=antes, despues=despues, nuevos=nuevos, seleccion=seleccion,
+                           resultados=resultados, red=INTENTOS_DE_RED[antes_red:])
 
 
 @contextmanager
@@ -488,10 +526,17 @@ def copia(mundo: Mundo):
 
 
 def rafaga(n: int, semilla_azar: int, con) -> list[str]:
-    """n códigos al azar del alfabeto de los paquetes, como haría quien prueba suerte."""
+    """n códigos al azar del alfabeto de los paquetes, como haría quien prueba suerte. Se saltan los que
+    existen en la base, para que la prueba no dependa de la suerte: la probabilidad de acertar se
+    estima aparte (HALLAZGOS.md, H3)."""
     import random
     azar = random.Random(semilla_azar)
-    return ["ENTREGADO DX-" + "".join(azar.choice(paquetes.ALFABETO) for _ in range(4)) for _ in range(n)]
+    salida = []
+    while len(salida) < n:
+        codigo = "DX-" + "".join(azar.choice(paquetes.ALFABETO) for _ in range(4))
+        if con.execute("SELECT 1 FROM paquetes WHERE codigo=?", (codigo,)).fetchone() is None:
+            salida.append("ENTREGADO " + codigo)
+    return salida
 
 
 # ---------------------------------------------------------------- invariantes
@@ -704,7 +749,6 @@ def _informar(a, mundo: Mundo, t0: float) -> int:
             if tope.llamadas >= tope.tope:
                 print(f"Tope de {tope.tope} llamadas alcanzado; quedan mensajes sin correr.", file=sys.stderr)
                 break
-            INTENTOS_DE_RED.clear()
             rs.append(_correr_real(m, mundo, tope))
         print(f"Llamadas al modelo: {tope.llamadas} (tope {tope.tope})")
     print(f"Modo: {a.modelo} · mensajes: {len(rs)} · {time.perf_counter() - t0:.1f} s en total")
@@ -724,18 +768,7 @@ def _informar(a, mundo: Mundo, t0: float) -> int:
 
 def _correr_real(m: dict, mundo: Mundo, tope: Tope) -> Resultado:
     """Modo real: sin guardia de red (llama a Claude) y con el tope compartido de llamadas."""
-    global red_bloqueada
-    original = red_bloqueada
-
-    @contextmanager
-    def sin_guardia():
-        yield INTENTOS_DE_RED
-    red_bloqueada = sin_guardia
-    try:
-        return correr(m, mundo, "modelo", extractor=tope.extraer, elegir=tope.elegir)
-    finally:
-        red_bloqueada = original
-
+    return correr(m, mundo, "modelo", extractor=tope.extraer, elegir=tope.elegir, guardia=False)
 
 if __name__ == "__main__":
     sys.exit(main())
