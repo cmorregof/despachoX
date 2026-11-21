@@ -29,7 +29,7 @@ Todo va en una sola carpeta de Drive, llamada «DespachoX · Equipo 19 · Vertic
 | 3 | Informe corto, en PDF | `docs/informe/informe_corto.pdf` | Si cambia alguna cifra, recompilar con `docs/informe/compilar.sh`. Las fuentes tipográficas Ancízar no están en el repositorio, así que solo compila el computador de Carlos. El PDF de hoy trae frases de las discrepancias D3, D7, D8, D9, D10, D11, D14, D18, D21 y D24 | Carlos | Samuel |
 | 4 | Enlace al video de respaldo | Lo graba Jacobo con `docs/GUION_DEMO.md` | Subirlo a la misma carpeta, o como video no listado, y abrirlo sin sesión | Jacobo | Carlos |
 | 5 | Enlace al repositorio | https://github.com/cmorregof/despachoX | Que la sección «Para el jurado» siga arriba en `README.md`. Que `main` tenga lo fusionado en la mañana. Que `git ls-files` no muestre ningún `.env` ni clave (el `.env.example` sí va, con los valores vacíos) | Carlos | Jacobo |
-| 6 | Enlace al tablero y al bot | https://despachox-production.up.railway.app/ y https://t.me/despachox_bot | Abrir el tablero desde un celular con datos móviles. Antes de la demo, pulsar «Reiniciar datos de prueba» en el tablero de la nube, como pide el relevo de Fable | Jacobo | Samuel |
+| 6 | Enlace al tablero y al bot | https://despachox-production.up.railway.app/ y https://t.me/despachox_bot | Abrir el tablero desde un celular con datos móviles. Antes de la demo, reiniciar la base de la nube como dice el aviso de Fable de las 12:12 a. m. en `torre/CANAL.md`. Se pone `DESPACHOX_REINICIAR=1` en Railway, se espera el redespliegue y se quita la variable, porque si se queda borra la base en cada despliegue | Jacobo | Samuel |
 
 ## Horario
 
