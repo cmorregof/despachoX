@@ -128,7 +128,7 @@ def _registrar_archivo_o_carpeta(pedida: str) -> str | None:
         archivos = font_manager.findSystemFonts(fontpaths=[pedida])
         _agregar(archivos)
         nombres = [n for n in map(_nombre_de_familia, archivos) if n]
-        return max(set(nombres), key=nombres.count) if nombres else None
+        return max(sorted(set(nombres)), key=nombres.count) if nombres else None   # empate: orden alfabético
     familia = _nombre_de_familia(pedida)
     if familia is None:
         return None

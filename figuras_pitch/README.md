@@ -1,6 +1,6 @@
 # Figuras del pitch
 
-Esta carpeta trae seis figuras para proyectar, en PNG de 1920 × 1080 px (`png/`) y en SVG (`svg/`). Son las cinco del encargo y una variante del mapa con solo la propuesta recomendada. Los dos mapas (a) llevan hoy el sello «por confirmar» y no se proyectan hasta que Fable decida la distancia a Bajo Tablazo (sección «Bajo Tablazo está a 8,4 km»). Usan la paleta del informe: tinta `#4F4086`, ámbar `#A36752`, crema `#EBD3A2` y ceniza `#6E6878`. Ningún texto mide menos de 24 px en el PNG, y cada figura lleva su fuente al pie.
+Esta carpeta trae seis figuras para proyectar, en PNG de 1920 × 1080 px (`png/`) y en SVG (`svg/`). Son las cinco del encargo y una variante del mapa con solo la propuesta recomendada. Usan la paleta del informe: tinta `#4F4086`, ámbar `#A36752`, crema `#EBD3A2` y ceniza `#6E6878`. Ningún texto mide menos de 24 px en el PNG, y cada figura lleva su fuente al pie. Los dos mapas (a) llevan hoy el sello «por confirmar» y no se proyectan hasta que Fable decida la distancia a Bajo Tablazo (sección «Bajo Tablazo está a 8,4 km»).
 
 Cada figura tiene su script en `scripts/`. Los datos propios quedan en `datos/`, y el resto se lee del repositorio sin cambiarlo.
 
@@ -132,13 +132,13 @@ El encargo pedía el orden de la decisión 4 de `docs/DECISIONES_9PM.md`: (b) en
 
 ### Bajo Tablazo está a 8,4 km, no a 9,3 (por confirmar)
 
-`docs/PILOTO_TERRITORIOS.md`, la fila P10 de `pitch/CIFRAS_PITCH.md` y la diapositiva 7 dicen que Bajo Tablazo queda a 9,3 km del Banco. Esa cifra salió de medir la ruta hasta el nodo del grafo más cercano al lugar, que está a 701 m. Sin embargo, la vía a Chinchiná pasa a 34 m de Bajo Tablazo. Es una arista primaria de 3.164 m sin nodos intermedios, así que el nodo más cercano quedaba lejos aunque la vía pasara al lado. La ruta pasaba junto al lugar a los 8.355 m y seguía 928 m por la misma vía hasta ese nodo, de modo que sumaba 9.283 m. Medida hasta el punto de la vía más cercano, la distancia es de 8,36 km. El documento también dice que «el grafo no llega a la vereda (nodo más cercano a 701 m)», y eso tampoco es así.
+`docs/PILOTO_TERRITORIOS.md`, la fila P10 de `pitch/CIFRAS_PITCH.md` y la diapositiva 7 de `pitch/DIAPOSITIVAS.md` (las dos en la rama `pitch-noche`) dicen que Bajo Tablazo queda a 9,3 km del Banco. Esa cifra salió de medir la ruta hasta el nodo del grafo más cercano al lugar, que está a 701 m. Sin embargo, la vía a Chinchiná pasa a 34 m de Bajo Tablazo. Es una arista primaria de 3.164 m sin nodos intermedios, así que el nodo más cercano quedaba lejos aunque la vía pasara al lado. La ruta pasaba junto al lugar a los 8.355 m y seguía 928 m por la misma vía hasta ese nodo, de modo que sumaba 9.283 m. Medida hasta el punto de la vía más cercano, la distancia es de 8,36 km. El documento también dice que «el grafo no llega a la vereda (nodo más cercano a 701 m)», y eso tampoco es así.
 
 El método nuevo cambia un poco otra cifra de la figura. El CDI Jesús de la Buena Esperanza está a 12 m de su nodo y a 1 m de la vía, así que su distancia pasa de 3,260 a 3,247 km. Por eso el rango de los CDI queda en 2,9 a 3,2 km, y no en 2,9 a 3,3. Alto Bonito (8,8 km) y La Aurora (7,4 km) no cambian con un decimal.
 
 Mientras Fable decide, las dos figuras (a) no se proyectan. El script compara cada distancia que muestra, con un decimal, con las cifras en km de la sección de esa propuesta en `docs/PILOTO_TERRITORIOS.md`. Si el documento no tiene la cifra, la figura lleva el sello «Distancia a Bajo Tablazo por confirmar» o «Distancias por confirmar». Además, el script imprime un AVISO por cifra y sale con código 1. Cuando el documento tenga las cifras nuevas, `todas.py` regenera los mapas sin sello.
 
-El mismo error de método puede tocar otras cifras del documento que estas figuras no muestran. Por ejemplo, el punto crítico más lejano de Atardeceres da 6,95 km hasta la vía y 7,23 km hasta su nodo más cercano, y el documento dice «entre 4,2 y 7,2 km».
+El mismo error de método puede tocar otras cifras del documento que estas figuras no muestran. Por ejemplo, el Hospital Geriátrico San Isidro, el crítico más lejano de Atardeceres, da 6,95 km hasta la vía, que pasa a 118 m, y 7,23 km hasta su nodo más cercano, a 212 m. El documento dice que los críticos de esa comuna quedan «a entre 4,2 y 7,2 km».
 
 ## Fuente tipográfica
 
