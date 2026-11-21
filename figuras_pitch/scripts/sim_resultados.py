@@ -19,12 +19,13 @@ La figura no interpreta nada. Dibuja la media por grupo y política con su inter
 semillas) y la meta del reto de perecederos (menos del 5 %). El título lo pone quien la use, con --titulo.
 
 Cifras. Llevan un decimal, como despacho/sim/resultados/resumen.md. Una media que no es 100 nunca se escribe 100,
-ni una que no es 0 se escribe 0: si el redondeo la lleva ahí, se agregan decimales (99,96 y no 100,0).
+ni una que no es 0 se escribe 0. Si el redondeo la lleva ahí, se agregan decimales: una media de 99,96 se escribe
+con dos, 99,96.
 
-Corridas que no se citan. La marca «Ejemplo con resultados anteriores, no citar» se decide por el contenido del
-CSV y no por su ruta: si la huella SHA-256 de algún archivo de la entrada está en CORRIDAS_ANTERIORES, la figura
-lleva la marca aunque se pida --marca "". Hoy la lista tiene solo la corrida d33dd27 del 20 de noviembre a las
-11:52 (despacho/sim/resultados/resultados.csv).
+Corridas que no se citan. La marca «Ejemplo con resultados anteriores, no citar» la decide el contenido del CSV,
+así que da igual cómo se escriba la ruta. Si la huella SHA-256 de algún archivo de la entrada está en
+CORRIDAS_ANTERIORES, la figura lleva la marca, también si se pide --marca "". Hoy la lista tiene solo la corrida
+d33dd27 del 20 de noviembre a las 11:52 (despacho/sim/resultados/resultados.csv).
 """
 from __future__ import annotations
 

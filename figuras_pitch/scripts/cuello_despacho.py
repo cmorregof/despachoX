@@ -1,4 +1,4 @@
-"""Figura (b): el cuello de botella fue despachar. Kilos en acopio, en tránsito y entregados seis días después del sismo.
+"""Figura (b): el cuello de botella fue despachar. Kilos en acopio, en tránsito y entregados tras el sismo.
 
 Uso: python figuras_pitch/scripts/cuello_despacho.py [--fuente FAMILIA] [--salida CARPETA] [--ref-fuentes REF]
 Lee  figuras_pitch/datos/cuello_despacho.csv (cifras y fuente) y el estado de la cifra en docs/FUENTES.md.

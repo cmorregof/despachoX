@@ -7,8 +7,8 @@ Uso (desde cualquier carpeta, con un Python que tenga matplotlib, osmnx y geopan
 Figura (e). Sin --sim se dibuja con despacho/sim/resultados/resultados.csv. Si el contenido de ese archivo, o del que
 se pase con --sim, es una corrida que no se cita (CORRIDAS_ANTERIORES en sim_resultados.py), la figura se llama
 e_simulacion_ejemplo y lleva la marca «Ejemplo con resultados anteriores, no citar». Con cualquier otro contenido se
-llama e_simulacion y no lleva marca, salvo que se pida una con --marca-sim. La decisión mira el contenido del CSV y
-no su ruta, así que no importa cómo se escriba la ruta ni si una corrida nueva sobrescribe la carpeta vieja.
+llama e_simulacion y no lleva marca, salvo que se pida una con --marca-sim. La decisión mira el contenido del CSV, así
+que da igual cómo se escriba la ruta o si una corrida nueva sobrescribe la carpeta vieja.
 
 Al final imprime un resumen por figura y sale con código 1 si algún script falló o dejó líneas AVISO.
 """
