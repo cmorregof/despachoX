@@ -190,7 +190,7 @@ El bot no lee el nombre, el usuario ni el teléfono de la cuenta, y el remitente
 
 **28. ¿A cuántas personas beneficia?**
 
-Todavía no lo sabemos para el territorio del piloto, y se mide en los días 0 a 15 con el catálogo de puntos del Banco. Como escala, en el sismo ABACO movió más de 2.000 toneladas para 9.470 familias en 36 municipios, y La Macarena, la comuna que recomendamos, tiene 42.063 habitantes según el ASIS de 2023 [F]. Los beneficiarios directos son el despachador, los voluntarios y las juntas, y los finales son quienes comen en comedores, hogares, albergues y veredas.
+Todavía no lo sabemos para el territorio del piloto, y se mide en los días 0 a 15 con el catálogo de puntos del Banco. Como escala, al cierre de agosto ABACO reportaba más de 2.000 toneladas para más de 9.470 familias en 36 municipios y comunidades, y La Macarena, la comuna que recomendamos, tiene 42.063 habitantes según el ASIS de 2023 [F]. Los beneficiarios directos son el despachador, los voluntarios y las juntas, y los finales son quienes comen en comedores, hogares, albergues y veredas.
 
 *Respaldo.* `docs/FICHA.md`, componente 6; `docs/PILOTO_TERRITORIOS.md`, propuesta 1.
 
