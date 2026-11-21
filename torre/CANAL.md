@@ -563,3 +563,6 @@ Por decisión de Carlos, en la rama `escala` el bot lee con **Claude Sonnet 5.5*
 
 ### 12:40 · Carlos (sesión escala) → Fable, todos · LISTO
 Corrida real: Opus 5.5 resumió 131 de 138 grupos y la mesa entera de 15.000 pedidos en 11 s (8 llamadas a la vez). El resumen de la mesa nombra los 13 grupos críticos, dónde hay bebés, insulina y falta de agua, y qué no cuadra. Captura en `docs/capturas/escala_15000_resumen_opus.jpg`, cifras en `docs/ESCALA_DESPACHO.md`, parte 3. Dos topes nuestros que el modelo notó: lee 60 textos por grupo y el resumen se corta a 600 caracteres; se suben en `despacho/resumen_grupo.py` si se quiere.
+
+### 13:05 · Carlos (sesión escala) → Fable, todos · LISTO
+Por decisión de Carlos: el resumen por grupo pasa a Sonnet 5.5 (`DESPACHOX_MODELO_RESUMEN_GRUPO`) y Opus 5.5 queda solo para la lectura de la mesa entera; se quitan los topes (todos los textos del grupo, resumen sin cortar); el comando hace hasta tres pasadas sobre los grupos sin resumen y deja tokens y costo en la bitácora. 607 pruebas pasan. Se abre PR de `escala` a `main` para que Carlos haga el merge.

@@ -26,12 +26,19 @@ from typing import Callable, Iterable
 from datos import db
 from entrada.privacidad import limpiar
 
-TOPE_TEXTOS = 60
-TOPE_RESUMEN = 600
-TOPE_RESUMEN_MESA = 2500
-TOPE_GRUPOS_MESA = 300
+# Sin topes (decisión de Carlos, 21 nov 12:55): el modelo lee todos los textos del grupo y el resumen no se
+# corta. `tope_textos` y `tope` siguen como parámetros opcionales para quien quiera limitarlos.
+TOPE_TEXTOS = None
+TOPE_RESUMEN = None
+TOPE_GRUPOS_MESA = None
+MAX_TOKENS_GRUPO = 1500
+MAX_TOKENS_MESA = 4000
 A_LA_VEZ = 8                     # llamadas al modelo en paralelo
-# Opus lee los grupos y la mesa (decisión de Carlos, 21 nov 12:40). Se cambia con DESPACHOX_MODELO_RESUMEN.
+REINTENTOS_SDK = 4               # el SDK reintenta 429 y 5xx con espera creciente
+PASADAS = 3                      # pasadas sobre los grupos que quedaron sin resumen (límite de tasa)
+# Sonnet resume cada grupo (muchas llamadas, lectura) y Opus lee la mesa entera (una llamada).
+# Decisión de Carlos, 21 nov 12:55. Se cambian con DESPACHOX_MODELO_RESUMEN_GRUPO y DESPACHOX_MODELO_RESUMEN.
+MODELO_GRUPO = os.environ.get("DESPACHOX_MODELO_RESUMEN_GRUPO") or "claude-sonnet-5-5"
 MODELO = os.environ.get("DESPACHOX_MODELO_RESUMEN") or "claude-opus-5-5"
 USO = {"llamadas": 0, "fallos": 0, "entrada": 0, "salida": 0}
 SISTEMA = ("Usted ayuda al despachador de una mesa de ayuda alimentaria después de un sismo en Manizales. "
@@ -47,10 +54,11 @@ INSTRUCCION = (
     "ni ruta.")
 
 
-def texto_para_modelo(grupo, puntos: dict | None = None) -> str:
+def texto_para_modelo(grupo, puntos: dict | None = None, tope_textos: int | None = TOPE_TEXTOS) -> str:
     """Arma la entrada del modelo: cabecera con los números del código y los textos limpios, numerados.
 
     `puntos` es opcional: {punto_id: nombre}. Sin él, la cabecera dice solo el id del punto.
+    `tope_textos`: cuántos textos como máximo (None = todos).
     """
     nombre = (puntos or {}).get(grupo.punto_id)
     punto = f"punto {grupo.punto_id}" + (f" ({limpiar(nombre)})" if nombre else "")
@@ -61,10 +69,10 @@ def texto_para_modelo(grupo, puntos: dict | None = None) -> str:
         "",
         "Textos de los pedidos:",
     ]
-    for i, p in enumerate(grupo.pedidos[:TOPE_TEXTOS], start=1):
+    for i, p in enumerate(grupo.pedidos[:tope_textos], start=1):
         texto = limpiar(p.get("texto_original")) if p.get("texto_original") else ""
         lineas.append(f"{i}. {texto or '(sin texto)'}")
-    sobran = len(grupo.pedidos) - TOPE_TEXTOS
+    sobran = len(grupo.pedidos) - tope_textos if tope_textos else 0
     if sobran > 0:
         lineas.append(f"y {sobran} textos más.")
     lineas += ["", INSTRUCCION]
@@ -94,7 +102,7 @@ def texto_mesa(grupos: list, resumenes: dict[str, str] | None = None, puntos: di
         f"{sum(g.familias for g in grupos)}. Kilos sumados por el sistema: {sum(g.kg for g in grupos):.0f}.",
         "", "Grupos (punto · pedidos · familias · kilos · urgencia · lo leído):",
     ]
-    for i, g in enumerate(grupos[:TOPE_GRUPOS_MESA], start=1):
+    for i, g in enumerate(grupos[:TOPE_GRUPOS_MESA], start=1):   # None = todos
         nombre = limpiar(nombres.get(g.punto_id) or f"punto {g.punto_id}")
         leido = resumenes.get(g.clave)
         if not leido:
@@ -102,29 +110,31 @@ def texto_mesa(grupos: list, resumenes: dict[str, str] | None = None, puntos: di
             leido = " / ".join(textos) or "(sin texto)"
         lineas.append(f"{i}. {nombre}{' (CRÍTICO)' if g.critico else ''} · {len(g.pedidos)} pedidos · "
                       f"{g.familias} familias · {g.kg:.0f} kg · urgencia {g.urgencia} · {leido}")
-    if len(grupos) > TOPE_GRUPOS_MESA:
+    if TOPE_GRUPOS_MESA and len(grupos) > TOPE_GRUPOS_MESA:
         lineas.append(f"y {len(grupos) - TOPE_GRUPOS_MESA} grupos más.")
     lineas += ["", INSTRUCCION_MESA]
     return "\n".join(lineas)
 
 
-def resumir(grupo, extractor: Callable[[str], str], puntos: dict | None = None) -> str:
-    """Pasa el texto del grupo al extractor (inyectado) y recorta la respuesta a 600 caracteres."""
+def resumir(grupo, extractor: Callable[[str], str], puntos: dict | None = None,
+            tope: int | None = TOPE_RESUMEN) -> str:
+    """Pasa el texto del grupo al extractor (inyectado). `tope` recorta la respuesta; None no corta."""
     salida = extractor(texto_para_modelo(grupo, puntos)) or ""
-    return str(salida).strip()[:TOPE_RESUMEN]
+    salida = str(salida).strip()
+    return salida[:tope] if tope else salida
 
 
-def extractor_modelo(max_tokens: int = 500) -> Callable[[str], str]:
-    """Devuelve un extractor que llama a Claude con `MODELO` (Opus) y cuenta tokens en `USO`.
+def extractor_modelo(max_tokens: int = MAX_TOKENS_GRUPO, modelo: str | None = None) -> Callable[[str], str]:
+    """Devuelve un extractor que llama a Claude con `modelo` (por defecto `MODELO_GRUPO`) y cuenta tokens.
 
     Lee ANTHROPIC_API_KEY del entorno o del `.env` de la raíz del repositorio. Si la llamada falla,
     devuelve cadena vacía (no se guarda resumen) y lo cuenta como fallo. Importa `anthropic` al usarse.
     """
     from dotenv import load_dotenv
     load_dotenv(db.ruta_env())
-    modelo = MODELO
+    modelo = modelo or MODELO_GRUPO
     import anthropic
-    cliente = anthropic.Anthropic(timeout=120, max_retries=2)
+    cliente = anthropic.Anthropic(timeout=180, max_retries=REINTENTOS_SDK)
 
     def extraer(texto: str) -> str:
         try:
@@ -140,6 +150,12 @@ def extractor_modelo(max_tokens: int = 500) -> Callable[[str], str]:
         if getattr(r, "usage", None) is not None:
             USO["entrada"] += r.usage.input_tokens or 0
             USO["salida"] += r.usage.output_tokens or 0
+            por_modelo = USO.setdefault("por_modelo", {}).setdefault(modelo, {"entrada": 0, "salida": 0, "llamadas": 0})
+            por_modelo["entrada"] += r.usage.input_tokens or 0
+            por_modelo["salida"] += r.usage.output_tokens or 0
+            por_modelo["llamadas"] += 1
+        if r.stop_reason == "max_tokens":
+            print(f"aviso: un resumen llegó al tope de {max_tokens} tokens y quedó cortado", file=sys.stderr)
         return "".join(getattr(b, "text", "") for b in r.content)
     return extraer
 
@@ -230,7 +246,7 @@ def resumir_mesa(con: sqlite3.Connection, grupos: list, extractor: Callable[[str
         r = leer(con, g.clave)
         if r:
             resumenes[g.clave] = r["resumen"]
-    texto = (extractor(texto_mesa(grupos, resumenes, puntos)) or "").strip()[:TOPE_RESUMEN_MESA]
+    texto = (extractor(texto_mesa(grupos, resumenes, puntos)) or "").strip()
     if not texto:
         return False
     ids = json.dumps(sorted(int(i) for g in grupos for i in g.pedido_ids))
@@ -240,26 +256,51 @@ def resumir_mesa(con: sqlite3.Connection, grupos: list, extractor: Callable[[str
     return True
 
 
+def costo_usd() -> float:
+    """Costo estimado de las llamadas de `USO`, con el precio público de cada modelo."""
+    from entrada.extraer import PRECIOS_MTOK
+    total = 0.0
+    for modelo, u in USO.get("por_modelo", {}).items():
+        pe, ps = PRECIOS_MTOK.get(modelo, (0.0, 0.0))
+        total += u["entrada"] / 1e6 * pe + u["salida"] / 1e6 * ps
+    return total
+
+
 def resumir_mesa_completa(con: sqlite3.Connection, falso: bool = False, todos: bool = False,
-                          a_la_vez: int = A_LA_VEZ) -> dict:
-    """Agrupa los pedidos nuevos, resume los grupos que falten y después la mesa. Devuelve cifras."""
+                          a_la_vez: int = A_LA_VEZ, pasadas: int = PASADAS) -> dict:
+    """Agrupa los pedidos nuevos, resume los grupos que falten (Sonnet) y después la mesa (Opus).
+
+    Hace hasta `pasadas` pasadas sobre los grupos que queden sin resumen, por si el límite de tasa
+    rechazó llamadas. Deja las cifras en la bitácora. Devuelve las cifras.
+    """
     from despacho import agrupar
     t0 = time.perf_counter()
     grupos = agrupar.grupos_nuevos(con)
     puntos = {r["id"]: r["nombre"] for r in con.execute("SELECT id, nombre FROM puntos")}
     if falso:
-        extractor, modelo = extractor_falso, "falso"
+        ex_grupo = ex_mesa = extractor_falso
+        modelo_grupo = modelo_mesa = "falso"
     else:
-        extractor, modelo = extractor_modelo(), MODELO
-    n = resumir_y_guardar(con, grupos, extractor, modelo, solo_faltantes=not todos, puntos=puntos, a_la_vez=a_la_vez)
-    mesa = resumir_mesa(con, grupos, extractor_modelo(max_tokens=1200) if not falso else extractor, modelo, puntos,
-                        solo_faltante=not todos)
-    from entrada.extraer import PRECIOS_MTOK
-    pe, ps = PRECIOS_MTOK.get(modelo, (0.0, 0.0))
-    costo = USO["entrada"] / 1e6 * pe + USO["salida"] / 1e6 * ps
-    return {"grupos": len(grupos), "resumidos": n, "mesa": mesa, "modelo": modelo,
-            "segundos": round(time.perf_counter() - t0, 1), "llamadas": USO["llamadas"], "fallos": USO["fallos"],
-            "tokens_entrada": USO["entrada"], "tokens_salida": USO["salida"], "costo_usd": round(costo, 4)}
+        ex_grupo, modelo_grupo = extractor_modelo(), MODELO_GRUPO
+        ex_mesa, modelo_mesa = extractor_modelo(max_tokens=MAX_TOKENS_MESA, modelo=MODELO), MODELO
+    n = resumir_y_guardar(con, grupos, ex_grupo, modelo_grupo, solo_faltantes=not todos, puntos=puntos,
+                          a_la_vez=a_la_vez)
+    for _ in range(max(0, pasadas - 1)):           # segunda y tercera pasada solo sobre los que faltan
+        faltan = [g for g in grupos if leer(con, g.clave) is None]
+        if not faltan:
+            break
+        time.sleep(5)
+        n += resumir_y_guardar(con, faltan, ex_grupo, modelo_grupo, solo_faltantes=True, puntos=puntos,
+                               a_la_vez=max(1, a_la_vez // 2))
+    sin_resumen = sum(1 for g in grupos if leer(con, g.clave) is None)
+    mesa = resumir_mesa(con, grupos, ex_mesa, modelo_mesa, puntos, solo_faltante=not todos)
+    cifras = {"grupos": len(grupos), "resumidos": n, "sin_resumen": sin_resumen, "mesa": mesa,
+              "modelo": modelo_grupo, "modelo_mesa": modelo_mesa,
+              "segundos": round(time.perf_counter() - t0, 1), "llamadas": USO["llamadas"], "fallos": USO["fallos"],
+              "tokens_entrada": USO["entrada"], "tokens_salida": USO["salida"], "costo_usd": round(costo_usd(), 4),
+              "por_modelo": USO.get("por_modelo", {})}
+    db.anotar(con, "modelo", "resumir grupos", json.dumps(cifras, ensure_ascii=False))
+    return cifras
 
 
 def main(argv=None) -> int:
@@ -269,17 +310,18 @@ def main(argv=None) -> int:
     ap.add_argument("--todos", action="store_true", help="vuelve a resumir aunque ya haya resumen")
     ap.add_argument("--db", help="ruta de la base (por defecto, la de DESPACHOX_DB)")
     ap.add_argument("--a-la-vez", type=int, default=A_LA_VEZ)
+    ap.add_argument("--pasadas", type=int, default=PASADAS, help="pasadas sobre los grupos que queden sin resumen")
     a = ap.parse_args(argv)
     if not a.resumir:
         ap.print_help()
         return 2
     con = db.conectar(Path(a.db)) if a.db else db.conectar()
     try:
-        r = resumir_mesa_completa(con, falso=a.falso, todos=a.todos, a_la_vez=a.a_la_vez)
+        r = resumir_mesa_completa(con, falso=a.falso, todos=a.todos, a_la_vez=a.a_la_vez, pasadas=a.pasadas)
     finally:
         con.close()
     print(json.dumps(r, ensure_ascii=False))
-    return 0 if not r["fallos"] else 1
+    return 0 if not r["sin_resumen"] else 1
 
 
 if __name__ == "__main__":

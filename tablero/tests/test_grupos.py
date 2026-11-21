@@ -234,13 +234,13 @@ def test_resumen_mesa_y_boton(tmp_path, monkeypatch):
     def correr_ok(args, **k):
         assert args[-2:] == ["despacho.resumen_grupo", "--resumir"]
         return SimpleNamespace(returncode=0, stderr="", stdout=json.dumps(
-            {"grupos": 3, "resumidos": 2, "mesa": True, "modelo": "claude-haiku-5-5", "fallos": 0,
-             "tokens_entrada": 1200, "costo_usd": 0.0003}))
+            {"grupos": 3, "resumidos": 2, "mesa": True, "modelo": "claude-sonnet-5-5", "modelo_mesa": "claude-opus-5-5",
+             "fallos": 0, "sin_resumen": 0, "tokens_entrada": 1200, "costo_usd": 0.0003}))
     r = T.resumir_grupos(correr=correr_ok)
     assert r.ok and "2 grupos resumidos de 3, y la mesa" in r.mensaje and "1,200 tokens" in r.mensaje
 
     def correr_mal(args, **k):
         return SimpleNamespace(returncode=1, stderr="aviso: el modelo no respondió (AuthenticationError)",
-                               stdout=json.dumps({"grupos": 3, "resumidos": 0, "mesa": False, "fallos": 4}))
+                               stdout=json.dumps({"grupos": 3, "resumidos": 0, "mesa": False, "fallos": 4, "sin_resumen": 3}))
     r = T.resumir_grupos(correr=correr_mal)
-    assert not r.ok and "4 llamadas" in r.mensaje and "AuthenticationError" in r.mensaje
+    assert not r.ok and "3 grupos quedaron sin resumen" in r.mensaje and "AuthenticationError" in r.mensaje

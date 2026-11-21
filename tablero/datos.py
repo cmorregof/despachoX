@@ -396,9 +396,13 @@ def resumir_grupos(correr=subprocess.run, espera_s: int = ESPERA_RESUMIR_S, fals
     except ValueError:
         return Corrida(False, None, error or "el resumen no devolvió cifras")
     if r.returncode != 0:
-        return Corrida(False, None, f"{cifras.get('fallos', '?')} llamadas al modelo fallaron; {error}")
+        return Corrida(False, None, f"{cifras.get('sin_resumen', cifras.get('fallos', '?'))} grupos quedaron sin "
+                                    f"resumen ({cifras.get('fallos', '?')} llamadas fallaron); {error}")
+    modelos = cifras.get("modelo", "?")
+    if cifras.get("modelo_mesa") and cifras["modelo_mesa"] != modelos:
+        modelos += f" y {cifras['modelo_mesa']} para la mesa"
     return Corrida(True, None, f"{cifras.get('resumidos', 0)} grupos resumidos de {cifras.get('grupos', 0)}"
-                   + (", y la mesa" if cifras.get("mesa") else "") + f" con {cifras.get('modelo')}"
+                   + (", y la mesa" if cifras.get("mesa") else "") + f" con {modelos}"
                    + (f"; {cifras.get('tokens_entrada', 0):,} tokens de entrada, "
                       f"{cifras.get('costo_usd', 0):.4f} USD estimados" if cifras.get("modelo") != "falso" else ""))
 

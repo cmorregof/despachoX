@@ -40,20 +40,26 @@ def test_texto_para_modelo_lleva_numeros_y_textos_limpios():
     assert "Prohibido inventar cantidades" in t
 
 
-def test_tope_de_60_textos():
+def test_sin_tope_lee_todos_los_textos():
     t = R.texto_para_modelo(grupo(75))
+    assert "75. pedido 75" in t and "textos más" not in t
+
+
+def test_tope_de_textos_opcional():
+    t = R.texto_para_modelo(grupo(75), tope_textos=60)
     assert "60. pedido 60" in t and "61. pedido 61" not in t
     assert "y 15 textos más." in t
 
 
-def test_resumir_con_extractor_falso_recorta():
+def test_resumir_con_extractor_falso_no_corta():
     recibido = []
 
     def falso(texto):
         recibido.append(texto)
         return "  Piden arroz y leche. " + "x" * 1000
     r = R.resumir(grupo(), falso)
-    assert r.startswith("Piden arroz y leche.") and len(r) == R.TOPE_RESUMEN
+    assert r.startswith("Piden arroz y leche.") and len(r) == len("Piden arroz y leche. ") + 1000
+    assert len(R.resumir(grupo(), falso, tope=100)) == 100
     assert "Pedidos: 3." in recibido[0]
 
 
@@ -141,9 +147,11 @@ def test_comando_falso_resume_grupos_y_mesa(tmp_path, monkeypatch, capsys):
     assert R.main(["--resumir", "--falso", "--db", str(tmp_path / "m.db")]) == 0
     r = json.loads(capsys.readouterr().out.strip().splitlines()[-1])
     assert r["grupos"] == 2 and r["resumidos"] == 2 and r["mesa"] is True and r["llamadas"] == 0
+    assert r["sin_resumen"] == 0 and r["modelo"] == "falso" and r["modelo_mesa"] == "falso"
     con = db.conectar(tmp_path / "m.db")
     assert con.execute("SELECT COUNT(*) FROM resumenes_grupo").fetchone()[0] == 3
     assert "resumen de ensayo" in con.execute("SELECT resumen FROM resumenes_grupo WHERE clave LIKE 'mesa:%'").fetchone()[0]
+    assert con.execute("SELECT COUNT(*) FROM bitacora WHERE accion='resumir grupos'").fetchone()[0] == 1
 
 
 def test_resumen_vacio_no_se_guarda(tmp_path):
