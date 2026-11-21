@@ -270,12 +270,12 @@ def _resumen(x: Extraccion) -> str:
     if x.pedido is not None:
         p = x.pedido
         partes = []
-        if p.familias:
-            partes.append(f"{p.familias} fam")
-        elif p.bebes:
+        if p.bebes:                     # lo que dijo la persona, antes que las familias que estimó la mesa
             partes.append(f"{p.bebes} bebes")
         elif p.personas:
             partes.append(f"{p.personas} pers")
+        elif p.familias:
+            partes.append(f"{p.familias} fam")
         partes += [q.producto for q in p.productos]
         if p.urgencia == 3:
             partes.append("URGENTE")

@@ -1,5 +1,5 @@
 # Torre de control · A-entrada · rol A (entrada)
-Última actualización: 2026-11-20 21:00 (hora de Colombia)
+Última actualización: 2026-11-20 21:30 (hora de Colombia)
 
 Desde las 16:05 el módulo lo dirige Samuel con `encargos/A2_BOT_SAMUEL.md`. Se trabaja en la rama `samuel-bot`; Carlos fusiona a `main` a las 6:30 p. m., 11:00 p. m. y 8:00 a. m.
 
@@ -29,6 +29,8 @@ Etapa 1 del encargo A2 hecha en `samuel-bot` y probada con el extractor falso: �
 - 20:00 · `docs/PILOTO.md`, pedido por Samuel: tesis del uso diario (banco de alimentos), casos RUD, Providencia y Salva RS, cierres viales de 2017 a 2023 con enlace, A25, doble propuesta de valor con las cifras de `docs/SIMULACION.md`, plan 30/60/90 con el día 60 como día normal de reparto en paralelo y los tres datos que se le piden al operador. Tres cifras nuevas en `docs/FUENTES.md` (DNP 2016, ABACO 2025, Banco de Manizales en ABACO), todas de resumen de búsqueda y sin abrir. Pendiente: el escenario sin cierres, que corre simulacion.
 
 - 21:00 · Encargo A3, parte 1 (rama `samuel-bot`): `entrada/sms.py`, lector por reglas que devuelve el mismo `Extraccion`; `ENTREGADO CODIGO` llama a `despacho.paquetes.entregar`; respaldo del bot cuando el modelo falla o con `DESPACHOX_SIN_RED=1`; respuesta en un SMS ≤160 caracteres sin tildes (GSM-7). `entrada/pruebas/test_sms.py`: 20 SMS con errores, 20 de 20 bien, **no independiente** (casos y reglas de la misma sesión). Suite de entrada: 104 pasan, 1 se omite.
+
+- 21:30 · Encargo A3, parte 2: `entrada/pasarela_sms.py`, receptor HTTP sin dependencias nuevas, que acepta el formato genérico, formulario y los avisos `sms:received` de SMS Gateway for Android (capcom6, Apache 2.0). Responde en el cuerpo y, si se configura, pide al celular enviar la respuesta. Probado con `curl` de punta a punta; **sin celular real ni video**. `entrada/SMS.md`: montaje sin internet y comparación con Twilio, sin precios (no consultados). `test_pasarela.py`: 5 pruebas. Suite de entrada: 109 pasan, 1 se omite.
 
 ## En curso (qué, hasta dónde llegó, qué falta)
 - Prueba desde un teléfono con el bot real: nadie le ha escrito todavía.

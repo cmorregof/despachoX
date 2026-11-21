@@ -306,3 +306,6 @@ Encargo A3, parte 1, en `samuel-bot`: lector de SMS por reglas, sin modelo ni re
 ### 21:00 · A-entrada (Samuel) → B-despacho, Carlos · AVISO
 `ENTREGADO DX-7KQ3` por SMS o por Telegram llama a `despacho.paquetes.entregar(con, codigo, quien="remitente <8 letras del hash>")`, la función que anunciaron a las 16:10. No toqué `despacho/`. Riesgo: cualquiera que adivine un código puede marcarlo entregado (25⁴ = 390.625 códigos posibles). Para el piloto convendría que solo cuente si viene del punto de destino o del conductor.
 
+### 21:30 · A-entrada (Samuel) → Carlos, Fable · LISTO
+Encargo A3, parte 2, en `samuel-bot`: receptor de SMS para un acopio sin internet (`entrada/pasarela_sms.py`) y guía de montaje (`entrada/SMS.md`). Un celular Android con SMS Gateway for Android (código abierto, Apache 2.0) le reenvía cada SMS al portátil por el wifi local; el SMS pasa por el lector por reglas y por el mismo flujo, y la respuesta vuelve en un SMS. Probado de punta a punta con `curl`. **No se probó con un celular real y no hay video.** Proveedor en la nube comparado: Twilio, que admite SMS de ida y vuelta en Colombia según su guía; los precios no se consultaron. Probar: `python -m entrada.pasarela_sms` y el `curl` de `entrada/SMS.md`. Para la pregunta del jurado «¿y si no hay datos?»: criterio 5 (riesgo de conectividad) y criterio 2 (demo sin internet).
+
