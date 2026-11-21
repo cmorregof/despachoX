@@ -50,7 +50,7 @@ Los tiempos suponen 2,5 palabras por segundo y suman 3:00 con la demo. El ensayo
 
 **Habla:** Voz 1. **Pantalla:** diapositiva 1, las barras de los bancos de alimentos seis días después del sismo.
 
-> Después del sismo, Manizales fue uno de los principales puntos de acopio de la red de bancos de alimentos*. La comida llegó. Lo que se atascó fue despacharla. Seis días después, los bancos de alimentos tenían 404 toneladas en acopio y 157 en camino, y habían entregado 41*.
+> Después del sismo, Manizales fue uno de los principales puntos de acopio de la red de bancos de alimentos*. La comida llegó. Lo que se atascó fue despacharla. Seis días después, los bancos de alimentos tenían 404 toneladas en acopio y 157 en camino. Habían entregado 41*.
 
 Las toneladas se dicen truncadas, y en pantalla van los kilos exactos, 404.587, 157.164 y 41.163. La nota de Portafolio atribuye las cifras a «los Bancos de Alimentos» y no dice «en todo el país» de forma explícita (discrepancia D3 de `docs/FUENTES.md` en la rama `fuentes-noche`). Por eso esas cifras no se le atribuyen a Manizales, y tampoco se dice «en todo el país». La misma nota da los 157.164 kg en tránsito, así que la frase los nombra y la comparación no los deja por fuera. «Seis días después» es cálculo nuestro con la fecha de la nota, el 16 de agosto, porque la nota no da fecha de corte. Lo que va en camino suma unos 3 segundos al bloque, y el ensayo cronometrado dice si hay que recortar con la sección «Qué cortar».
 
@@ -66,7 +66,7 @@ Se dice «registros», porque un mismo derrumbe puede tener varios. Los 4 del si
 
 **Habla:** Voz 1. **Pantalla:** diapositiva 3, quién despacha, quién pide, quién reporta las vías y quién avala.
 
-> Convite existe para que la comida llegue a quien no puede ir a buscarla, aunque la vía esté cerrada. Es para quien despacha en el Banco Arquidiocesano de Alimentos y para quienes le piden, como comedores, hogares infantiles y juntas de barrio y de vereda.
+> Convite existe para que la comida llegue a quien no puede ir a buscarla, aunque la vía esté cerrada. Es para quien despacha en el Banco Arquidiocesano de Alimentos y para quienes le piden: comedores, hogares infantiles y juntas de barrio y de vereda.
 
 ### Bloque 4 · Lo que existe y por qué no basta · 0:51 a 1:06 · criterio 1
 
@@ -83,10 +83,10 @@ Al terminar la frase, el operador pasa al tablero.
 | Tiempo | Qué pasa y qué se ve | Qué dice Voz 1 |
 |---|---|---|
 | 1:06 a 1:16 | Tablero con el plan aprobado | «Esta es la mesa de despacho. El plan aprobado ya incluye un pedido de prueba que llegó por chat desde San José. Ahora necesito a alguien del jurado.» |
-| 1:16 a 1:33 | Rol A le entrega al jurado el teléfono con el chat abierto y la tarjeta. El jurado escribe el mensaje de la tarjeta. El bot responde «Ubiqué «avenida del centro» en: avenida del Centro (via). ¿Es correcto?», y el jurado toca **Sí, es ahí**. Si el mensaje lo lee el lector por reglas, la pregunta trae el artículo, «la avenida del centro», y es igual de correcta | Mientras escribe: «El 21 de octubre, un deslizamiento dejó a un carril la vía a Pereira, y solo pasaban livianos*. Quien lo sabe primero es el conductor.» |
+| 1:16 a 1:33 | Rol A le entrega al jurado el teléfono con el chat abierto y la tarjeta. El jurado escribe el mensaje de la tarjeta. El bot responde «Ubiqué «avenida del centro» en: avenida del Centro (via). ¿Es correcto?», y el jurado toca **Sí, es ahí**. Si el mensaje lo lee el lector por reglas, la pregunta trae el artículo, «la avenida del centro», y es igual de correcta | Mientras escribe: «El 21 de octubre, un deslizamiento dejó la vía a Pereira a un carril, y solo pasaban livianos*. Quien lo sabe primero es el conductor.» |
 | 1:33 a 1:41 | En el mapa aparece el cierre como reportado | «El sistema no cierra la vía por un mensaje. La deja reportada hasta que el despachador la confirme.» |
 | 1:41 a 1:51 | El operador hace clic en **Confirmar** en el cierre. Aparece «Hay un cierre nuevo: recalcular». Clic en **Recalcular**. El plan nuevo sale en menos de diez segundos | «El despachador confirma y pide recalcular.» |
-| 1:51 a 2:03 | Plan nuevo. En los avisos se lee `camion: punto:14 quedó aislado de la red`, y el pedido de San José pasa de un camión a un campero. También sale `camion: punto:3 quedó aislado de la red`, del comedor de Belén, y no se comenta | «Con la avenida cerrada, el camión ya no llega a San José. El sistema le pasa el pedido a un campero, que sí entra, y los tres puntos críticos siguen a tiempo*.» |
+| 1:51 a 2:03 | Plan nuevo. En los avisos se lee `camion: punto:14 quedó aislado de la red`, y el pedido de San José pasa de un camión a un campero. También sale `camion: punto:3 quedó aislado de la red`, del comedor de Belén, y no se comenta | «Con la avenida cerrada, el camión ya no llega a San José. El sistema le pasa el pedido a un campero, que sí entra. Los tres puntos críticos siguen a tiempo*.» |
 | 2:03 a 2:09 | Clic en **Aprobar**. Si hay bitácora, se muestra quién aprobó y a qué hora. El operador vuelve a las diapositivas | «El modelo leyó. El optimizador calculó. Decidió una persona, y quedó escrito quién y cuándo.» |
 
 **Si algo falla.** No se depura en vivo. La tabla completa está en `docs/GUION_DEMO.md`, sección «Qué hacer si falla cada paso». Estos son los cuatro casos más probables.
@@ -100,15 +100,15 @@ Al terminar la frase, el operador pasa al tablero.
 
 **Habla:** Voz 2. **Pantalla:** diapositiva 6, la tabla por comuna y vereda y la barra de la simulación.
 
-> Cada paquete lleva un código QR, y la entrega queda registrada cuando ese código llega por chat o SMS. Con esos registros, el prototipo arma una tabla por comuna y vereda que mide el piloto. En simulación, con carga media, comparamos 30 jornadas por política. Frente al despacho por orden de llegada, Convite sube los críticos a tiempo de 53,6 % a 98,3 %. Son 44,7 puntos, con un intervalo del 95 % de 37,7 a 51,6.
+> Cada paquete lleva un QR. La entrega queda registrada cuando ese código llega por chat o SMS. Con esos registros, el prototipo arma una tabla por comuna y vereda, y esa tabla mide el piloto. En simulación comparamos 30 jornadas por política, con carga media. Frente al despacho por orden de llegada, Convite sube los críticos a tiempo de 53,6 % a 98,3 %. Son 44,7 puntos. El intervalo del 95 % va de 37,7 a 51,6.
 
-Las cifras son de `despacho/sim/resultados_velocidades/tablas.md`, críticos a tiempo, carga media. La comparación con un despachador con oficio va siempre en la diapositiva. Decirla en voz alta depende de la pregunta 2 de `docs/FICHA_MENTORIA.md`, que se les hace a los mentores en la mentoría 2 [DECIDE CARLOS]. Si se dice, la frase es «En simulación, frente a un despachador con oficio que ya atiende primero lo urgente, Convite recorre 56,0 km menos por jornada con carga media. Compara 30 jornadas por política. En el total de entregas a tiempo empatan, con −0,8 puntos y un intervalo de −3,1 a 1,4.» Frente al despachador con oficio solo se dicen los kilómetros y el total de entregas a tiempo. La ventaja en críticos a tiempo no se dice. Esa corrida cambia a la vez la red y la velocidad, y la corrida que separa los dos efectos (`docs/SIMULACION.md`, sección 9.3) no ha llegado.
+Las cifras son de `despacho/sim/resultados_velocidades/tablas.md`, críticos a tiempo, carga media. La comparación con un despachador con oficio va siempre en la diapositiva. Decirla en voz alta depende de la pregunta 2 de `docs/FICHA_MENTORIA.md`, que se les hace a los mentores en la mentoría 2 [DECIDE CARLOS]. Si se dice, la frase es «En simulación, frente a un despachador con oficio que ya atiende primero lo urgente, Convite recorre 56,0 km menos por jornada con carga media. Comparamos 30 jornadas por política. En el total de entregas a tiempo empatan, con −0,8 puntos y un intervalo de −3,1 a 1,4.» Frente al despachador con oficio solo se dicen los kilómetros y el total de entregas a tiempo. La ventaja en críticos a tiempo no se dice. Esa corrida cambia a la vez la red y la velocidad, y la corrida que separa los dos efectos (`docs/SIMULACION.md`, sección 9.3) no ha llegado.
 
 ### Bloque 7 · El piloto de 30 a 90 días · 2:30 a 2:52 · criterios 3, 4 y 5
 
 **Habla:** Voz 2. **Pantalla:** diapositiva 7, la línea de tiempo del piloto y el mapa del territorio.
 
-> El piloto es para la recuperación del territorio. Dura 90 días en la rutina del Banco, con la Unidad de Gestión del Riesgo, en Ciudadela del Norte y El Manantial. Así la capacidad queda en Manizales y se usa entre desastres. La alerta de lluvia A25 del IDEA de la UNAL ya está en el código, por ahora con lluvia de prueba.
+> El piloto es para la recuperación del territorio. Dura 90 días en Ciudadela del Norte y El Manantial, en la rutina del Banco, con la Unidad de Gestión del Riesgo. Así la capacidad queda en Manizales y se usa entre desastres. La alerta de lluvia A25 del IDEA de la UNAL ya está en el código, por ahora con lluvia de prueba.
 
 - **Territorio.** Ciudadela del Norte y El Manantial es la propuesta 2 de `docs/PILOTO_TERRITORIOS.md`, y Carlos la eligió el 21 de noviembre a las 6:10 a. m. Es la comuna más poblada, con 58.776 habitantes (ASIS 2023). Además, el PMA recorrió con la Alcaldía las veredas con más daño para identificar necesidades de seguridad alimentaria, y en esa nota hablan las juntas de Alto del Guamo y Alto Bonito (Alcaldía, 20 de agosto). Al final decide el Banco. Con el nombre nuevo, el bloque pasa de 56 a 57 palabras, unos 0,4 s más, y el ensayo cronometrado dice si cabe en sus 22 segundos.
 - **A25.** Está en `main`, en `despacho/a25.py`, con lluvia sintética y apagado por defecto. Encendido, el optimizador encarece, sin cerrarlas, las vías con historial de deslizamientos que están en alerta naranja o roja (`docs/A25.md`, sección 2). Con la lluvia real del IDEA entra en los días 60 a 90 (`docs/FICHA_CORTA.md`, componente 3).
@@ -154,9 +154,9 @@ Se añaden estos textos, en este orden. Sus cifras están en `pitch/CIFRAS_PITCH
 1. **En el bloque 2, antes de la salida a Letras (6 s).** «Manizales está sobre una cuchilla y casi todas sus vías de acceso van por ladera.»
 2. **Después del bloque 2 (10 s).** «El día del sismo, la Policía anunció al mediodía el cierre de Pereira–Chinchiná*. El registro oficial apareció 9 horas y 46 minutos después del sismo*.»
 3. **Después del bloque 4 (12 s).** «En Manizales, la comida del sismo se repartió por listas. Para recibir un mercado había que llevar el formato azul de Bomberos*, y los kits se entregaron por turnos en la sede de la Cruz Roja Seccional Caldas*.»
-4. **Después del añadido 3 (14 s).** «Después del sismo de 1999, según un estudio de la Javeriana de Cali, las gerencias del FOREC actuaron con autonomía frente a las autoridades locales, y eso debilitó la gobernanza del territorio*. Por eso el piloto queda en manos de Manizales.»
+4. **Después del añadido 3 (14 s).** «Según un estudio de la Javeriana de Cali, después del sismo de 1999 las gerencias del FOREC actuaron con autonomía frente a las autoridades locales. Eso debilitó la gobernanza del territorio*. Por eso el piloto queda en manos de Manizales.»
 5. **En la demo (60 s más).** La demo completa de tres minutos de `docs/GUION_DEMO.md`, con el pedido de San José enviado en vivo.
-6. **En el bloque 6 (15 s).** «En simulación, con carga media y 30 jornadas por política, frente a un despachador con oficio Convite recorre 56,0 km menos por jornada, y en el total de entregas a tiempo empatan. Con los dos, los perecederos vencidos quedan en 0,0 %, y por orden de llegada se vence el 3,4 %. Priorizar tiene un costo, porque el punto peor atendido espera 3,07 horas más que por orden de llegada.» Son unas 65 palabras, más que los 15 s, y el ensayo cronometrado dice si se recorta.
+6. **En el bloque 6 (15 s).** «En simulación, con carga media y 30 jornadas por política, Convite recorre 56,0 km menos por jornada que un despachador con oficio. En el total de entregas a tiempo empatan. Con los dos, los perecederos vencidos quedan en 0,0 %. Por orden de llegada se vence el 3,4 %. Priorizar tiene un costo, porque el punto peor atendido espera 3,07 horas más que por orden de llegada.» Son unas 62 palabras, más que los 15 s, y el ensayo cronometrado dice si se recorta.
 7. **En el bloque 7 (20 s).** «Del día 0 al 15, acuerdo y línea base. Del 15 al 30, reconstruimos un mes de despachos del Banco. Del 30 al 60, el Banco reparte como siempre y Convite planea en sombra. Del 60 al 90, simulacro con la UGR y decisión escrita del Banco. El piloto cabe en la calamidad pública de Manizales, vigente hasta el 9 de agosto de 2027*.»
 8. **Antes del bloque 8 (15 s).** «Al Banco le pedimos tres datos sin información personal: sus puntos de entrega, su inventario con vencimientos y un mes de despachos. Sin internet, el plan sale en un portátil y la ruta se imprime con un QR por paquete*. No guardamos el teléfono de quien escribe. Queda como un código.»
 
@@ -168,9 +168,9 @@ Sirve para un turno de un minuto, una presentación rápida en Conecta+ o un pas
 
 | Tiempo | Qué se dice |
 |---|---|
-| 0:00 a 0:16 | «Después del sismo, la comida llegó a la región. Lo que se atascó fue despacharla. Seis días después, los bancos de alimentos tenían 404 toneladas en acopio y 157 en camino, y habían entregado 41*.» |
+| 0:00 a 0:16 | «Después del sismo, la comida llegó a la región. Lo que se atascó fue despacharla. Seis días después, los bancos de alimentos tenían 404 toneladas en acopio y 157 en camino. Habían entregado 41*.» |
 | 0:16 a 0:20 | «Y en Manizales las vías se cierran también sin sismo.» |
-| 0:20 a 0:41 | «Convite es una mesa de despacho para el Banco Arquidiocesano de Alimentos. Comedores, hogares y juntas piden por chat o SMS, y los conductores reportan los derrumbes. El optimizador reparte entre camión, campero y moto, saca primero lo que vence primero y recalcula si se cierra una vía. El despachador aprueba cada plan.» |
+| 0:20 a 0:41 | «Convite es una mesa de despacho para el Banco Arquidiocesano de Alimentos. Comedores, hogares y juntas piden por chat o SMS, y los conductores reportan los derrumbes. El optimizador reparte entre camión, campero y moto. Saca primero lo que vence primero y recalcula si se cierra una vía. El despachador aprueba cada plan.» |
 | 0:41 a 0:58 | «El piloto de 90 días entra a la rutina del Banco en Ciudadela del Norte y El Manantial, con la Unidad de Gestión del Riesgo y el A25 del IDEA de la UNAL. Todo se mide contra la línea base del propio Banco.» |
 | 0:58 a 1:00 | «Somos Convite.» |
 
