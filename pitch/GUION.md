@@ -102,7 +102,7 @@ Al terminar la frase, el operador pasa al tablero.
 
 > Cada paquete lleva un QR. La entrega queda registrada cuando ese código llega por chat o SMS. Con esos registros, el prototipo arma una tabla por comuna y vereda, y esa tabla mide el piloto. En simulación comparamos 30 jornadas por política, con carga media. Frente al despacho por orden de llegada, Convite sube los críticos a tiempo de 53,6 % a 98,3 %. Son 44,7 puntos. El intervalo del 95 % va de 37,7 a 51,6.
 
-Las cifras son de `despacho/sim/resultados_velocidades/tablas.md`, críticos a tiempo, carga media. La comparación con un despachador con oficio va siempre en la diapositiva. Decirla en voz alta depende de la pregunta 2 de `docs/FICHA_MENTORIA.md`, que se les hace a los mentores en la mentoría 2 [DECIDE CARLOS]. Si se dice, la frase es «En simulación, frente a un despachador con oficio que ya atiende primero lo urgente, Convite recorre 56,0 km menos por jornada con carga media. Comparamos 30 jornadas por política. En el total de entregas a tiempo empatan, con −0,8 puntos y un intervalo de −3,1 a 1,4.» Frente al despachador con oficio solo se dicen los kilómetros y el total de entregas a tiempo. La ventaja en críticos a tiempo no se dice. Esa corrida cambia a la vez la red y la velocidad, y la corrida que separa los dos efectos (`docs/SIMULACION.md`, sección 9.3) no ha llegado.
+Las cifras son de `despacho/sim/resultados_velocidades/tablas.md`, críticos a tiempo, carga media. La comparación con un despachador con oficio va siempre en la diapositiva. Decirla en voz alta depende de la pregunta 2 de `docs/FICHA_MENTORIA.md`, que se les hace a los mentores en la mentoría 2 [DECIDE CARLOS]. Si se dice, la frase es «En simulación, frente a un despachador con oficio que ya atiende primero lo urgente, Convite recorre 56,0 km menos por jornada con carga media. Comparamos 30 jornadas por política. En el total de entregas a tiempo empatan, con −0,8 puntos y un intervalo de −3,1 a 1,4.» Frente al despachador con oficio solo se dicen en voz los kilómetros y el total de entregas a tiempo. La ventaja en críticos a tiempo no se dice en voz. Va en la diapositiva de respaldo C y en las respuestas, solo con carga alta y con la frase de `pitch/CIFRAS_PITCH.md`, fila C16 (`docs/SIMULACION.md`, sección 9.3).
 
 ### Bloque 7 · El piloto de 30 a 90 días · 2:30 a 2:52 · criterios 3, 4 y 5
 
@@ -179,7 +179,7 @@ Sirve para un turno de un minuto, una presentación rápida en Conecta+ o un pas
 1. **Duración.** Se asumió tres minutos. Hay que preguntar en la mesa a las 8:30 a. m.
 2. **Voces.** Quién es Voz 1 y quién es Voz 2.
 3. **Territorio.** Decidido el 21 de noviembre a las 6:10 a. m. El piloto empieza en Ciudadela del Norte y El Manantial, la propuesta 2 de `docs/PILOTO_TERRITORIOS.md`. A las 8:05 a. m. Carlos decidió que el día 30 se suma la propuesta 1 y el día 60 la 3.
-4. **Despachador con oficio.** Si los kilómetros y el empate en el total se dicen en voz alta en el bloque 6 o quedan solo en pantalla. Depende de la mentoría 2. La ventaja en críticos no se dice mientras falte la corrida 9.3.
+4. **Despachador con oficio.** Si los kilómetros y el empate en el total se dicen en voz alta en el bloque 6 o quedan solo en pantalla. Depende de la mentoría 2. La ventaja en críticos no se dice en voz. Carlos decidió a las 8:21 a. m. que va en la diapositiva de respaldo y en las respuestas, solo con carga alta (corrida 9.3).
 5. **A25.** Decidido. Está en `main`, y el bloque 7 dice que ya está en el código, por ahora con lluvia de prueba.
 6. **Nombre.** Decidido. El producto se llama Convite, y el bloque 8 cierra con el nombre y su explicación.
 7. **Frase del Banco.** Si hubo visita y permiso, entra en el bloque 7.
@@ -187,7 +187,7 @@ Sirve para un turno de un minuto, una presentación rápida en Conecta+ o un pas
 ## Lo que falta para que este guion sea verdad
 
 1. Abrir la fuente de cada cifra con asterisco. La lista por orden de prioridad está al final de `pitch/CIFRAS_PITCH.md`.
-2. La corrida 9.3 de `docs/SIMULACION.md`, que separa el efecto de la red del de la velocidad. Mientras no llegue, la ventaja en críticos frente al despachador con oficio no se dice.
+2. Hecho. La corrida 9.3 de `docs/SIMULACION.md` terminó a las 7:23 a. m. y separa el efecto de la red del de la velocidad. Por eso la ventaja en críticos frente al despachador con oficio se dice fuera de la voz y solo con carga alta.
 3. La tabla por territorio en pantalla. Puede ser la pestaña «Territorio» del tablero o, si no llega antes de las 8:30 a. m., la figura hecha con `python -m despacho.territorio`.
 4. El video de respaldo.
 5. Dos ensayos cronometrados con la demo real, el segundo con datos móviles.
