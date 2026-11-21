@@ -136,6 +136,14 @@ Agrupar cuesta 0,07 s y deja 138 tarjetas en vez de 7.584. Lo que queda de los 9
 
 Lo que queda es pintar: 15.170 botones sin grupos, y en los dos casos el mapa con un círculo por cada uno de los 15.000 pedidos.
 
+### Las dos versiones en el navegador (12:08)
+
+Capturas del tablero en el navegador integrado de la sesión, con la misma base de 15.000 pedidos. Sin grupos, el navegador tardó unos 30 segundos en pasar del esqueleto a la página, porque recibe 7.584 tarjetas con dos botones cada una y la página se vuelve a calcular cada 5 segundos. Con grupos, la página apareció en menos de 10 segundos.
+
+| Sin grupos: 7.584 tarjetas | Con grupos: 138 tarjetas |
+|---|---|
+| ![](capturas/escala_15000_sin_grupos.jpg) | ![](capturas/escala_15000_con_grupos.jpg) |
+
 ## Qué haría falta
 
 1. ~~En `por_revisar`, leer los repetidos en una sola consulta~~ Hecho a las 12:30: de 5,6 a 0,02 s.
