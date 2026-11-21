@@ -48,12 +48,11 @@ MENU = [("Pedir comida", "m:pedir"), ("Reportar una vía cerrada", "m:via"),
 EJEMPLO_ENTREGA = "ENTREGADO DX-7KQ3"
 # Aviso de tratamiento de datos (texto de Samuel). Va al final del /start y en la primera respuesta a un
 # remitente nuevo. No dice «no guardo su nombre»: H6 lo contradice mientras no esté arreglado del todo.
-# La política no tiene enlace público todavía: se cita el borrador del repositorio (pendiente en el canal).
+# Solo promete lo que hace entrada/privacidad.py (quita teléfonos y correos). No cita la política, que es borrador.
 SEPARADOR = "──────────"
-AVISO_DATOS = ("CONVITE tratará los datos que compartas aquí únicamente para gestionar tu solicitud y "
-               "ubicación de acuerdo a la Ley 1581 de 2012. Al continuar usando este chat y enviar tu "
-               "solicitud, aceptas nuestra Política de Tratamiento de Datos Personales (docs/PRIVACIDAD.md). "
-               "Para borrar lo que enviaste, escribe /borrar.")
+AVISO_DATOS = ("Al escribirme, usted autoriza a Convite a usar este mensaje para coordinar la entrega de ayuda.\n\n"
+               "Quito de los mensajes los teléfonos y los correos, y guardo qué necesita y dónde. "
+               "Ley 1581 de 2012. Para borrar lo que me envió, escriba /borrar.")
 
 
 def ayuda(con_voz: bool = False) -> str:
