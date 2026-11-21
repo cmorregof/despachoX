@@ -58,8 +58,11 @@ def _quitar_nombre(texto: str, desde: int, solo_mayusculas: bool) -> str:
 
 
 def limpiar(texto: str | None) -> str:
-    """Devuelve el texto sin lo que parezca teléfono, cédula, correo o nombre propio presentado."""
-    t = " ".join((texto or "").split())
+    """Devuelve el texto sin lo que parezca teléfono, cédula, correo o nombre propio presentado.
+
+    También sin «<» ni «>»: el texto termina en los tooltips del mapa del tablero, que folium no
+    escapa, y en la etiqueta <mensaje> del prompt (revisión QA de la noche, docs/QA_NOCHE.md)."""
+    t = " ".join(re.sub(r"[<>]", " ", texto or "").split())
     t = _CORREO.sub("[correo]", t)
     t = _NUMERO.sub("[número]", t)
     t = _ETIQUETA_DOC.sub("", t)

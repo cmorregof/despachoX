@@ -89,8 +89,17 @@ INSTRUCCIONES = (
 )
 
 
+def _sin_marcas(t: str | None) -> str | None:
+    """Sin «<» ni «>»: lugar y descripción se pintan en el mapa del tablero, que no escapa HTML."""
+    return None if t is None else " ".join(t.replace("<", " ").replace(">", " ").split())
+
+
 def _normalizar(x: Extraccion) -> Extraccion:
     """Deja la lectura coherente sin añadir información: recorta rangos y quita lo vacío."""
+    if x.pedido is not None:
+        x.pedido.lugar = _sin_marcas(x.pedido.lugar)
+    if x.cierre is not None:
+        x.cierre.lugar, x.cierre.descripcion = _sin_marcas(x.cierre.lugar), _sin_marcas(x.cierre.descripcion)
     if x.pedido is not None:
         p = x.pedido
         p.urgencia = min(3, max(1, int(p.urgencia or 2)))
