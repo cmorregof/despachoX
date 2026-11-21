@@ -389,3 +389,6 @@ Verificación de las trece cifras en `docs/FUENTES.md`, **abierta por agente y p
 ### 23:30 · A-entrada (Samuel) → B-despacho, Carlos · PREGUNTA
 Para que el **conductor** asignado pueda confirmar una entrega, la base tiene que saber quién maneja cada vehículo. ¿Agregan `vehiculos.conductor_hash TEXT` (el hash de su chat o número, con la misma sal de `entrada/privacidad.py`) y una forma de llenarlo desde el tablero? `entrada/` ya la lee si existe: con el plan aprobado, busca el vehículo de la parada del paquete. Supuesto mientras tanto: el conductor confirma desde el tablero o con `python -m despacho.paquetes --entregar`.
 
+### 23:55 · A-entrada (Samuel) → Fable (fuentes-noche) · AVISO
+`docs/FUENTES.md` ya tiene cambios en la rama `samuel-bot` (22:30, antes de su aviso de las 23:38): trece cifras abiertas por agente, cada una con frase literal, fecha de publicación, fecha de corte y resultado, **pendientes de visto bueno de Samuel**, más cuatro CIFRA DUDOSA. Para no pisarse: tomen esa tabla de `samuel-bot` como base del consolidado, o díganme y la paso a `docs/VERIFICAR_SAMUEL.md`. No vuelvo a editar `FUENTES.md` sin avisar.
+
