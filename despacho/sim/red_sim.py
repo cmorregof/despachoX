@@ -7,9 +7,16 @@ Las velocidades y las reglas de acceso son las mismas de `despacho/red.py` y
 `despacho/matriz.py` (el optimizador de B), para que el plan y la simulación hablen de la
 misma ciudad: tiempo base por tipo de vía, un factor por tipo de vehículo, y el camión fuera
 de las vías residenciales pero con permiso de parquear a 300 m del punto y descargar a mano.
+
+Velocidades medidas, solo para la simulación: con `DESPACHOX_SIM_VELOCIDADES=medidas` (o
+`python -m despacho.sim.correr --velocidades medidas`) cada tramo del grafo de OpenStreetMap
+toma la velocidad de su tipo de vía y de vehículo en `datos_publicos/velocidades.csv`, sin
+mirar el `maxspeed`. El adaptador del optimizador le pasa esas mismas velocidades al modelo
+de B. Sin la variable, o con `modelo`, todo queda como antes.
 """
 from __future__ import annotations
 
+import csv
 import math
 import os
 from pathlib import Path
@@ -39,6 +46,38 @@ FACTOR_EMERGENCIA = 2.0
 CENTRO_MANIZALES = (5.0689, -75.5174)  # lat, lon de la plaza de Bolívar (aproximado)
 SIN_CAMINO = -9999
 
+# Velocidades de la simulación: "modelo" (por defecto, las de despacho/red.py) o "medidas".
+VARIABLE_VELOCIDADES = "DESPACHOX_SIM_VELOCIDADES"
+MODOS_VELOCIDAD = ("modelo", "medidas")
+RUTA_VELOCIDADES = Path(__file__).resolve().parents[2] / "datos_publicos" / "velocidades.csv"
+
+
+def modo_velocidades() -> str:
+    """'modelo' si la variable no está o está vacía; 'medidas' para usar velocidades.csv."""
+    modo = (os.environ.get(VARIABLE_VELOCIDADES) or "modelo").strip().lower()
+    if modo not in MODOS_VELOCIDAD:
+        raise ValueError(f"{VARIABLE_VELOCIDADES}={modo!r}: use 'modelo' o 'medidas'")
+    return modo
+
+
+def velocidades_medidas(ruta=RUTA_VELOCIDADES) -> dict:
+    """{tipo de vía: {tipo de vehículo: km/h}} leído de datos_publicos/velocidades.csv."""
+    with open(ruta, newline="", encoding="utf-8") as fh:
+        return {f["tipo_via"]: {t: float(f[f"vel_kmh_{t}"]) for t in TIPOS} for f in csv.DictReader(fh)}
+
+
+def velocidad_medida(tabla: dict, via: str, tipo: str) -> float:
+    """km/h de un tipo de vehículo en un tipo de vía. Vía sin fila en el CSV: el supuesto del
+    modelo para vías sin velocidad conocida (20 km/h y el factor del vehículo)."""
+    if via in tabla:
+        return tabla[via][tipo]
+    return VELOCIDAD_POR_DEFECTO / FACTOR_TIEMPO[tipo]
+
+
+def segundos_medidos(tabla: dict, via: str, largo_m: float) -> dict:
+    """Segundos de cada tipo de vehículo en un tramo, con las velocidades medidas."""
+    return {t: largo_m / (velocidad_medida(tabla, via, t) / 3.6) for t in TIPOS}
+
 
 def _via(highway) -> str:
     return str(highway).split(",")[0].strip(" '\"[]")
@@ -56,7 +95,10 @@ def _apta_camion(via: str, hgv="", maxweight="99") -> bool:
 class Red:
     """Red verdadera. Nodos 0..n-1 y aristas dirigidas 0..m-1 (una por par de nodos)."""
 
-    def __init__(self, lat, lon, eu, ev, largo_m, seg_general, seg_camion, origen: str, osm_id=None):
+    def __init__(self, lat, lon, eu, ev, largo_m, seg_general, seg_camion, origen: str, osm_id=None,
+                 por_tipo=None):
+        """`por_tipo` (solo con velocidades medidas): (segundos, segundos sin restricción), dos
+        diccionarios tipo -> arreglo que reemplazan el tiempo base por el factor del vehículo."""
         self.lat = np.asarray(lat, float)
         self.lon = np.asarray(lon, float)
         self.eu = np.asarray(eu, np.int32)
@@ -67,13 +109,20 @@ class Red:
         self.osm_id = np.arange(self.n) if osm_id is None else np.asarray(osm_id)
         self.arista = {(int(u), int(v)): i for i, (u, v) in enumerate(zip(self.eu, self.ev))}
         general, camion = np.asarray(seg_general, float), np.asarray(seg_camion, float)
-        self.segundos = {"camion": np.maximum(camion * FACTOR_TIEMPO["camion"], 0.01),
-                         "campero": np.maximum(general * FACTOR_TIEMPO["campero"], 0.01),
-                         "moto": np.maximum(general * FACTOR_TIEMPO["moto"], 0.01)}
-        # salida de emergencia: todas las vías; las no aptas para el tipo, al doble de tiempo
-        self.segundos_emergencia = {
-            t: np.where(np.isfinite(self.segundos[t]), self.segundos[t],
-                        np.maximum(general * FACTOR_TIEMPO[t] * FACTOR_EMERGENCIA, 0.01)) for t in TIPOS}
+        if por_tipo is None:
+            self.segundos = {"camion": np.maximum(camion * FACTOR_TIEMPO["camion"], 0.01),
+                             "campero": np.maximum(general * FACTOR_TIEMPO["campero"], 0.01),
+                             "moto": np.maximum(general * FACTOR_TIEMPO["moto"], 0.01)}
+            # salida de emergencia: todas las vías; las no aptas para el tipo, al doble de tiempo
+            self.segundos_emergencia = {
+                t: np.where(np.isfinite(self.segundos[t]), self.segundos[t],
+                            np.maximum(general * FACTOR_TIEMPO[t] * FACTOR_EMERGENCIA, 0.01)) for t in TIPOS}
+        else:
+            seg, libre = por_tipo
+            self.segundos = {t: np.maximum(np.asarray(seg[t], float), 0.01) for t in TIPOS}
+            self.segundos_emergencia = {
+                t: np.where(np.isfinite(self.segundos[t]), self.segundos[t],
+                            np.maximum(np.asarray(libre[t], float) * FACTOR_EMERGENCIA, 0.01)) for t in TIPOS}
         self._nodos_tipo, self._acceso = {}, {}
 
     # ---------- constructores ----------
@@ -114,8 +163,12 @@ class Red:
         return cls(lat, lon, eu, ev, largo, general, camion, origen=f"malla sintética {lado}x{lado}")
 
     @classmethod
-    def desde_graphml(cls, ruta) -> "Red":
-        """Lee el grafo que guarda `despacho/red.py` (osmnx). Si no trae `travel_time`, lo calcula."""
+    def desde_graphml(cls, ruta, velocidades: dict | None = None) -> "Red":
+        """Lee el grafo que guarda `despacho/red.py` (osmnx). Si no trae `travel_time`, lo calcula.
+
+        Con `velocidades` (la tabla de `velocidades_medidas()`), el tiempo de cada tramo sale de la
+        velocidad medida de su tipo de vía para cada tipo de vehículo, y no del grafo.
+        """
         import networkx as nx
 
         g = nx.read_graphml(ruta)
@@ -123,6 +176,8 @@ class Red:
         idx = {nodo: i for i, nodo in enumerate(ids)}
         lat = [float(g.nodes[n]["y"]) for n in ids]
         lon = [float(g.nodes[n]["x"]) for n in ids]
+        if velocidades is not None:
+            return cls._con_velocidades_medidas(g, ids, idx, lat, lon, velocidades, ruta)
         mejor = {}       # par -> [largo, segundos general, segundos camión]
         for u, v, d in g.edges(data=True):
             if u == v:
@@ -146,6 +201,39 @@ class Red:
         return cls(lat, lon, [p[0] for p in pares], [p[1] for p in pares], vals[:, 0], vals[:, 1], vals[:, 2],
                    origen=f"OpenStreetMap ({Path(ruta).name}, {len(ids)} nodos)",
                    osm_id=[int(n) for n in ids])
+
+    @classmethod
+    def _con_velocidades_medidas(cls, g, ids, idx, lat, lon, tabla, ruta) -> "Red":
+        """Como `desde_graphml`, con el tiempo de cada tipo de vehículo tomado de `tabla`.
+
+        Entre aristas paralelas cada tipo usa la más rápida para él, como `matriz._red_del_tipo`;
+        el camión, la más rápida entre las aptas. El largo es el de la más rápida en campero.
+        """
+        mejor = {}       # par -> [largo, camión apto, campero, moto, camión por cualquier vía]
+        for u, v, d in g.edges(data=True):
+            if u == v:
+                continue
+            via = _via(d.get("highway", ""))
+            largo = float(d.get("length", 0.0)) or 1.0
+            s = segundos_medidos(tabla, via, largo)
+            apta = _apta_camion(via, d.get("hgv", ""), d.get("maxweight", "99"))
+            fila = [largo, s["camion"] if apta else np.inf, s["campero"], s["moto"], s["camion"]]
+            par = (idx[u], idx[v])
+            if par not in mejor:
+                mejor[par] = fila
+                continue
+            m = mejor[par]
+            if fila[2] < m[2]:
+                m[0], m[2] = largo, fila[2]
+            m[1], m[3], m[4] = min(m[1], fila[1]), min(m[3], fila[3]), min(m[4], fila[4])
+        pares = list(mejor)
+        vals = np.array([mejor[p] for p in pares])
+        seg = {"camion": vals[:, 1], "campero": vals[:, 2], "moto": vals[:, 3]}
+        libre = {"camion": vals[:, 4], "campero": vals[:, 2], "moto": vals[:, 3]}
+        return cls(lat, lon, [p[0] for p in pares], [p[1] for p in pares], vals[:, 0], vals[:, 2], vals[:, 1],
+                   origen=f"OpenStreetMap ({Path(ruta).name}, {len(ids)} nodos), "
+                          f"velocidades medidas de datos_publicos/{RUTA_VELOCIDADES.name}",
+                   osm_id=[int(n) for n in ids], por_tipo=(seg, libre))
 
     # ---------- utilidades ----------
     def metros_a(self, lat: float, lon: float) -> np.ndarray:
@@ -199,13 +287,24 @@ _RED_CACHE: dict = {}
 
 
 def cargar_red(preferencia: str = "auto") -> Red:
-    """`auto`: OpenStreetMap si el grafo está en disco; si no, la malla. `malla` la fuerza."""
-    if preferencia not in _RED_CACHE:
+    """`auto`: OpenStreetMap si el grafo está en disco; si no, la malla. `malla` la fuerza.
+
+    Con `DESPACHOX_SIM_VELOCIDADES=medidas`, el grafo de OpenStreetMap usa las velocidades de
+    datos_publicos/velocidades.csv. La malla sintética de las pruebas no cambia.
+    """
+    modo = modo_velocidades()
+    clave = (preferencia, modo)
+    if clave not in _RED_CACHE:
         ruta = None if preferencia == "malla" else ruta_cache()
         if preferencia == "osm" and ruta is None:
             raise FileNotFoundError("No está despacho/cache/manizales.graphml")
-        _RED_CACHE[preferencia] = Red.desde_graphml(ruta) if ruta else Red.malla()
-    return _RED_CACHE[preferencia]
+        if not ruta:
+            _RED_CACHE[clave] = Red.malla()
+        elif modo == "medidas":
+            _RED_CACHE[clave] = Red.desde_graphml(ruta, velocidades_medidas())
+        else:
+            _RED_CACHE[clave] = Red.desde_graphml(ruta)
+    return _RED_CACHE[clave]
 
 
 class Conocimiento:

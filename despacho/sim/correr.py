@@ -3,6 +3,7 @@
     python -m despacho.sim.correr                       # 30 semillas, carga media
     python -m despacho.sim.correr --carga todas         # holgada, media y alta
     python -m despacho.sim.correr --semillas 5 --red malla --salida /tmp/prueba
+    python -m despacho.sim.correr --velocidades medidas  # velocidades de datos_publicos/velocidades.csv
 
 Escribe `resultados.csv` (una fila por carga, semilla y política) y `resumen.md`.
 """
@@ -24,7 +25,7 @@ from .escenario import NIVELES_CARGA, Parametros, generar
 from .metricas import METRICAS, calcular, descripcion_escenario
 from .motor import simular
 from .politicas import POLITICAS, InsercionProvisional, crear, optimizador_por_defecto
-from .red_sim import cargar_red
+from .red_sim import MODOS_VELOCIDAD, VARIABLE_VELOCIDADES, cargar_red, modo_velocidades
 
 SEMILLA_BASE = 20261120          # semillas de evaluación: base, base+1, ...
 PARES = [("despachox", "ingenua"), ("despachox", "experta"),
@@ -143,9 +144,15 @@ def main(argv=None):
     ap.add_argument("--p-error", type=float, help="probabilidad de que un pedido se registre en otro punto")
     ap.add_argument("--cierres", type=int, help="número fijo de cierres por jornada")
     ap.add_argument("--camperos-menos", type=int, help="camperos que se le quitan a la flota")
+    ap.add_argument("--velocidades", choices=MODOS_VELOCIDAD,
+                    help="modelo (las de despacho/red.py, por defecto) o medidas (datos_publicos/velocidades.csv)")
     a = ap.parse_args(argv)
 
     extra, variante = {}, []
+    if a.velocidades is not None:         # los procesos hijos heredan la variable al arrancar
+        os.environ[VARIABLE_VELOCIDADES] = a.velocidades
+    if modo_velocidades() == "medidas":
+        variante.append("velocidades medidas de datos_publicos/velocidades.csv, también en el optimizador")
     if a.factor_critico is not None:      # los procesos hijos heredan la variable al arrancar
         os.environ["DESPACHOX_FACTOR_CRITICO"] = str(a.factor_critico)
         variante.append(f"FACTOR_CRITICO = {a.factor_critico}")
