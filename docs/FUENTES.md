@@ -36,7 +36,7 @@ Estas cifras dan el tamaño del sismo. Salen del decreto que declaró la emergen
 |---|---|---|---|---|---|
 | Sismo de magnitud 7,4 el 10 de agosto de 2026, a las 7:34 a. m., con epicentro en San José del Palmar (Chocó) | FICHA, PROB, INF | Presidencia de la República, Decreto Legislativo 1261 del 19 de agosto de 2026, considerandos con el boletín del SGC. Texto: https://normograma.dian.gov.co/dian/compilacion/docs/decreto_1261_2026.htm · PDF: https://camacol.co/sites/default/files/descargables/DECRETO%201261de%202026_EMERGENCIA_compressed.pdf | F | Revisada por máquina, 20 nov | El decreto da dos profundidades, 103,4 km y unos 94 km |
 | Emergencia declarada en 15 departamentos, Caldas entre ellos | PROB, INF | Decreto 1261 (mismos enlaces) | F | Revisada por máquina, 20 nov, en los 15 departamentos. El plazo de 30 días que cita la investigación 04, por verificar | |
-| 262.154 personas damnificadas en 147.464 familias, 314 fallecidas y 449 vías afectadas, con corte del 19 de agosto | PROB | Decreto 1261, que cita el reporte situacional 36 de la UNGRD | F | Revisada por máquina, 20 nov | Cifras preliminares que crecieron después (331 fallecidos al 25 de agosto, según la OPS). El decreto dice 471 municipios en un considerando y 470 en otro. De estas cifras sale el 1,8 de personas por familia (D4) |
+| 262.154 personas damnificadas en 147.464 familias, 314 fallecidas y 449 vías afectadas, con corte del 19 de agosto | PROB | Decreto 1261, que cita el reporte situacional 36 de la UNGRD | F | Revisada por máquina, 20 nov | Cifras preliminares que crecieron después (331 fallecidos al 25 de agosto, según la OPS). El decreto dice 471 municipios en un considerando y 470 en otro. De estas cifras sale el 1,8 de personas por familia (D4). PROB las redondea a «más de 262.000 damnificados» |
 | Al comienzo, la región de Caldas, Quindío y Risaralda dejó de recibir el 82 % de la energía que demandaba | INF | Decreto 1261 | F | Revisada por máquina, 20 nov | Es demanda no atendida en esa región. En el país fue cerca del 18 % |
 
 ### 2. Manizales: damnificados, viviendas y albergues
@@ -184,7 +184,7 @@ Estas cifras vienen de `docs/PILOTO_TERRITORIOS.md`, que trae el enlace de cada 
 | Cifra | Fuente | Tipo | Estado |
 |---|---|---|---|
 | La Macarena tiene 42.063 habitantes, Ciudadela del Norte 58.776 y Atardeceres 39.250 | Secretaría de Salud de Manizales, ASIS 2023, tablas 26 a 38. https://salud.manizales.gov.co/wp-content/uploads/2024/07/ASIS_MANIZALES_2023.pdf | F | Por verificar. Coinciden con la tabla de `docs/datos/demanda.md` |
-| Distancias por la red desde el Banco: 2,9 a 3,3 km a los CDI de La Macarena, 9,3 km a Bajo Tablazo, 8,8 km a Alto Bonito, 36,4 km al Kilómetro 41 | Red vial del equipo | M | Medidas por el agente de territorios |
+| Distancias por la red desde el Banco: 2,9 a 3,3 km a los CDI de La Macarena, 9,3 km a Bajo Tablazo, 2,4 a 4,1 km a los puntos de Ciudadela del Norte, 8,8 km a Alto Bonito, 4,2 a 7,2 km a los críticos de Atardeceres, 7,4 km a La Aurora y 36,4 km al Kilómetro 41. Según TERR, el grafo no llega a la vereda, y su nodo más cercano queda a 701 m | Red vial del equipo | M | Medidas por el agente de territorios |
 | En la vereda Java colapsó la banca de la vía y unas 150 familias quedaron incomunicadas, según un líder local | La Patria, 19 mar 2025 (enlace en TERR) | F | Por verificar. Es anterior al sismo |
 | En Pueblo Hondo, cuatro viviendas tuvieron pérdida total | Alcaldía de Manizales, 27 ago 2026 (enlace en TERR) | F | Por verificar |
 | Derrumbes en el #767: Bajo Tablazo en 2017 y 2019; cinco en Manizales–Neira entre 2017 y 2023; diez en Manizales–Medellín entre 2017 y 2019 | INVÍAS, registro #767 (consultas en TERR) | F | Por verificar |
@@ -203,7 +203,7 @@ Estas cifras las midió el equipo y se pueden repetir con el código del reposit
 | 452 nombres y apodos de lugares. En 44 frases de prueba, 30 aciertos directos, 5 respuestas con opciones y 9 «no sé», sin ningún lugar equivocado propuesto con seguridad | FICHA, CORTA | `lugares/`, pruebas del ubicador; `torre/TORRE_CAPITAN.md` | M | Las frases las escribió el equipo, así que no son una muestra de usuarios |
 | Con los 17 pedidos de la demo y 3 s de búsqueda, el plan sale en 3,4 a 3,8 s | FICHA, CORTA | `docs/GUION_DEMO.md` | M | |
 | Con 50 lugares reales y pedidos sintéticos, 25 de 25 pedidos atendidos y 23 de 23 paradas críticas a tiempo, en 3,5 s | FICHA, CORTA | `docs/datos/escenario_publico.md` | M | El optimizador no imprime kilómetros |
-| 5.000 mensajes llegados a la vez, procesados a 914 por minuto, sin perder ninguno. Con 5 % de lecturas fallidas, los 59 mensajes afectados quedaron como texto | FICHA, CORTA, PIL | `entrada/ESCALA.md` | M | Con un lector simulado de 1,8 s de media, no con el modelo real |
+| 5.000 mensajes llegados a la vez, procesados a 914 por minuto, sin perder ninguno. Con 5 % de lecturas fallidas, los 59 mensajes afectados quedaron como texto | FICHA, CORTA, PIL | `entrada/ESCALA.md` | M | Con un lector simulado de 1,8 s de media, no con el modelo real. PIL redondea a «unos 900 mensajes por minuto» |
 | Unas 18 veces el pico de 500 mensajes en 10 minutos | FICHA | `entrada/ESCALA.md` | C | El pico de 500 mensajes en 10 minutos lo fijó el equipo como prueba |
 | 20 de 20 SMS sintéticos leídos bien | FICHA, CORTA | `entrada/pruebas/reporte_sms.md` | M | No es una prueba independiente, porque la misma sesión escribió los casos y las reglas |
 | De la carga de datos a la hoja impresa y una entrega registrada en 23 s, con la red bloqueada | FICHA, CORTA | `torre/CANAL.md`, entrada de B a las 4:50 p. m. | M | Falta la prueba con el wifi apagado y con un celular real |
@@ -221,10 +221,11 @@ Toda cifra de la simulación que hoy aparece en los documentos es de la primera 
 | Frente al despachador con oficio: empate en críticos y unos 2 puntos menos en el total (−1,8 y −2,2) | FICHA, CORTA, PIL, GUION | [SIM] |
 | De 46,7 a 75,1 km menos por jornada, del 5 % al 11 % del recorrido | FICHA, CORTA, PIL, GUION | [SIM] |
 | Perecederos vencidos: 0,0 % frente a 0,5 %, 1,8 % y 3,5 % por orden de ingreso | FICHA, CORTA, PIL, GUION | [SIM] |
-| Espera del punto peor atendido: de 0,93 a 4,25 horas más | FICHA, CORTA, PIL | [SIM] |
+| Espera del punto peor atendido: de 0,93 a 4,25 horas más (PIL redondea a 0,9 y 4,3) | FICHA, CORTA, PIL | [SIM] |
 | Línea base de referencia con carga media: 69,1 % por orden de llegada y 98,5 % con un despachador con oficio | FICHA (componente 6), CORTA | [SIM] |
 | Segunda ronda: +10,1, +28,6 y +47,5 puntos con factor 3; +6,0 puntos al confirmar la ubicación con un 10 % de errores supuesto; +3,4 puntos y 5,7 % de vencidos con la flota corta | FICHA | [SIM]. El encargo de la noche pide no usar el +28,6 como definitivo |
 | Con factor crítico 3, 99,7 % frente a 98,5 % en carga media | PIL | [SIM] |
+| Tabla de resultados del componente 2: medias por política, diferencias pareadas e intervalos del 95 % para las tres cargas | FICHA; PIL repite los intervalos de los kilómetros | [SIM]. Se reemplaza la tabla completa |
 
 ### 15. Estimaciones
 
@@ -247,6 +248,21 @@ Estas filas no son cifras del problema, pero el equipo las usa para planear la e
 | Entrega en iNNOVO de 1:00 a 2:30 p. m. y pitch de preselección de 2:30 a 3:30 p. m. | INNOVO, `ENTREGA.md` | Plataforma iNNOVO | Revisada con la cuenta de Carlos el 20 nov, 3:00 p. m. La hora del pitch no coincide con la de CLAUDE.md (D17) |
 | Premios de $8, $5 y $2 millones, más acompañamiento al piloto | `docs/ESTRATEGIA.md` | Bases de la hackathon | Por verificar |
 
+### 17. Cifras nuevas de las ramas de la noche
+
+Estas cifras aparecen en documentos que otros agentes escribieron esta noche y que todavía no están en `main`. Van aquí para que no lleguen sin fuente si se fusionan. DEF es la rama `defensa-noche` (`docs/PLAN_30_90.md`, `docs/RIESGOS.md` y `pitch/PREGUNTAS_JURADO.md`), y PITCH es la rama `pitch-noche` (`pitch/GUION.md` y `pitch/DIAPOSITIVAS.md`).
+
+| Cifra | Dónde se usa | Fuente | Tipo | Estado | Salvedades |
+|---|---|---|---|---|---|
+| 345 pruebas automáticas en la revisión de las 11:50 p. m. | DEF (preguntas del jurado) | Revisión de la rama `defensa-noche` | M | Medida por otro agente; no se repitió aquí | Ver D16 |
+| Vehículos del simulacro, si nadie los presta: de 718.800 a 3.112.353 COP | DEF (plan y preguntas) | `datos_publicos/costos.csv`: dos vehículos por un día a 359.400 COP, o tres por un día a 1.037.451 COP | E | Los productos están bien hechos. Las fuentes, en las dos filas siguientes | Precios nominales de 2019 y 2021, sin actualizar a 2026. El número de vehículos es un supuesto |
+| Bus diésel con conductor en Manizales: 359.400 COP por día, 89.850 COP por recorrido y 4 recorridos al día (2019) | DEF | Tesis de Ocampo González (2019), tabla 31, página 80 (mismo enlace de la fila de las velocidades) | F | Revisada por máquina, 21 nov | Es un bus de transporte de trabajadores, no un camión de reparto |
+| Campero 4x2 con conductor, servicio urbano: 1.037.451 COP por día (2021) | DEF | Colombia Compra Eficiente, orden de compra 83411 del ICBF. https://operaciones.colombiacompra.gov.co/sites/cce_public/files/documentos_adicionales_oc/orde_de_compra_r_11.pdf | F | Por verificar | La orden muestra precios distintos para el mismo tipo de vehículo y no aclara qué incluye (`docs/datos/flota_perecederos_costos.md`, sección 5) |
+| Costo por kilómetro del mismo bus: 6.395 COP (2019) | DEF (plan) | Cálculo nuestro con la tesis de 2019: 89.850 COP por recorrido entre 14,05 km por recorrido, que salen de 2.402,7 km en 171 recorridos | C | Las tres entradas, revisadas por máquina, 21 nov (páginas 74, 80 y 82) | Falta que una persona confirme que el precio y el recorrido son del mismo bus |
+| Camioneta 4x4 con conductor, a todo costo: 426.000 COP por día (2016) | DEF (plan) | Law Insider, negociación de transporte del Fondo para la Reparación de las Víctimas. https://lawinsider.com/es/contracts/hoZTvSCA8to | F | Por verificar | Transporte de personal y materiales, con precio de 2016 |
+| Los modelos de lenguaje fallan más en los pedidos urgentes y con errores de tipeo | DEF (riesgos) | Imran y otros, WWW 2025, citado en `docs/investigacion/01_estado_del_arte_tecnico.md`. https://qcai.qcri.org/publications/evaluating-robustness-of-llms-on-crisis-related-microblogs-across-events-information-types-and-linguistic-features | F | Por verificar | |
+| «87 registros de cierre desde 2017, 4 del sismo» | PITCH (diapositivas) | Mismo cálculo de la sección 6 | F y C | Recontado por máquina, 20 nov | Coincide con D15 |
+
 ## Discrepancias
 
 Cada fila junta dos versiones de lo mismo, o una frase nuestra y lo que dice su fuente. Ninguna está resuelta aquí. La resuelve una persona, que es quien verifica o Carlos, si cambia el texto de la ficha o del pitch.
@@ -268,7 +284,7 @@ Cada fila junta dos versiones de lo mismo, o una frase nuestra y lo que dice su 
 | D13 | Por qué Salva RS fue una web | «Por la mala conectividad» (PIL; investigación 02) | Fast Company Brasil | Aprobar una app en las tiendas habría tardado demasiado |
 | D14 | Los retos de ABACO | «El principal fue la llegada al territorio» (FICHA, INF); «el gerente de la red dijo que su mayor reto era el transporte y la llegada a las zonas rurales» (PROB) | Noticias RCN, 18 ago | Habla la gerente de Cooperación Internacional, Norma Fernanda Alonso. Nombra juntos «el transporte, la articulación y la llegada al territorio» |
 | D15 | Los 87 registros de Letras | Prueba de que «las vías se cierran también sin sismo» (FICHA) | El conteo incluye las filas del sismo (`docs/datos/vias_y_riesgo.md`) | Recuento del CSV: 87 filas, 4 de ellas del sismo. Sin el sismo quedan 83 |
-| D16 | Pruebas automáticas | 306 en verde a las 10:16 p. m. (FICHA, CORTA) | 342 y 3 omitidas a las 11:15 p. m. (`torre/CANAL.md`) | Son dos momentos distintos, antes y después de una fusión |
+| D16 | Pruebas automáticas | 306 en verde a las 10:16 p. m. (FICHA, CORTA) | 342 y 3 omitidas a las 11:15 p. m. (`torre/CANAL.md`); 345 a las 11:50 p. m. (rama `defensa-noche`) | Son momentos distintos, antes y después de una fusión. Conviene citar el conteo de la revisión de la mañana, con su hora |
 | D17 | Hora del pitch | 2:00 p. m. (CLAUDE.md, `docs/ESTRATEGIA.md`, relevo de Fable) | 2:30 a 3:30 p. m. (INNOVO: «el sitio anterior decía 2:00») | No se revisó. La confirma Carlos en la mesa |
 | D18 | El Alto de Letras en la nota de Semana | FICHA atribuye a Semana el cierre «en el Alto de Letras, entre los kilómetros 36 y 40» | Semana | Semana dice «Herveo, corredor Manizales–Fresno, km 36+800 a 40+300» y no nombra el Alto de Letras. Minuto30 (10 ago, 12:03 p. m.) sí dice «sector Alto de Letras» |
 | D19 | Pereira–Chinchiná como salida de Manizales | «Esa misma mañana se cortaron dos salidas de la ciudad» (FICHA; PROB habla de «la vía hacia Chinchiná») | El informe largo deja por verificar si el tramo Manizales–Chinchiná estuvo cerrado | El #767 ubica el cierre en San Andrés (Chinchiná), entre los PR 22 y 24 de la vía Pereira–Chinchiná |
