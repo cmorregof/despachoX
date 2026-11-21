@@ -4,6 +4,7 @@ Uso:
     python -m despacho.recalcular              # motivo «cierre N», con N el cierre confirmado más reciente
     python -m despacho.recalcular --cierre 3   # nombra otro cierre en el motivo
     python -m despacho.recalcular --motivo "pedido nuevo"   # recálculo que no nace de un cierre
+    python -m despacho.recalcular --a25        # con el gancho del A25 (despacho/a25.py)
 
 Ubica en el grafo cada cierre vigente (por `vias.csv` o por la arista más cercana), marca el
 plan vigente como `reemplazado` y resuelve de nuevo sin las aristas cerradas. El plan nuevo
@@ -21,7 +22,7 @@ from despacho import optimizar
 
 def recalcular(con: sqlite3.Connection | None = None, cierre: int | None = None,
                segundos: int = optimizar.LIMITE_BUSQUEDA_S, g=None, ahora=None,
-               motivo: str | None = None) -> int:
+               motivo: str | None = None, a25: bool | None = None) -> int:
     propia = con is None
     con = con or db.conectar()
     try:
@@ -30,7 +31,8 @@ def recalcular(con: sqlite3.Connection | None = None, cierre: int | None = None,
             cierre = r["n"] if r else None
         if motivo is None:
             motivo = f"cierre {cierre}" if cierre is not None else "recálculo sin cierres confirmados"
-        return optimizar.planificar(con, motivo=motivo, segundos=segundos, recalculo=True, g=g, ahora=ahora)
+        return optimizar.planificar(con, motivo=motivo, segundos=segundos, recalculo=True, g=g, ahora=ahora,
+                                    a25=a25)
     finally:
         if propia:
             con.close()
@@ -41,8 +43,10 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--cierre", type=int, help="id del cierre que motiva el recálculo")
     ap.add_argument("--segundos", type=int, default=optimizar.LIMITE_BUSQUEDA_S, help="límite de búsqueda (máx. 10)")
     ap.add_argument("--motivo", help='texto del motivo, p. ej. "pedido nuevo"; por defecto «cierre N»')
+    ap.add_argument("--a25", action="store_true", default=None,
+                    help="enciende el gancho del A25 (por defecto lo decide DESPACHOX_A25)")
     args = ap.parse_args(argv)
-    print(recalcular(cierre=args.cierre, segundos=args.segundos, motivo=args.motivo))
+    print(recalcular(cierre=args.cierre, segundos=args.segundos, motivo=args.motivo, a25=args.a25))
     return 0
 
 
