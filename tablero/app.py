@@ -446,6 +446,46 @@ def detalle_plan(con, plan: dict | None, rutas: list[dict]) -> None:
         st.caption(f"Aviso del optimizador: {a}")
 
 
+TITULOS_TERRITORIO = {
+    "territorio": "Territorio", "puntos": "Puntos", "puntos_criticos": "Críticos", "pedidos": "Pedidos",
+    "familias": "Familias", "kg_pedidos": "kg pedidos", "entregados": "Entregados",
+    "kg_entregados": "kg entregados", "a_tiempo": "A tiempo", "evaluados": "Evaluados",
+    "pct_a_tiempo": "% a tiempo", "criticos_a_tiempo": "Críticos a tiempo",
+    "criticos_evaluados": "Críticos evaluados", "pct_criticos_a_tiempo": "% críticos a tiempo",
+    "espera_mediana_h": "Espera mediana (h)", "pendiente_mas_viejo_h": "Pendiente más viejo (h)"}
+TITULOS_SIN_PEDIDOS = {"nombre": "Lugar", "tipo": "Tipo", "comuna": "Comuna", "estado": "Estado"}
+FONDO_BAJO_META = "#F6E9E2"       # ámbar muy suave: por debajo de la meta
+
+
+def detalle_territorio(con) -> None:
+    d = T.territorio(con)
+    if not d["disponible"]:
+        st.info("Pendiente: despacho.territorio")
+        return
+    import pandas as pd
+    st.markdown(f"**Atención por territorio** · los peor atendidos arriba · en color, los que están por "
+                f"debajo de la meta de {d['meta']} % de críticos a tiempo")
+    tabla = pd.DataFrame([{TITULOS_TERRITORIO.get(c, c): f.get(c) for c in d["columnas"]} for f in d["tabla"]])
+    bajo = [f["bajo_meta"] for f in d["tabla"]]
+    if not tabla.empty:
+        estilo = tabla.style.apply(
+            lambda fila: [f"background-color: {FONDO_BAJO_META}" if bajo[fila.name] else ""] * len(fila), axis=1)
+        st.dataframe(estilo, hide_index=True, width="stretch")
+    else:
+        st.markdown("Todavía no hay territorios con datos.")
+    st.download_button("Descargar CSV", T.territorio_csv(d), file_name="territorio.csv", mime="text/csv",
+                       key="territorio_csv")
+    st.caption("A tiempo: entregado a más tardar en su hora límite. Evaluados: pedidos con hora límite ya "
+               "entregados o con la hora vencida.")
+    st.markdown(f"**Barrios y veredas sin pedidos registrados ({len(d['sin_pedidos'])})**")
+    st.caption("Que un lugar no haya pedido no quiere decir que esté bien: puede no tener señal ni líder.")
+    if d["sin_pedidos"]:
+        st.dataframe([{TITULOS_SIN_PEDIDOS.get(c, c): s.get(c) or "" for c in d["columnas_sin_pedidos"]}
+                      for s in d["sin_pedidos"]], hide_index=True, width="stretch", height=360)
+    else:
+        st.markdown("Todos los barrios y veredas del nomenclátor tienen pedidos registrados.")
+
+
 def detalle_bitacora(con) -> None:
     filas = T.bitacora(con, 60)
     if not filas:
@@ -467,7 +507,7 @@ def mesa() -> None:
         revisar = T.por_revisar(con)
         indicadores(T.indicadores(con, plan), plan)
         st.write("")
-        t_mesa, t_plan, t_bitacora = st.tabs(["Mesa", "Plan en detalle", "Bitácora"])
+        t_mesa, t_plan, t_territorio, t_bitacora = st.tabs(["Mesa", "Plan en detalle", "Territorio", "Bitácora"])
         with t_mesa:
             col_mapa, col_lado = st.columns([2.6, 1])
             with col_mapa:
@@ -480,6 +520,8 @@ def mesa() -> None:
                 por_revisar(con, revisar)
         with t_plan:
             detalle_plan(con, plan, rutas)
+        with t_territorio:
+            detalle_territorio(con)
         with t_bitacora:
             detalle_bitacora(con)
     finally:

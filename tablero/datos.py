@@ -19,8 +19,16 @@ from pathlib import Path
 import lugares
 from datos import db
 
+try:            # parte B de encargos/T1_TERRITORIO.md; si no ha llegado, la pestaña lo dice
+    from despacho import territorio as _territorio
+except Exception:  # noqa: BLE001 - cualquier fallo de importación deja la pestaña en «pendiente»
+    _territorio = None
+
 RAIZ = Path(__file__).resolve().parent.parent
 HORAS_VENCE_PRONTO = 12
+# Meta de críticos a tiempo: la misma de la ficha de puntualidad, que se marca en alerta por debajo
+# del 100 %. No hay otra meta numérica en el código ni en CLAUDE.md.
+META_CRITICOS_PCT = 100
 # Solo se usa si el plan no trae sus supuestos; es el mismo valor de despacho/optimizar.py.
 LIMITE_POR_URGENCIA_H = {3: 4, 2: 12, 1: 24}
 
@@ -336,6 +344,50 @@ def corregir_ubicacion(con: sqlite3.Connection, ubicacion_id: int, lat: float, l
     ok = lugares.corregir_con_pin(con, ubicacion_id, lat, lon, quien="despachador")
     con.commit()
     return ok
+
+
+# ---------- territorio (encargos/T1_TERRITORIO.md, parte C) ----------
+
+def _orden_territorio(f: dict) -> tuple:
+    """Peor atendidos arriba: menor % de críticos a tiempo; sin críticos evaluados, al final."""
+    pct = f.get("pct_criticos_a_tiempo")
+    general = f.get("pct_a_tiempo")
+    return (pct is None, pct if pct is not None else 0.0,
+            general is None, general if general is not None else 0.0,
+            -(f.get("pendiente_mas_viejo_h") or 0.0), str(f.get("territorio") or ""))
+
+
+def territorio(con: sqlite3.Connection, ahora: datetime | None = None, modulo=None) -> dict:
+    """Resumen por comuna y lugares sin pedidos registrados, leídos de despacho.territorio.
+
+    Devuelve {"disponible": False} si la parte B no está. Nunca trae texto_original ni remitente_hash:
+    solo pasan las columnas declaradas por despacho.territorio.
+    """
+    m = _territorio if modulo is None else modulo
+    if m is None:
+        return {"disponible": False, "tabla": [], "sin_pedidos": [], "columnas": ()}
+    columnas = tuple(m.COLUMNAS)
+    tabla = [{c: f.get(c) for c in columnas} for f in m.resumen(con, ahora=_ahora(ahora))]
+    for f in tabla:
+        pct = f.get("pct_criticos_a_tiempo")
+        f["bajo_meta"] = pct is not None and pct < META_CRITICOS_PCT
+    tabla.sort(key=_orden_territorio)
+    cols_sil = tuple(getattr(m, "COLUMNAS_SILENCIO", ("nombre", "tipo", "comuna", "estado")))
+    sin_pedidos = [{c: s.get(c) for c in cols_sil} for s in m.silencio(con)]
+    return {"disponible": True, "tabla": tabla, "sin_pedidos": sin_pedidos, "columnas": columnas,
+            "columnas_sin_pedidos": cols_sil, "meta": META_CRITICOS_PCT}
+
+
+def territorio_csv(datos_territorio: dict) -> bytes:
+    """La tabla por territorio en CSV (UTF-8 con BOM para que Excel lea las tildes)."""
+    import csv
+    import io
+    columnas = datos_territorio.get("columnas") or ()
+    buf = io.StringIO()
+    w = csv.DictWriter(buf, fieldnames=list(columnas), extrasaction="ignore")
+    w.writeheader()
+    w.writerows(datos_territorio.get("tabla") or [])
+    return ("﻿" + buf.getvalue()).encode("utf-8")
 
 
 # ---------- bitácora ----------
