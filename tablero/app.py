@@ -33,53 +33,53 @@ NOMBRE = "Convite"          # nombre visible (canal, 20/11 23:30); módulos y ar
 CENTRO = (5.07, -75.52)
 SEGUNDOS_REFRESCO = 5
 ALTERNATIVAS = 3          # cuántas alternativas de ubicación se ofrecen por propuesta
-# Paleta del informe: tinta, ámbar, crema y ceniza. El verde de «entregado» y el rojo de alerta
-# (cierres, puntos críticos) se conservan porque su significado tiene que leerse de un vistazo.
-TINTA, AMBAR, CREMA, CENIZA = "#4F4086", "#A36752", "#EBD3A2", "#6E6878"
+# Paleta Convite «Camino abierto» (recursos/marca/README.md): verde monte, maíz, niebla y piedra. La tierra roja
+# es solo para el cierre, que además va punteado para no depender del color.
+TINTA, AMBAR, CREMA, CENIZA = "#1F5C4A", "#D9982B", "#E4EADB", "#5C6A62"
 VERDE = "#4E7D5B"
 # Colores de estado: pendiente (nuevo y confirmado), en ruta (asignado), entregado y silencio.
-COLOR_PEDIDO = {"nuevo": AMBAR, "confirmado": "#C9935A", "asignado": TINTA, "entregado": VERDE}
+COLOR_PEDIDO = {"nuevo": AMBAR, "confirmado": "#EBC77A", "asignado": TINTA, "entregado": VERDE}
 COLOR_SILENCIO = CENIZA
-FONDO_ESTADO = {"pendiente": "#F6E9E2", "en ruta": "#ECE8F6", "entregado": "#E7F0E8", "silencio": "#ECEAEE"}
-COLORES_RUTA = [TINTA, AMBAR, "#2F7F86", "#8A5A9E", "#5F7A3B", "#B4566E", "#3E6FA3", CENIZA]
-ROJO = "#C0392B"
+FONDO_ESTADO = {"pendiente": "#F7EAD0", "en ruta": "#E4EADB", "entregado": "#D3E6DC", "silencio": "#E9ECEA"}
+COLORES_RUTA = [TINTA, CENIZA, "#2F7F86", "#8A5A9E", "#5F7A3B", "#B4566E", "#3E6FA3", "#1C2A24"]
+ROJO = "#C73A1E"
 MORADO = "#8A5A9E"
-FILA_ALTERNA = "#FAF4E6"
+FILA_ALTERNA = "#EEF2E8"
 
 ESTILO = """
 <style>
 .block-container {padding-top: 3.2rem; padding-bottom: 1.5rem; max-width: 100%;}
 html, body, [data-testid="stMarkdownContainer"] p, .stButton button {font-size: 1.05rem;}
-h1 {font-size: 1.75rem !important; padding: 0 !important; color: #4F4086; letter-spacing: .01em;}
-h3 {color: #4F4086;}
+h1 {font-size: 1.75rem !important; padding: 0 !important; color: #1F5C4A; letter-spacing: .01em;}
+h3 {color: #1F5C4A;}
 [data-testid="stVerticalBlock"] {gap: 1.05rem;}
 /* Tarjetas: bordes redondeados, sombra suave y aire; el borde por defecto casi desaparece. */
 [data-testid="stVerticalBlockBorderWrapper"]:has(> div > [data-testid="stVerticalBlock"]) {
-  border-radius: 14px; border-color: rgba(110,104,120,.14) !important; background: #FFFDF8;
-  box-shadow: 0 1px 2px rgba(46,42,54,.05), 0 6px 18px rgba(46,42,54,.07); padding: .35rem .25rem;}
-.tarjeta {border-radius: 16px; padding: 1rem 1.2rem 1.05rem; height: 100%; background: #FFFDF8;
-          box-shadow: 0 1px 2px rgba(46,42,54,.05), 0 8px 22px rgba(46,42,54,.08);
-          border-top: 5px solid #4F4086;}
-.tarjeta .rotulo {font-size: 1rem; color: #6E6878; line-height: 1.25; font-weight: 600;}
-.tarjeta .valor {font-size: 3.1rem; font-weight: 750; line-height: 1.05; color: #2E2A36; margin: .35rem 0 .2rem;}
-.tarjeta .meta {font-size: .95rem; color: #6E6878; font-weight: 600;}
-.tarjeta .nota {font-size: 1rem; line-height: 1.3; color: #2E2A36;}
+  border-radius: 14px; border-color: rgba(92,106,98,.22) !important; background: #FFFFFF;
+  box-shadow: 0 1px 2px rgba(28,42,36,.05), 0 6px 18px rgba(28,42,36,.07); padding: .35rem .25rem;}
+.tarjeta {border-radius: 16px; padding: 1rem 1.2rem 1.05rem; height: 100%; background: #E4EADB;
+          box-shadow: 0 1px 2px rgba(28,42,36,.05), 0 8px 22px rgba(28,42,36,.08);
+          border-top: 5px solid #1F5C4A;}
+.tarjeta .rotulo {font-size: 1rem; color: #5C6A62; line-height: 1.25; font-weight: 600;}
+.tarjeta .valor {font-size: 3.1rem; font-weight: 750; line-height: 1.05; color: #1C2A24; margin: .35rem 0 .2rem;}
+.tarjeta .meta {font-size: .95rem; color: #5C6A62; font-weight: 600;}
+.tarjeta .nota {font-size: 1rem; line-height: 1.3; color: #1C2A24;}
 .tarjeta .contexto {display: inline-block; font-size: .85rem; font-weight: 700; letter-spacing: .04em;
                     text-transform: uppercase; border-radius: 999px; padding: .12rem .6rem; margin-bottom: .2rem;
-                    background: #ECE8F6; color: #4F4086;}
-.tarjeta.alerta {border-top-color: #A36752;}
-.tarjeta.alerta .valor {color: #A36752;}
-.tarjeta.alerta .contexto {background: #F6E9E2; color: #A36752;}
-.ficha {display: inline-block; margin: .2rem .9rem .2rem 0; font-size: 1rem; white-space: nowrap; color: #2E2A36;}
+                    background: #FFFFFF; color: #1F5C4A;}
+.tarjeta.alerta {border-top-color: #D9982B;}
+.tarjeta.alerta .valor {color: #1C2A24;}
+.tarjeta.alerta .contexto {background: #D9982B; color: #1C2A24;}
+.ficha {display: inline-block; margin: .2rem .9rem .2rem 0; font-size: 1rem; white-space: nowrap; color: #1C2A24;}
 .ficha i {display: inline-block; width: 1.6rem; height: .5rem; border-radius: 3px; margin-right: .4rem;
           vertical-align: middle;}
 .ficha b.punto {display: inline-block; width: .9rem; height: .9rem; border-radius: 50%; margin-right: .35rem;
                 vertical-align: middle;}
-.sin-ubicar {background: #C0392B; color: white; border-radius: 8px; padding: .1rem .55rem; font-weight: 700;}
-.critico {color: #C0392B; font-weight: 700;}
-.silencio {background: #6E6878; color: white; border-radius: 8px; padding: .1rem .55rem; font-weight: 700;}
-.grande {font-size: 1.25rem; font-weight: 700; color: #4F4086;}
-.cita {font-size: 1.1rem; font-style: italic; color: #4A4453;}
+.sin-ubicar {background: #D9982B; color: #1C2A24; border-radius: 8px; padding: .1rem .55rem; font-weight: 700;}
+.critico {color: #1F5C4A; font-weight: 700;}
+.silencio {background: #5C6A62; color: white; border-radius: 8px; padding: .1rem .55rem; font-weight: 700;}
+.grande {font-size: 1.25rem; font-weight: 700; color: #1F5C4A;}
+.cita {font-size: 1.1rem; font-style: italic; color: #5C6A62;}
 [data-testid="stTabs"] button[role="tab"] p {font-size: 1.05rem; font-weight: 600;}
 </style>
 """
@@ -212,7 +212,7 @@ def capa(con, plan: dict | None, rutas: list[dict], revisar: dict, pin: dict | N
 
     for p in puntos.values():
         folium.CircleMarker([p["lat"], p["lon"]], radius=13 if p["critico"] else 6,
-                            color=ROJO if p["critico"] else "#374151", weight=4 if p["critico"] else 1.5,
+                            color="#1C2A24" if p["critico"] else "#5C6A62", weight=4 if p["critico"] else 1.5,
                             fill=False, tooltip=S(p["nombre"] + (" · PUNTO CRÍTICO" if p["critico"] else ""))
                             ).add_to(fg)
     for d in pedidos:
@@ -237,7 +237,7 @@ def capa(con, plan: dict | None, rutas: list[dict], revisar: dict, pin: dict | N
     for c in cierres:
         reportado = c["estado"] == "reportado"
         folium.Circle([c["lat"], c["lon"]], radius=140, color=ROJO, weight=5,
-                      dash_array="8 10" if reportado else None, fill=not reportado, fill_opacity=0.45,
+                      dash_array="8 10" if reportado else "16 8", fill=not reportado, fill_opacity=0.45,
                       tooltip=S(f"Cierre {c['id']} · {'por confirmar' if reportado else 'confirmado'} · "
                                 f"{c['lugar'] or c['descripcion'] or ''}")).add_to(fg)
 
@@ -279,8 +279,8 @@ def mapa(con, plan: dict | None, rutas: list[dict], revisar: dict) -> None:
     fichas += "".join(f'<span class="ficha"><b class="punto" style="background:{c}"></b>pedido {e}</span>'
                       for e, c in COLOR_PEDIDO.items() if e != "entregado")
     fichas += f'<span class="ficha"><b class="punto" style="background:{COLOR_SILENCIO}"></b>sin contacto</span>'
-    fichas += (f'<span class="ficha"><b class="punto" style="border:3px solid {ROJO}"></b>punto crítico</span>'
-               f'<span class="ficha"><b class="punto" style="background:{ROJO}"></b>cierre</span>')
+    fichas += (f'<span class="ficha"><b class="punto" style="border:3px solid #1C2A24"></b>punto crítico</span>'
+               f'<span class="ficha"><b class="punto" style="border:3px dashed {ROJO}"></b>cierre (punteado)</span>')
     st.markdown(fichas, unsafe_allow_html=True)
 
 
@@ -541,7 +541,7 @@ TITULOS_TERRITORIO = {
     "criticos_evaluados": "Críticos evaluados", "pct_criticos_a_tiempo": "% críticos a tiempo",
     "espera_mediana_h": "Espera mediana (h)", "pendiente_mas_viejo_h": "Pendiente más viejo (h)"}
 TITULOS_SIN_PEDIDOS = {"nombre": "Lugar", "tipo": "Tipo", "comuna": "Comuna", "estado": "Estado"}
-FONDO_BAJO_META = "#F6E9E2"       # ámbar muy suave: por debajo de la meta
+FONDO_BAJO_META = "#F7EAD0"       # maíz muy suave: por debajo de la meta
 
 
 def detalle_territorio(con) -> None:
@@ -648,6 +648,7 @@ def mesa() -> None:
 def main() -> None:
     st.set_page_config(page_title=f"{NOMBRE} · Mesa de despacho", layout="wide")
     st.markdown(ESTILO, unsafe_allow_html=True)
+    st.logo(str(RAIZ / "recursos" / "marca" / "convite_logo_transparente.png"), size="large")
     if not clave_ok():
         st.stop()
     c1, c2 = st.columns([5, 1])

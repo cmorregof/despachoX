@@ -41,7 +41,7 @@ Para corregir una ubicación: «Corregir en el mapa», clic en el mapa donde que
 
 ## Diseño
 
-El tema está en `.streamlit/config.toml` (paleta del informe: tinta #4F4086, ámbar #A36752, crema #EBD3A2, ceniza #6E6878, y la sans-serif del sistema para no depender de internet). Colores de estado: pendiente en ámbar, en ruta en tinta, entregado en verde apagado y silencio en ceniza; los cierres y los puntos críticos siguen en rojo. El mapa usa las teselas estándar de OpenStreetMap, que no piden clave, aclaradas con un filtro CSS que solo afecta la capa de teselas (`tablero/mapa_base.py`); marcadores, rutas y cierres conservan sus colores.
+El tema está en `.streamlit/config.toml` (paleta «Camino abierto» de `recursos/marca/README.md`: cal #F6F4EA de fondo, niebla #E4EADB en tarjetas, verde monte #1F5C4A como primario, maíz #D9982B de acento, piedra #5C6A62 de apoyo y tierra roja #C73A1E solo para el cierre; tipografía Ancízar). Colores de estado: pendiente en maíz, en ruta en verde monte, entregado en verde apagado y silencio en piedra. El punto crítico es un anillo grueso en monte oscuro. El cierre va en tierra roja y siempre punteado, para que no dependa del color: sin relleno si está por confirmar y con relleno si está confirmado. El mapa usa las teselas estándar de OpenStreetMap, que no piden clave, aclaradas con un filtro CSS que solo afecta la capa de teselas (`tablero/mapa_base.py`); marcadores, rutas y cierres conservan sus colores.
 
 ## Cómo se comparan dos planes
 

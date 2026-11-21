@@ -55,7 +55,7 @@ GRAFOS = [e.RAIZ / "despacho" / "cache" / "manizales_region.graphml",
 LIMITES = e.CARPETA / "datos" / "limites_osm.geojson"
 # Recuadro del mapa (oeste, sur, este, norte), cuadrado en grados.
 RECUADRO = (-75.586, 4.996, -75.456, 5.126)
-GRIS_PUNTO = "#B9B4C0"
+GRIS_PUNTO = "#B3BDB6"
 # Posición a mano de algunos números, si la automática no sirve (vacío: todas son automáticas).
 AJUSTE_INSIGNIA = {}
 RADIO_INSIGNIA = 0.0037   # grados; el círculo del número mide unos 60 px
@@ -68,10 +68,10 @@ LAT_REF, RADIO_TIERRA = 5.05, 6371000.0   # plano local en metros para proyectar
 DOC_PILOTO = e.RAIZ / "docs" / "PILOTO_TERRITORIOS.md"
 
 PROPUESTAS = [
-    {"n": 1, "color": e.TINTA, "comuna": "La Macarena", "corregimiento": "El Tablazo (Corredor Agroturístico)",
+    {"n": 1, "color": e.AMBAR, "comuna": "La Macarena", "corregimiento": "El Tablazo (Corredor Agroturístico)",
      "titulo": "La Macarena y El Tablazo", "nota": "Tres CDI y la vereda en un corredor.",
      "rural": "Bajo Tablazo"},
-    {"n": 2, "color": e.AMBAR, "comuna": "Ciudadela del Norte", "corregimiento": "El Manantial",
+    {"n": 2, "color": e.TINTA, "comuna": "Ciudadela del Norte", "corregimiento": "El Manantial",
      "titulo": "Ciudadela del Norte y El Manantial", "nota": "Elegida por el equipo. La comuna más poblada.",
      "rural": "Alto Bonito"},
     {"n": 3, "color": e.CENIZA, "comuna": "Atardeceres", "corregimiento": None,
@@ -352,7 +352,7 @@ def sello_y_avisos(fig, nombre, faltan, x0, y_px):
         return [], None
     lugares = list(dict.fromkeys(que for _, que, _, _ in faltan))
     texto = f"Distancia a {lugares[0]} por confirmar" if len(lugares) == 1 else "Distancias por confirmar"
-    s = fig.text(x0 + 0.004, arriba(y_px), texto, fontsize=e.pt(30), fontweight="bold", color=e.AMBAR, ha="left",
+    s = fig.text(x0 + 0.004, arriba(y_px), texto, fontsize=e.pt(30), fontweight="bold", color=e.TEXTO, ha="left",
                  va="top", bbox=dict(boxstyle="round,pad=0.45", facecolor=e.FONDO, edgecolor=e.AMBAR, linewidth=3))
     avisos = [f"{nombre}: la figura da {km} km a {que}, y la propuesta {n} de docs/PILOTO_TERRITORIOS.md no tiene "
               f"esa cifra (tiene {doc} km). Lleva el sello «{texto}» hasta que el documento la tenga"
@@ -436,7 +436,7 @@ def mapa_tres(fig, args, red, aristas, limites, puntos, acopios, banco, rurales)
         km = rutas[p["rural"]]["km"]
         la, lo, _ = rurales[p["rural"]]
         dx, dy, ha, va = desplazamientos[p["rural"]]
-        ax.text(lo + dx, la + dy, f"{p['rural']}\n{e.miles(km, 1)} km", fontsize=e.pt(28), color=p["color"],
+        ax.text(lo + dx, la + dy, f"{p['rural']}\n{e.miles(km, 1)} km", fontsize=e.pt(28), color=e.color_de_texto(p["color"]),
                 fontweight="bold", ha=ha, va=va, zorder=9, linespacing=1.05, path_effects=halo(8))
 
     # Flecha hacia el Kilómetro 41: en el grafo, la rama de La Aurora sigue solo hacia el occidente.
@@ -464,12 +464,12 @@ def mapa_tres(fig, args, red, aristas, limites, puntos, acopios, banco, rurales)
                     x, y, holgura = sitio_libre(forma, solo_puntos)
                     print(f"aviso: el número de {nombre} queda a menos de su radio de un punto", file=sys.stderr)
             x, y = AJUSTE_INSIGNIA.get(nombre, (x, y))
-            ax.text(x, y, str(p["n"]), fontsize=e.pt(34), fontweight="bold", color="white", ha="center",
+            ax.text(x, y, str(p["n"]), fontsize=e.pt(34), fontweight="bold", color=e.blanco_o_texto(p["color"]), ha="center",
                     va="center", zorder=11,
                     bbox=dict(boxstyle="circle,pad=0.28", facecolor=p["color"], edgecolor="white", linewidth=3))
 
     cerrar_mapa(ax, RECUADRO, [
-        ((punto(e.TINTA), punto(e.AMBAR), punto(e.CENIZA)), "Punto crítico de una propuesta"),
+        (tuple(punto(p["color"]) for p in PROPUESTAS), "Punto crítico de una propuesta"),
         (punto(GRIS_PUNTO, 10), "Otro punto crítico"),
         (ACOPIO, "Acopio"),
         (Line2D([], [], color=e.TEXTO, linewidth=ANCHO_RUTA), "Ruta más corta por la red"),
@@ -484,12 +484,13 @@ def mapa_tres(fig, args, red, aristas, limites, puntos, acopios, banco, rurales)
     y = 330
     ancho_nota = e.ANCHO_PX - 40 - (x0 + 0.036) * e.ANCHO_PX
     for p in PROPUESTAS:
-        fig.text(x0 + 0.013, arriba(y + 22), str(p["n"]), fontsize=e.pt(30), fontweight="bold", color="white",
+        fig.text(x0 + 0.013, arriba(y + 22), str(p["n"]), fontsize=e.pt(30), fontweight="bold", color=e.blanco_o_texto(p["color"]),
                  ha="center", va="center", bbox=dict(boxstyle="circle,pad=0.25", facecolor=p["color"],
                                                      edgecolor="none"))
         e.encajar(fig, fig.text(x0 + 0.036, arriba(y), p["titulo"], fontsize=e.pt(32), fontweight="bold",
-                                color=p["color"], va="top"), ancho_nota)
-        e.encajar(fig, fig.text(x0 + 0.036, arriba(y + 52), p["nota"], fontsize=e.pt(28), color=e.TEXTO, va="top"),
+                                color=e.color_de_texto(p["color"]), va="top"), ancho_nota)
+        e.encajar(fig, fig.text(x0 + 0.036, arriba(y + 52), p["nota"], fontsize=e.pt(28), color=e.TEXTO, va="top",
+                                fontweight="bold" if p["nota"].startswith("Elegida") else "normal"),
                   ancho_nota)
         y += 140
     cifras = [(p["n"], p["rural"], e.miles(rutas[p["rural"]]["km"], 1)) for p in PROPUESTAS]
@@ -549,11 +550,11 @@ def mapa_propuesta(fig, args, red, aristas, limites, puntos, acopios, banco, rur
         cy, va = max(float(q["lat"]) for q in cdi) + 0.0028, "bottom"
     else:
         cy, va = min(float(q["lat"]) for q in cdi) - 0.0028, "top"
-    ax.text(cx, cy, f"{len(cdi)} {cfg['grupo']}\n{rango}", fontsize=e.pt(30), fontweight="bold", color=p["color"],
+    ax.text(cx, cy, f"{len(cdi)} {cfg['grupo']}\n{rango}", fontsize=e.pt(30), fontweight="bold", color=e.color_de_texto(p["color"]),
             ha="center", va=va, zorder=9, linespacing=1.05, path_effects=halo(8))
     dx, dy, ha, va = cfg["rural"]
     ax.text(lo + dx, la + dy, f"{p['rural']}\n{e.miles(km_rural, 1)} km", fontsize=e.pt(30), fontweight="bold",
-            color=p["color"], ha=ha, va=va, zorder=9, linespacing=1.05, path_effects=halo(8))
+            color=e.color_de_texto(p["color"]), ha=ha, va=va, zorder=9, linespacing=1.05, path_effects=halo(8))
 
     convenciones = [
         (punto(p["color"]), cfg["leyenda"]),
@@ -582,7 +583,7 @@ def mapa_propuesta(fig, args, red, aristas, limites, puntos, acopios, banco, rur
                              [Point(lo, la).buffer(20 * grado_px), Point(bx, by).buffer(24 * grado_px)] + ocupado)
     for nombre, rotulo in zip((p["comuna"], p["corregimiento"]), cfg["rotulos"]):
         forma = limites[limites["nombre"] == nombre].geometry.iloc[0].intersection(marco)
-        t = ax.text(0, 0, rotulo, fontsize=e.pt(28), color=p["color"], ha="center", va="center", zorder=9,
+        t = ax.text(0, 0, rotulo, fontsize=e.pt(28), color=e.color_de_texto(p["color"]), ha="center", va="center", zorder=9,
                     linespacing=1.05, path_effects=halo(8))
         caja = e.caja_px(fig, t)
         sitio = sitio_para_rotulo(forma, obstaculos, (caja.width + 12) * grado_px, (caja.height + 12) * grado_px)
@@ -605,7 +606,7 @@ def mapa_propuesta(fig, args, red, aristas, limites, puntos, acopios, banco, rur
              fontsize=e.pt(28), color=e.CENIZA, va="top", linespacing=1.25)
     for y, cifra, texto in ((340, rango, f"del Banco a los {len(cdi)} {cfg['grupo']} de la comuna"),
                             (500, f"{e.miles(km_rural, 1)} km", f"del Banco a {p['rural']},\n{cfg['via_rural']}")):
-        fig.text(x0, arriba(y), cifra, fontsize=e.pt(56), fontweight="bold", color=p["color"], va="top")
+        fig.text(x0, arriba(y), cifra, fontsize=e.pt(56), fontweight="bold", color=e.color_de_texto(p["color"]), va="top")
         fig.text(x0, arriba(y + 78), texto, fontsize=e.pt(30), color=e.TEXTO, va="top", linespacing=1.2)
     que = f"los {cfg['grupo']}"
     cifras = [(p["n"], que, e.miles(min(km_cdi), 1)), (p["n"], que, e.miles(max(km_cdi), 1)),

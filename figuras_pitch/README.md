@@ -1,6 +1,6 @@
 # Figuras del pitch
 
-Esta carpeta trae siete figuras para proyectar, en PNG de 1920 × 1080 px (`png/`) y en SVG (`svg/`). Son las cinco del encargo y dos variantes del mapa, cada una con una sola propuesta. Usan la paleta del informe: tinta `#4F4086`, ámbar `#A36752`, crema `#EBD3A2` y ceniza `#6E6878`. Ningún texto mide menos de 24 px en el PNG, y cada figura lleva su fuente al pie. El mapa de las tres propuestas y el de la propuesta 1 llevan hoy el sello «por confirmar» y no se proyectan hasta que Fable decida la distancia a Bajo Tablazo (sección «Bajo Tablazo está a 8,4 km»). El mapa de la propuesta 2, la que eligió Carlos el 21 de noviembre a las 6:10 a. m., sale sin sello, porque sus distancias coinciden con el documento.
+Esta carpeta trae ocho figuras para proyectar, en PNG de 1920 × 1080 px (`png/`) y en SVG (`svg/`). Son las cinco del encargo, dos variantes del mapa, cada una con una sola propuesta, y la portada `portada_convite`. Usan la paleta Convite «Camino abierto» de `recursos/marca/README.md`: fondo cal `#F6F4EA`, verde monte `#1F5C4A`, maíz `#D9982B` (solo relleno o trazo grueso, nunca texto), niebla `#E4EADB`, piedra `#5C6A62` y texto en monte oscuro `#1C2A24`. Ninguna figura dibuja hoy un tramo cerrado; si alguna lo hace, va en tierra roja `#C73A1E`, punteado y con etiqueta. Ningún texto mide menos de 24 px en el PNG, y cada figura lleva su fuente al pie. El mapa de las tres propuestas y el de la propuesta 1 llevan hoy el sello «por confirmar» y no se proyectan hasta que Fable decida la distancia a Bajo Tablazo (sección «Bajo Tablazo está a 8,4 km»). El mapa de la propuesta 2, la que eligió Carlos el 21 de noviembre a las 6:10 a. m., sale sin sello, porque sus distancias coinciden con el documento.
 
 Cada figura tiene su script en `scripts/`. Los datos propios quedan en `datos/`, y el resto se lee del repositorio sin cambiarlo.
 
@@ -43,6 +43,13 @@ El encargo pedía el orden de la decisión 4 de `docs/DECISIONES_9PM.md`: (b) en
 
 ## Las figuras
 
+### Portada
+
+- **Archivo.** `portada_convite`, hecha por `scripts/portada_convite.py`.
+- **Contenido.** El logo de `recursos/marca/convite_logo_transparente.png` y la frase «Que la comida llegue aunque la vía se cierre» en Ancízar Serif, a la izquierda, sobre el espacio vacío del hero, que va abajo a todo el ancho. El fondo toma el color de la esquina del hero y el borde superior del hero se difumina, para que no se vea el corte.
+- **Hero.** `recursos/marca/hero_convite.png`, generado con IA por Carlos. La portada lo dice abajo a la izquierda.
+- **Regenerar.** `python figuras_pitch/scripts/portada_convite.py`
+
 ### (b) El cuello de botella del despacho
 
 - **Mensaje.** Seis días después del sismo, los bancos de alimentos tenían 404.587 kg en acopio, 157.164 kg en tránsito y 41.163 kg entregados.
@@ -78,7 +85,7 @@ El encargo pedía el orden de la decisión 4 de `docs/DECISIONES_9PM.md`: (b) en
 
 - **Mensaje.** Lo dirán los resultados nuevos. La figura dibuja, por grupo y política, la media de pedidos críticos entregados a tiempo y de kilos perecederos vencidos, con el intervalo del 95 % entre escenarios y la meta del reto (menos del 5 % de perecederos).
 - **Datos de hoy.** `despacho/sim/resultados/resultados.csv`, la corrida d33dd27 del 20 de noviembre a las 11:52, que no se cita. Por eso el render se llama `e_simulacion_ejemplo` y lleva la marca «Ejemplo con resultados anteriores, no citar». El resumen numérico queda en `datos/e_simulacion_ejemplo_resumen.csv`, con la diferencia pareada por semilla contra la línea base.
-- **Cifras.** Llevan un decimal, como `resumen.md`. Una media que no es 100 nunca se escribe 100, y una que no es 0 nunca se escribe 0. Si el redondeo la lleva ahí, se agregan decimales. Por ejemplo, la media de DespachoX con carga holgada es 99,71 % y la figura dice 99,7. La línea del intervalo se corta en 0 y en 100 %. El CSV de resumen guarda el intervalo calculado, que puede pasar de 100 (100,16 en ese caso).
+- **Cifras.** Llevan un decimal, como `resumen.md`. Una media que no es 100 nunca se escribe 100, y una que no es 0 nunca se escribe 0. Si el redondeo la lleva ahí, se agregan decimales. Por ejemplo, la media de Convite (antes DespachoX) con carga holgada es 99,71 % y la figura dice 99,7. La línea del intervalo se corta en 0 y en 100 %. El CSV de resumen guarda el intervalo calculado, que puede pasar de 100 (100,16 en ese caso).
 - **La marca «no citar».** La decide el contenido del CSV, así que da igual cómo se escriba la ruta. `sim_resultados.py` guarda en `CORRIDAS_ANTERIORES` la huella SHA-256 de cada corrida que no se cita, y hoy la lista tiene solo la d33dd27. Si algún archivo de la entrada coincide, la figura lleva el recuadro «Ejemplo con resultados anteriores, no citar» y la marca de agua «NO CITAR». Eso pasa con la ruta relativa, con `./` o completa, y también si se pide `--marca ""`. Una corrida nueva tiene otra huella y sale sin marca, aunque sobrescriba `despacho/sim/resultados/`. Aun así, conviene que cada corrida nueva vaya a su propia carpeta, como `despacho/sim/resultados_velocidades/` en la rama `simulacion`. Las corridas de `resultados_8s` y `resultados_s2` no están en la lista. Si tampoco se deben citar, se agrega su huella o se usa `--marca` con `--marca-de-agua`.
 - **Una advertencia suave.** `--marca "Preliminar"` pone solo el recuadro con ese texto, arriba a la derecha. La marca de agua «NO CITAR» ya no sale con cualquier `--marca`. La llevan solo las corridas de `CORRIDAS_ANTERIORES`, o la pide `--marca-de-agua`. El recuadro se revisa como cualquier texto, así que una etiqueta demasiado larga para caber a su izquierda da AVISO.
 - **Pie automático.** Dice el archivo, el número de filas, los escenarios por grupo y política, las semillas, la línea base y que los supuestos están en `docs/SIMULACION.md`.
@@ -116,7 +123,7 @@ El encargo pedía el orden de la decisión 4 de `docs/DECISIONES_9PM.md`: (b) en
 ### (a) Tres territorios para el piloto
 
 - **Mensaje.** Cada propuesta une una comuna y un corregimiento. El equipo eligió la 2, Ciudadela del Norte con El Manantial. La 1, La Macarena con El Tablazo, pone tres CDI a unos 3 km del Banco y Bajo Tablazo a 8,4 km sobre un mismo corredor. Decide el Banco.
-- **Notas de cada propuesta.** El script ya trae las notas posteriores a la decisión del 21 de noviembre. La 2 dice «Elegida por el equipo», y la 1 ya no dice «Recomendada». El PNG y el SVG de esta carpeta son anteriores y todavía marcan la 1 como recomendada. No se rehicieron en la rama `territorio-p2`, porque allí no está Ancízar Serif. `todas.py` los rehace en el computador de Carlos.
+- **Notas de cada propuesta.** El script ya trae las notas posteriores a la decisión del 21 de noviembre. La 2 dice «Elegida por el equipo», y la 1 ya no dice «Recomendada». El PNG y el SVG se rehicieron el 21 de noviembre en la rama `paleta`, con Ancízar, y marcan la 2 como elegida, en verde monte y con la nota en negrita. La 1 va en maíz y la 3 en piedra.
 - **Datos.** Las propuestas y sus razones son de `docs/PILOTO_TERRITORIOS.md`. Los puntos críticos y los acopios salen de `datos_publicos/puntos.csv` y `datos_publicos/acopios.csv`. La coordenada de Bajo Tablazo es de `datos/semilla/lugares_extra.csv`, geocodificada con Nominatim. Los límites de comunas y corregimientos están en `datos/limites_osm.geojson`, y la red vial es el grafo del equipo.
 - **Lectura.** Los territorios van con relleno suave y borde punteado y delgado, y las rutas van gruesas y continuas, para que no se confundan. La convención separa el punto crítico de una propuesta, del color de su número, de los otros puntos críticos, en gris.
 - **Rutas.** Son el camino más corto por longitud en el grafo dirigido, desde el nodo del Banco hasta el punto de la vía más cercano a cada lugar. El script proyecta el lugar sobre la arista más cercana y suma el camino hasta el nodo de entrada de esa arista más el tramo parcial. Prueba la arista y su gemela en sentido contrario, y se queda con la más corta. Si la vía más cercana pasa a más de 100 m, el tramo final hasta el lugar va punteado. Hoy ninguna ruta lo necesita. Las rutas dan 8,36 km a Bajo Tablazo, 8,77 km a Alto Bonito y 7,36 km a La Aurora. Quedan en `datos/a_territorios_rutas.csv`, junto con los metros del lugar a la vía y, para comparar, la distancia hasta el nodo más cercano, que era el método anterior.
@@ -136,8 +143,8 @@ El encargo pedía el orden de la decisión 4 de `docs/DECISIONES_9PM.md`: (b) en
 - **Mensaje.** Desde el Banco, las rutas llegan a los cuatro puntos del catálogo en Ciudadela del Norte, a entre 2,4 y 4,1 km, y a Alto Bonito, en El Manantial, a 8,8 km. La ruta a Alto Bonito sale por la comuna San José, así que la vereda no comparte corredor con los puntos urbanos.
 - **Datos.** Los mismos de (a). Los cuatro puntos son los de la comuna en `datos_publicos/puntos.csv`: la Clínica San Cayetano de Assbasalud (id 7), el CDI El Caribe (15), el CDI San Sebastián (27) y el CISCO Bosques del Norte (36). El CISCO no es punto crítico, y entra porque `docs/PILOTO_TERRITORIOS.md` lo cuenta entre los cuatro. Alto Bonito es la Casa de la Cultura (id 46), el mismo punto del mapa de las tres propuestas.
 - **Distancias.** Por la red, hasta el punto de la vía más cercano, dan 2,442, 2,690, 3,355 y 4,084 km a los puntos de la comuna y 8,772 km a Alto Bonito. Quedan en `datos/a_territorio_propuesta2_rutas.csv`. Con el método anterior, hasta el nodo más cercano, dan 2,429, 2,681, 3,338, 4,062 y 8,761 km. Con un decimal los dos métodos coinciden con el documento (2,4 a 4,1 km y 8,8 km), y por eso el mapa no lleva sello.
-- **Lectura.** La leyenda va arriba a la derecha y se dibuja antes que los nombres de la comuna y del corregimiento, para que ninguno quede debajo de ella con una letra más ancha. El rótulo de Alto Bonito va a la izquierda del rombo. Así quedan a la vista el Banco, el acopio del Coliseo Menor y las rutas. El color es el ámbar de la propuesta 2 en el mapa de las tres.
-- **Fuente tipográfica.** El PNG y el SVG se hicieron el 21 de noviembre con PT Serif, porque el computador de la rama `territorio-p2` no tiene Ancízar Serif. En el computador de Carlos, el mismo comando los rehace con Ancízar.
+- **Lectura.** La leyenda va arriba a la derecha y se dibuja antes que los nombres de la comuna y del corregimiento, para que ninguno quede debajo de ella con una letra más ancha. El rótulo de Alto Bonito va a la izquierda del rombo. Así quedan a la vista el Banco, el acopio del Coliseo Menor y las rutas. El color es el de la propuesta 2 en el mapa de las tres.
+- **Fuente tipográfica.** Ancízar, desde `figuras_pitch/fuentes/`. El color de la propuesta 2 es el verde monte.
 - **Regenerar.** `python figuras_pitch/scripts/mapa_territorios.py --solo 2`
 
 ### Bajo Tablazo está a 8,4 km, no a 9,3 (por confirmar)
@@ -152,9 +159,9 @@ El mismo error de método puede tocar otras cifras del documento que estas figur
 
 ## Fuente tipográfica
 
-La del informe es Ancízar Serif, que no está en el repositorio. Si está instalada en el computador, las figuras la usan. Si no, usan PT Serif, de licencia OFL, que viene con macOS, y si tampoco está, DejaVu Serif, que trae matplotlib. Los PNG y SVG de esta carpeta se hicieron con Ancízar Serif, que está instalada en el computador de Carlos. La excepción es `a_territorio_propuesta2`, hecho con PT Serif.
+La fuente es Ancízar, la familia institucional de la UNAL, con licencia SIL OFL 1.1. Sus archivos están en `fuentes/`, con la licencia (`fuentes/OFL-Ancizar.txt`), y `estilo.py` los registra siempre, así que no hace falta instalarla. El texto va en Ancízar Sans y los títulos y las cifras grandes (negrita de 50 px o más) en Ancízar Serif. Las tres Serif son las estáticas de la tipografía (Regular, Bold e Italic). Las dos Sans (Regular y Bold) son instancias en peso 400 y 700 de `AncizarSans[wght].ttf`, la variable de `tablero/static`, sacadas con `fontTools.varLib.instancer`, porque matplotlib no elige pesos dentro de una fuente variable. Si la carpeta faltara, se usa PT Serif, que viene con macOS, y si tampoco está, DejaVu Serif, que trae matplotlib.
 
-La familia se busca también en las carpetas de fuentes del sistema, porque la caché de matplotlib puede ser anterior a la instalación de la fuente. Con `--fuente` se elige otra familia instalada, sin importar tildes ni mayúsculas, o un archivo de fuente del disco:
+Con `--fuente` se elige otra familia instalada, sin importar tildes ni mayúsculas, o un archivo de fuente del disco:
 
 ```bash
 DESPACHOX_SIN_RED=1 python figuras_pitch/scripts/todas.py --fuente "PT Serif"
@@ -166,7 +173,7 @@ Con un archivo, el script registra también los demás pesos de la misma familia
 
 Si la familia pedida no existe, el script lo avisa y usa la de siempre. Para probarlo, `--fuente "Familia Que No Existe"` imprime «aviso: la fuente «Familia Que No Existe» no está instalada; uso Ancizar Serif», o la que haya.
 
-Ningún archivo de fuente se copia al repositorio. Los SVG guardan el texto como trazos, así que se ven igual en un computador sin la fuente. Si una familia es más ancha, los títulos y los textos de las cajas se achican hasta caber, nunca por debajo de 24 px.
+Los SVG guardan el texto como trazos, así que se ven igual en un computador sin la fuente. Si una familia es más ancha, los títulos y los textos de las cajas se achican hasta caber, nunca por debajo de 24 px.
 
 ## Origen de los scripts
 
