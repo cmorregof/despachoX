@@ -27,41 +27,44 @@ def pedido_sin_cantidad(con, id, punto_id, urgencia=3):
 
 
 # ---------- 1. empaque activo ----------
+# Desde la noche del viernes el factor (1,2) solo cuenta en fruta perecedera de un acopio con frío.
 
-def _pedido_leche(id=1):
+def _pedido(producto="fruta", id=1):
     return {"id": id, "urgencia": 2, "limite_en": None, "kg_estimado": 20, "familias": 2,
-            "productos": json.dumps([{"producto": "leche", "kg": 20}])}
+            "productos": json.dumps([{"producto": producto, "kg": 20}])}
 
 
 @pytest.mark.parametrize("empaque, surtido", [(0, False), (1, True)])
 def test_empaque_activo_cambia_que_se_puede_surtir(monkeypatch, empaque, surtido):
-    monkeypatch.setattr(optimizar, "FACTOR_EMPAQUE_ACTIVO", 1.5)
+    monkeypatch.setattr(optimizar, "FACTOR_EMPAQUE_ACTIVO", 1.2)
     # Vence en 55 min; llegar toma 30 min y el margen es 30 min. Sin empaque no alcanza (60 > 55);
-    # con empaque le quedan 55 × 1,5 = 82,5 min y sí alcanza.
-    lote = {"id": 7, "acopio_id": 1, "producto": "leche", "kg": 100, "perecedero": 1,
+    # con empaque le quedan 55 × 1,2 = 66 min y sí alcanza.
+    lote = {"id": 7, "acopio_id": 1, "producto": "fruta", "kg": 100, "perecedero": 1,
             "vence_en": iso(AHORA + timedelta(minutes=55)), "empaque_activo": empaque}
-    r = optimizar.surtir([_pedido_leche()], [lote], AHORA, {1: [1]}, {(1, 1): 1800})
+    r = optimizar.surtir([_pedido()], [lote], AHORA, {1: [1]}, {(1, 1): 1800}, frios={1})
     assert (r[1].kg == 20) is surtido
     if surtido:
-        assert r[1].vence == AHORA + timedelta(minutes=82.5)
+        assert r[1].vence == AHORA + timedelta(minutes=66)
 
 
 def test_empaque_no_toca_lotes_no_perecederos_ni_vencidos(monkeypatch):
-    monkeypatch.setattr(optimizar, "FACTOR_EMPAQUE_ACTIVO", 1.5)
-    base = {"perecedero": 1, "empaque_activo": 1}
+    monkeypatch.setattr(optimizar, "FACTOR_EMPAQUE_ACTIVO", 1.2)
+    base = {"producto": "fruta", "perecedero": 1, "empaque_activo": 1}
     vencido = AHORA - timedelta(hours=1)
-    assert optimizar.vence_efectivo({**base, "vence_en": iso(vencido)}, AHORA) == vencido
-    seco = {"perecedero": 0, "empaque_activo": 1, "vence_en": iso(AHORA + timedelta(hours=2))}
-    assert optimizar.vence_efectivo(seco, AHORA) == AHORA + timedelta(hours=2)
-    assert optimizar.vence_efectivo({"vence_en": None, **base}, AHORA) is None
+    assert optimizar.vence_efectivo({**base, "vence_en": iso(vencido)}, AHORA, frio=True) == vencido
+    seco = {"producto": "fruta", "perecedero": 0, "empaque_activo": 1, "vence_en": iso(AHORA + timedelta(hours=2))}
+    assert optimizar.vence_efectivo(seco, AHORA, frio=True) == AHORA + timedelta(hours=2)
+    assert optimizar.vence_efectivo({"vence_en": None, **base}, AHORA, frio=True) is None
 
 
-def test_empaque_activo_en_el_plan_y_en_supuestos(mundo, con, grafo, ahora):
-    # Vence en 31 min: sin empaque nada llega con 30 min de margen; con empaque (46,5 min) sí.
-    mundo.lote(2, producto="leche", kg=50, perecedero=1, vence=ahora + timedelta(minutes=31))
-    mundo.lote(3, producto="leche", kg=50, perecedero=1, vence=ahora + timedelta(minutes=31), acopio_id=1,
+def test_empaque_activo_en_el_plan_y_en_supuestos(mundo, con, grafo, ahora, monkeypatch):
+    monkeypatch.setattr(optimizar, "FACTOR_EMPAQUE_ACTIVO", 1.2)
+    con.execute("UPDATE acopios SET tiene_frio=1 WHERE id=1")
+    # Vence en 31 min: sin empaque nada llega con 30 min de margen; con empaque (37,2 min) sí.
+    mundo.lote(2, producto="fruta", kg=50, perecedero=1, vence=ahora + timedelta(minutes=31))
+    mundo.lote(3, producto="fruta", kg=50, perecedero=1, vence=ahora + timedelta(minutes=31), acopio_id=1,
                empaque=1)
-    mundo.pedido(1, 3, 20, producto="leche")
+    mundo.pedido(1, 3, 20, producto="fruta")
     mundo.listo()
     pid = optimizar.planificar(con, segundos=SEG, g=grafo, ahora=ahora)
     _, r = plan(con, pid)
@@ -70,6 +73,7 @@ def test_empaque_activo_en_el_plan_y_en_supuestos(mundo, con, grafo, ahora):
     assert r["supuestos"]["factor_empaque_activo"] == optimizar.FACTOR_EMPAQUE_ACTIVO
     assert "ICTA" in r["supuestos"]["factor_empaque_activo_nota"]
     assert "37476" in r["supuestos"]["factor_empaque_activo_nota"]
+    assert "fruta" in r["supuestos"]["factor_empaque_activo_aplica_a"]
 
 
 # ---------- 3. cantidad supuesta ----------
