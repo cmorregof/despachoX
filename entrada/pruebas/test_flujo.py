@@ -3,7 +3,7 @@ import json
 
 import pytest
 
-from entrada import extraer as E
+from entrada import extraer as E, raciones
 from entrada.flujo import Mesa
 from entrada.privacidad import hash_remitente
 from entrada.pruebas.conftest import extractor_falso
@@ -11,6 +11,7 @@ from entrada.pruebas.mensajes import MENSAJES
 from entrada.pruebas.simulador import ClienteSimulado
 
 TEXTO = {m["id"]: m["texto"] for m in MENSAJES}
+ARROZ, LECHE = raciones.KG_POR_FAMILIA["arroz"], raciones.KG_POR_FAMILIA["leche"]
 
 
 @pytest.fixture
@@ -38,13 +39,14 @@ def test_los_quince_mensajes_dejan_la_fila_esperada(con, mesa):
 
 def test_pedido_del_encargo_de_punta_a_punta(con, chat):
     r, = chat.escribir(TEXTO[1])
-    assert "40 familias en san jose" in r.texto and "arroz (80 kg aprox.) y leche (80 kg aprox.)" in r.texto and "despachador" in r.texto
+    assert "40 familias en san jose" in r.texto and f"arroz ({ARROZ * 40:g} kg aprox.) y leche ({LECHE * 40:g} kg aprox.)" in r.texto and "despachador" in r.texto
     assert "San José" in r.texto and r.botones[0][0] == "Sí, es ahí" and r.botones[-1][0] == "Enviar mi ubicación"
     assert any(t.startswith("San Jorge") for t, _ in r.botones)            # una alternativa por candidato
     p = una(con, "SELECT * FROM pedidos")
     assert (p["estado"], p["familias"], p["punto_id"], p["urgencia"]) == ("nuevo", 40, None, 2)
-    assert json.loads(p["productos"]) == [{"producto": "arroz", "kg": 80, "supuesto": "2 kg por familia"},
-                                          {"producto": "leche", "kg": 80, "supuesto": "2 kg por familia"}]
+    assert json.loads(p["productos"]) == [
+        {"producto": "arroz", "kg": round(ARROZ * 40, 1), "supuesto": f"{ARROZ:g} kg por familia"},
+        {"producto": "leche", "kg": round(LECHE * 40, 1), "supuesto": f"{LECHE:g} kg por familia"}]
     assert p["remitente_hash"] == hash_remitente(1001) and "1001" not in p["remitente_hash"]
     u = una(con, "SELECT * FROM ubicaciones")
     assert (u["tabla"], u["fila_id"], u["estado"]) == ("pedidos", p["id"], "propuesta")
@@ -121,7 +123,7 @@ def test_respuesta_en_texto_libre_vuelve_a_resolver(con, mesa):
     assert "Chipre" in fin.texto
     assert una(con, "SELECT punto_id FROM pedidos")["punto_id"] is not None
     assert una(con, "SELECT COUNT(*) FROM ubicaciones WHERE estado='propuesta'")[0] == 0
-    assert "No entendí" in chat.escribir("gracias")[0].texto                # ya no hay nada pendiente
+    assert "No alcancé a entender" in chat.escribir("gracias")[0].texto                # ya no hay nada pendiente
 
 
 def test_pedido_sin_lugar_pregunta_y_acepta_texto_o_pin(con, mesa):
@@ -158,7 +160,7 @@ def test_mensaje_mixto_guarda_pedido_y_cierre_y_confirma_cada_uno(con, chat):
 
 def test_lo_que_no_es_nada_no_guarda_fila(con, chat):
     r, = chat.escribir(TEXTO[14])
-    assert "No entendí" in r.texto
+    assert "No alcancé a entender" in r.texto
     assert una(con, "SELECT COUNT(*) FROM pedidos")[0] + una(con, "SELECT COUNT(*) FROM cierres")[0] == 0
 
 
@@ -206,7 +208,7 @@ def test_kilos_y_plazo(con, chat):
     assert una(con, "SELECT kg_estimado FROM pedidos")[0] == 70
     ClienteSimulado(chat.m.mesa, 9).escribir(TEXTO[6])
     p = con.execute("SELECT * FROM pedidos ORDER BY id DESC").fetchone()
-    assert p["kg_estimado"] == 240 and p["limite_en"] > p["creado_en"]       # 80 familias x (2 leche + 1 huevos)
+    assert p["kg_estimado"] == round(80 * (LECHE + raciones.KG_POR_FAMILIA["huevos"]), 1) and p["limite_en"] > p["creado_en"]
 
 
 def test_estado_ayuda_y_mensajes_que_no_son_texto(con, chat):
@@ -214,13 +216,13 @@ def test_estado_ayuda_y_mensajes_que_no_son_texto(con, chat):
     chat.escribir(TEXTO[1]); chat.pulsar("Sí")
     e, = chat.comando("estado")
     assert "recibido. Una persona de la mesa lo está revisando" in e.texto and "San José" in e.texto
-    assert "<code>Somos 40 familias en San José" in chat.comando("inicio")[0].texto
-    assert "solo leo texto" in chat.enviar_foto()[0].texto
+    assert "<code>Somos 40 familias en San José" in chat.comando("inicio")[1].texto
+    assert "No alcancé a entender" in chat.enviar_foto()[0].texto
     assert "No tengo un reporte tuyo pendiente" in chat.enviar_ubicacion(5.0, -75.5)[0].texto
 
 
 def test_botones_viejos_o_ajenos_no_rompen(con, mesa):
-    assert "No reconocí" in mesa.pulsar(1, "zzz").texto
+    assert "No alcancé a entender" in mesa.pulsar(1, "zzz").texto
     assert "No encontré" in mesa.pulsar(1, "s:999").texto
     ClienteSimulado(mesa, 1).escribir(TEXTO[1])
     assert "ya no está disponible" in mesa.pulsar(1, "c:1:99999").texto

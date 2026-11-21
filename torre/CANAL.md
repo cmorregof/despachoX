@@ -476,6 +476,40 @@ Corrección: mi aviso anterior quedó rotulado 07:05 y el push fue a las 6:53. E
 - Quien hable con el Banco a las 8:00: lo que diga va a las marcas [P5]. Avisen aquí apenas cuelguen.
 - Quien edite un documento del jurado desde ahora: `git pull --rebase` primero, porque cambiaron casi todos.
 
+### 22:30 · A-entrada (Samuel) → Fable, Carlos, Jacobo · CIFRA DUDOSA
+«Para recibir mercados había que llevar el formato azul que entregan los Bomberos **después de revisar la vivienda**» (`docs/FICHA.md`, componente 1). La página de la Alcaldía del 15 de agosto confirma mercados, kits y formato azul de Bomberos, pero no dice que se entregue después de revisar la vivienda. Que no entre al pitch esa parte. Detalle en `docs/FUENTES.md`.
+
+### 22:30 · A-entrada (Samuel) → Fable, Carlos, Jacobo · CIFRA DUDOSA
+«204 juntas de acción comunal: 131 de barrios y 73 de veredas». El PDF de la Alcaldía carga, pero está escaneado y el agente no pudo leer el texto. No aparece verificada. Hace falta que una persona abra las 9 páginas.
+
+### 22:30 · A-entrada (Samuel) → Fable, Carlos, Jacobo · CIFRA DUDOSA
+«El Banco de Alimentos de Manizales opera a través de la Arquidiócesis y hace parte de ABACO» (Las2orillas, citada en `docs/PILOTO.md` y base del nombre «Banco Arquidiocesano» en la ficha). El enlace responde 403 a los lectores automáticos: no se pudo abrir. Revisar en un navegador o confirmar con el Banco.
+
+### 22:30 · A-entrada (Samuel) → Fable, Carlos, Jacobo · CIFRA DUDOSA
+«El Banco fue nodo del corredor, **con tres camiones en ruta**» (`docs/FICHA.md`, componente 1, «Para quién»). Portafolio, 16 de agosto, dice «tres en cada una de las ciudades de Armenia, Ibagué y Manizales», dentro de la lista de camiones «ubicados» en cada ciudad. No nombra al Banco de Manizales y no dice «en ruta».
+
+### 22:30 · A-entrada (Samuel) → Fable, Carlos, Jacobo · AVISO
+Verificación de las trece cifras en `docs/FUENTES.md`, **abierta por agente y pendiente de visto bueno de Samuel**. Coinciden con frase literal: 404.587/41.163 kg (Portafolio, 16 ago; «al sexto día» es inferencia nuestra), Pereira–Chinchiná km 22 a 24 (Semana, 12 ago), 8.240 damnificados (RCN, 24 ago; «según las cifras oficiales», no el alcalde), 7,4 a las 7:34 y 262.154 (Decreto 1261, corte del 19 ago a las 12:30, preliminar), Letras km 36+800 a 40+300, 28 % de estaciones en Caldas, 18.847 unidades, 9,76 Mt del DNP y ABACO 2025. Los 87 registros de Letras no son una cita: son un cálculo nuestro sobre el #767 y se verifican repitiendo la consulta.
+
+### 23:00 · A-entrada (Samuel) → B-despacho, Carlos, Fable · AVISO
+`entrada/raciones.py` ya usa las raciones con fuente de `docs/datos/demanda.md`: 555 g de ración seca por persona y día, 2,9 personas por hogar y pedido de 7 días. Ejemplos: arroz 5,48 kg por familia, leche 2,8 kg, agua 8,7 L. Pollo, pan, atún, azúcar, café, chocolate y papa se reconocen pero no reciben kilos, porque no tienen ración con fuente. **No toqué `despacho/`**, así que hoy el bot y la bodega no hablan igual: la semilla sigue con la tabla vieja y `optimizar.KG_POR_FAMILIA = 10`. Para igualarlos, según la sección 7 de `demanda.md`: copiar la tabla en `despacho/semilla.py`, **sacando pollo y pan de `PERECEDEROS`** (si no, `KeyError`), y pasar `KG_POR_FAMILIA` de 10 a 11,3. Mi PREGUNTA de las 20:00 a Fable sobre las raciones queda resuelta.
+
+### 23:30 · A-entrada (Samuel) → Carlos, B-despacho · LISTO
+`ENTREGADO DX-XXXX`, por chat o SMS, ahora solo se acepta del destino: quien hizo el pedido o alguien que ya pidió para el mismo punto. Un código inexistente y uno no autorizado reciben la misma respuesta, para que nadie pruebe códigos a ciegas, y cada rechazo queda en la bitácora como «entrega rechazada». En la bitácora, la entrega aceptada dice `remitente xxxxxxxx (destino)`. Es un arreglo de seguridad y puede fusionarse después del congelamiento. Probar: `python -m pytest entrada/pruebas/test_entregado.py`.
+
+### 23:30 · A-entrada (Samuel) → B-despacho, Carlos · PREGUNTA
+Para que el **conductor** asignado pueda confirmar una entrega, la base tiene que saber quién maneja cada vehículo. ¿Agregan `vehiculos.conductor_hash TEXT` (el hash de su chat o número, con la misma sal de `entrada/privacidad.py`) y una forma de llenarlo desde el tablero? `entrada/` ya la lee si existe: con el plan aprobado, busca el vehículo de la parada del paquete. Supuesto mientras tanto: el conductor confirma desde el tablero o con `python -m despacho.paquetes --entregar`.
+
+### 23:55 · A-entrada (Samuel) → Fable (fuentes-noche) · AVISO
+`docs/FUENTES.md` ya tiene cambios en la rama `samuel-bot` (22:30, antes de su aviso de las 23:38): trece cifras abiertas por agente, cada una con frase literal, fecha de publicación, fecha de corte y resultado, **pendientes de visto bueno de Samuel**, más cuatro CIFRA DUDOSA. Para no pisarse: tomen esa tabla de `samuel-bot` como base del consolidado, o díganme y la paso a `docs/VERIFICAR_SAMUEL.md`. No vuelvo a editar `FUENTES.md` sin avisar.
+
+### 01:30 · A-entrada (Samuel) → Carlos, Fable · LISTO
+Encargo P4, carga de 15.000 mensajes a la vez, **solo en local**: extractor falso, base temporal, sin Railway, Telegram ni Anthropic. Resultado en `entrada/ESCALA.md`: 0 perdidos de 15.000, 0 errores, base íntegra, memoria máxima de 91 a 98 MB. Sin caché, 1.032 por minuto. Con un caché nuevo de la búsqueda de lugares (`entrada/cache_lugares.py`, que no cambia resultados y tiene pruebas), 1.641 por minuto con 50 lecturas a la vez y 6.050 con 200. **Corrección:** mi medición de 5.000 de la tarde no contaba la espera en fila, así que su «2,8 s de media» subestima lo que espera la persona. Con 15.000 llegando juntos, la persona espera en mediana 269 s con caché y 50 a la vez. Telegram limita a unos 30 mensajes por segundo en envíos masivos (`core.telegram.org/bots/faq`), así que responderles a 15.000 toma unos 8 minutos. Para el pitch: ninguno se pierde y todos quedan en cola, con su orden.
+
+
+### 07:50 · A-entrada (Samuel) → todos · AVISO
+`/start` nuevo en `samuel-bot` (texto de Samuel, en «usted»): cuatro botones (Pedir comida, Reportar una vía cerrada, Confirmar una entrega, ¿Cómo va mi pedido?) y, en un segundo mensaje, el ejemplo copiable. Si el bot no entiende, responde «No alcancé a entender. ¿Me ayuda con uno de estos?» con los botones. El resumen pregunta «¿Está bien?». **Función nueva antes de las 8:30: `/borrar`**, con confirmación de dos botones. Cancela los pedidos del remitente que no han salido; en todos pone `texto_original` y `remitente_hash` en nulo y `ubicaciones.texto` en «[borrado]», y limpia en la bitácora lo que dijo del lugar y su código de entrega. Deja «supresión pedida por el titular». **Para Jacobo:** el tablero ya muestra «sin texto» cuando `texto_original` es nulo. **Para Carlos:** cubre los puntos 1, 2, 3 (sin los pines), 5, 6 y 7 de `docs/PRIVACIDAD.md` 7.5. Falta quitarles el nombre y redondear los lugares y puntos creados desde un pin, y el alias aprendido queda en el nomenclátor. Ajusté `test_qa_noche.py`: su pedido de prueba no tenía dueño, y desde la tarea C ENTREGADO solo vale del destino o del conductor.
+
 ### 08:35 · Fable → todos · AVISO
 Decisiones de Carlos de las 8:05 y lo que entra en este push.
 - **Identidad.** Convite es verde: verde monte `#1F5C4A`, maíz `#D9982B`, cal `#F6F4EA`, con el símbolo de trocha y Ancízar. Todo está en `recursos/marca/`, con su README. El tablero y las figuras de `figuras_pitch/` ya están en esa paleta, y hay una portada, `figuras_pitch/png/portada_convite.png`. En el mapa, el cierre confirmado va en rojo y punteado.

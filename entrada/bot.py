@@ -16,7 +16,7 @@ from telegram import (InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton
 from telegram.ext import Application, CallbackQueryHandler, CommandHandler, MessageHandler, filters
 
 from entrada import silencio, voz
-from entrada.flujo import Mesa, Respuesta, ayuda
+from entrada.flujo import MENU, Mesa, Respuesta, inicio
 
 log = logging.getLogger("entrada.bot")
 RAIZ = Path(__file__).resolve().parent.parent
@@ -24,8 +24,8 @@ SIN_VOZ = ("Todavía no puedo escuchar notas de voz. Escríbeme qué necesitan, 
            "o qué vía está cerrada.")
 VOZ_LARGA = "La nota es muy larga. Mándame una de menos de dos minutos, o escríbeme."
 VOZ_FALLO = "No pude escuchar bien la nota. ¿Me la escribes, por favor?"
-SOLO_TEXTO = ("Por ahora solo leo texto. Escríbeme qué necesitan y dónde, o qué vía está cerrada. "
-              "Si quieres fijar un lugar, envíame la ubicación con el clip del chat.")
+SOLO_TEXTO = ("No alcancé a entender eso. ¿Me ayuda con uno de estos? También puede escribirme, "
+              "o enviarme la ubicación con el clip del chat.")
 CONCURRENCIA = int(os.environ.get("DESPACHOX_CONCURRENCIA") or 32)
 ERROR = "Tuve un problema al procesar eso. Inténtalo de nuevo en un momento, por favor."
 
@@ -48,10 +48,14 @@ class Manejadores:
 
     async def _enviar(self, mensaje, r: Respuesta, quitar_teclado: bool = False) -> None:
         marca = _teclado(r) or (ReplyKeyboardRemove() if quitar_teclado else None)
-        await mensaje.reply_text(r.texto, reply_markup=marca)
+        await mensaje.reply_text(r.texto, reply_markup=marca, parse_mode="HTML" if r.html else None)
 
     async def inicio(self, update: Update, context) -> None:
-        await update.effective_message.reply_text(ayuda(voz.disponible()), parse_mode="HTML")
+        for r in inicio(voz.disponible()):          # el mensaje con los botones y, después, el ejemplo
+            await self._enviar(update.effective_message, r)
+
+    async def borrar(self, update: Update, context) -> None:
+        await self._enviar(update.effective_message, self.mesa.borrar(update.effective_chat.id))
 
     async def estado(self, update: Update, context) -> None:
         await self._enviar(update.effective_message, self.mesa.estado(update.effective_chat.id))
@@ -102,7 +106,7 @@ class Manejadores:
         await self._enviar(q.message, r)
 
     async def otro(self, update: Update, context) -> None:
-        await update.effective_message.reply_text(SOLO_TEXTO)
+        await self._enviar(update.effective_message, Respuesta(SOLO_TEXTO, list(MENU)))
 
     async def error(self, update, context) -> None:
         log.error("error al atender una actualización: %s", type(context.error).__name__, exc_info=context.error)
@@ -140,6 +144,7 @@ def construir(token: str, mesa: Mesa) -> Application:
     app = Application.builder().token(token).concurrent_updates(CONCURRENCIA).post_init(al_arrancar).build()
     app.add_handler(CommandHandler(["start", "ayuda", "help"], m.inicio))
     app.add_handler(CommandHandler("estado", m.estado))
+    app.add_handler(CommandHandler("borrar", m.borrar))
     app.add_handler(CallbackQueryHandler(m.boton))
     app.add_handler(MessageHandler(filters.LOCATION, m.ubicacion))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, m.texto))
@@ -163,6 +168,9 @@ def main() -> int:
     if not os.environ.get("ANTHROPIC_API_KEY"):
         log.warning("Sin ANTHROPIC_API_KEY: los mensajes se guardan sin leer y los revisa el despachador.")
     from datos import db
+    if os.environ.get("DESPACHOX_CACHE_LUGARES", "1") != "0":      # rendimiento; no cambia resultados
+        from entrada import cache_lugares
+        cache_lugares.instalar()
     mesa = Mesa(db.conectar())
     log.info("Bot en marcha. Base: %s", os.environ.get("DESPACHOX_DB") or db.RUTA_DB)
     construir(token, mesa).run_polling(allowed_updates=Update.ALL_TYPES)

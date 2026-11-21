@@ -13,6 +13,7 @@ class Enviado:
     texto: str
     botones: list = field(default_factory=list)      # (etiqueta, dato)
     pide_ubicacion: bool = False
+    parse_mode: str | None = None
     botones_quitados: bool = False
 
 
@@ -26,7 +27,7 @@ class ClienteSimulado:
 
     def _mensaje(self, **campos):
         async def reply_text(texto, reply_markup=None, parse_mode=None):
-            e = Enviado(texto)
+            e = Enviado(texto, parse_mode=parse_mode)
             if isinstance(reply_markup, InlineKeyboardMarkup):
                 e.botones = [(b.text, b.callback_data) for fila in reply_markup.inline_keyboard for b in fila]
             e.pide_ubicacion = isinstance(reply_markup, ReplyKeyboardMarkup)

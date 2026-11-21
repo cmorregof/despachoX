@@ -134,7 +134,9 @@ def test_cierre_por_sms(con, mesa_sms):
 
 
 def test_entregado_por_sms_cierra_el_paquete(con, mesa_sms):
-    con.execute("INSERT INTO pedidos(id, creado_en, estado) VALUES (77, ?, 'asignado')", (db.ahora(),))
+    from entrada.privacidad import hash_remitente
+    con.execute("INSERT INTO pedidos(id, creado_en, estado, remitente_hash) VALUES (77, ?, 'asignado', ?)",
+                (db.ahora(), hash_remitente("sms-prueba-4")))          # quien pidió es quien confirma
     con.execute("INSERT INTO paquetes(codigo, pedido_id, kg, estado) VALUES ('DX-7K2Q', 77, 30, 'en_ruta')")
     con.commit()
     r = sms.atender_sms(mesa_sms, "sms-prueba-4", "entregado dx 7k2q")
@@ -144,7 +146,7 @@ def test_entregado_por_sms_cierra_el_paquete(con, mesa_sms):
     quien = con.execute("SELECT quien FROM bitacora WHERE accion='entregar paquete'").fetchone()[0]
     assert quien.startswith("remitente ") and "sms-prueba-4" not in quien
     otra = sms.atender_sms(mesa_sms, "sms-prueba-4", "ENTREGADO DX-7K2Q")      # dos veces: no aplica
-    assert "No encontre" in otra
+    assert "No pude confirmar" in otra
 
 
 def test_lo_que_no_se_entiende_se_guarda(con, mesa_sms):

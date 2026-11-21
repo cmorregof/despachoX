@@ -64,5 +64,5 @@ curl -X POST http://localhost:8081/sms -H "Content-Type: application/json" \
 - **Verificar contra la versión instalada** el formato del envío de vuelta: `textMessage` y `phoneNumbers` hacia `/message`. Se tomó de resúmenes de búsqueda, no de la documentación oficial leída completa.
 - **Verificar si la aplicación exige HTTPS** para enviar avisos a otra máquina de la red local. Si lo exige, hace falta un certificado local o un túnel.
 - **Límites de la SIM.** Cuántos SMS al día permite el operador antes de bloquearla: [pendiente].
-- **Seguridad de `ENTREGADO`.** Cualquiera que adivine un código puede marcarlo entregado. Para el piloto, solo debería contar si viene del punto de destino o del conductor.
+- **Seguridad de `ENTREGADO`.** Desde las 11:30 p. m., un código solo se acepta si lo manda quien pidió para ese punto o el conductor asignado. Un código inexistente y uno no autorizado reciben la misma respuesta, y cada intento rechazado queda en la bitácora. El conductor solo se reconoce cuando `vehiculos` tenga la columna `conductor_hash`, pedida a `despacho/` por el canal. Mientras tanto, el conductor confirma desde el tablero.
 - **Lista de productos.** Lo que no está en la tabla de `entrada/raciones.py` no se reconoce, por ejemplo «atún». Ampliarla con lo que reparta el banco.

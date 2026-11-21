@@ -19,7 +19,9 @@ def _modelo_sin_codigo(llamadas: list):
 
 
 def _paquete(con, codigo="DX-7K2Q", pedido=77):
-    con.execute("INSERT INTO pedidos(id, creado_en, estado) VALUES (?, ?, 'asignado')", (pedido, db.ahora()))
+    # El pedido es del chat 123: desde la tarea C, ENTREGADO solo vale del destino o del conductor.
+    con.execute("INSERT INTO pedidos(id, creado_en, estado, remitente_hash) VALUES (?, ?, 'asignado', ?)",
+                (pedido, db.ahora(), hash_remitente(123)))
     con.execute("INSERT INTO paquetes(codigo, pedido_id, kg, estado) VALUES (?, ?, 30, 'en_ruta')", (codigo, pedido))
     con.commit()
 

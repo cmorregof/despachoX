@@ -112,3 +112,53 @@ def pedidos_de(con: sqlite3.Connection, remitente: str, limite: int = 5) -> list
         " WHERE pa.pedido_id = p.id AND pl.estado = 'aprobado' ORDER BY pl.id DESC LIMIT 1) AS llegada "
         "FROM pedidos p LEFT JOIN puntos t ON t.id = p.punto_id WHERE p.remitente_hash=? "
         "ORDER BY p.id DESC LIMIT ?", (remitente, limite)).fetchall()
+
+
+def quien_confirma(con: sqlite3.Connection, codigo: str, remitente: str) -> str | None:
+    """Si este remitente puede confirmar la entrega del paquete: «destino», «conductor» o None.
+
+    Destino: quien hizo el pedido, o alguien que ya pidió para el mismo punto (otro miembro del
+    comité). Conductor: el del vehículo que lleva el paquete en el plan aprobado, si `vehiculos`
+    tiene la columna `conductor_hash` (pedida a despacho/ por el canal). Solo lee; no marca nada."""
+    p = con.execute("SELECT q.pedido_id, d.remitente_hash, d.punto_id FROM paquetes q "
+                    "LEFT JOIN pedidos d ON d.id = q.pedido_id WHERE q.codigo=?", (codigo,)).fetchone()
+    if p is None or not remitente:
+        return None
+    if p["remitente_hash"] == remitente:
+        return "destino"
+    if p["punto_id"] is not None and con.execute(
+            "SELECT 1 FROM pedidos WHERE punto_id=? AND origen='mensaje' AND remitente_hash=? LIMIT 1",
+            (p["punto_id"], remitente)).fetchone():
+        return "destino"
+    if _hay_columna(con, "vehiculos", "conductor_hash") and con.execute(
+            "SELECT 1 FROM paradas pa JOIN planes pl ON pl.id = pa.plan_id JOIN vehiculos v ON v.id = pa.vehiculo_id "
+            "WHERE pa.pedido_id=? AND pl.estado='aprobado' AND v.conductor_hash=? LIMIT 1",
+            (p["pedido_id"], remitente)).fetchone():
+        return "conductor"
+    return None
+
+
+BORRADO = "[borrado]"
+
+
+def borrar_remitente(con: sqlite3.Connection, remitente: str) -> dict:
+    """/borrar: suprime lo que la base guarda de quien escribe (docs/PRIVACIDAD.md, 7.5). Los pedidos que
+    no han salido se cancelan; los que van en camino siguen, sin texto ni código. Quedan el punto, los
+    productos y los kilos, que no son de la persona. Devuelve cuántos pedidos tocó y cuántos canceló."""
+    ids = [r["id"] for r in con.execute("SELECT id FROM pedidos WHERE remitente_hash=?", (remitente,))]
+    marcas = ",".join("?" * len(ids))
+    cancelados = 0
+    if ids:
+        cancelados = con.execute(f"UPDATE pedidos SET estado='descartado' WHERE id IN ({marcas}) "
+                                 "AND estado IN ('nuevo','confirmado')", ids).rowcount
+        con.execute(f"UPDATE pedidos SET texto_original=NULL, remitente_hash=NULL WHERE id IN ({marcas})", ids)
+        con.execute(f"UPDATE ubicaciones SET texto=? WHERE tabla='pedidos' AND fila_id IN ({marcas})",
+                    [BORRADO, *ids])
+        for i in ids:           # lo que dijo del lugar y sus coordenadas, que lugares/ anota en la bitácora
+            con.execute("UPDATE bitacora SET detalle=? WHERE accion IN ('ubicacion_confirmada','ubicacion_por_pin') "
+                        "AND detalle LIKE ?", (f"pedidos {i}: {BORRADO}", f"pedidos {i}:%"))
+    con.execute("UPDATE bitacora SET quien=? WHERE quien LIKE ?",       # sus entregas y entregas rechazadas
+                (f"remitente {BORRADO}", f"remitente {remitente[:8]}%"))
+    con.commit()
+    db.anotar(con, "titular", "supresión pedida por el titular", f"{len(ids)} pedidos, {cancelados} cancelados")
+    return {"pedidos": len(ids), "cancelados": cancelados}

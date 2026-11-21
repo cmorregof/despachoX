@@ -1,5 +1,5 @@
 # Torre de control · A-entrada · rol A (entrada)
-Última actualización: 2026-11-20 21:30 (hora de Colombia)
+Última actualización: 2026-11-21 01:30 (hora de Colombia)
 
 Desde las 16:05 el módulo lo dirige Samuel con `encargos/A2_BOT_SAMUEL.md`. Se trabaja en la rama `samuel-bot`; Carlos fusiona a `main` a las 6:30 p. m., 11:00 p. m. y 8:00 a. m.
 
@@ -32,6 +32,14 @@ Etapa 1 del encargo A2 hecha en `samuel-bot` y probada con el extractor falso: �
 
 - 21:30 · Encargo A3, parte 2: `entrada/pasarela_sms.py`, receptor HTTP sin dependencias nuevas, que acepta el formato genérico, formulario y los avisos `sms:received` de SMS Gateway for Android (capcom6, Apache 2.0). Responde en el cuerpo y, si se configura, pide al celular enviar la respuesta. Probado con `curl` de punta a punta; **sin celular real ni video**. `entrada/SMS.md`: montaje sin internet y comparación con Twilio, sin precios (no consultados). `test_pasarela.py`: 5 pruebas. Suite de entrada: 109 pasan, 1 se omite.
 
+- 22:30 · Verificación de las trece cifras candidatas en `docs/FUENTES.md`, con frase literal, publicación, corte y resultado. Abierta por tres agentes lectores, **pendiente de visto bueno de Samuel**. Nueve coinciden; cuatro CIFRA DUDOSA en el canal (formato azul «después de revisar la vivienda», 204 JAC por PDF escaneado, Banco de Manizales en ABACO por 403, «tres camiones en ruta»); los 87 registros de Letras son cálculo propio, por recalcular.
+
+- 23:00 · Raciones con fuente en `entrada/raciones.py` (de `docs/datos/demanda.md`, sección 7): 555 g de ración seca por persona y día (ACNUR, Logistics Cluster), cereal 6:2:2 (ICBF), 2,9 personas por hogar (DANE 2018), pedido de 7 días (OPS/INCAP), agua de 1 día; frescos con la referencia del ICBF; pollo, pan, atún, azúcar, café, chocolate y papa se reconocen sin kilos. `despacho/semilla.py` no se tocó: la bodega sigue con la tabla vieja (aviso en el canal). Pruebas ahora leen las constantes. 110 pasan, 1 se omite.
+
+- 23:30 · `ENTREGADO` solo desde el destino o el conductor (`guardar.quien_confirma`, `flujo._entregar`): vale quien hizo el pedido o quien ya pidió para el mismo punto con origen `mensaje`; el conductor, cuando exista `vehiculos.conductor_hash` (pedida a B). Misma respuesta para código inexistente y no autorizado; rechazos en la bitácora. `test_entregado.py`: 6 pruebas. 116 pasan, 1 se omite. Es arreglo de seguridad: puede entrar después del congelamiento.
+
+- 01:30 (21 nov) · Encargo P4, carga de 15.000 a la vez, solo local: 0 perdidos, base íntegra, 91 a 98 MB. Sin caché 1.032/min; con `entrada/cache_lugares.py` 1.641/min con 50 a la vez y 6.050/min con 200. Espera de la persona con caché y 50: mediana 269 s y máximo 548 s. Se corrigió el arnés: antes no contaba la espera en fila (las filas de 5.000 la subestiman). Telegram: unos 30 mensajes por segundo en masivos (FAQ oficial), así que 15.000 respuestas toman unos 8 minutos. 120 pasan, 1 se omite.
+
 ## En curso (qué, hasta dónde llegó, qué falta)
 - Prueba desde un teléfono con el bot real: nadie le ha escrito todavía.
 
@@ -51,7 +59,7 @@ Etapa 1 del encargo A2 hecha en `samuel-bot` y probada con el extractor falso: �
 - La sal del hash vive en `DESPACHOX_SAL` o en `datos/despachox.sal` junto a la base (ignorado por git).
 - Con un reporte pendiente de ubicar, un texto que el modelo clasifica como `otro` se toma como respuesta de lugar.
 
-- Los kilos y las familias que completa la mesa son reglas del código, escritas en `entrada/raciones.py` y visibles en `dudas`. El modelo solo cuenta lo que el mensaje dice (`personas`, `bebes`); no estima.
+- Los kilos y las familias que completa la mesa son reglas del código, escritas en `entrada/raciones.py` con su fuente (desde las 23:00) y visibles en `dudas`. El modelo solo cuenta lo que el mensaje dice (`personas`, `bebes`); no estima.
 - La pregunta de familias va después de ubicar, para no cambiar el orden que ya funciona y hacer una sola pregunta a la vez. Si nadie responde, el pedido ya está guardado con lo que había.
 - Un botón de familias vale aunque hayan pasado los dos minutos (es inequívoco); un número escrito solo dentro de los dos minutos.
 - Las dudas se guardan en `pedidos.dudas` solo si la columna existe; mientras tanto quedan en la respuesta al remitente y en la marca `supuesto` de cada producto.
@@ -66,6 +74,8 @@ Etapa 1 del encargo A2 hecha en `samuel-bot` y probada con el extractor falso: �
 - La alerta solo cuenta un pedido con lugar confirmado como contacto: un mensaje sin lugar no se sabe de qué punto es.
 - Una alerta de un punto que nunca escribió no se descarta sola al empezar la jornada siguiente; solo la descarta un mensaje posterior o el despachador.
 - No se agregó `pedidos.dudas`: no hubo confirmación.
+
+- 21 nov, 7:50 a. m. `/start` en una pantalla con cuatro botones, ejemplo copiable aparte, errores amables con botones, «¿Está bien?» en el resumen y `/borrar` con confirmación (`entrada/guardar.py: borrar_remitente`). Pruebas en `entrada/pruebas/test_start.py`; 152 pasan. Pendiente de `/borrar`: lugares nacidos de pin y alias aprendidos. El resto del flujo sigue en «tú»: pasarlo a «usted» es solo texto, pero toca muchas pruebas.
 
 ## Bloqueos y preguntas para el capitán
 - Resuelto 14:56: `.env` creado en la carpeta principal con las dos claves.

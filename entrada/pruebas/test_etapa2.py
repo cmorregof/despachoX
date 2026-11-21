@@ -14,13 +14,11 @@ def chat(mesa):
     return ClienteSimulado(mesa)
 
 
-def test_start_en_tres_lineas_con_dos_ejemplos(chat, monkeypatch):
+def test_start_solo_nombra_la_voz_si_hay_servicio(chat, monkeypatch):
     monkeypatch.delenv("DESPACHOX_VOZ_CLAVE", raising=False)
-    r, = chat.comando("inicio")
-    cuerpo = r.texto.split("\n\n")[0]
-    assert len(cuerpo.splitlines()) == 3 and "nota de voz" not in cuerpo
-    assert r.texto.count("<code>") == 2 and "/estado" in r.texto
-    assert "nota de voz" in ayuda(con_voz=True).split("\n\n")[0]
+    r, ejemplo = chat.comando("inicio")
+    assert "nota de voz" not in r.texto and "<code>" in ejemplo.texto
+    assert "nota de voz" in ayuda(con_voz=True)
 
 
 def test_nota_de_voz_sin_servicio_pide_escribir(con, chat, monkeypatch):
