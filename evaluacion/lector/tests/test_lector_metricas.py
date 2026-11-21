@@ -52,7 +52,7 @@ def test_productos_precision_exhaustividad_y_f1(L):
                [_pedido("chipre", "Chipre", familias=15, productos=[("leche", None), ("panela", None)])])
     lect = _lectura("si", familias=15, productos=[("arroz", None), ("leche", None), ("panela", None)])
     cal = EV.calificar(reg, lect, L)
-    assert cal["productos"] == {"vp": 2, "fp": 1, "fn": 0}
+    assert cal["productos"] == {"vp": 2, "fp": 1, "fn": 0, "perdidos": 0}
     assert cal["campos"]["familias"] and cal["campos"]["conteo_exacto"] and cal["campos"]["urgencia"]
     assert not cal["campos"]["productos_exactos"] and not cal["campos"]["lugar_extraido"]
     assert not cal["campos"]["mensaje_sin_errores"]
@@ -95,7 +95,9 @@ def test_dos_pedidos_se_empareja_con_el_mejor_y_no_se_detecta(L):
     cal = EV.calificar(reg, _lectura("solferino", familias=12, productos=[("arroz", None), ("agua", None)]), L)
     assert cal["campos"]["dos_pedidos_detectados"] is False
     assert cal["campos"]["lugar_acierto_seguro"] and cal["campos"]["familias"]
-    assert cal["productos"] == {"vp": 1, "fp": 1, "fn": 0}       # el arroz de Chipre iría a Solferino
+    assert cal["productos"] == {"vp": 1, "fp": 1, "fn": 0, "perdidos": 1}   # el arroz de Chipre iría a Solferino
+    p = EV.agregar([cal])["productos"]
+    assert p["exhaustividad"] == 1.0 and p["exhaustividad_con_perdidos"] == pytest.approx(0.5)
 
 
 def test_lugar_ambiguo_no_debe_comprometerse(L):
@@ -114,6 +116,29 @@ def test_tipo_entrega_y_otro(L):
     otro = {**reg, "texto": "hola como estan", "oro": {"tipo": "otro", "pedidos": [], "cierre": None, "entregado": None}}
     lect = EV.a_dict(EV.lectura_reglas(otro["texto"]))
     assert lect["tipo"] == "otro" and lect["fallo"] and EV.calificar(otro, lect, L)["campos"]["tipo"]
+
+
+def test_con_otro_conjunto_la_salida_va_fuera_del_repositorio(tmp_path, monkeypatch, capsys):
+    otro = tmp_path / "reales.jsonl"
+    otro.write_text("", encoding="utf-8")
+    adentro = EV.AQUI / "no_debe_crearse"
+    monkeypatch.setenv("DESPACHOX_SIN_RED", "1")
+    assert EV.main(["--conjunto", str(otro)]) == 2
+    assert EV.main(["--conjunto", str(otro), "--salida", str(adentro)]) == 2
+    # medir_modelo no corre con DESPACHOX_SIN_RED=1; sin la variable y sin --confirmo-gasto tampoco llama al modelo
+    monkeypatch.delenv("DESPACHOX_SIN_RED")
+    monkeypatch.setattr("dotenv.load_dotenv", lambda *a, **k: False)
+    assert MM.main(["--conjunto", str(otro), "--salida", str(adentro)]) == 2
+    out = capsys.readouterr().out
+    assert "obligatoria" in out and out.count("dentro del repositorio") == 2 and not adentro.exists()
+    assert EV.carpeta_de_salida(otro, tmp_path / "s", EV.AQUI) == tmp_path / "s"
+    assert EV.carpeta_de_salida(EV.CONJUNTO, None, EV.AQUI) == EV.AQUI      # el congelado puede quedarse aquí
+
+
+def test_evaluar_no_deja_carpetas_temporales(monkeypatch, tmp_path):
+    monkeypatch.setattr(EV.tempfile, "tempdir", str(tmp_path))
+    EV.evaluar(EV.cargar_conjunto()[:2], medir_tiempo=False)
+    assert list(tmp_path.iterdir()) == []
 
 
 def test_evaluar_de_punta_a_punta_en_tres_mensajes(L):

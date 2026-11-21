@@ -1,30 +1,30 @@
 # Tablas de la corrida (generadas por evaluar.py)
 
-Lector: entrada.sms.leer_sms tras entrada.privacidad.limpiar (Mesa.leer con DESPACHOX_SIN_RED=1); lugar con lugares.resolver, elegir=None. Conjunto: 330 mensajes, sha256 `54a5b70f792b82bc…`. Corrida: 2026-11-21T00:37:16-05:00. Celdas: aciertos/n (porcentaje; intervalo de Wilson al 95 %).
+Lector: entrada.sms.leer_sms tras entrada.privacidad.limpiar (Mesa.leer con DESPACHOX_SIN_RED=1); lugar con lugares.resolver, elegir=None. Conjunto: 330 mensajes, sha256 `f3992b4fd8d054c4…`. Corrida: 2026-11-21T01:17:28-05:00. Celdas: aciertos/n (porcentaje; intervalo de Wilson al 95 %).
 
 ## Campo por campo
 
 | Campo | 300 generados | 30 difíciles |
 |---|---|---|
-| Tipo de mensaje | 299/300 (99,7 %; 98,1 a 99,9) | 25/30 (83,3 %; 66,4 a 92,7) |
-| Lugar extraído (núcleo igual) | 174/285 (61,1 %; 55,3 a 66,5) | 7/21 (33,3 %; 17,2 a 54,6) |
-| Lugar resuelto: acierto seguro | 211/285 (74,0 %; 68,6 a 78,8) | 10/17 (58,8 %; 36,0 a 78,4) |
-| Lugar resuelto: seguro o entre las opciones | 254/285 (89,1 %; 85,0 a 92,2) | 11/17 (64,7 %; 41,3 a 82,7) |
-| Sin error seguro de lugar | 300/300 (100,0 %; 98,7 a 100,0) | 21/21 (100,0 %; 84,5 a 100,0) |
+| Tipo de mensaje | 299/300 (99,7 %; 98,1 a 99,9) | 24/30 (80,0 %; 62,7 a 90,5) |
+| Lugar extraído (núcleo igual) | 174/285 (61,1 %; 55,3 a 66,5) | 7/20 (35,0 %; 18,1 a 56,7) |
+| Lugar resuelto: acierto seguro | 211/285 (74,0 %; 68,6 a 78,8) | 10/16 (62,5 %; 38,6 a 81,5) |
+| Lugar resuelto: seguro o entre las opciones | 254/285 (89,1 %; 85,0 a 92,2) | 11/16 (68,8 %; 44,4 a 85,8) |
+| Sin error seguro de lugar | 300/300 (100,0 %; 98,7 a 100,0) | 20/20 (100,0 %; 83,9 a 100,0) |
 | Lugar ambiguo o desconocido: no se compromete | no aplica | 4/4 (100,0 %; 51,0 a 100,0) |
-| Techo: el lugar del oro, resuelto tal como se escribió | 245/285 (86,0 %; 81,5 a 89,5) | 16/17 (94,1 %; 73,0 a 99,0) |
-| Familias (cuando el oro las trae) | 129/153 (84,3 %; 77,7 a 89,2) | 14/18 (77,8 %; 54,8 a 91,0) |
+| Techo: el lugar del oro, resuelto tal como se escribió | 245/285 (86,0 %; 81,5 a 89,5) | 15/16 (93,8 %; 71,7 a 98,9) |
+| Familias (cuando el oro las trae) | 129/153 (84,3 %; 77,7 a 89,2) | 13/17 (76,5 %; 52,7 a 90,4) |
 | Personas (cuando el oro las trae) | 79/117 (67,5 %; 58,6 a 75,3) | 3/4 (75,0 %; 30,1 a 95,4) |
 | Bebés (cuando el oro los trae) | 13/15 (86,7 %; 62,1 a 96,3) | 1/1 (100,0 %; 20,7 a 100,0) |
-| Conteo exacto (familias, personas y bebés) | 209/285 (73,3 %; 67,9 a 78,1) | 14/20 (70,0 %; 48,1 a 85,5) |
+| Conteo exacto (familias, personas y bebés) | 209/285 (73,3 %; 67,9 a 78,1) | 13/19 (68,4 %; 46,0 a 84,6) |
 | Error: personas leídas como familias | 19/117 (16,2 %; 10,6 a 24,0) | 0/2 (0,0 %; 0,0 a 65,8) |
 | Productos: conjunto exacto | 238/285 (83,5 %; 78,8 a 87,4) | 15/19 (78,9 %; 56,7 a 91,5) |
 | Cantidades en kilos | 27/31 (87,1 %; 71,1 a 94,9) | 1/3 (33,3 %; 6,1 a 79,2) |
-| Urgencia | 281/300 (93,7 %; 90,3 a 95,9) | 20/21 (95,2 %; 77,3 a 99,2) |
+| Urgencia | 281/300 (93,7 %; 90,3 a 95,9) | 19/20 (95,0 %; 76,4 a 99,1) |
 | Dos pedidos detectados | 0/30 (0,0 %; 0,0 a 11,4) | no aplica |
 | Abstención: lugar que falta | 8/15 (53,3 %; 30,1 a 75,2) | no aplica |
 | Abstención: conteo que falta | 15/15 (100,0 %; 79,6 a 100,0) | 0/1 (0,0 %; 0,0 a 79,3) |
-| Abstención: productos que faltan | 15/15 (100,0 %; 79,6 a 100,0) | 2/2 (100,0 %; 34,2 a 100,0) |
+| Abstención: productos que faltan | 15/15 (100,0 %; 79,6 a 100,0) | 1/1 (100,0 %; 20,7 a 100,0) |
 | Abstención: kilos que el mensaje no dice | 552/556 (99,3 %; 98,2 a 99,7) | 30/30 (100,0 %; 88,6 a 100,0) |
 | Código de entrega | no aplica | 2/3 (66,7 %; 20,8 a 93,9) |
 | Cierre detectado | no aplica | 2/3 (66,7 %; 20,8 a 93,9) |
@@ -34,6 +34,7 @@ Lector: entrada.sms.leer_sms tras entrada.privacidad.limpiar (Mesa.leer con DESP
 | Mensaje sin ningún error | 151/300 (50,3 %; 44,7 a 56,0) | 11/30 (36,7 %; 21,9 a 54,5) |
 | Productos: precisión | 586/646 (90,7 %; 88,2 a 92,7) | 33/35 (94,3 %; 81,4 a 98,4) |
 | Productos: exhaustividad | 586/604 (97,0 %; 95,3 a 98,1) | 33/38 (86,8 %; 72,7 a 94,2) |
+| Productos: exhaustividad, con el pedido perdido | 586/669 (87,6 %; 84,9 a 89,9) | 33/38 (86,8 %; 72,7 a 94,2) |
 | Productos: F1 | 93,8 % | 90,4 % |
 
 ## Lugar: de lo leído a lo resuelto
@@ -42,7 +43,7 @@ Lector: entrada.sms.leer_sms tras entrada.privacidad.limpiar (Mesa.leer con DESP
 |---|---|---|
 | acierto seguro | 211 | 10 |
 | por opciones | 43 | 2 |
-| no sé | 30 | 9 |
+| no sé | 30 | 8 |
 | error seguro | 0 | 0 |
 | sin lugar | 1 | 0 |
 | se abstiene | 8 | 0 |
@@ -106,7 +107,7 @@ Techo del nomenclátor: si el lector copiara el lugar tal como va en el mensaje,
 |---|---|---|---|---|---|---|---|
 | bebes | 1 | 1/1 (100,0 %; 20,7 a 100,0) | 0/1 (0,0 %; 0,0 a 79,3) | 0/1 (0,0 %; 0,0 a 79,3) | 1/1 (100,0 %; 20,7 a 100,0) | 1/1 (100,0 %; 20,7 a 100,0) | 0/1 (0,0 %; 0,0 a 79,3) |
 | cancelacion | 1 | 0/1 (0,0 %; 0,0 a 79,3) | no aplica | no aplica | no aplica | no aplica | 0/1 (0,0 %; 0,0 a 79,3) |
-| correccion | 1 | 1/1 (100,0 %; 20,7 a 100,0) | 0/1 (0,0 %; 0,0 a 79,3) | 1/1 (100,0 %; 20,7 a 100,0) | no aplica | 1/1 (100,0 %; 20,7 a 100,0) | 0/1 (0,0 %; 0,0 a 79,3) |
+| correccion | 1 | 0/1 (0,0 %; 0,0 a 79,3) | no aplica | no aplica | no aplica | no aplica | 0/1 (0,0 %; 0,0 a 79,3) |
 | emojis | 1 | 1/1 (100,0 %; 20,7 a 100,0) | 1/1 (100,0 %; 20,7 a 100,0) | 1/1 (100,0 %; 20,7 a 100,0) | 1/1 (100,0 %; 20,7 a 100,0) | 1/1 (100,0 %; 20,7 a 100,0) | 1/1 (100,0 %; 20,7 a 100,0) |
 | entrega | 3 | 2/3 (66,7 %; 20,8 a 93,9) | no aplica | no aplica | no aplica | no aplica | 2/3 (66,7 %; 20,8 a 93,9) |
 | fuera_de_catalogo | 1 | 1/1 (100,0 %; 20,7 a 100,0) | 0/1 (0,0 %; 0,0 a 79,3) | 1/1 (100,0 %; 20,7 a 100,0) | 0/1 (0,0 %; 0,0 a 79,3) | 1/1 (100,0 %; 20,7 a 100,0) | 0/1 (0,0 %; 0,0 a 79,3) |
@@ -125,4 +126,4 @@ Techo del nomenclátor: si el lector copiara el lugar tal como va en el mensaje,
 
 ## Tiempo por mensaje
 
-Medido en Darwin 25.5.0 arm64, Python 3.12.13, sin red. Lectura (limpiar y leer_sms), 330 mensajes: mediana 1,005 ms, p95 2,078 ms y máximo 6,140 ms. Resolver el lugar sin modelo, 318 lugares: mediana 34,28 ms, p95 75,56 ms y máximo 178,55 ms.
+Medido en Darwin 25.5.0 arm64, Python 3.12.13, sin red. Lectura (limpiar y leer_sms), 330 mensajes: mediana 1,029 ms, p95 2,206 ms y máximo 4,586 ms. Resolver el lugar sin modelo, 318 lugares: mediana 34,52 ms, p95 73,96 ms y máximo 173,80 ms.

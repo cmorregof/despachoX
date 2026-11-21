@@ -25,9 +25,16 @@ def test_misma_semilla_mismo_texto():
 
 
 def test_reproduce_la_parte_generada_byte_a_byte():
-    congelado = G.CONJUNTO.read_bytes().decode("utf-8")
-    parte = "".join(congelado.splitlines(keepends=True)[:G.N])
-    assert parte.encode("utf-8") == G.texto_generado().encode("utf-8")
+    assert G.parte_generada() == G.texto_generado().encode("utf-8")
+
+
+def test_un_clon_con_crlf_tambien_coincide(tmp_path):
+    # core.autocrlf=true en Windows: la misma comparación que hace --verificar
+    lf = G.CONJUNTO.read_bytes().replace(b"\r\n", b"\n")
+    crlf = tmp_path / "conjunto.jsonl"
+    crlf.write_bytes(lf.replace(b"\n", b"\r\n"))
+    assert G.parte_generada(crlf) == G.parte_generada() == G.texto_generado().encode("utf-8")
+    assert len(G.parte_generada(crlf).splitlines()) == G.N
 
 
 def test_otra_semilla_da_otro_conjunto():

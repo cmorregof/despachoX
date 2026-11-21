@@ -1,24 +1,29 @@
 """Mide el lector de pedidos por texto, campo por campo, sobre el conjunto congelado (conjunto.jsonl).
 
-    DESPACHOX_SIN_RED=1 PYTHONPATH=. python -m evaluacion.lector.evaluar
+    DESPACHOX_SIN_RED=1 PYTHONPATH=. python -m evaluacion.lector.evaluar --salida "$(mktemp -d)"
+    DESPACHOX_SIN_RED=1 PYTHONPATH=. python -m evaluacion.lector.evaluar     # rehace la corrida versionada
 
 Qué lector se mide: el camino del bot sin red. Con DESPACHOX_SIN_RED=1, entrada/flujo.py (Mesa.leer)
 limpia el texto con entrada/privacidad.limpiar y lo lee con entrada/sms.leer_sms, las reglas sin modelo.
 El lugar que sale se pasa por lugares.resolver sin modelo (elegir=None) con los tipos que usa el bot
 para pedidos (barrio, punto, sitio, vereda) o para cierres (vía, sitio), sobre una base temporal con
-la semilla de datos/semilla/. Nada llama al modelo ni a la red.
+la semilla de datos/semilla/ que se borra al terminar. Nada llama al modelo ni a la red.
 
-Escribe, junto a este archivo:
+Escribe en --salida o, si no se da, junto a este archivo (la corrida versionada):
     resultados.json   todas las métricas, con n, aciertos e intervalo de Wilson al 95 %
     lecturas.jsonl    la lectura de cada mensaje, su calificación y sus errores
     tablas.md         las tablas que copia RESULTADOS.md
+Con otro conjunto (--conjunto), que puede traer mensajes reales, --salida es obligatoria y tiene que
+quedar fuera del repositorio, porque lecturas.jsonl copia el texto de cada mensaje.
 
 Reglas de calificación (las mismas para el lector con modelo, ver medir_modelo.py):
 - tipo: pedido, cierre, entrega (código ENTREGADO) u otro. Una lectura fallida (fallo=True) es «otro»,
   porque el bot la guarda cruda para el despachador.
 - Dos pedidos en un mensaje: el esquema de Extraccion tiene un solo pedido, así que la detección se
   mide pero no puede pasar de cero. Los campos se califican contra el pedido de oro que mejor
-  empareja con la lectura; el otro pedido queda perdido.
+  empareja con la lectura. El otro pedido solo cuenta en «dos pedidos detectados», en «mensaje sin
+  ningún error» y en la exhaustividad de productos con el pedido perdido, que suma sus productos
+  como no encontrados.
 - lugar extraído: el núcleo del texto (sin artículos ni «barrio», «vereda») igual al del oro.
 - lugar resuelto: clases del banco de frases de lugares/tests: acierto seguro, por opciones, no sé y
   error seguro. Un lugar con el mismo punto de entrega que el del oro cuenta como el mismo lugar.
@@ -94,10 +99,39 @@ def cargar_conjunto(ruta: Path = CONJUNTO) -> list[dict]:
         return [json.loads(x) for x in f if x.strip()]
 
 
-def base_de_lugares(carpeta: Path | None = None):
-    """Base temporal con los puntos de la semilla y el nomenclátor cargado, como en entrada/pruebas."""
-    carpeta = Path(carpeta or tempfile.mkdtemp(prefix="eval-lector-"))
-    con = db.conectar(carpeta / "eval.db")
+def huella(ruta: Path) -> str:
+    """sha256 del conjunto con fin de línea LF: el mismo en un clon de Windows con CRLF."""
+    return hashlib.sha256(Path(ruta).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+
+
+def ruta_legible(ruta: Path) -> str:
+    """La ruta relativa a la raíz si el archivo está en el repositorio, para no guardar carpetas personales."""
+    ruta = Path(ruta)
+    absoluta = ruta.resolve()
+    return str(absoluta.relative_to(RAIZ)) if absoluta.is_relative_to(RAIZ) else str(ruta)
+
+
+class SalidaNoPermitida(ValueError):
+    pass
+
+
+def carpeta_de_salida(conjunto: Path, salida: Path | None, por_defecto: Path) -> Path:
+    """Dónde se escriben los resultados. Con el conjunto congelado, `por_defecto` si no se pide otra
+    carpeta. Con otro conjunto, que puede traer mensajes reales, la carpeta es obligatoria y queda
+    fuera del repositorio, porque lecturas.jsonl copia el texto de cada mensaje."""
+    if Path(conjunto).resolve() == CONJUNTO.resolve():
+        return Path(salida) if salida else por_defecto
+    if salida is None:
+        raise SalidaNoPermitida("Con otro conjunto, --salida es obligatoria y debe quedar fuera del repositorio.")
+    if Path(salida).resolve().is_relative_to(RAIZ.resolve()):
+        raise SalidaNoPermitida(f"{salida} queda dentro del repositorio. Con otro conjunto, la salida va afuera.")
+    return Path(salida)
+
+
+def base_de_lugares(carpeta: Path):
+    """Base con los puntos de la semilla y el nomenclátor cargado, como en entrada/pruebas. Quien da la
+    carpeta la borra; evaluar() usa una carpeta temporal que se borra sola."""
+    con = db.conectar(Path(carpeta) / "eval.db")
     with open(db.RAIZ / "semilla" / "puntos.csv", encoding="utf-8") as f:
         for r in csv.DictReader(f):
             con.execute("INSERT OR IGNORE INTO puntos(id,nombre,barrio,comuna,lat,lon,critico) VALUES (?,?,?,?,?,?,?)",
@@ -195,7 +229,7 @@ def calificar(reg: dict, lect: dict, L: Lugares) -> dict:
     oro = reg["oro"]
     c: dict = {}
     errores: list[str] = []
-    prod = {"vp": 0, "fp": 0, "fn": 0}
+    prod = {"vp": 0, "fp": 0, "fn": 0, "perdidos": 0}
     c["tipo"] = lect["tipo"] == oro["tipo"]
     if not c["tipo"]:
         errores.append(f"tipo: {lect['tipo']}{' (fallo)' if lect['fallo'] else ''} en vez de {oro['tipo']}")
@@ -228,9 +262,12 @@ def calificar(reg: dict, lect: dict, L: Lugares) -> dict:
         p = dict(VACIO, **(lect["pedido"] or {})) if lect["pedido"] else dict(VACIO)
         i = _emparejar(p, oro["pedidos"], L) if len(oro["pedidos"]) > 1 else 0
         o = oro["pedidos"][i]
+        perdidos = 0                                     # productos del pedido de oro que no se emparejó
         if len(oro["pedidos"]) > 1:
             c["dos_pedidos_detectados"] = False          # Extraccion trae un solo pedido
             errores.append(f"dos pedidos: se leyó uno (el {i + 1}) y el otro se perdió")
+            perdidos = sum(len({clave_producto(q["producto"]) for q in x["productos"]})
+                           for j, x in enumerate(oro["pedidos"]) if j != i)
         # lugar
         clase_lugar = L.clase(p["lugar"], o)
         if o["lugar_texto"] is not None:
@@ -271,7 +308,7 @@ def calificar(reg: dict, lect: dict, L: Lugares) -> dict:
         dichos = {clave_producto(q["producto"]): q.get("kg") for q in p["productos"]}
         oros = {clave_producto(q["producto"]): q.get("kg") for q in o["productos"]}
         prod = {"vp": len(dichos.keys() & oros.keys()), "fp": len(dichos.keys() - oros.keys()),
-                "fn": len(oros.keys() - dichos.keys())}
+                "fn": len(oros.keys() - dichos.keys()), "perdidos": perdidos}
         if oros:
             c["productos_exactos"] = dichos.keys() == oros.keys()
         else:
@@ -342,7 +379,7 @@ ORDEN = [  # (campo, nombre en la tabla)
 def agregar(calificaciones: list[dict]) -> dict:
     """{campo: {n, aciertos, proporcion, ic95}} más productos (precisión, exhaustividad, F1)."""
     cuenta: dict[str, list[bool]] = defaultdict(list)
-    vp = fp = fn = 0
+    vp = fp = fn = perdidos = 0
     clases = Counter()
     falsos = 0
     for cal in calificaciones:
@@ -356,6 +393,7 @@ def agregar(calificaciones: list[dict]) -> dict:
             else:
                 cuenta[k].append(bool(v))
         vp, fp, fn = vp + cal["productos"]["vp"], fp + cal["productos"]["fp"], fn + cal["productos"]["fn"]
+        perdidos += cal["productos"].get("perdidos", 0)
         if cal["clase_lugar"]:
             clases[cal["clase_lugar"]] += 1
     salida = {}
@@ -366,8 +404,12 @@ def agregar(calificaciones: list[dict]) -> dict:
     prec = vp / (vp + fp) if vp + fp else None
     exh = vp / (vp + fn) if vp + fn else None
     f1 = 2 * prec * exh / (prec + exh) if prec and exh else (0.0 if prec is not None and exh is not None else None)
+    n_pedido = vp + fn + perdidos            # por pedido de oro: los productos del pedido perdido no llegan
     salida["productos"] = {"vp": vp, "fp": fp, "fn": fn, "precision": prec, "precision_ic95": list(wilson(vp, vp + fp)),
-                           "exhaustividad": exh, "exhaustividad_ic95": list(wilson(vp, vp + fn)), "f1": f1}
+                           "exhaustividad": exh, "exhaustividad_ic95": list(wilson(vp, vp + fn)), "f1": f1,
+                           "perdidos": perdidos,
+                           "exhaustividad_con_perdidos": vp / n_pedido if n_pedido else None,
+                           "exhaustividad_con_perdidos_ic95": list(wilson(vp, n_pedido))}
     salida["clases_lugar"] = dict(clases)
     salida["falsos_reportes"] = falsos
     salida["mensajes"] = len(calificaciones)
@@ -410,12 +452,14 @@ def tabla_campos(metricas: dict[str, dict], columnas: list[str], titulos: list[s
         if all(x == "no aplica" for x in celdas):
             continue
         filas.append(f"| {nombre} | " + " | ".join(celdas) + " |")
-    for c_prod, nombre in (("precision", "Productos: precisión"), ("exhaustividad", "Productos: exhaustividad")):
+    for c_prod, nombre in (("precision", "Productos: precisión"), ("exhaustividad", "Productos: exhaustividad"),
+                           ("exhaustividad_con_perdidos", "Productos: exhaustividad, con el pedido perdido")):
         celdas = []
         for c in columnas:
             p = metricas[c]["productos"]
             k = p["vp"]
-            n = p["vp"] + (p["fp"] if c_prod == "precision" else p["fn"])
+            n = p["vp"] + {"precision": p["fp"], "exhaustividad": p["fn"],
+                           "exhaustividad_con_perdidos": p["fn"] + p["perdidos"]}[c_prod]
             lo, hi = p[f"{c_prod}_ic95"]
             celdas.append(f"{k}/{n} ({_pct(p[c_prod])} %; {_pct(lo)} a {_pct(hi)})" if n else "no aplica")
         filas.append(f"| {nombre} | " + " | ".join(celdas) + " |")
@@ -499,8 +543,19 @@ def _resumen_tiempos(xs: list[float]) -> dict:
 def evaluar(conjunto: list[dict], leer=lectura_reglas, con=None, medir_tiempo: bool = True,
             calentar: bool = True) -> dict:
     """Lee y califica cada mensaje. `leer` recibe el texto y devuelve una Extraccion. Ninguna llamada
-    de aquí usa la red: el lector por reglas no la usa y el lugar se resuelve con elegir=None."""
-    con = con or base_de_lugares()
+    de aquí usa la red: el lector por reglas no la usa y el lugar se resuelve con elegir=None. Sin
+    `con`, la base de lugares vive en una carpeta temporal que se borra al terminar."""
+    if con is not None:
+        return _evaluar(conjunto, leer, con, medir_tiempo, calentar)
+    with tempfile.TemporaryDirectory(prefix="eval-lector-") as carpeta:
+        con = base_de_lugares(Path(carpeta))
+        try:
+            return _evaluar(conjunto, leer, con, medir_tiempo, calentar)
+        finally:
+            con.close()                                 # antes de borrar la carpeta (Windows no borra abiertos)
+
+
+def _evaluar(conjunto: list[dict], leer, con, medir_tiempo: bool, calentar: bool) -> dict:
     L = Lugares(con)
     if calentar:
         leer("PEDIDO 1 SAN JOSE ARROZ")                # calienta importaciones antes de medir
@@ -532,22 +587,27 @@ def evaluar(conjunto: list[dict], leer=lectura_reglas, con=None, medir_tiempo: b
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Mide el lector por reglas sobre conjunto.jsonl")
     ap.add_argument("--conjunto", type=Path, default=CONJUNTO)
-    ap.add_argument("--salida", type=Path, default=AQUI, help="carpeta para resultados.json, lecturas.jsonl y tablas.md")
+    ap.add_argument("--salida", type=Path, default=None,
+                    help="carpeta para resultados.json, lecturas.jsonl y tablas.md. Sin ella, la corrida versionada "
+                         "junto a este archivo; con otro conjunto es obligatoria y va fuera del repositorio")
     a = ap.parse_args(argv)
+    try:
+        salida = carpeta_de_salida(a.conjunto, a.salida, AQUI)
+    except SalidaNoPermitida as e:
+        print(e)
+        return 2
     os.environ["DESPACHOX_SIN_RED"] = "1"        # garantía para la corrida: nada de lugares/ llama al modelo
     conjunto = cargar_conjunto(a.conjunto)
     res = evaluar(conjunto)
-    bruto = a.conjunto.read_bytes()
     res.update({
         "fecha": datetime.now().astimezone().isoformat(timespec="seconds"),
         "lector": "entrada.sms.leer_sms tras entrada.privacidad.limpiar (Mesa.leer con DESPACHOX_SIN_RED=1); "
                   "lugar con lugares.resolver, elegir=None",
         "maquina": f"{platform.system()} {platform.release()} {platform.machine()}, Python {platform.python_version()}",
-        "conjunto": {"ruta": str(a.conjunto.relative_to(RAIZ)) if a.conjunto.is_relative_to(RAIZ) else str(a.conjunto),
-                     "n": len(conjunto), "sha256": hashlib.sha256(bruto).hexdigest()},
+        "conjunto": {"ruta": ruta_legible(a.conjunto), "n": len(conjunto), "sha256": huella(a.conjunto)},
     })
-    a.salida.mkdir(parents=True, exist_ok=True)
-    with open(a.salida / "lecturas.jsonl", "w", encoding="utf-8", newline="\n") as f:
+    salida.mkdir(parents=True, exist_ok=True)
+    with open(salida / "lecturas.jsonl", "w", encoding="utf-8", newline="\n") as f:
         for reg, lect, cal in zip(conjunto, res["lecturas"], res["calificaciones"]):
             f.write(json.dumps({"id": reg["id"], "origen": reg["origen"], "variante": reg["variante"],
                                 "texto": reg["texto"], "lectura": lect,
@@ -555,15 +615,16 @@ def main(argv: list[str] | None = None) -> int:
                                 "clase_lugar": cal["clase_lugar"], "errores": cal["errores"]},
                                ensure_ascii=False) + "\n")
     guardar = {k: v for k, v in res.items() if k not in ("lecturas", "calificaciones")}
-    (a.salida / "resultados.json").write_text(json.dumps(guardar, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
-    (a.salida / "tablas.md").write_text("# Tablas de la corrida (generadas por evaluar.py)\n\n" + tablas_md(res),
-                                        encoding="utf-8")
-    gen, dif = res["metricas"]["generados"], res["metricas"]["dificiles"]
-    print(f"generados: sin errores {gen['mensaje_sin_errores']['aciertos']}/{gen['mensaje_sin_errores']['n']}, "
-          f"lugar seguro {gen['lugar_acierto_seguro']['aciertos']}/{gen['lugar_acierto_seguro']['n']}, "
-          f"F1 productos {gen['productos']['f1']:.3f}")
-    print(f"difíciles: sin errores {dif['mensaje_sin_errores']['aciertos']}/{dif['mensaje_sin_errores']['n']}")
-    print(f"escrito en {a.salida}")
+    with open(salida / "resultados.json", "w", encoding="utf-8", newline="\n") as f:
+        f.write(json.dumps(guardar, ensure_ascii=False, indent=1) + "\n")
+    with open(salida / "tablas.md", "w", encoding="utf-8", newline="\n") as f:
+        f.write("# Tablas de la corrida (generadas por evaluar.py)\n\n" + tablas_md(res))
+    for nombre, k in (("generados", "generados"), ("difíciles", "dificiles")):
+        m = res["metricas"].get(k)              # un conjunto de otro origen puede no traer los dos grupos
+        if m and m.get("mensaje_sin_errores"):
+            print(f"{nombre}: sin errores {m['mensaje_sin_errores']['aciertos']}/{m['mensaje_sin_errores']['n']}, "
+                  f"F1 productos {_pct(m['productos']['f1'])} %")
+    print(f"escrito en {salida}")
     return 0
 
 

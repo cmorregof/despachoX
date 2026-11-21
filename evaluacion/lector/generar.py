@@ -6,10 +6,12 @@
 Cada mensaje sale de un registro conocido: un lugar del nomenclátor (barrios.csv, veredas de
 lugares_extra.csv y puntos.csv de datos/semilla/), un conteo de familias, personas, niños, adultos
 mayores o bebés, productos del catálogo de entrada/raciones.py (con kilos a veces) y una urgencia.
-El registro es la etiqueta de oro; el texto se escribe después, como escriben los comités.
+El registro es la etiqueta de oro; el texto se escribe después, como suponemos que escriben los comités.
 
 Semilla fija: SEMILLA = 20261121. Con la misma semilla y Python 3.12, la parte generada se reproduce
-byte a byte. Los lugares salen de lugares_base.csv, una copia congelada de los de datos/semilla/
+byte a byte, con fin de línea LF. El .gitattributes de esta carpeta fija LF para .jsonl y .csv, y la
+verificación lee CRLF como LF, así que un clon de Windows con core.autocrlf=true también coincide.
+Los lugares salen de lugares_base.csv, una copia congelada de los de datos/semilla/
 (21 nov 2026), para que un barrio nuevo en la semilla no cambie el conjunto; se rehace con
 --congelar-lugares. El generador no importa código de entrada/ ni de lugares/: la etiqueta no
 depende del lector que se mide.
@@ -626,6 +628,14 @@ def texto_generado(semilla: int = SEMILLA) -> str:
     return "".join(linea(r) for r in generar(semilla))
 
 
+def parte_generada(ruta: Path = CONJUNTO) -> bytes:
+    """Las primeras N líneas del conjunto congelado, en bytes y con fin de línea LF. Es lo que se compara
+    con texto_generado() en --verificar y en las pruebas. Dentro de una línea JSON no hay saltos de línea
+    crudos, así que cortar en b"\\n" separa los registros sin ambigüedad."""
+    lineas = ruta.read_bytes().replace(b"\r\n", b"\n").split(b"\n")
+    return b"".join(x + b"\n" for x in lineas[:N])
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--semilla", type=int, default=SEMILLA)
@@ -637,9 +647,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     generado = texto_generado(a.semilla)
     if a.verificar:
-        congelado = CONJUNTO.read_text(encoding="utf-8")
-        parte = "".join(congelado.splitlines(keepends=True)[:N])
-        igual = parte.encode("utf-8") == generado.encode("utf-8")
+        igual = parte_generada() == generado.encode("utf-8")
         print("la parte generada coincide byte a byte" if igual else "NO coincide con conjunto.jsonl")
         return 0 if igual else 1
     dificiles = leer_dificiles()
