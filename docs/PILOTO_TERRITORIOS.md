@@ -1,5 +1,7 @@
 # Tres territorios para el piloto de 30 a 90 días
 
+**Decisión de Carlos (21 de noviembre, 6:10 a. m.): el piloto va en la propuesta 2.**
+
 Cada propuesta une una comuna y un corregimiento para el piloto con el Banco Arquidiocesano de Alimentos y la UGR. Consulta del 20 de noviembre de 2026. **[F]** lo dice la fuente, abierta hoy con un lector automático y pendiente de revisión humana; **[M]** lo calculé con datos del repositorio; **[I]** es inferencia nuestra.
 
 ## Lo común a los tres

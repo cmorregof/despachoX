@@ -146,7 +146,7 @@ Sale uno o dos segundos mientras el operador cambia al tablero. Si el cambio es 
 
 ## Diapositiva 7 · El piloto
 
-**Texto en pantalla (14 palabras).** «Piloto de 90 días en la rutina del Banco: La Macarena y El Tablazo.»
+**Texto en pantalla (15 palabras).** «Piloto de 90 días en la rutina del Banco: Ciudadela del Norte y El Manantial.»
 
 **Visual por hacer, en dos piezas.**
 
@@ -162,11 +162,11 @@ Sale uno o dos segundos mientras el operador cambia al tablero. Si el cambio es 
 
 Debajo de la línea, la regla de cambio: «Si el Banco no reparte, el piloto pasa al flujo de la UGR y la Gobernación». `docs/PLAN_30_90.md` propone el día 15 como plazo para aplicarla, y ese plazo lo confirma Carlos.
 
-- **El corredor del territorio.** La opción rápida es un esquema: Banco Arquidiocesano, luego los tres CDI de La Macarena a entre 2,9 y 3,3 km, y luego Bajo Tablazo a 9,3 km por la vía a Chinchiná [M]. La opción con más tiempo es un mapa con `datos_publicos/puntos.csv`, `datos_publicos/acopios.csv` y la red vial. Las distancias salen de `docs/PILOTO_TERRITORIOS.md`, propuesta 1. Etiquetas: «Sismo: daños en El Carmen y Bajo Tablazo*» y «Java, 2025: unas 150 familias incomunicadas, según un líder local*».
+- **El mapa del territorio.** Ya está hecho, en `figuras_pitch/png/a_territorio_propuesta2.png` y su SVG en `figuras_pitch/svg/`. Muestra el Banco y los cuatro puntos del catálogo en Ciudadela del Norte, que son dos CDI, un centro de salud y un CISCO, a entre 2,4 y 4,1 km [M]. También muestra Alto Bonito, en El Manantial, a 8,8 km, con una ruta que sale por la comuna San José [M]. Las distancias son las de `docs/PILOTO_TERRITORIOS.md`, propuesta 2, y la rama `territorio-p2` las volvió a medir por la red vial con el método de Noche-2, con el mismo resultado (`figuras_pitch/README.md`). Etiquetas que se añaden en el editor de diapositivas: «Sismo: cuatro viviendas perdidas en Pueblo Hondo*» y «En Maracas, la vía a Neira no tiene ruta alterna*».
 
-**Pie de fuente.** «Calamidad pública de Manizales vigente hasta el 9 de agosto de 2027 (Alcaldía, 16 de octubre de 2026*). A25: IDEA, UNAL Sede Manizales. Daños: La Patria, 13 sep 2026 y 19 mar 2025*.»
+**Pie de fuente.** «Calamidad pública de Manizales vigente hasta el 9 de agosto de 2027 (Alcaldía, 16 de octubre de 2026*). A25: IDEA, UNAL Sede Manizales. Pueblo Hondo: Alcaldía, 27 ago 2026*. Maracas: INVÍAS, registro #767, 15 ene 2023*.»
 
-**Nota del orador.** La recuperación del territorio, para este piloto, es que la capacidad de despachar quede en manos locales, con el Banco, las juntas y la UGR, y que se use entre desastres (`docs/FICHA_CORTA.md`, componente 4; lecciones del FOREC en la investigación 10, sección 5.4). Al Banco se le piden tres datos sin información personal: su catálogo de puntos, su inventario con vencimientos y un mes de despachos (`docs/PILOTO.md`, sección 6). Hay un criterio de parada. Si la reconstrucción en frío no ahorra kilómetros ni desperdicio, el piloto se rediseña antes de pedirle tiempo a nadie (`docs/PILOTO.md`, sección 5). El territorio lo decide el Banco, donde tenga más organizaciones inscritas.
+**Nota del orador.** La recuperación del territorio, para este piloto, es que la capacidad de despachar quede en manos locales, con el Banco, las juntas y la UGR, y que se use entre desastres (`docs/FICHA_CORTA.md`, componente 4; lecciones del FOREC en la investigación 10, sección 5.4). Al Banco se le piden tres datos sin información personal: su catálogo de puntos, su inventario con vencimientos y un mes de despachos (`docs/PILOTO.md`, sección 6). Hay un criterio de parada. Si la reconstrucción en frío no ahorra kilómetros ni desperdicio, el piloto se rediseña antes de pedirle tiempo a nadie (`docs/PILOTO.md`, sección 5). El territorio es la propuesta 2, que Carlos eligió el 21 de noviembre a las 6:10 a. m. Ciudadela del Norte es la comuna más poblada, con 58.776 habitantes (ASIS 2023*). El PMA recorrió con la Alcaldía las veredas con más daño para identificar necesidades de seguridad alimentaria, y en esa nota hablan las juntas de Alto Bonito y Alto del Guamo (Alcaldía, 20 de agosto*). Al final decide el Banco, donde tenga más organizaciones inscritas.
 
 **Criterio.** 4, hitos, entregables y validación; 5, aliados y riesgo, por la regla de cambio; 3, el A25.
 
@@ -259,11 +259,11 @@ Debajo, métodos y datos: ruteo con capacidad y ventanas de tiempo en OR-Tools s
 
 **Texto en pantalla (8 palabras).** «Tres territorios posibles. Al final decide el Banco.»
 
-**Visual.** Tres columnas con las viñetas de `docs/PILOTO_TERRITORIOS.md`, sección «Para la diapositiva», sin cambiar ninguna cifra: La Macarena y El Tablazo; Ciudadela del Norte y El Manantial; Atardeceres y Kilómetro 41.
+**Visual.** Tres columnas con las viñetas de `docs/PILOTO_TERRITORIOS.md`, sección «Para la diapositiva», sin cambiar ninguna cifra: La Macarena y El Tablazo; Ciudadela del Norte y El Manantial; Atardeceres y Kilómetro 41. La columna de Ciudadela del Norte y El Manantial va resaltada, porque es la del piloto.
 
 **Pie de fuente.** «Fuentes en `docs/PILOTO_TERRITORIOS.md`. Distancias por la red vial del equipo.»
 
-**Nota del orador.** Ese documento recomienda la 1, porque el sismo dejó daño con fuente en sus dos partes y sus accesos se caen también sin sismo. Además, comuna y vereda quedan sobre una sola ruta. La 3 conviene si el IDEA respalda la prueba del A25.
+**Nota del orador.** Carlos eligió la 2 el 21 de noviembre a las 6:10 a. m. Ciudadela del Norte es la comuna más poblada. Además, el PMA ya levantó necesidades en las veredas de la propuesta, y sus juntas hablaron en público. El documento recomendaba la 1, porque el sismo dejó daño con fuente en sus dos partes y sus accesos se caen también sin sismo. Además, en la 1 comuna y vereda quedan sobre una sola ruta, mientras que en la 2 la ruta a Alto Bonito sale por la comuna San José. La 3 conviene si el IDEA respalda la prueba del A25.
 
 **Criterio.** 4, y también 1 por el territorio.
 
