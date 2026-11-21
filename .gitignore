@@ -18,3 +18,5 @@ despacho/cache/
 datos/*.sal
 datos/*.sal
 datos/hojas/
+# Caché de la red vial (despacho/red.py) junto al graphml, si DESPACHOX_GRAFO apunta al repositorio
+*.pkl
