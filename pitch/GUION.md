@@ -72,7 +72,7 @@ Se dice «registros», porque un mismo derrumbe puede tener varios. Los 4 del si
 
 **Habla:** Voz 1. **Pantalla:** diapositiva 4, las piezas sueltas y la que falta.
 
-> ¿Hay algo parecido? Hay piezas sueltas, pensadas para la emergencia, y ninguna une el pedido, el vehículo, la vía y la entrega. El registro de damnificados cerró el 4 de septiembre y dejó por fuera a familias rurales dispersas*.
+> ¿Hay algo parecido? Hay piezas sueltas, pensadas para la emergencia, y ninguna une el pedido, el vehículo, la vía y la entrega. Por ejemplo, el registro de damnificados cerró el 4 de septiembre y dejó por fuera a familias rurales dispersas*.
 
 Al terminar la frase, el operador pasa al tablero.
 
@@ -102,7 +102,7 @@ Al terminar la frase, el operador pasa al tablero.
 
 > Cada paquete lleva un código QR, y la entrega queda registrada cuando ese código llega por chat o SMS. Con esos registros, el prototipo arma una tabla por comuna y vereda que mide el piloto. En [SIM] jornadas simuladas, los críticos a tiempo suben [SIM] puntos frente al despacho por orden de llegada.
 
-La comparación con un despachador con oficio va siempre en la diapositiva. Decirla en voz alta depende de la pregunta 2 de `docs/FICHA_MENTORIA.md`, que se les hace a los mentores en la mentoría 2 [DECIDE CARLOS]. Si se dice, la frase es «Frente a un despachador con oficio, [SIM].» Si el resultado nuevo vuelve a ser un empate en críticos, se añade la frase de `docs/PROBLEMA.md`: «El valor está en que esa pericia quede disponible para cualquier voluntario, a cualquier hora.»
+Si la corrida nueva no da una subida clara frente al orden de llegada, la frase se reescribe con lo que salió, sin buscarle otra línea base. La comparación con un despachador con oficio va siempre en la diapositiva. Decirla en voz alta depende de la pregunta 2 de `docs/FICHA_MENTORIA.md`, que se les hace a los mentores en la mentoría 2 [DECIDE CARLOS]. Si se dice, la frase es «Frente a un despachador con oficio, [SIM].» Si el resultado nuevo vuelve a ser un empate en críticos, se añade la frase de `docs/PROBLEMA.md`: «El valor está en que esa pericia quede disponible para cualquier voluntario, a cualquier hora.»
 
 ### Bloque 7 · El piloto de 30 a 90 días · 2:30 a 2:52 · criterios 3, 4 y 5
 
