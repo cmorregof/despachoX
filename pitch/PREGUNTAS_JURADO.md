@@ -44,9 +44,9 @@ No hay una cifra pública de comida dañada o vencida en Manizales ni en Caldas,
 
 **6. ¿Qué funciona hoy, de verdad?**
 
-El bot de Telegram y el tablero corren en la nube desde el viernes a las 3:45 p. m., y las 342 pruebas automáticas del repositorio pasan [M]. El flujo corre de punta a punta, del pedido por chat al plan para una flota mixta y al recálculo después de un cierre. El despachador aprueba cada plan con su nombre, y cada paquete se cierra con «ENTREGADO» y su código, por chat o por SMS [M].
+El bot de Telegram y el tablero corren en la nube desde el viernes a las 3:45 p. m., y en la revisión de las 23:50 pasaron 345 pruebas automáticas [M]. El flujo corre de punta a punta, del pedido por chat al plan para una flota mixta y al recálculo después de un cierre. El despachador aprueba cada plan con su nombre, y cada paquete se cierra con «ENTREGADO» y su código, por chat o por SMS [M].
 
-*Respaldo.* `docs/FICHA.md`, componente 2; `torre/CANAL.md`, entrada de las 23:15.
+*Respaldo.* `docs/FICHA.md`, componente 2; `torre/CANAL.md` en `main`, entrada de las 23:50. El conteo se repite después del congelamiento de las 8:30 a. m.
 
 **7. ¿Qué mide el prototipo? (mentoría 1)**
 
