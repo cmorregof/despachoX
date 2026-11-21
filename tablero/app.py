@@ -26,6 +26,7 @@ sys.path[:] = [str(RAIZ)] + [p for p in sys.path if Path(p or ".").resolve() not
 from datos import db  # noqa: E402
 from tablero import datos as T  # noqa: E402
 from tablero import mapa_base  # noqa: E402
+from tablero.clave import clave_ok  # noqa: E402
 from tablero.mapa_base import seguro as S  # noqa: E402  - todo texto de la base que va al mapa
 
 NOMBRE = "Convite"          # nombre visible (canal, 20/11 23:30); módulos y archivos no cambian
@@ -647,6 +648,8 @@ def mesa() -> None:
 def main() -> None:
     st.set_page_config(page_title=f"{NOMBRE} · Mesa de despacho", layout="wide")
     st.markdown(ESTILO, unsafe_allow_html=True)
+    if not clave_ok():
+        st.stop()
     c1, c2 = st.columns([5, 1])
     c1.title(f"{NOMBRE} · Mesa de despacho")
     c2.text_input("Despachador", key="quien", placeholder="Tu nombre", label_visibility="collapsed")

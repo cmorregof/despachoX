@@ -15,6 +15,8 @@ streamlit run tablero/app.py
 
 En PowerShell la primera línea es `$env:DESPACHOX_DB = "C:\ruta\a\despachoX\datos\despachox.db"`. Sin esa variable se usa `datos/despachox.db` de la copia donde se ejecuta. El tablero no usa claves de `.env`. Necesita internet para las teselas de OpenStreetMap (estándar, sin clave ni registro).
 
+**Clave de acceso.** Si existe la variable `DESPACHOX_CLAVE_TABLERO`, el tablero pide esa clave antes de mostrar la mesa (`tablero/clave.py`). Si no existe, queda abierto. En la nube se define en Railway, y la clave se comparte por fuera del repositorio.
+
 ## Qué hace cada parte
 
 | En pantalla | Qué muestra o hace |
