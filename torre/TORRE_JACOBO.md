@@ -1,8 +1,8 @@
 # Torre de control · Jacobo · rol C (tablero)
-Última actualización: 2026-11-20 14:05 (hora de Colombia)
+Última actualización: 2026-11-20 14:20 (hora de Colombia)
 
 ## Estado en una frase
-Entorno listo y primera versión del tablero (mapa + «Por revisar») corriendo con la semilla de Carlos.
+Entorno listo; mi primera versión del tablero está en `main` (e9e15fc) y desde las 14:20 la sesión `C-tablero` de Carlos sigue construyendo `tablero/`.
 
 ## Hecho (con el commit o archivo que lo prueba)
 - Repositorio clonado en `C:\Users\Jacobo\despachoX`.
@@ -12,13 +12,15 @@ Entorno listo y primera versión del tablero (mapa + «Por revisar») corriendo 
 - `tablero/app.py`: mapa con acopios, puntos críticos, pedidos, cierres y rutas; columna «Por revisar» con Confirmar, Descartar y Levantar, cada acción anotada en la bitácora.
 
 ## En curso (qué, hasta dónde llegó, qué falta)
-- Paso 3 del encargo: bloque «Plan» (Calcular, tabla por vehículo, Aprobar y Rechazar, aviso de recálculo).
+- Probar el tablero como despachador apenas `C-tablero` avance y anotar qué sobra y qué falta.
+- Tarea 0: verificar las cifras fuertes del informe 05 (`docs/TAREA_0.md`).
 
 ## Siguiente paso exacto (el comando o el archivo por donde seguir)
-Agregar el bloque «Plan» a `tablero/app.py`, llamando `python -m despacho.optimizar` con subprocess.
+Leer mi parte de `docs/TAREA_0.md` (informe 05) y verificar sus cifras fuertes en 20 minutos.
 
 ## Decisiones y por qué
 - Python 3.12 para el `.venv`, igual que B-despacho (OR-Tools y osmnx pueden no tener paquetes para 3.15).
+- 14:20, Fable en el canal: `tablero/` pasa a la sesión `C-tablero` de Carlos para no gastar mi cupo; yo pruebo y hago la Tarea 0.
 - No se crea `tablero/datos_falsos.py`: la semilla de Carlos ya está en `main` (canal, 11:36).
 
 ## Bloqueos y preguntas para el capitán
