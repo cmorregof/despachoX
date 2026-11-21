@@ -176,7 +176,7 @@ Leer 10.000 mensajes con el modelo costaría entre 1,75 y 4,50 USD, estimado sin
 
 **26. ¿Qué pasa después del día 90?**
 
-El sistema corre en un portátil del acopio con software abierto, en Python con SQLite y OR-Tools, así que no exige pagar licencias [M]. El plan lo deja en manos del Banco y de la UGR, sin una estructura paralela como las gerencias del FOREC de 1999, cuya autonomía frente a las autoridades locales debilitó la gobernanza territorial [I, F]. Los bancos ya cobran por la logística, y el de Bogotá cobra 270 COP por kilo de fruta y verdura para cubrir esos costos, así que la operación podría caber en ese esquema [F, I].
+El sistema corre en un portátil del acopio con software abierto, en Python con SQLite y OR-Tools, así que no exige pagar licencias [M]. El plan lo deja en manos del Banco y de la UGR, sin una estructura paralela como las gerencias del FOREC de 1999, cuya autonomía frente a las autoridades locales debilitó la gobernanza territorial [I, F]. El Banco de Alimentos de Bogotá ya cobra 270 COP por kilo de fruta y verdura para cubrir costos logísticos, así que la operación podría caber en un esquema así [F, I].
 
 *Respaldo.* `docs/RIESGOS.md`, R9; `docs/FICHA.md`, componente 5; `datos_publicos/costos.csv`.
 
