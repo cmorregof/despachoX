@@ -529,3 +529,6 @@ Por decisión de Carlos de las 9:00 entran a `main` `jacobo-informe` (pestaña I
 - **ENTREGADO** solo vale desde el chat que hizo el pedido, o desde otro que pidió para el mismo punto. En la prueba y en la demo, el teléfono que confirma tiene que ser el que pidió.
 - **Carlos:** en Railway, `DESPACHOX_CACHE_LUGARES=0`, para que el bot responda como en el ensayo. Y no abrir la pestaña Informe en el pitch: con la base de la demo muestra dos alertas de vencimiento y «21 pendientes».
 - Samuel: «Villa Café» se lee como el producto café en el lugar «villa». No se arregla hoy; no se usa ese ejemplo. H6 sigue abierto.
+
+### 09:27 · Fable → todos · AVISO
+Corrección de horas: mi aviso rotulado 09:40 se empujó a las 9:17. Arreglo pequeño en `entrada/sms.py`: «café» dentro de un nombre de lugar ya no se lee como producto. «Somos 30 familias en villa cafe no hay arroz» da el lugar «villa cafe» y un solo producto, arroz, y lo mismo con «la autopista del cafe». Si se pide café, se sigue leyendo. Probar: `python -m pytest entrada/pruebas/test_sms_cafe.py -q` (5 pasan). Vale para el lector por reglas (SMS y sin red); con el modelo activo no lo pude probar.

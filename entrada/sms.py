@@ -110,6 +110,9 @@ def _producto(tokens: list[str], i: int) -> tuple[str | None, int]:
     return None, 0
 
 
+_ANTES_DE_LUGAR = {"villa", "del"}     # palabras que anteceden a «café» en nombres de lugar
+
+
 def _lugar(tramos: list[list[str]]) -> str | None:
     """El tramo de palabras sin clasificar más largo, sin relleno en los bordes."""
     mejor = []
@@ -207,6 +210,9 @@ def _leer(texto: str) -> Extraccion:
             codigo = t
         else:
             p, largo = _producto(tokens, i)
+            # «Villa Café» y «la autopista del Café» son lugares: ahí «café» no es un producto pedido.
+            if p == "café" and i > 0 and tokens[i - 1] in _ANTES_DE_LUGAR:
+                p = None
             if p and p != "mercado":
                 kg = kilos_pendientes
                 kilos_pendientes = None
