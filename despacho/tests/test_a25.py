@@ -349,3 +349,19 @@ def test_comparar_muestra_lo_que_cambia_sin_guardar_nada(mundo, con, grafo, ahor
     assert r["apagado"]["pedidos_atendidos"] == r["encendido"]["pedidos_atendidos"] == 1
     assert r["encendido"]["duracion_rutas_min"] >= r["apagado"]["duracion_rutas_min"]
     assert con.execute("SELECT COUNT(*) FROM planes").fetchone()[0] == 0
+
+
+def test_temporada_cuenta_los_dias_con_ladera_en_alerta(monkeypatch):
+    lista = [{"tramo": "avenida Kevin Ángel", "lat": 5.0790, "lon": -75.5010, "osm_u": 1, "osm_v": 2},
+             {"tramo": "avenida sin historial", "lat": 5.0420, "lon": -75.4990, "osm_u": 3, "osm_v": 4}]
+    monkeypatch.setattr(a25, "tramos", lambda con: lista)
+    # Norte: 16 mm durante los 25 días que terminan en DIA (400 mm, roja). El día antes falta el
+    # primer día de su ventana y la cota inferior da 384 mm, naranja. Sur: 325 mm, naranja.
+    lluvia = lluvia_de({"norte": serie_constante(16.0, dias=25), "sur": serie_constante(13.0, dias=40)})
+    filas = a25.temporada(None, DIA - timedelta(days=1), DIA, lluvia, ESTACIONES)
+    assert [f["fecha"] for f in filas] == [(DIA - timedelta(days=1)).isoformat(), DIA.isoformat()]
+    assert (filas[0]["roja"], filas[0]["naranja"]) == (0, 2)
+    assert (filas[1]["roja"], filas[1]["naranja"]) == (1, 1)
+    assert filas[0]["ladera_en_alerta"] == ["avenida Kevin Ángel (naranja)"]   # la otra no tiene historial
+    assert filas[1]["ladera_en_alerta"] == ["avenida Kevin Ángel (roja)"]
+    assert all(f["lluvia"] == "sintética" for f in filas)

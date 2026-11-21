@@ -27,6 +27,7 @@ Uso:
     python -m despacho.a25 --fecha 2026-11-21 --estaciones  # A25 de cada estación
     python -m despacho.a25 --fecha 2026-11-21 --corredores  # km de cada vía en alerta (red vial)
     python -m despacho.a25 --fecha 2026-11-21 --comparar    # plan con el gancho apagado y encendido
+    python -m despacho.a25 --desde 2026-10-01 --hasta 2026-11-21   # un renglón por día de la temporada
 """
 from __future__ import annotations
 
@@ -412,6 +413,29 @@ def _km_por_nivel(g, resultado: dict, riesgo: Riesgo) -> dict[str, float]:
     return {n: round(x, 2) for n, x in km.items()}
 
 
+def temporada(con: sqlite3.Connection | None, desde: date | str, hasta: date | str, lluvia: Lluvia | None = None,
+              estaciones: list[Estacion] | None = None) -> list[dict]:
+    """Un renglón por día: cuántos tramos hubo en cada nivel y qué vías de ladera estaban en naranja o roja.
+
+    Con la lluvia real del IDEA, esta tabla da cuántos días de la temporada hubo vías con historial
+    de cierres en alerta, que es un indicador verificable para el piloto.
+    """
+    desde, hasta = _fecha(desde), _fecha(hasta)
+    estaciones = estaciones if estaciones is not None else leer_estaciones()
+    lluvia = lluvia if lluvia is not None else leer_lluvia(estaciones=estaciones)
+    lista = tramos(con)
+    salida = []
+    for k in range((hasta - desde).days + 1):
+        dia = desde + timedelta(days=k)
+        al = alertas_tramos(con, dia, lluvia, estaciones, lista_tramos=lista)
+        conteo = {n: sum(1 for a in al if a["nivel"] == n) for n in reversed(NIVELES)}
+        ladera = [f"{a['tramo']} ({a['nivel']})" for a in al
+                  if a["cierres_por_ladera"] and a["nivel"] in ("naranja", "roja")]
+        salida.append({"fecha": dia.isoformat(), **conteo, "ladera_en_alerta": ladera,
+                       "lluvia": "sintética" if lluvia.sintetica else "real"})
+    return salida
+
+
 def comparar(con: sqlite3.Connection, g, fecha: date | str, segundos: int = 8, ahora: datetime | None = None) -> dict:
     """El mismo plan con el gancho apagado y encendido, sin escribir nada en la base.
 
@@ -587,6 +611,37 @@ def _imprimir_comparacion(fecha: date, segundos: int, lluvia: Lluvia) -> int:
     return 0
 
 
+def _imprimir_temporada(desde: date, hasta: date, lluvia: Lluvia, estaciones: list[Estacion],
+                        en_csv: bool) -> int:
+    from datos import db
+    if lluvia.sintetica:
+        print(AVISO_SINTETICO, file=sys.stderr)
+    con = db.conectar() if db.RUTA_DB.exists() else None
+    try:
+        filas = temporada(con, desde, hasta, lluvia, estaciones)
+    finally:
+        if con is not None:
+            con.close()
+    if en_csv:
+        w = csv.writer(sys.stdout)
+        w.writerow(["fecha", "roja", "naranja", "amarilla", "sin_alerta", "sin_dato", "fuera_de_red",
+                    "ladera_en_alerta", "lluvia"])
+        for f in filas:
+            w.writerow([f["fecha"], f["roja"], f["naranja"], f["amarilla"], f["sin_alerta"], f["sin_dato"],
+                        f["fuera_de_red"], "; ".join(f["ladera_en_alerta"]), f["lluvia"]])
+        return 0
+    print(f"A25 por día, del {desde.isoformat()} al {hasta.isoformat()} · tramos por nivel")
+    if lluvia.sintetica:
+        print("LLUVIA SINTÉTICA · no es una medición del IDEA · solo para la demostración")
+    print(f"\n{'fecha':10} {'roja':>5} {'naranja':>8} {'amarilla':>9} {'sin alerta':>11}  vías de ladera en naranja o roja")
+    for f in filas:
+        print(f"{f['fecha']:10} {f['roja']:>5} {f['naranja']:>8} {f['amarilla']:>9} {f['sin_alerta']:>11}  "
+              f"{', '.join(f['ladera_en_alerta']) or '-'}")
+    dias = sum(1 for f in filas if f["ladera_en_alerta"])
+    print(f"\nDías con alguna vía de ladera en naranja o roja: {dias} de {len(filas)}.")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Alerta A25 (lluvia antecedente de 25 días) por tramo de vía.")
     ap.add_argument("--fecha", help="día del A25, AAAA-MM-DD (incluye ese día); por defecto, hoy")
@@ -594,6 +649,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--estaciones", action="store_true", help="A25 por estación en vez de por tramo")
     ap.add_argument("--corredores", action="store_true",
                     help="km de cada vía en alerta, arista por arista (carga la red vial)")
+    ap.add_argument("--desde", help="con --hasta, un renglón por día de la temporada (AAAA-MM-DD)")
+    ap.add_argument("--hasta", help="último día de la temporada (AAAA-MM-DD)")
     ap.add_argument("--comparar", action="store_true",
                     help="plan de la base con el gancho apagado y encendido, sin guardar nada")
     ap.add_argument("--segundos", type=int, default=8, help="límite del solver por plan en --comparar")
@@ -607,6 +664,9 @@ def main(argv: list[str] | None = None) -> int:
     lluvia = leer_lluvia(args.lluvia, estaciones)
     if args.comparar:
         return _imprimir_comparacion(fecha, args.segundos, lluvia)
+    if args.desde or args.hasta:
+        return _imprimir_temporada(_fecha(args.desde or fecha), _fecha(args.hasta or fecha), lluvia,
+                                   estaciones, args.csv)
     con = None
     if db.RUTA_DB.exists() and not (args.estaciones or args.corredores):
         con = db.conectar()
