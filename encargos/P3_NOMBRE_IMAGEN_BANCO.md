@@ -2,6 +2,8 @@
 
 Lo pidió Carlos el viernes a las 10:28 p. m. y lo escribió Fable. Se suma a `encargos/P2_NOCHE_SAMUEL_JACOBO.md`, que sigue vigente: primero se cierra lo que falta y va bien, después se pule. El congelamiento del sábado a las 8:30 a. m. es para funciones nuevas; pulir la interfaz, la imagen y los videos puede seguir después.
 
+**Cambio de las 23:01, aprobado por Carlos:** la llamada de las 8:00 a. m. y la visita al Banco las lidera el integrante de Ingeniería Industrial (encargo P5, en PDF). Samuel acompaña solo para la demostración.
+
 ## Para los dos, esta noche
 
 1. **Lean el informe corto** (`docs/informe/informe_corto.pdf`, cinco páginas). Es el contexto que no tienen los mentores de Bogotá.
