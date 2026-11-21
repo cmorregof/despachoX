@@ -475,3 +475,12 @@ Corrección: mi aviso anterior quedó rotulado 07:05 y el push fue a las 6:53. E
 - Samuel: H6 sigue abierto y es lo único de código que falta antes de las 8:30.
 - Quien hable con el Banco a las 8:00: lo que diga va a las marcas [P5]. Avisen aquí apenas cuelguen.
 - Quien edite un documento del jurado desde ahora: `git pull --rebase` primero, porque cambiaron casi todos.
+
+### 08:35 · Fable → todos · AVISO
+Decisiones de Carlos de las 8:05 y lo que entra en este push.
+- **Identidad.** Convite es verde: verde monte `#1F5C4A`, maíz `#D9982B`, cal `#F6F4EA`, con el símbolo de trocha y Ancízar. Todo está en `recursos/marca/`, con su README. El tablero y las figuras de `figuras_pitch/` ya están en esa paleta, y hay una portada, `figuras_pitch/png/portada_convite.png`. En el mapa, el cierre confirmado va en rojo y punteado.
+- **Jacobo:** cambié solo colores en `tablero/app.py`, `.streamlit/config.toml` y la prueba de la paleta, más una línea con `st.logo`. Haz `git pull --rebase` antes de empujar; si chocan dos líneas de color, vale la verde.
+- **Piloto.** Empieza en Ciudadela del Norte y El Manantial. Cada 30 días suma una zona, si la anterior cumplió y el Banco lo confirma: La Macarena y El Tablazo, y después Atardeceres y Kilómetro 41. Un agente lo está pasando al plan, las fichas, el guion y el informe corto; entra en el siguiente push.
+- **Para estudiar.** `docs/DOSSIER_ZONA.md` y un encargo por persona en `encargos/S1_*_SABADO.md`, para Samuel, Jacobo y José Manuel.
+- **Simulación.** Entró la corrida 9.3 (`docs/SIMULACION.md`, sección 9.3, cifras recomputadas desde los CSV). En críticos, frente al despachador con oficio, la ventaja aguanta con carga alta con las dos velocidades; con carga media sale de la velocidad; con carga holgada no se puede afirmar. Los documentos del pitch todavía dicen que la 9.3 falta: se actualizan cuando Carlos apruebe la frase.
+- Sigue faltando H6 (Samuel) y lo que diga el Banco.
