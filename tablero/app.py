@@ -601,6 +601,98 @@ def reinicio_datos(con) -> None:
             refrescar()
 
 
+SIN_DATOS = "Sin datos todavía"
+FONDO_VENCE = "#F6E9E2"            # ámbar suave: perecedero que vence en menos de 12 h
+
+
+def _kg(v) -> str:
+    return f"{v or 0:,.0f} kg".replace(",", ".")
+
+
+def _barras(filas: list[dict], categoria: str, series: dict[str, str], titulo_y: str = "kg"):
+    """Barras agrupadas con altair (viene con Streamlit). series: columna -> rótulo."""
+    import altair as alt
+    import pandas as pd
+    df = pd.DataFrame([{categoria: html.escape(str(f.get(categoria) or "?")), "serie": rotulo,
+                        "kg": float(f.get(col) or 0)} for f in filas for col, rotulo in series.items()])
+    colores = [TINTA, AMBAR, CENIZA, CREMA][:len(series)]
+    return (alt.Chart(df).mark_bar(cornerRadiusTopLeft=4, cornerRadiusTopRight=4)
+            .encode(x=alt.X(f"{categoria}:N", sort="-y", title=None),
+                    y=alt.Y("kg:Q", title=titulo_y), xOffset="serie:N",
+                    color=alt.Color("serie:N", title=None,
+                                    scale=alt.Scale(domain=list(series.values()), range=colores)),
+                    tooltip=[f"{categoria}:N", "serie:N", alt.Tooltip("kg:Q", format=",.0f")])
+            .properties(height=280))
+
+
+def detalle_informe(con) -> None:
+    """Solo lectura: lo mandado y lo que hay en bodega, tal como lo registra la base."""
+    inf = T.informe(con)
+    r = inf["resumen"]
+    c1, c2, c3, c4 = st.columns(4)
+    tarjeta(c1, "Pedidos atendidos (entregados)", str(r["pedidos_atendidos"]),
+            f"{r['pedidos_pendientes']} pendientes (nuevos, confirmados y asignados)", contexto="pedidos")
+    tarjeta(c2, "Despachado (paquetes en ruta o entregados)", _kg(r["kg_despachados"]),
+            f"Entregado: <b>{_kg(r['kg_entregados'])}</b>", contexto="mandado")
+    tarjeta(c3, "Inventario cargado en bodega", _kg(r["kg_inventario_cargado"]),
+            "Suma de lotes.kg: no se descuenta al despachar", contexto="bodega")
+    crit = ("–" if r["pct_criticos_a_tiempo"] is None else f"{r['pct_criticos_a_tiempo']:.0f} %")
+    tarjeta(c4, "Críticos entregados a tiempo", crit,
+            f"{r['criticos_a_tiempo']} de {r['criticos_evaluados']} evaluados", contexto="críticos",
+            alerta=r["pct_criticos_a_tiempo"] is not None and r["pct_criticos_a_tiempo"] < T.META_CRITICOS_PCT,
+            meta=f"meta {T.META_CRITICOS_PCT} %")
+    c5, c6, _, _ = st.columns(4)
+    tarjeta(c5, "Perecederos que vencen en menos de 12 h", _kg(r["kg_vencen_12h"]),
+            alerta=r["kg_vencen_12h"] > 0, contexto="vencen pronto" if r["kg_vencen_12h"] > 0 else "sin riesgo")
+    tarjeta(c6, "Perecederos que vencen en menos de 24 h", _kg(r["kg_vencen_24h"]),
+            alerta=r["kg_vencen_24h"] > 0, contexto="próximas 24 h")
+
+    st.subheader("Lo que se ha mandado")
+    st.markdown("**kg por producto** · despachado y entregado (de los paquetes)")
+    if inf["por_producto"]:
+        st.altair_chart(_barras(inf["por_producto"], "producto",
+                                {"kg_despachado": "despachado", "kg_entregado": "entregado"}), use_container_width=True)
+    else:
+        st.markdown(SIN_DATOS)
+    a, b = st.columns(2)
+    with a:
+        st.markdown("**Por vehículo** · planes aprobados")
+        if inf["vehiculos"]:
+            st.dataframe(tabla([{"Vehículo": v["vehiculo"], "Tipo": v["tipo"], "Paradas": v["paradas"],
+                                 "kg": round(v["kg"] or 0, 1), "Estado": v["estado"]} for v in inf["vehiculos"]]),
+                         hide_index=True, width="stretch")
+        else:
+            st.markdown(SIN_DATOS)
+    with b:
+        st.markdown("**kg por territorio** · pedidos y entregados")
+        if inf["por_territorio"]:
+            st.altair_chart(_barras(inf["por_territorio"], "territorio",
+                                    {"kg_pedidos": "pedido", "kg_entregados": "entregado"}),
+                            use_container_width=True)
+        else:
+            st.markdown(SIN_DATOS)
+
+    st.subheader("Lo que hay en bodega")
+    st.caption("Inventario cargado: los lotes registrados. La base no descuenta los kilos despachados, así que "
+               "no es la existencia real.")
+    if inf["bodega"]:
+        st.altair_chart(_barras([{"producto": f["producto"], f["acopio"]: f["kg"]} for f in inf["bodega"]],
+                                "producto", {ac: ac for ac in sorted({f["acopio"] for f in inf["bodega"]})},
+                                "kg cargados"), use_container_width=True)
+        vence = [l["vence_pronto"] for l in inf["lotes"]]
+        st.markdown("**Lotes por vencimiento** · en ámbar, perecederos que vencen en menos de 12 h")
+        st.dataframe(tabla([{"Lote": l["id"], "Producto": l["producto"], "Acopio": l["acopio"],
+                             "kg": l["kg"], "Perecedero": "sí" if l["perecedero"] else "",
+                             "Vence": limite(l["vence_en"]) if l["vence_en"] else "",
+                             "Horas para vencer": l["horas_para_vencer"]} for l in inf["lotes"]],
+                           fondo_fila=lambda i: FONDO_VENCE if vence[i] else None),
+                     hide_index=True, width="stretch")
+    else:
+        st.markdown(SIN_DATOS)
+    st.download_button("Descargar informe (CSV)", T.informe_csv(inf), file_name="informe.csv", mime="text/csv",
+                       key="informe_csv")
+
+
 def detalle_bitacora(con) -> None:
     filas = T.bitacora(con, 60)
     if not filas:
@@ -623,7 +715,8 @@ def mesa() -> None:
         revisar = T.por_revisar(con)
         indicadores(T.indicadores(con, plan), plan)
         st.write("")
-        t_mesa, t_plan, t_territorio, t_bitacora = st.tabs(["Mesa", "Plan en detalle", "Territorio", "Bitácora"])
+        t_mesa, t_plan, t_territorio, t_informe, t_bitacora = st.tabs(
+            ["Mesa", "Plan en detalle", "Territorio", "Informe", "Bitácora"])
         with t_mesa:
             col_mapa, col_lado = st.columns([2.6, 1])
             with col_mapa:
@@ -638,6 +731,8 @@ def mesa() -> None:
             detalle_plan(con, plan, rutas)
         with t_territorio:
             detalle_territorio(con)
+        with t_informe:
+            detalle_informe(con)
         with t_bitacora:
             detalle_bitacora(con)
             reinicio_datos(con)
