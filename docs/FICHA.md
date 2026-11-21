@@ -13,7 +13,7 @@ Marcas: **[F]** dato de una fuente · **[M]** medido por el equipo · **[E]** es
 
 ## 1. Problema y vertical (20 puntos)
 
-**El problema en una frase.** Después del sismo, la comida donada llegó a la región y se atascó en el despacho. Según las fuentes que revisó el equipo, ninguna herramienta en uso une el pedido de cada barrio o vereda, el vehículo disponible, la vía abierta y la confirmación de entrega.
+**El problema en una frase.** Después del sismo, la comida donada llegó a la región y se atascó en el despacho. Según las fuentes que revisamos, ninguna herramienta en uso une el pedido de cada barrio o vereda, el vehículo disponible, la vía abierta y la confirmación de entrega.
 
 **Qué pasó en agosto.** El sismo del 10 de agosto de 2026 tuvo magnitud 7,4 y ocurrió a las 7:34 a. m., con epicentro en San José del Palmar, Chocó (Decreto 1261 de 2026; por verificar). En Manizales, el censo que cerró el 24 de agosto registró 8.240 personas damnificadas y 3.080 predios evacuados (Noticias RCN, 24 de agosto; por verificar). Esa misma mañana se cortaron dos salidas de la ciudad. El 12 de agosto seguían cerradas por completo la vía Pereira–Chinchiná, entre los kilómetros 22 y 24, y la vía Manizales–Fresno en Herveo (Tolima), entre los kilómetros 36+800 y 40+300 (Semana, 12 de agosto; por verificar). Minuto30 había ubicado ese cierre en el sector del Alto de Letras el 10 de agosto (por verificar).
 
@@ -37,7 +37,7 @@ Marcas: **[F]** dato de una fuente · **[M]** medido por el equipo · **[E]** es
 | Avala | Unidad de Gestión del Riesgo de Manizales y Consejo Municipal de Gestión del Riesgo | Usa la mesa en simulacros y en la temporada de lluvias |
 | Recibe | Las personas que comen en esos puntos | No usa el sistema; nota si la comida llegó, a tiempo y en buen estado |
 
-**Relación con la vertical 04.** La ficha de la vertical describe los derrumbes en las vías de acceso a Manizales y el desabastecimiento de alimentos que generan. Nombra como usuarios a la Cruz Roja, la Defensa Civil, el Banco de Alimentos, los transportadores y los comités barriales. Pide una plataforma o un protocolo de despacho en tiempo real, con optimización de rutas y trazabilidad de paquetes, para una flota mixta. Mide el resultado con el porcentaje de entregas a tiempo en puntos críticos y con el desperdicio de perecederos, que debe quedar por debajo del 5 %. Convite responde a ese entregable y mide esos dos indicadores. La ficha afirma que el desabastecimiento llega en 48 horas; no hallamos una fuente que lo respalde para este sismo, y por eso no lo repetimos.
+**Relación con la vertical 04.** La ficha de la vertical describe los derrumbes en las vías de acceso a Manizales y el desabastecimiento de alimentos que generan. Nombra como usuarios a la Cruz Roja, la Defensa Civil, el Banco de Alimentos, los transportadores y los comités barriales. Pide una plataforma o un protocolo de despacho en tiempo real, con optimización de rutas y trazabilidad de paquetes, para una flota mixta. Mide el resultado con el porcentaje de entregas a tiempo en puntos críticos y con el desperdicio de perecederos, que debe quedar por debajo del 5 %. Convite responde a ese entregable y mide esos dos indicadores. La ficha afirma que el desabastecimiento llega en 48 horas. No hallamos una fuente que lo respalde para este sismo, y por eso no lo repetimos.
 
 ---
 
