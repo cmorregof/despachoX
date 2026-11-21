@@ -54,32 +54,26 @@ def _inicio(st, error: bool) -> str | None:
     izquierda, derecha = st.columns([5, 6], gap="large", vertical_alignment="center")
     with izquierda:
         st.markdown(
-            '<p class="inicio-ceja">MESA DE DESPACHO · AYUDA ALIMENTARIA</p>'
+            '<p class="inicio-ceja">MANIZALES · CALDAS</p>'
             '<p class="inicio-titulo">Que la comida llegue aunque la vía se cierre</p>'
-            '<p class="inicio-bajada">Aquí el despachador del banco de alimentos ve los pedidos de barrios y '
-            "veredas, los cierres de vía que reportan los conductores y el plan de rutas del día. "
-            "Cada plan lo aprueba una persona.</p>",
+            '<p class="inicio-bajada">Mesa de despacho de ayuda alimentaria para los barrios y las veredas de Manizales.</p>',
             unsafe_allow_html=True)
         with st.form("entrada", border=False):
             dada = st.text_input("Clave de la mesa", type="password", key="clave_tablero",
-                                 placeholder="Escribe la clave que te dio el equipo",
-                                 help="La mesa aprueba planes y registra entregas, por eso entra solo quien despacha.")
+                                 placeholder="Clave", label_visibility="collapsed")
             enviado = st.form_submit_button("Entrar a la mesa", type="primary", width="stretch")
         if error:
-            st.error("Esa clave no abre la mesa. Revisa mayúsculas y espacios, o pídesela a quien coordina el despacho.")
+            st.error("Esa clave no abre la mesa. Revísala o pídesela al equipo.")
         st.markdown(
-            '<ul class="inicio-pasos"><li>Pedidos por chat y SMS</li><li>Rutas con lo que vence primero</li>'
-            "<li>Entrega confirmada con código</li></ul>"
-            f'<p class="inicio-nota">¿No tienes clave? Puedes dejar un pedido de prueba en el bot de Telegram: '
-            f'<a href="{BOT}" target="_blank" rel="noopener">t.me/despachox_bot</a>.</p>',
+            f'<p class="inicio-nota">¿Sin clave? Haz un pedido de prueba en '
+            f'<a href="{BOT}" target="_blank" rel="noopener">Telegram</a>.</p>',
             unsafe_allow_html=True)
     with derecha:
         imagen = _MARCA / "hero_convite_inicio.jpg"
         if imagen.exists():
             st.image(str(imagen), width="stretch")
-    st.markdown('<p class="inicio-pie">Convite · Equipo 19 · Hackathon UNAL Manizales 2026 · '
-                "Los pedidos y los lotes de esta mesa son de prueba. Ilustración generada con IA.</p>",
-                unsafe_allow_html=True)
+    st.markdown('<p class="inicio-pie">Equipo 19 · Hackathon UNAL Manizales 2026 · Datos de prueba · '
+                "Ilustración generada con IA</p>", unsafe_allow_html=True)
     return dada if enviado else None
 
 
