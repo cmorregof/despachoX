@@ -441,9 +441,48 @@ def tarjeta_silencio(con, d: dict) -> None:
             refrescar()
 
 
+def tarjeta_grupo(con, g: dict) -> None:
+    """Grupo de pedidos de un punto (DESPACHOX_AGRUPAR). Los números los sumó el código; el resumen lo
+    leyó el modelo y no cambia nada. El despachador confirma o descarta el grupo entero."""
+    with st.container(border=True):
+        punto = html.escape(g["punto"] or f"punto {g['punto_id']}")
+        critico = ' <span class="critico">· CRÍTICO</span>' if g["critico"] else ""
+        st.markdown(f"**Grupo · {punto}** · {g['n_pedidos']} pedidos{critico}", unsafe_allow_html=True)
+        familias = f"{g['familias'] or '?'} familias"
+        if g["sobre_tope"]:
+            familias += f" (tope T_z aplicado: declaradas {g['familias_declaradas']})"
+        st.caption(f"{familias} · {g['kg'] or 0:g} kg · urgencia {g['urgencia']} · límite {limite(g['limite_en'])}")
+        if g["resumen"]:
+            st.markdown(f'<span class="cita"><i>{html.escape(g["resumen"])}</i></span>',
+                        unsafe_allow_html=True)
+            st.caption("leído por el modelo")
+        else:
+            st.caption("sin resumen todavía")
+        with st.expander("Ver los pedidos del grupo"):
+            for p in g["pedidos"]:
+                st.caption(f"Pedido {p['id']}: {p['texto_original'] or 'sin texto'} · "
+                           f"{p['familias'] or '?'} familias · {p['kg_estimado'] or '?'} kg")
+        c1, c2 = st.columns(2)
+        if c1.button("Confirmar grupo", type="primary", key=f"gc{g['clave']}", width="stretch"):
+            n = T.confirmar_grupo(con, g["pedido_ids"], quien(), g["clave"])
+            avisar("ok" if n else "error", f"Grupo de {g['punto'] or g['punto_id']}: {n} pedidos confirmados "
+                   f"por {quien()}." if n else "No se pudo confirmar el grupo.")
+            refrescar()
+        if c2.button("Descartar grupo", key=f"gd{g['clave']}", width="stretch"):
+            n = T.descartar_grupo(con, g["pedido_ids"], quien(), g["clave"])
+            avisar("ok" if n else "error", f"Grupo de {g['punto'] or g['punto_id']}: {n} pedidos descartados "
+                   f"por {quien()}." if n else "No se pudo descartar el grupo.")
+            refrescar()
+
+
 def por_revisar(con, revisar: dict) -> None:
-    total = (len(revisar["ubicaciones"]) + len(revisar["pedidos"]) + len(revisar["cierres"])
-             + len(revisar["silencio"]))
+    grupos = revisar.get("grupos") or []
+    pedidos = revisar["pedidos"]
+    if grupos:          # los pedidos que ya van en un grupo no se repiten como sueltos
+        agrupados = {i for g in grupos for i in g["pedido_ids"]}
+        pedidos = [d for d in pedidos if d["id"] not in agrupados]
+    total = (len(revisar["ubicaciones"]) + len(pedidos) + len(revisar["cierres"])
+             + len(revisar["silencio"]) + len(grupos))
     st.subheader(f"Por revisar ({total})")
     if not total and not revisar["confirmados_sin_ubicar"]:
         st.markdown("Nada pendiente.")
@@ -471,7 +510,10 @@ def por_revisar(con, revisar: dict) -> None:
     for u in revisar["ubicaciones"]:
         tarjeta_ubicacion(con, u)
 
-    for d in revisar["pedidos"]:
+    for g in grupos:
+        tarjeta_grupo(con, g)
+
+    for d in pedidos:
         with st.container(border=True):
             donde = ('<span class="sin-ubicar">sin ubicar</span>' if d["sin_ubicar"] else
                      html.escape(d["punto"]) + (' <span class="critico">· CRÍTICO</span>' if d["critico"] else ""))
@@ -713,6 +755,7 @@ def mesa() -> None:
         plan = T.plan_vigente(con)
         rutas = T.rutas(con, plan)
         revisar = T.por_revisar(con)
+        revisar["grupos"] = T.grupos_por_revisar(con)
         indicadores(T.indicadores(con, plan), plan)
         st.write("")
         t_mesa, t_plan, t_territorio, t_informe, t_bitacora = st.tabs(

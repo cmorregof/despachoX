@@ -13,6 +13,11 @@ Gancho del A25 (`despacho/a25.py`), apagado por defecto: con `DESPACHOX_A25=1` (
 el costo de las vías en alerta naranja o roja se multiplica por un factor. Encarece sin
 prohibir, los tiempos de llegada no cambian y el resumen dice qué vías se encarecieron y
 cuántos kilómetros en alerta recorre el plan. Apagado, el plan es el de siempre.
+Gancho de grupos (`despacho/agrupar.py`), apagado por defecto: con `DESPACHOX_AGRUPAR=1` los
+pedidos confirmados se agrupan por punto de entrega y ventana de tiempo con una regla determinista
+(ST-DBSCAN del triage, familias y kilos sumados con tope por zona) y cada grupo entra al modelo
+como un solo pedido, representado por su pedido más antiguo. `resumen.grupos` dice qué pedidos
+forman cada grupo. Apagado, todo se comporta como hoy.
 
 Modelo (sustituto declarado de «tiempo de llegada y privación»):
   minimizar  tiempo de viaje
@@ -281,11 +286,62 @@ def _plan_vigente(con: sqlite3.Connection) -> int | None:
 
 
 def sincronizar_aprobados(con: sqlite3.Connection) -> None:
-    """Los pedidos de un plan aprobado pasan a `asignado` (por si el tablero solo cambió el plan)."""
+    """Los pedidos de un plan aprobado pasan a `asignado` (por si el tablero solo cambió el plan).
+
+    Si el plan se calculó sobre grupos (`resumen.grupos`), los miembros de cada grupo con parada
+    también pasan a `asignado`: la parada lleva el id del pedido madre y los kilos de todo el grupo.
+    """
     con.execute("UPDATE pedidos SET estado='asignado' WHERE estado='confirmado' AND id IN "
                 "(SELECT pa.pedido_id FROM paradas pa JOIN planes pl ON pl.id = pa.plan_id "
                 " WHERE pl.estado='aprobado' AND pa.pedido_id IS NOT NULL)")
+    for miembros in _miembros_aprobados(con):
+        con.execute(f"UPDATE pedidos SET estado='asignado' WHERE estado='confirmado' AND id IN "
+                    f"({','.join('?' * len(miembros))})", miembros)
     con.commit()
+
+
+def _miembros_aprobados(con: sqlite3.Connection) -> list[list[int]]:
+    """Por cada parada de un plan aprobado calculado con grupos, los pedidos del grupo."""
+    salida = []
+    for pl in con.execute("SELECT id, resumen FROM planes WHERE estado='aprobado'"):
+        try:
+            grupos = (json.loads(pl["resumen"] or "{}") or {}).get("grupos") or {}
+        except (TypeError, ValueError):
+            continue
+        if not grupos:
+            continue
+        madres = {str(r["pedido_id"]) for r in con.execute(
+            "SELECT pedido_id FROM paradas WHERE plan_id=? AND pedido_id IS NOT NULL", (pl["id"],))}
+        for madre, miembros in grupos.items():
+            if madre in madres and isinstance(miembros, list) and miembros:
+                salida.append([int(x) for x in miembros])
+    return salida
+
+
+def _agrupar_pedidos(datos: dict, ahora: datetime, activo: bool | None) -> list[str]:
+    """Gancho de grupos: reemplaza en `datos['pedidos']` los confirmados por un pedido por grupo.
+
+    Apagado (DESPACHOX_AGRUPAR sin 1, o `activo=False`), no toca nada y devuelve []. Los pedidos
+    `asignado` de un recálculo y las alertas por silencio no se agrupan. Deja `datos['grupos']` =
+    {id de la madre: [ids]} para el resumen del plan.
+    """
+    from despacho import agrupar as mod_agrupar
+    if not (mod_agrupar.activo() if activo is None else activo):
+        return []
+    sueltos = [p for p in datos["pedidos"] if p.get("estado") != "confirmado" or p.get("origen") == "silencio"]
+    candidatos = [p for p in datos["pedidos"] if p not in sueltos]
+    grupos = mod_agrupar.agrupar(candidatos, datos["puntos"], ahora=ahora)
+    datos["pedidos"] = sueltos + [g.como_pedido() for g in grupos]
+    datos["grupos"] = {str(g.como_pedido()["id"]): list(g.pedido_ids) for g in grupos}
+    datos["grupos_detalle"] = [{"clave": g.clave, "punto_id": g.punto_id, "pedidos": len(g.pedido_ids),
+                                "familias": g.familias, "familias_declaradas": g.familias_declaradas,
+                                "tope_familias": g.tope_familias, "sobre_tope": g.sobre_tope,
+                                "kg": round(g.kg, 1), "kg_declarados": round(g.kg_declarados, 1)}
+                               for g in grupos]
+    sobre = sum(1 for g in grupos if g.sobre_tope)
+    return [f"grupos: {len(candidatos)} pedidos confirmados agrupados en {len(grupos)} grupo(s) por punto de "
+            f"entrega y ventana de tiempo (regla, no modelo)"
+            + (f"; {sobre} grupo(s) con familias recortadas al tope de su zona" if sobre else "")]
 
 
 def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int, int],
@@ -539,6 +595,8 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
                                         for l in x["s"].lineas] for x in hechos},
         "vehiculos": por_vehiculo,
         "cierres_aplicados": [c["id"] for c in datos["cierres"] if c["osm_u"] is not None],
+        "grupos": datos.get("grupos") or {},
+        "grupos_detalle": datos.get("grupos_detalle") or [],
         "avisos": avisos,
         "solver": {"estado": routing.status(), "objetivo": sol.ObjectiveValue(),
                    "limite_s": max(1, min(10, int(segundos))),
@@ -550,7 +608,8 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
                       "factor_empaque_activo": FACTOR_EMPAQUE_ACTIVO,
                       "factor_empaque_activo_nota": NOTA_EMPAQUE,
                       "factor_empaque_activo_aplica_a": EMPAQUE_APLICA_A,
-                      "factor_tiempo": mod_matriz.FACTOR_TIEMPO, "un_viaje_por_vehiculo": True},
+                      "factor_tiempo": mod_matriz.FACTOR_TIEMPO, "un_viaje_por_vehiculo": True,
+                      "agrupar": bool(datos.get("grupos"))},
     }
     if riesgo is not None:
         resumen["a25"] = _resumen_a25(riesgo, en_alerta, flota)
@@ -614,7 +673,8 @@ def _escribir(con: sqlite3.Connection, motivo: str, resultado: dict, segundos_ca
 
 def planificar(con: sqlite3.Connection | None = None, motivo: str = "inicial",
                segundos: int = LIMITE_BUSQUEDA_S, recalculo: bool = False, g=None,
-               ahora: datetime | None = None, a25: bool | None = None) -> int:
+               ahora: datetime | None = None, a25: bool | None = None,
+               agrupar: bool | None = None) -> int:
     """Calcula y escribe un plan `propuesto`. Devuelve su id. No lanza excepciones.
 
     recalculo=False: planea los pedidos `confirmado` con los vehículos libres.
@@ -624,6 +684,8 @@ def planificar(con: sqlite3.Connection | None = None, motivo: str = "inicial",
     vigente hasta que el despachador apruebe el nuevo (`aprobar`); si rechaza la propuesta, el
     aprobado no se pierde. `resumen.reemplaza_a` nombra igual el aprobado que se quiere sustituir.
     a25: enciende el gancho del A25; None lo toma de DESPACHOX_A25 (apagado por defecto).
+    agrupar: planea sobre grupos de pedidos por punto de entrega (`despacho/agrupar.py`); None lo
+             toma de DESPACHOX_AGRUPAR (apagado por defecto).
     """
     inicio = time.perf_counter()
     propia = con is None
@@ -648,9 +710,10 @@ def planificar(con: sqlite3.Connection | None = None, motivo: str = "inicial",
                 if r["vehiculo_id"] in en_ruta and r["pedido_id"] in asignados:
                     bloqueos[r["pedido_id"]] = r["vehiculo_id"]
         ahora = ahora or datetime.now(db.BOGOTA)
+        avisos_grupos = _agrupar_pedidos(datos, ahora, agrupar)
         riesgo, avisos_a25 = _riesgo_a25(g, ahora, a25)
         resultado = _resolver(datos, g, ahora, segundos, bloqueos, riesgo=riesgo)
-        resultado["resumen"]["avisos"] = (avisos_cierres + avisos_a25
+        resultado["resumen"]["avisos"] = (avisos_cierres + avisos_grupos + avisos_a25
                                           + resultado["resumen"].get("avisos", []))
     except Exception as e:  # noqa: BLE001  (regla del módulo: plan vacío con motivo, nunca excepción)
         traceback.print_exc(file=sys.stderr)
@@ -713,13 +776,15 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--quien", default="despachador")
     ap.add_argument("--a25", action="store_true", default=None,
                     help="enciende el gancho del A25 (por defecto lo decide DESPACHOX_A25)")
+    ap.add_argument("--agrupar", action="store_true", default=None,
+                    help="planea sobre grupos por punto de entrega (por defecto lo decide DESPACHOX_AGRUPAR)")
     args = ap.parse_args(argv)
     if args.aprobar is not None:
         con = db.conectar()
         ok = aprobar(con, args.aprobar, args.quien)
         print(args.aprobar if ok else f"el plan {args.aprobar} no está propuesto", file=sys.stdout if ok else sys.stderr)
         return 0 if ok else 1
-    print(planificar(motivo=args.motivo, segundos=args.segundos, a25=args.a25))
+    print(planificar(motivo=args.motivo, segundos=args.segundos, a25=args.a25, agrupar=args.agrupar))
     return 0
 
 
