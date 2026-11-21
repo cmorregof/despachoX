@@ -25,7 +25,7 @@ class ClienteSimulado:
         self.enviados: list[Enviado] = []
 
     def _mensaje(self, **campos):
-        async def reply_text(texto, reply_markup=None):
+        async def reply_text(texto, reply_markup=None, parse_mode=None):
             e = Enviado(texto)
             if isinstance(reply_markup, InlineKeyboardMarkup):
                 e.botones = [(b.text, b.callback_data) for fila in reply_markup.inline_keyboard for b in fila]
@@ -50,6 +50,16 @@ class ClienteSimulado:
         m = self._mensaje()
         m.location = SimpleNamespace(latitude=lat, longitude=lon)
         return self._correr(self.m.ubicacion, effective_message=m)
+
+    def enviar_voz(self, duracion=8, audio=b"OggS-sintetico"):
+        """Una nota de voz. Lo que «se escucha» lo decide la prueba al reemplazar voz.transcribir."""
+        async def descargar():
+            return bytearray(audio)
+
+        async def get_file():
+            return SimpleNamespace(download_as_bytearray=descargar)
+        m = self._mensaje(voice=SimpleNamespace(duration=duracion, get_file=get_file), audio=None)
+        return self._correr(self.m.nota_de_voz, effective_message=m)
 
     def enviar_foto(self):
         return self._correr(self.m.otro, effective_message=self._mensaje())

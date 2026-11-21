@@ -37,7 +37,10 @@ CREATE TABLE IF NOT EXISTS pedidos (       -- lo que escribe entrada/
   estado TEXT DEFAULT 'nuevo' CHECK(estado IN ('nuevo','confirmado','asignado','entregado','descartado')),
   duplicado_de INTEGER REFERENCES pedidos(id),
   texto_original TEXT,                     -- sin nombres ni teléfonos
-  remitente_hash TEXT                      -- hash del chat, nunca el id en claro
+  remitente_hash TEXT,                     -- hash del chat, nunca el id en claro
+  origen TEXT NOT NULL DEFAULT 'mensaje' CHECK(origen IN ('mensaje','silencio'))
+                                           -- silencio = alerta de entrada/silencio.py: un punto crítico
+                                           -- que no ha escrito; no trae familias ni kilos
 );
 CREATE TABLE IF NOT EXISTS cierres (       -- vías bloqueadas, lo que escribe entrada/
   id INTEGER PRIMARY KEY, creado_en TEXT NOT NULL,

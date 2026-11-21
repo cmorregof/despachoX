@@ -241,3 +241,71 @@ Llegó `docs/investigacion/11_voz_publica_actores.md` (en `main`), con lo que di
 
 ### 18:08 · Fable → Carlos, Samuel, Jacobo · AVISO
 Terminaron los once agentes. Lo que se decide a las 9:00 p. m. está en `docs/DECISIONES_9PM.md`: para quién es DespachoX (Banco Arquidiocesano o Gobernación y UGR municipales, con una regla de cambio escrita), el piloto de 30 a 90 días, qué cambia antes del congelamiento, el orden del pitch y la lista única de llamadas. Los cierres viales históricos (178 registros del sismo y de 2017 a 2026) están en la rama `datos`. Relevo actualizado en `torre/RELEVO_FABLE.md`.
+
+### 16:30 · A-entrada (Samuel) → Carlos, B-despacho, Fable · LISTO
+Encargo A2, etapa 1, en la rama `samuel-bot`. El caso de La Enea ya deja un pedido con 6 familias estimadas (1 por bebé), leche con 12 kg y las dudas anotadas; al ubicar, el bot pregunta «¿Para cuántas familias?» con botones (1 a 5, 6 a 10, 11 a 20, más de 20) o número escrito, y vence a los dos minutos. Reglas en `entrada/raciones.py`; el modelo solo cuenta personas y bebés, el código convierte. Probar: `python -m pytest entrada/pruebas -q` (54 pasan, 1 se omite) y `entrada/pruebas/test_enea.py`. Sin medir con el modelo real todavía.
+
+### 16:30 · A-entrada (Samuel) → B-despacho · AVISO
+`pedidos.productos` puede traer kilos que puso la mesa por ración, marcados así: `{"producto": "leche", "kg": 12, "supuesto": "2 kg por familia"}`. `kg_estimado` se llena cuando todos los productos tienen kilos. Para `resumen.cantidad_supuesta`, un producto con la clave `supuesto` debería contar como cantidad supuesta. Los nombres se normalizan a los de la bodega (`huevo` → `huevos`, `lentejas` → `lenteja`).
+
+### 16:30 · A-entrada (Samuel) → Carlos · PREGUNTA
+¿Agregas a `datos/esquema.sql` la columna `pedidos.dudas TEXT` (lista JSON)? Ahí quedan las conversiones («Familias estimadas: 6, a partir de 6 bebés») para que el despachador las vea en el tablero. El código de `entrada/` ya la llena si existe y funciona igual si no. Supuesto mientras tanto: no existe.
+
+### 17:15 · A-entrada (Samuel) → Carlos, Fable · LISTO
+Encargo A2, etapa 2 (puntos 1, 2 y 4), en la rama `samuel-bot`. `/start` en tres líneas con dos ejemplos que se copian con un toque. Notas de voz: se transcriben, el bot muestra «Escuché: …» ya sin datos personales y sigue el flujo normal; el audio no se guarda (`entrada/voz.py`). `/estado` dice «recibido», «en revisión», «va en camino, llegada estimada 4:30 p. m.» o «entregado». Probar: `python -m pytest entrada/pruebas -q` (62 pasan, 1 se omite).
+
+### 17:15 · A-entrada (Samuel) → Carlos · PREGUNTA
+Voz: `.env.example` no traía servicio de transcripción. El código sirve con cualquiera compatible con `POST /audio/transcriptions` de OpenAI (Whisper de OpenAI, o Groq si se cambia `DESPACHOX_VOZ_URL`). Hace falta una clave en `DESPACHOX_VOZ_CLAVE` en Railway. Sin ella, el bot responde que escriban. ¿Cuál ponemos?
+
+### 17:15 · A-entrada (Samuel) → Carlos, Fable · PREGUNTA
+Propuesta del aviso de vuelta («Tu pedido va en camino, llegada estimada 4:30 p. m.»), antes de hacerla:
+(1) Al ubicar el pedido, el bot pregunta «¿Te aviso cuando salga?» con Sí / No. Solo con Sí se guarda algo (autorización expresa, Ley 1581).
+(2) Tabla nueva `avisos(pedido_id PRIMARY KEY, chat_cifrado TEXT, enviado_en TEXT)`. El id del chat va cifrado con una clave en `DESPACHOX_CLAVE_AVISOS`, fuera del repositorio, separado de `pedidos`.
+(3) El bot revisa cada minuto los pedidos con aviso que pasaron a `asignado` y manda el mensaje con la llegada de `paradas` del plan aprobado. No toca `despacho/`.
+(4) La fila se borra cuando el pedido pasa a `entregado` o `descartado`, y en todo caso a las 48 horas.
+¿La apruebas y agregas la tabla a `datos/esquema.sql`? Supuesto mientras tanto: no se hace y sigo con la etapa 3.
+
+### 18:00 · A-entrada (Samuel) → Carlos, Fable · LISTO
+Encargo A2, etapa 3, en `samuel-bot`. Resultados medidos en `entrada/ESCALA.md`, con extractor falso de 1,8 s de media: 5.000 mensajes a la vez dieron 914 por minuto, respuesta media de 2,8 s (máximo 19 s), 0 errores y 0 perdidos. Con 5 % de lecturas fallidas, 59 quedaron guardadas crudas y 0 se perdieron. El pico del encargo (500 en 10 minutos) tiene un margen de unas 18 veces. Cambios: un solo cliente de Anthropic con 2 reintentos del SDK (429, 5xx, red), `concurrent_updates(32)` y, si falla la base, el mensaje se guarda crudo. El costo por cada 10.000 mensajes es estimado (entre 1,75 y 4,50 USD): falta la corrida de 100 con el modelo real, porque no hay clave en este equipo. Probar: `python -m entrada.carga --n 1000 --concurrencia 50`.
+
+### 18:00 · A-entrada (Samuel) → dueño de lugares/, Fable · AVISO
+El cuello de botella del bot es `lugares/nomenclator.buscar`: el 97 % de los 65 ms que pasa cada mensaje en el hilo del bot, por `difflib` contra todo el nomenclátor (perfil de 150 mensajes). Pone el techo en unos 900 mensajes por minuto. Alcanza para la demo y para 10.000 al día. Para picos mayores, un prefiltro de candidatos o un caché por texto. No lo toqué.
+
+### 18:00 · A-entrada (Samuel) → Fable · PREGUNTA
+`entrada/raciones.py` usa las raciones de `despacho/semilla.py`, que no tienen fuente. ¿Las cambio por las de `datos_publicos/` (rama `datos`) cuando se fusione? Supuesto mientras tanto: siguen las de la semilla, marcadas como supuesto.
+
+### 19:00 · A-entrada (Samuel) → todos · AVISO
+Columna nueva **`pedidos.origen`** (`'mensaje'` por defecto | `'silencio'`) en `datos/esquema.sql`, rama `samuel-bot`. Una base que ya existe la recibe sola al abrirse: `datos/db.py`, en `conectar()`, hace el `ALTER TABLE` si falta, y no hace nada si ya está. `origen='silencio'` es una **alerta por silencio**: un punto crítico (`critico = 1`) sin pedidos con lugar confirmado en 6 horas (desde las 06:00 si nunca escribió). La fila llega en estado `nuevo`, con `punto_id`, urgencia 2, sin familias, kilos, productos ni remitente, y `texto_original` como «Sin contacto hace 7 h. Visita de verificación.». Cada punto tiene una sola alerta viva, cuyas horas se actualizan. Un pedido real ubicado en el punto la pasa a `descartado`. No despacha nada. Suite completa con la migración: 146 pasan, 3 se omiten. Demostración: `python -m entrada.silencio --ahora 2026-11-21T14:00:00`.
+
+### 19:00 · A-entrada (Samuel) → Jacobo (tablero) · AVISO
+El tablero debería pintar las filas con `pedidos.origen = 'silencio'` de otro color y con la etiqueta «Sin contacto: verificar», y ofrecer dos acciones: «Mandar a verificar» y «Descartar». No toqué `tablero/`.
+
+### 19:00 · A-entrada (Samuel) → B-despacho, Carlos · AVISO
+Riesgo: si el despachador **confirma** una alerta (`origen='silencio'`), el optimizador la trata como un pedido sin familias y la carga con 1 familia y 10 kg de mercado genérico. Una visita de verificación saldría con comida. Propuesta para `despacho/`: no surtir pedidos con `origen='silencio'`, o planearlos como parada de 0 kg. Mientras tanto, la regla para la demostración: la alerta se descarta o se reemplaza por un pedido real, no se confirma tal cual.
+
+### 20:00 · A-entrada (Samuel) → Fable, Carlos · LISTO
+`docs/PILOTO.md` en `samuel-bot`: DespachoX se gana el puesto en la operación diaria del banco de alimentos. Resumen en diez líneas para el **componente 5 de `docs/FICHA.md`**:
+1. DespachoX se gana el puesto en la operación diaria del Banco de Alimentos de Manizales, no solo el día del desastre.
+2. El RUD y Providencia exigieron un trámite nuevo en plena emergencia y excluyeron gente; Salva RS fue adoptado al tercer día porque era simple [F].
+3. Uso diario: repartir desde bodega a fundaciones y comedores lo que está por vencer, que es lo que el prototipo ya resuelve.
+4. No cubre todavía la recogida en donantes ni los pedidos recurrentes: después del día 90.
+5. Escala diaria: ABACO manejó unas 54.000 t en 2025 [F, por abrir], frente a 9,76 Mt perdidas o desperdiciadas al año en Colombia [F, DNP 2016].
+6. Las vías se cierran sin sismo (2017, 2021, 2023) [F], y por eso existe el A25 del IDEA-UNAL.
+7. Valor diario: entre 47 y 75 km menos por jornada que un despachador con oficio, del 5 % al 11 % [M, simulación con cierres]; sin cierres, [pendiente].
+8. Valor en emergencia: críticos a tiempo +12 a +46 puntos frente al orden de llegada; empate frente a un despachador con oficio [M].
+9. Hito del día 60: un día normal de reparto en paralelo, midiendo kilómetros y desperdicio contra la forma actual del operador.
+10. Al operador se le pide el catálogo de puntos, el inventario con vencimientos y un mes de despachos, sin datos personales.
+Tres cifras nuevas en `docs/FUENTES.md`, todas de resumen de búsqueda y sin abrir: hay que abrirlas antes del pitch.
+
+### 20:00 · A-entrada (Samuel) → simulacion · PREGUNTA
+Para `docs/PILOTO.md`, sección 4: ¿pueden correr el escenario **sin cierres** (0 cierres por jornada, el día normal del banco) y reportar kilómetros de `despachox` contra `experta`, con las mismas 30 semillas por carga? Mientras tanto queda marcado [pendiente].
+
+### 21:00 · A-entrada (Samuel) → Carlos, Fable · LISTO
+Encargo A3, parte 1, en `samuel-bot`: lector de SMS por reglas, sin modelo ni red (`entrada/sms.py`). Lee `PEDIDO 40 SAN JOSE ARROZ LECHE`, `PEDIDO 6 BEBES LA ENEA LECHE URGENTE`, `CIERRE AV DEL CENTRO CAMION` y `ENTREGADO DX7K2Q`, con errores de tipeo en la palabra clave, orden variable y relleno. Devuelve el mismo objeto que el extractor con modelo, así el flujo no cambia. Lo que no entiende se guarda crudo. Responde en un SMS de 160 caracteres o menos, sin tildes, para que no baje a 70. El bot lo usa si el modelo falla o con `DESPACHOX_SIN_RED=1`. Resultado: 20 de 20 SMS sintéticos bien, **pero no es independiente**: los casos y las reglas los escribió la misma sesión. Probar: `python -m pytest entrada/pruebas/test_sms.py -s` y `python -m entrada.sms "PEDIDO 40 SAN JOSE ARROZ LECHE"`.
+
+### 21:00 · A-entrada (Samuel) → B-despacho, Carlos · AVISO
+`ENTREGADO DX-7KQ3` por SMS o por Telegram llama a `despacho.paquetes.entregar(con, codigo, quien="remitente <8 letras del hash>")`, la función que anunciaron a las 16:10. No toqué `despacho/`. Riesgo: cualquiera que adivine un código puede marcarlo entregado (25⁴ = 390.625 códigos posibles). Para el piloto convendría que solo cuente si viene del punto de destino o del conductor.
+
+### 21:30 · A-entrada (Samuel) → Carlos, Fable · LISTO
+Encargo A3, parte 2, en `samuel-bot`: receptor de SMS para un acopio sin internet (`entrada/pasarela_sms.py`) y guía de montaje (`entrada/SMS.md`). Un celular Android con SMS Gateway for Android (código abierto, Apache 2.0) le reenvía cada SMS al portátil por el wifi local; el SMS pasa por el lector por reglas y por el mismo flujo, y la respuesta vuelve en un SMS. Probado de punta a punta con `curl`. **No se probó con un celular real y no hay video.** Proveedor en la nube comparado: Twilio, que admite SMS de ida y vuelta en Colombia según su guía; los precios no se consultaron. Probar: `python -m entrada.pasarela_sms` y el `curl` de `entrada/SMS.md`. Para la pregunta del jurado «¿y si no hay datos?»: criterio 5 (riesgo de conectividad) y criterio 2 (demo sin internet).
+

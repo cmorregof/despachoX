@@ -6,8 +6,9 @@ se mide el extractor real (test_campos.py). Solo se califican los campos listado
 TODOS = ["camion", "campero", "moto"]
 
 
-def _p(lugar, familias, productos, urgencia=2, horas=None):
-    return {"lugar": lugar, "familias": familias, "urgencia": urgencia, "horas_limite": horas,
+def _p(lugar, familias, productos, urgencia=2, horas=None, personas=None, bebes=None):
+    return {"lugar": lugar, "familias": familias, "personas": personas, "bebes": bebes,
+            "urgencia": urgencia, "horas_limite": horas,
             "productos": [{"producto": x, "kg": None} if isinstance(x, str) else {"producto": x[0], "kg": x[1]}
                           for x in productos]}
 
