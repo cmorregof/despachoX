@@ -20,7 +20,7 @@
 \newfontfamily\displayfont{AncizarSerif}[
   Path=./fuentes/, Extension=.ttf, UprightFont=*-Light, BoldFont=*-Bold, ItalicFont=*-Italic]
 \setmonofont{DejaVu Sans Mono}[Scale=0.80]
-\linespread{1.08}
+\linespread{1.05}
 \usepackage[protrusion=true, expansion=false]{microtype}
 % Sin patrones de guionado para el español en este sistema: texto en bandera y sin guiones.
 \usepackage{ragged2e}
@@ -29,7 +29,7 @@
 \emergencystretch=2em
 
 % ----------------------------------------------------------------------------- página
-\usepackage[letterpaper, top=2.2cm, bottom=2.3cm, left=2.6cm, right=2.6cm, headsep=0.7cm, footskip=1.0cm]{geometry}
+\usepackage[letterpaper, top=2.0cm, bottom=1.9cm, left=2.6cm, right=2.6cm, headsep=0.7cm, footskip=1.0cm]{geometry}
 
 % ----------------------------------------------------------------------------- color (Sanzo Wada, combinación 214)
 \usepackage{xcolor}
@@ -52,7 +52,7 @@
 \setkomafont{pagenumber}{\normalfont\small\color{tinta}}
 \setkomafont{caption}{\small}
 \setkomafont{captionlabel}{\small\scshape\color{tinta}}
-\RedeclareSectionCommand[beforeskip=-1.2\baselineskip plus -0.3\baselineskip,afterskip=0.35\baselineskip]{section}
+\RedeclareSectionCommand[beforeskip=-1.0\baselineskip plus -0.3\baselineskip,afterskip=0.3\baselineskip]{section}
 \RedeclareSectionCommand[beforeskip=-0.8\baselineskip plus -0.2\baselineskip,afterskip=-0.6em]{paragraph}
 \renewcommand*{\sectionformat}{{\color{ambar}\thesection}\enskip}
 
@@ -93,7 +93,15 @@
 \newcommand{\pv}{\textcolor{ambar}{\textsc{por verificar}}}
 \newcommand{\cf}[1]{\textcolor{tinta}{[\ref{#1}]}}                % cita a la lista numerada de fuentes
 \newcommand{\cff}[2]{\textcolor{tinta}{[\ref{#1}, \ref{#2}]}}
+% Hora de compilación. Con LuaLaTeX la calcula Lua en hora de Colombia; con XeLaTeX usa \time (compilar con TZ=America/Bogota).
+\usepackage{iftex}
+\ifLuaTeX
 \newcommand{\horacompilacion}{\directlua{tex.sprint(os.date(string.char(33,37).."H:"..string.char(37).."M", os.time() - 5*3600))}}
+\else
+\newcount\horasc \newcount\minutosc
+\horasc=\time \divide\horasc by 60 \minutosc=\time \multiply\horasc by 60 \advance\minutosc by -\horasc \divide\horasc by 60
+\newcommand{\horacompilacion}{\ifnum\horasc<10 0\fi\the\horasc:\ifnum\minutosc<10 0\fi\the\minutosc}
+\fi
 
 \begin{document}
 \RaggedRight
@@ -107,7 +115,7 @@
 {\large\itshape Informe de contexto regional de Convite (antes DespachoX). Versión corta para leer y mostrar\par}
 \vspace{0.15\baselineskip}
 {\color{ambar}\rule{\linewidth}{0.6pt}\par}
-{\small\color{ceniza} Viernes 20 de noviembre de 2026, compilado a las {\ancizarlining\horacompilacion}, hora de Colombia. El documento de trabajo completo es la versión 0.1. Marcas: \marca{E} evidencia de la fuente citada, \marca{I} inferencia nuestra, \marca{H} hipótesis por validar, \marca{M} medido por nosotros.\par}
+{\small\color{ceniza} Sábado 21 de noviembre de 2026, compilado a las {\ancizarlining\horacompilacion}, hora de Colombia. El documento de trabajo completo es la versión 0.1. Marcas: \marca{E} evidencia de la fuente citada, \marca{I} inferencia nuestra, \marca{H} hipótesis por validar, \marca{M} medido por nosotros.\par}
 \vspace{0.2\baselineskip}
 
 \begin{resumen}
@@ -126,10 +134,10 @@ El sismo del 10 de agosto de 2026 tuvo magnitud 7,4 y epicentro en San José del
 Las salidas de la ciudad también se cerraron. El 12 de agosto seguían cerrados por completo dos corredores. Uno era la vía Pereira–Chinchiná, entre los kilómetros 22 y 24; el otro, la vía Manizales–Fresno en Herveo (Tolima), entre los kilómetros 36+800 y 40+300 \cf{f:vias}. No encontramos la fecha en que reabrieron.
 
 \begin{figure}[ht]
-\begin{minipage}[b]{0.56\linewidth}
+\begin{minipage}[b]{0.52\linewidth}
 \includegraphics[width=\linewidth]{figuras/mapa_manizales.pdf}
 \end{minipage}\hfill
-\begin{minipage}[b]{0.41\linewidth}
+\begin{minipage}[b]{0.45\linewidth}
 \caption{Los 50 puntos de entrega del escenario público del equipo, lugares reales con fuente. Hay 35 críticos, como albergues y hospitales, y 15 no críticos. Los cuadrados son los acopios del Banco Arquidiocesano de Alimentos y del Coliseo Menor. Las flechas solo indican hacia dónde van los corredores cerrados del 10 al 12 de agosto \cf{f:vias}, porque los cierres quedan fuera del mapa.\newline Red vial: © colaboradores de OpenStreetMap (ODbL).}
 \label{fig:mapa}
 \end{minipage}
@@ -145,7 +153,8 @@ El territorio, en cambio, está organizado. Manizales tiene 12 comunas, 7 correg
 La comida llegó a la región. La red de bancos de alimentos (ABACO) activó un corredor humanitario el 10 de agosto, y Manizales fue uno de sus principales puntos de acopio \cf{f:corredor}. Según la nota del 16 de agosto, sin embargo, la red tenía en acopio y en tránsito mucho más de lo que había entregado. En tránsito iban 157.164 kg (figura~\ref{fig:barras}). El 18 de agosto la red nombró sus retos. El principal fue llegar al territorio, y después venían el transporte, la articulación entre actores, el almacenamiento en los acopios y las vías de acceso hacia las zonas rurales \cf{f:retos}.
 
 \begin{figure}[!ht]
-\includegraphics[width=\linewidth]{figuras/barras_abaco.pdf}
+\centering
+\includegraphics[width=0.78\linewidth]{figuras/barras_abaco.pdf}
 \caption{Kilos de la red de bancos de alimentos según Portafolio, 16 de agosto de 2026, seis días después del sismo. La nota no da fecha de corte ni dice si las cifras son nacionales. Fuente: Portafolio, 16 de agosto de 2026 \cf{f:flypass}, citada en la investigación 10 del equipo. Cifras \pv.}
 \label{fig:barras}
 \end{figure}
@@ -196,7 +205,7 @@ Decide & Consejo Municipal de Gestión del Riesgo, Unidad de Gestión del Riesgo
 \begin{propuesta}
 Propuesta del capitán y del coordinador, hecha con inferencias de las investigaciones 10 y 11 \marca{I}. Ningún aliado la ha visto todavía.
 \begin{itemize}[leftmargin=1.2em]
-\item \textbf{Rutina del Banco como nodo regional.} Mediríamos el piloto sobre los despachos que el Banco Arquidiocesano de Alimentos hace todo el año hacia organizaciones de Manizales y hacia cabeceras y veredas de Caldas. La herramienta tendría además un modo de emergencia.
+\item \textbf{Rutina del Banco como nodo regional.} Mediríamos el piloto sobre los despachos que el Banco Arquidiocesano de Alimentos hace todo el año hacia organizaciones de Manizales y hacia cabeceras y veredas de Caldas, con un modo de emergencia.
 \item \textbf{Marco oficial.} Según el informe que la Unidad de Gestión del Riesgo presentó al Concejo el 16 de octubre, Manizales mantiene la calamidad pública hasta el 9 de agosto de 2027, con un plan de acción específico \cf{f:alcnov}. Un piloto de 90 días cabe dentro de ese marco.
 \item \textbf{Temporada de lluvias.} La temporada sería la prueba de esfuerzo. En febrero de 2026 la ciudad declaró alerta amarilla por más de 200~mm de lluvia en menos de 25 días \cf{f:lluvia}. Ese es el umbral del amarillo del indicador A25 del IDEA de la UNAL, que pasa a naranja desde 300~mm y a rojo desde 400~mm \cf{f:a25}. El A25 ya está en el código como capa de riesgo por tramo, con lluvia de prueba, y en el piloto entraría con datos del IDEA.
 \item \textbf{Juntas que piden y confirman.} Cada junta pediría por su barrio o su vereda sin que se le exija el RUD, y confirmaría cada entrega con el código QR del paquete. Con esas confirmaciones el donante tendría el reporte que ABACO ya le promete \cf{f:donahoy}.
@@ -224,7 +233,7 @@ Propuesta del capitán y del coordinador, hecha con inferencias de las investiga
 {\footnotesize\ancizarlining
 Consultadas el 20 de noviembre de 2026 a través de los informes de investigación del equipo; ninguna ha sido abierta todavía por una persona. La lista completa, con fechas de corte y de consulta, está en el documento de trabajo (versión 0.1).
 \begin{multicols}{2}
-\begin{enumerate}[label={[\arabic*]}, ref={\arabic*}, leftmargin=2.2em, itemsep=0.5pt]
+\begin{enumerate}[label={[\arabic*]}, ref={\arabic*}, leftmargin=2.2em, itemsep=0pt]
 \item\label{f:decreto} Presidencia de la República. Decreto 1261 de 2026, 19 ago, \href{https://camacol.co/sites/default/files/descargables/DECRETO%201261de%202026_EMERGENCIA_compressed.pdf}{camacol.co}.
 \item\label{f:censo} Noticias RCN, 24 ago 2026, \href{https://www.noticiasrcn.com/colombia/manizales-prepara-la-demolicion-de-7-edificios-que-presentan-danos-estructurales-1053593}{noticiasrcn.com}.
 \item\label{f:vias} Semana, 12 ago 2026, \href{https://www.semana.com/nacion/articulo/actualizacion-de-las-vias-que-siguen-cerradas-tras-el-terremoto-en-colombia/202602/}{semana.com}.
