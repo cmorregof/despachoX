@@ -2,7 +2,7 @@
 
 **Documento interno. No se fusiona a `main` antes del pitch.** El repositorio es público (`docs/QA_NOCHE.md`, rama `qa-noche`, sección 2.1) y el jurado recibe su enlace (`ENTREGA.md`, rama `fuentes-noche`, fila 5). Este archivo trae la nota que se pone el propio equipo, así que se queda en la rama `n2-jurado`.
 
-La escribió el agente `n2-jurado` de Noche-2 el sábado 21 de noviembre de 2026, hora de Colombia. La primera versión va de las 12:03 a las 12:37 a. m. (commit `c726bea`). Esta segunda versión, escrita entre la 1:01 y la 1:45 a. m., corrige lo que encontró una revisión independiente y vuelve a cotejar cada frase citada con las ramas de la 1:36 a. m. Tres jurados que no vieron el trabajo lo califican con la rúbrica de `CLAUDE.md` y la escala de `docs/ESTRATEGIA.md` (excelente 100 %, sólido 75 %, parcial 50 %, incipiente 25 %, no evidenciado 0 %). Las calificaciones y los puntos que gana cada corrección son juicio mío, así que van como estimados [E]. Los conteos de pruebas, la demo por terminal y la cobertura del A25 los medí sobre copias de las ramas [M].
+La escribió el agente `n2-jurado` de Noche-2 el sábado 21 de noviembre de 2026, hora de Colombia. La primera versión va de las 12:03 a las 12:37 a. m. (commit `c726bea`). Esta segunda versión, escrita entre la 1:01 y la 1:40 a. m., corrige lo que encontró una revisión independiente y vuelve a cotejar cada frase citada con las ramas de la 1:36 a. m. Tres jurados que no vieron el trabajo lo califican con la rúbrica de `CLAUDE.md` y la escala de `docs/ESTRATEGIA.md` (excelente 100 %, sólido 75 %, parcial 50 %, incipiente 25 %, no evidenciado 0 %). Las calificaciones y los puntos que gana cada corrección son juicio mío, así que van como estimados [E]. Los conteos de pruebas, la demo por terminal y la cobertura del A25 los medí sobre copias de las ramas [M].
 
 ## Resumen
 
@@ -32,7 +32,7 @@ Con las cinco y una respuesta del Banco que se pueda citar, el rango sube a entr
 | `jacobo-tablero` | `65b3581` | Solo el botón «Reiniciar datos de prueba» de `tablero/app.py` |
 | `simulacion` | `f52ea33` | Solo si llegó la corrida con las velocidades de la tesis de 2019. No revisé sus cifras |
 
-Las ramas `pitch-noche` y `defensa-noche` ya existían a las 12:05 a. m., así que esta revisión las incluye desde su primera versión. Después de esa versión, Fable corrigió en ellas varias frases con discrepancia de `docs/FUENTES.md`. Por ejemplo, la pregunta 1 ya no dice «en todo el país» (D3), y el guion nombra los kilos en tránsito. Entre la 1:05 y la 1:40 a. m. volví a cotejar con las puntas de la tabla cada frase citada. Cada rama de la tabla se fusiona sin conflictos con `origin/main` (`870d540`), según `git merge-tree` [M].
+Las ramas `pitch-noche` y `defensa-noche` ya existían a las 12:05 a. m., así que esta revisión las incluye desde su primera versión. Después de esa versión, Fable corrigió en ellas varias frases con discrepancia de `docs/FUENTES.md`. Por ejemplo, la pregunta 1 ya no dice «en todo el país» (D3), y el guion nombra los kilos en tránsito. Entre la 1:05 y la 1:36 a. m. volví a cotejar con las puntas de la tabla cada frase citada. Cada rama de la tabla se fusiona sin conflictos con `origin/main` (`870d540`), según `git merge-tree` [M].
 
 ## 1. Lo que comprobé, como lo haría un jurado escéptico
 
