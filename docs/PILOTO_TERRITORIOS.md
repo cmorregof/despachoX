@@ -1,6 +1,6 @@
 # Tres territorios para el piloto de 30 a 90 días
 
-**Decisión de Carlos (21 de noviembre, 6:10 a. m.): el piloto va en la propuesta 2.**
+**Decisiones de Carlos (21 de noviembre).** A las 6:10 a. m., el piloto empieza en la propuesta 2. A las 8:05 a. m., el piloto suma una zona cada 30 días: la propuesta 1 el día 30 y la 3 el día 60.
 
 Cada propuesta une una comuna y un corregimiento para el piloto con el Banco Arquidiocesano de Alimentos y la UGR. Consulta del 20 de noviembre de 2026. **[F]** lo dice la fuente, abierta hoy con un lector automático y pendiente de revisión humana; **[M]** lo calculé con datos del repositorio; **[I]** es inferencia nuestra.
 
@@ -55,16 +55,22 @@ Cada propuesta une una comuna y un corregimiento para el piloto con el Banco Arq
 
 ## Recomendación
 
-Recomiendo la propuesta 1. El sismo dejó daño con fuente en sus dos partes, y sus accesos se caen también sin sismo, lo que respalda la tesis del día normal (`docs/PILOTO.md`). Además, comuna y vereda quedan sobre una sola ruta: tres CDI a unos 3 km del Banco y Bajo Tablazo a 9,3 km. En la propuesta 2, en cambio, la ruta a la vereda sale por otra comuna [M]. Así, en 90 días se miden en el mismo corredor las entregas urbanas, las rurales y un cierre simulado.
+Carlos decidió a las 6:10 a. m. del 21 de noviembre que el piloto empieza en la propuesta 2. A las 8:05 a. m. decidió que crece por zonas, una cada 30 días.
 
-La propuesta 2 queda de segunda, porque el PMA ya levantó necesidades allí y sus juntas hablaron en público. La 3 conviene si el IDEA respalda la prueba del A25. Al final decide el Banco: se elige el territorio donde ya tenga más organizaciones inscritas.
+| Días | Zona que entra | Por qué en ese orden |
+|---|---|---|
+| 0 a 30 | Ciudadela del Norte y El Manantial (propuesta 2) | Es la comuna más poblada, con 58.776 habitantes (ASIS 2023). Además, el PMA ya levantó necesidades en sus veredas y sus juntas hablaron en público [F] |
+| 30 a 60 | La Macarena y El Tablazo (propuesta 1) | El sismo dejó daño con fuente en sus dos partes, y sus accesos se caen también sin sismo [F], lo que respalda la tesis del día normal (`docs/PILOTO.md`). Comuna y vereda quedan sobre una sola ruta [M], aunque la distancia a Bajo Tablazo está por confirmar |
+| 60 a 90 | Atardeceres y Kilómetro 41 (propuesta 3) | La comuna ya tuvo alerta naranja por lluvia [F], así que ahí se prueba el A25 del IDEA con el simulacro, si el IDEA lo respalda [I] |
+
+Cada zona nueva entra solo si la anterior cumplió su criterio de validación y si el Banco lo confirma (`docs/PLAN_30_90.md`, sección 4). En la propuesta 2 la ruta a la vereda sale por otra comuna [M], así que las entregas urbanas y las rurales van por corredores distintos. Si el Banco no tiene organizaciones inscritas en una zona, le proponemos cambiar el orden, y lo decide con Carlos.
 
 ## Para la diapositiva
 
 **1. La Macarena y El Tablazo**
 - El sismo golpeó El Carmen y Bajo Tablazo, uno de los puntos rurales con más daño.
 - La vía se cae sin sismo: 150 familias incomunicadas en Java (2025) y derrumbes en 2017 y 2019.
-- Tres CDI a 3 km del Banco y la vereda a 9,3 km, en un solo corredor.
+- Tres CDI a 3 km del Banco y la vereda en el mismo corredor (distancia por confirmar).
 
 **2. Ciudadela del Norte y El Manantial**
 - La comuna más poblada (58.776) y veredas donde el PMA levantó necesidades tras el sismo.
