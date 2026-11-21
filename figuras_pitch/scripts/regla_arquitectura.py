@@ -48,8 +48,8 @@ def main():
     for i, canal in enumerate(("Chat", "Voz", "SMS")):
         y = yc + 120 - i * 120
         caja(ax, x_can, y - h_pil / 2, w_can, h_pil, e.CREMA, radio=30)
-        ax.text(x_can + w_can / 2, y, canal, ha="center", va="center", fontsize=e.pt(40), color=e.TEXTO,
-                zorder=4)
+        e.encajar(fig, ax.text(x_can + w_can / 2, y, canal, ha="center", va="center", fontsize=e.pt(40),
+                               color=e.TEXTO, zorder=4), w_can - 24)
 
     # Los tres bloques de la regla.
     x0 = x_can + w_can + sep
@@ -64,10 +64,10 @@ def main():
         xs.append(x)
         caja(ax, x, yc - h / 2, w, h, color)
         y_quien = yc + 72 if len(quien) == 2 else yc + 48
-        ax.text(x + w / 2, y_quien, "\n".join(quien), ha="center", va="center", fontsize=e.pt(38),
-                color="white", zorder=4, linespacing=1.15)
-        ax.text(x + w / 2, yc - 78, verbo, ha="center", va="center", fontsize=e.pt(50), fontweight="bold",
-                color="white", zorder=4)
+        e.encajar(fig, ax.text(x + w / 2, y_quien, "\n".join(quien), ha="center", va="center",
+                               fontsize=e.pt(38), color="white", zorder=4, linespacing=1.15), w - 36)
+        e.encajar(fig, ax.text(x + w / 2, yc - 78, verbo, ha="center", va="center", fontsize=e.pt(50),
+                               fontweight="bold", color="white", zorder=4), w - 36)
         if nota:
             ax.text(x + w / 2, yc - h / 2 - 40, nota, ha="center", va="center", fontsize=e.pt(30),
                     color=e.CENIZA, zorder=4)
@@ -83,8 +83,9 @@ def main():
     flecha(ax, xs[-1] + w + 6, ys[0], x_sal - 6, ys[0])
     for i, (texto, y) in enumerate(zip(salidas, ys)):
         caja(ax, x_sal, y - h_sal / 2, w_sal, h_sal, e.FONDO, borde=e.TINTA, radio=24)
-        ax.text(x_sal + w_sal / 2, y, texto, ha="center", va="center", fontsize=e.pt(32), color=e.TEXTO,
-                fontweight="bold" if i == 2 else "normal", zorder=4, linespacing=1.1)
+        e.encajar(fig, ax.text(x_sal + w_sal / 2, y, texto, ha="center", va="center", fontsize=e.pt(32),
+                               color=e.TEXTO, fontweight="bold" if i == 2 else "normal", zorder=4,
+                               linespacing=1.1), w_sal - 24)
         if i < len(salidas) - 1:
             flecha(ax, x_sal + w_sal / 2, y - h_sal / 2 - 3, x_sal + w_sal / 2, ys[i + 1] + h_sal / 2 + 3,
                    color=e.TINTA, grosor=4)

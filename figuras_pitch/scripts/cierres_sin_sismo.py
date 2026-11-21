@@ -85,6 +85,9 @@ def main():
         ax2.text(xi, l + r + 0.8, str(l + r), ha="center", va="bottom", fontsize=e.pt(28), color=e.TEXTO)
     ax2.set_xticks(x)
     ax2.set_xticklabels([str(a) for a in anios], fontsize=e.pt(26))
+    hueco = ax2.get_window_extent().width / len(anios) - 8      # ancho de cada año, con aire entre rótulos
+    for rotulo in ax2.get_xticklabels():
+        e.encajar(fig, rotulo, hueco)
     ax2.set_yticks([])
     for lado in ("top", "right", "left"):
         ax2.spines[lado].set_visible(False)

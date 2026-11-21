@@ -1,0 +1,4 @@
+lugar,lat,lon,origen_coordenada,km_por_la_red,metros_al_nodo_mas_cercano
+Bajo Tablazo,5.029143,-75.53819,datos/semilla/lugares_extra.csv (Nominatim),9.28,701
+Alto Bonito,5.114141,-75.509807,"datos_publicos/puntos.csv, id 46",8.76,10
+La Aurora,5.074119,-75.547264,"datos_publicos/puntos.csv, id 44",7.39,28

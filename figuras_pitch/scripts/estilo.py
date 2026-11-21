@@ -14,6 +14,7 @@ import argparse
 import itertools
 import os
 import sys
+import textwrap
 import warnings
 from pathlib import Path
 
@@ -110,9 +111,28 @@ def titulo(fig, texto: str, subtitulo: str | None = None, x: float = 0.04, y: fl
         fig.text(x, y - 0.065, subtitulo, fontsize=pt(PX_SUBTITULO), color=CENIZA, va="baseline", ha="left")
 
 
-def pie(fig, texto: str, x: float = 0.04, y: float = 0.03):
-    """Fuente de la figura, abajo a la izquierda. Admite varias líneas con \\n."""
-    fig.text(x, y, texto, fontsize=pt(PX_PIE), color=CENIZA, va="bottom", ha="left", linespacing=1.25)
+def ancho_px(fig, t) -> float:
+    """Ancho en píxeles de un texto ya puesto en la figura."""
+    return t.get_window_extent(fig.canvas.get_renderer()).width
+
+
+def encajar(fig, t, maximo_px: float):
+    """Achica el texto hasta que quepa en `maximo_px`, sin bajar de MIN_PX. Sirve si --fuente es más ancha."""
+    while ancho_px(fig, t) > maximo_px and t.get_fontsize() * DPI / 72.0 > MIN_PX + 0.5:
+        t.set_fontsize(max(t.get_fontsize() * 0.97, pt(MIN_PX)))
+    return t
+
+
+def pie(fig, texto: str, x: float = 0.04, y: float = 0.03, ancho: int = 150, derecha_px: float = 40):
+    """Fuente de la figura, abajo a la izquierda. Respeta los \\n y parte las líneas para que no pasen el borde."""
+    disponible = ANCHO_PX * (1 - x) - derecha_px
+    t = fig.text(x, y, "", fontsize=pt(PX_PIE), color=CENIZA, va="bottom", ha="left", linespacing=1.25)
+    while True:
+        lineas = [r for parte in texto.split("\n") for r in (textwrap.wrap(parte, ancho) or [""])]
+        t.set_text("\n".join(lineas))
+        if ancho_px(fig, t) <= disponible or ancho < 30:
+            return t
+        ancho = int(ancho * 0.95)
 
 
 def sello(fig, texto: str, x: float = 0.96, y: float = 0.93, color: str = AMBAR):
