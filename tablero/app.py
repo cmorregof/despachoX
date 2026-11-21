@@ -25,6 +25,7 @@ sys.path[:] = [str(RAIZ)] + [p for p in sys.path if Path(p or ".").resolve() not
 
 from datos import db  # noqa: E402
 from tablero import datos as T  # noqa: E402
+from tablero import mapa_base  # noqa: E402
 
 NOMBRE = "Convite"          # nombre visible (canal, 20/11 23:30); módulos y archivos no cambian
 CENTRO = (5.07, -75.52)
@@ -258,7 +259,7 @@ def capa(con, plan: dict | None, rutas: list[dict], revisar: dict, pin: dict | N
 
 def mapa(con, plan: dict | None, rutas: list[dict], revisar: dict) -> None:
     pin = st.session_state.get("pin")
-    base = folium.Map(location=CENTRO, zoom_start=13, tiles="CartoDB positron", control_scale=True)
+    base = mapa_base.crear(CENTRO, 13)
     salida = st_folium(base, key="mapa", feature_group_to_add=capa(con, plan, rutas, revisar, pin),
                        height=640, use_container_width=True, returned_objects=["last_clicked"])
     clic = (salida or {}).get("last_clicked")
@@ -268,7 +269,7 @@ def mapa(con, plan: dict | None, rutas: list[dict], revisar: dict) -> None:
         refrescar()
     st.session_state["ultimo_clic"] = clic
 
-    st.caption("© colaboradores de OpenStreetMap · © CARTO")
+    st.caption("© colaboradores de OpenStreetMap")
     colores = color_de(rutas)
     fichas = "".join(
         f'<span class="ficha"><i style="background:{colores[r["vehiculo_id"]]}"></i><b>{html.escape(r["nombre"])}</b>'

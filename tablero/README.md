@@ -13,7 +13,7 @@ python -m despacho.semilla --cargar --reiniciar # una vez: carga la semilla (bor
 streamlit run tablero/app.py
 ```
 
-En PowerShell la primera línea es `$env:DESPACHOX_DB = "C:\ruta\a\despachoX\datos\despachox.db"`. Sin esa variable se usa `datos/despachox.db` de la copia donde se ejecuta. El tablero no usa claves de `.env`. Necesita internet para las teselas del mapa (CARTO sobre OpenStreetMap).
+En PowerShell la primera línea es `$env:DESPACHOX_DB = "C:\ruta\a\despachoX\datos\despachox.db"`. Sin esa variable se usa `datos/despachox.db` de la copia donde se ejecuta. El tablero no usa claves de `.env`. Necesita internet para las teselas de OpenStreetMap (estándar, sin clave ni registro).
 
 ## Qué hace cada parte
 
@@ -39,7 +39,7 @@ Para corregir una ubicación: «Corregir en el mapa», clic en el mapa donde que
 
 ## Diseño
 
-El tema está en `.streamlit/config.toml` (paleta del informe: tinta #4F4086, ámbar #A36752, crema #EBD3A2, ceniza #6E6878, y la sans-serif del sistema para no depender de internet). Colores de estado: pendiente en ámbar, en ruta en tinta, entregado en verde apagado y silencio en ceniza; los cierres y los puntos críticos siguen en rojo. El mapa usa el fondo claro de CARTO sobre OpenStreetMap.
+El tema está en `.streamlit/config.toml` (paleta del informe: tinta #4F4086, ámbar #A36752, crema #EBD3A2, ceniza #6E6878, y la sans-serif del sistema para no depender de internet). Colores de estado: pendiente en ámbar, en ruta en tinta, entregado en verde apagado y silencio en ceniza; los cierres y los puntos críticos siguen en rojo. El mapa usa las teselas estándar de OpenStreetMap, que no piden clave, aclaradas con un filtro CSS que solo afecta la capa de teselas (`tablero/mapa_base.py`); marcadores, rutas y cierres conservan sus colores.
 
 ## Cómo se comparan dos planes
 

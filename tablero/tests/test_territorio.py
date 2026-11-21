@@ -113,4 +113,4 @@ def test_tema_con_la_paleta_del_informe():
     fuente = (CARPETA / "app.py").read_text(encoding="utf-8")
     for color in ("#4F4086", "#A36752", "#EBD3A2", "#6E6878"):
         assert color in fuente
-    assert 'tiles="CartoDB positron"' in fuente                    # mapa de fondo claro
+    assert "mapa_base.crear(" in fuente and "carto" not in fuente.lower()   # mapa de fondo claro

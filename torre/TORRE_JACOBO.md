@@ -1,12 +1,12 @@
 # Torre de control · Jacobo · rol C (tablero y triage)
-Última actualización: 2026-11-21 05:30 (hora de Colombia, UTC−5)
+Última actualización: 2026-11-21 00:35 (hora de Colombia, UTC−5)
 
 ## Estado en una frase
 El triage está en `main`; el silencio unificado del triage espera fusión en el PR #6 (rama `jacobo-silencio`), y el tablero con Territorio, alertas por silencio, el nombre Convite y el diseño nuevo está en la rama `jacobo-tablero`, listo para push y revisión antes del congelamiento de las 8:30 a. m.
 
 ## Hecho (con el commit o archivo que lo prueba)
 - **Triage en `main`** (`triage/`, commits `adaedff` a `1c8ad91`): filtro antibots y antifraude, topes por zona con censo, ST-DBSCAN propio, puntaje con log-odds, zonas débiles, agentes y cola. 10 de 10 escenarios de aceptación cumplen (`triage/resultados/reporte.md`).
-- **Nombre y silencio en el canal** (`41d472e`, `9978818`): aviso del nombre Convite y de la definición única de silencio (20/11, 23:30), y aviso de que el triage ya la usa (04:45).
+- **Nombre y silencio en el canal** (`41d472e`, `9978818`): aviso del nombre Convite y de la definición única de silencio (20/11, 23:30), y aviso de que el triage ya la usa (20/11, 23:45; en el canal quedó escrito «04:45» por error: era la hora UTC).
 - **Silencio unificado en el triage, PR #6** (rama `jacobo-silencio`, commit `5792fc8`, sin fusionar): `triage/debiles.py` marca una zona en silencio tras 6 h sin contacto confirmado; los mensajes en cuarentena no cuentan; Poisson solo ordena las tareas de campo. Umbral y jornada importados de `entrada/silencio.py`. 132 pruebas de triage en verde.
 - **Tablero en `jacobo-tablero`** (sin fusionar):
   - Pestaña «Territorio» (T1, parte C): tabla por comuna con los peor atendidos arriba, color bajo la meta, «Barrios y veredas sin pedidos registrados» y «Descargar CSV» (`0193d65`).
