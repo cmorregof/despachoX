@@ -412,7 +412,7 @@ Si a las 12:40 p. m. no existe, el corchete se borra, como ya pide la fila 1 de 
 
 Suman menos o dependen de algo que todavía no pasa. Van en el orden en que las haría.
 
-**6. El informe corto y la ficha corta dicen cosas que sus fuentes no dicen.** El informe que se sube al Drive se compiló el viernes a las 18:04, antes de las decisiones de las 9:00 p. m. Sus fases no son las de la ficha, y diez discrepancias del registro de `fuentes-noche` caen en él, en trece pasajes (`ENTREGA.md`, fila 3). La lista final de `ENTREGA.md` ya pide corregir o quitar esas frases antes de registrar, y la tabla consolidada lo da por hecho. Sin esa corrección, las cinco de la sección 7 suman en promedio 4,6 puntos menos con respuesta del Banco y 1,25 menos sin ella.
+**6. El informe corto y la ficha corta dicen cosas que sus fuentes no dicen.** El informe que se sube al Drive se compiló el viernes a las 18:04, antes de las decisiones de las 9:00 p. m. Sus fases no son las de la ficha, y diez discrepancias del registro de `fuentes-noche` caen en él, en catorce pasajes (`ENTREGA.md`, fila 3). La lista final de `ENTREGA.md` ya pide corregir o quitar esas frases antes de registrar, y la tabla consolidada lo da por hecho. Sin esa corrección, las cinco de la sección 7 suman en promedio 4,6 puntos menos con respuesta del Banco y 1,25 menos sin ella.
 
 Hay dos salidas. Una es corregir los pasajes en `docs/informe/informe_corto.tex` y recompilar en el computador de Carlos, en unos 80 minutos. Abrir las diez fuentes toma unos 50, y editar y recompilar, unos 30. La otra es no subir el informe. Antes de cambiar cada frase, una persona abre la fuente, porque la lectura de máquina puede equivocarse. Varias propuestas copian las correcciones que Fable ya hizo en el pitch y en las preguntas, para que todos los documentos digan lo mismo.
 
@@ -424,6 +424,7 @@ Hay dos salidas. Una es corregir los pasajes en `docs/informe/informe_corto.tex`
 | D3 | 149 | `Kilos de la red de bancos de alimentos al sexto día después del sismo, en todo el país.` | `Kilos de la red de bancos de alimentos el 16 de agosto, seis días después del sismo.` La figura ya muestra las tres barras, con los 157.164 kg en tránsito |
 | D7 | 114 | `con la Cruz Roja como operador logístico.` | `con entregas en la sede de la Cruz Roja.` La nota de la Alcaldía del 31 de agosto habla de «nuestro operador logístico» sin nombrarlo |
 | D7 | 153 | `La Cruz Roja Seccional Caldas fue el operador logístico que entregó por turnos los kits de alimentos de la Alcaldía \cf{f:alcago}.` | `Los kits de alimentos de la Alcaldía se entregaron por turnos en la sede de la Cruz Roja Seccional Caldas \cf{f:alcago}.` Es la frase de `pitch/CIFRAS_PITCH.md`, A05, que la máquina tampoco encontró igual del todo |
+| D7 | 185 | `Cruz Roja Seccional Caldas, operador de los kits de la Alcaldía \cf{f:alcago}` | `Alcaldía, por su operador logístico, con entregas en la sede de la Cruz Roja Seccional Caldas \cf{f:alcago}` |
 | D8 | 160 | `pero no recibe pedidos ni planea rutas` | `registra las solicitudes de artículos, pero no planea rutas ni asigna vehículos` |
 | D9 | 155 | `El Programa Mundial de Alimentos (PMA) entregó efectivo en ciudades de Valle y Risaralda y raciones en especie en zonas remotas` | Según la lectura de máquina, Telesur dice que el PMA «prevé ampliar las transferencias de efectivo» en zonas urbanas de Valle y Risaralda. La frase se ajusta a lo que diga la nota cuando una persona la abra |
 | D10 | 153 | `y desde el 11 de agosto el albergue del Coliseo Mayor dejó de recibir perecederos` | `y desde el 11 de agosto el punto de donaciones del Coliseo Menor no recibía perecederos`. La lectura de máquina no dice «oficial». La pregunta 5 de `defensa-noche` (`88d0cda`) sí dice «punto oficial», así que conviene quitarlo también allí |
@@ -504,7 +505,7 @@ Ese botón no está en `main`. Existe desde las 12:57 a. m. en `jacobo-tablero` 
 
 1. ¿Cómo se llama el integrante de Ingeniería Industrial? Sin el nombre, la corrección 4 no se puede hacer.
 2. ¿Se fusiona `a25` antes de las 8:30 a. m.? De eso dependen las frases de la corrección 3.
-3. ¿El informe corto se corrige y se recompila, o se deja fuera del Drive? Trae diez discrepancias en trece pasajes, más las fases, y solo compila el computador de Carlos.
+3. ¿El informe corto se corrige y se recompila, o se deja fuera del Drive? Trae diez discrepancias en catorce pasajes, más las fases, y solo compila el computador de Carlos.
 4. ¿La exportación a SUMA entra al plan como entregable del día 90, o sale del informe corto?
 5. ¿Convite o DespachoX en los documentos del Drive?
 6. ¿Puede el integrante de Ingeniería Industrial avisar en el canal antes de las 10:30 a. m. lo que dijo el Banco, en vez de a las 12:30 p. m.?
