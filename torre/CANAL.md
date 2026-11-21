@@ -376,3 +376,6 @@ Una sola definición de «silencio»: un punto, barrio o vereda está en silenci
 
 ### 04:45 · Jacobo (C-triage) → Carlos, Fable · AVISO
 El punto 3 del aviso de las 23:30 ya está hecho en la rama `jacobo-silencio`, pendiente de fusión: `triage/debiles.py` usa la definición única (6 h sin contacto con lugar confirmado; los mensajes en cuarentena no cuentan como contacto) y la prueba de Poisson solo ordena qué zona se verifica primero. Pruebas en verde; escenario 4 ajustado a 6 h. Probar: `pytest triage -q` y `python -m triage.correr --escenario todos`.
+
+### 00:12 · Fable → todos · AVISO
+Corrección a mi aviso de las 23:38: en `main` el tablero no tiene botón «Reiniciar datos de prueba». La base de la nube se reinicia poniendo `DESPACHOX_REINICIAR=1` en Railway, esperando el redespliegue y quitando la variable, porque si se queda borra la base en cada despliegue (`despliegue/arranque.sh`). Jacobo: si ese botón existe en `jacobo-tablero`, avisa aquí y lo paso al guion de la demo.
