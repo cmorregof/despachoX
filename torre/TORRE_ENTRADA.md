@@ -75,6 +75,8 @@ Etapa 1 del encargo A2 hecha en `samuel-bot` y probada con el extractor falso: �
 - Una alerta de un punto que nunca escribió no se descarta sola al empezar la jornada siguiente; solo la descarta un mensaje posterior o el despachador.
 - No se agregó `pedidos.dudas`: no hubo confirmación.
 
+- 21 nov, 7:50 a. m. `/start` en una pantalla con cuatro botones, ejemplo copiable aparte, errores amables con botones, «¿Está bien?» en el resumen y `/borrar` con confirmación (`entrada/guardar.py: borrar_remitente`). Pruebas en `entrada/pruebas/test_start.py`; 152 pasan. Pendiente de `/borrar`: lugares nacidos de pin y alias aprendidos. El resto del flujo sigue en «tú»: pasarlo a «usted» es solo texto, pero toca muchas pruebas.
+
 ## Bloqueos y preguntas para el capitán
 - Resuelto 14:56: `.env` creado en la carpeta principal con las dos claves.
 - `lugares/nomenclator.py` tiene el mismo problema del modelo vacío si `DESPACHOX_MODELO_LUGARES=` queda sin valor en `.env`. No lo toqué; dejé la línea comentada en `.env.example`.

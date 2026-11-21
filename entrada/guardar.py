@@ -136,3 +136,29 @@ def quien_confirma(con: sqlite3.Connection, codigo: str, remitente: str) -> str 
             (p["pedido_id"], remitente)).fetchone():
         return "conductor"
     return None
+
+
+BORRADO = "[borrado]"
+
+
+def borrar_remitente(con: sqlite3.Connection, remitente: str) -> dict:
+    """/borrar: suprime lo que la base guarda de quien escribe (docs/PRIVACIDAD.md, 7.5). Los pedidos que
+    no han salido se cancelan; los que van en camino siguen, sin texto ni código. Quedan el punto, los
+    productos y los kilos, que no son de la persona. Devuelve cuántos pedidos tocó y cuántos canceló."""
+    ids = [r["id"] for r in con.execute("SELECT id FROM pedidos WHERE remitente_hash=?", (remitente,))]
+    marcas = ",".join("?" * len(ids))
+    cancelados = 0
+    if ids:
+        cancelados = con.execute(f"UPDATE pedidos SET estado='descartado' WHERE id IN ({marcas}) "
+                                 "AND estado IN ('nuevo','confirmado')", ids).rowcount
+        con.execute(f"UPDATE pedidos SET texto_original=NULL, remitente_hash=NULL WHERE id IN ({marcas})", ids)
+        con.execute(f"UPDATE ubicaciones SET texto=? WHERE tabla='pedidos' AND fila_id IN ({marcas})",
+                    [BORRADO, *ids])
+        for i in ids:           # lo que dijo del lugar y sus coordenadas, que lugares/ anota en la bitácora
+            con.execute("UPDATE bitacora SET detalle=? WHERE accion IN ('ubicacion_confirmada','ubicacion_por_pin') "
+                        "AND detalle LIKE ?", (f"pedidos {i}: {BORRADO}", f"pedidos {i}:%"))
+    con.execute("UPDATE bitacora SET quien=? WHERE quien LIKE ?",       # sus entregas y entregas rechazadas
+                (f"remitente {BORRADO}", f"remitente {remitente[:8]}%"))
+    con.commit()
+    db.anotar(con, "titular", "supresión pedida por el titular", f"{len(ids)} pedidos, {cancelados} cancelados")
+    return {"pedidos": len(ids), "cancelados": cancelados}

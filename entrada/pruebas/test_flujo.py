@@ -123,7 +123,7 @@ def test_respuesta_en_texto_libre_vuelve_a_resolver(con, mesa):
     assert "Chipre" in fin.texto
     assert una(con, "SELECT punto_id FROM pedidos")["punto_id"] is not None
     assert una(con, "SELECT COUNT(*) FROM ubicaciones WHERE estado='propuesta'")[0] == 0
-    assert "No entendí" in chat.escribir("gracias")[0].texto                # ya no hay nada pendiente
+    assert "No alcancé a entender" in chat.escribir("gracias")[0].texto                # ya no hay nada pendiente
 
 
 def test_pedido_sin_lugar_pregunta_y_acepta_texto_o_pin(con, mesa):
@@ -160,7 +160,7 @@ def test_mensaje_mixto_guarda_pedido_y_cierre_y_confirma_cada_uno(con, chat):
 
 def test_lo_que_no_es_nada_no_guarda_fila(con, chat):
     r, = chat.escribir(TEXTO[14])
-    assert "No entendí" in r.texto
+    assert "No alcancé a entender" in r.texto
     assert una(con, "SELECT COUNT(*) FROM pedidos")[0] + una(con, "SELECT COUNT(*) FROM cierres")[0] == 0
 
 
@@ -216,13 +216,13 @@ def test_estado_ayuda_y_mensajes_que_no_son_texto(con, chat):
     chat.escribir(TEXTO[1]); chat.pulsar("Sí")
     e, = chat.comando("estado")
     assert "recibido. Una persona de la mesa lo está revisando" in e.texto and "San José" in e.texto
-    assert "<code>Somos 40 familias en San José" in chat.comando("inicio")[0].texto
-    assert "solo leo texto" in chat.enviar_foto()[0].texto
+    assert "<code>Somos 40 familias en San José" in chat.comando("inicio")[1].texto
+    assert "No alcancé a entender" in chat.enviar_foto()[0].texto
     assert "No tengo un reporte tuyo pendiente" in chat.enviar_ubicacion(5.0, -75.5)[0].texto
 
 
 def test_botones_viejos_o_ajenos_no_rompen(con, mesa):
-    assert "No reconocí" in mesa.pulsar(1, "zzz").texto
+    assert "No alcancé a entender" in mesa.pulsar(1, "zzz").texto
     assert "No encontré" in mesa.pulsar(1, "s:999").texto
     ClienteSimulado(mesa, 1).escribir(TEXTO[1])
     assert "ya no está disponible" in mesa.pulsar(1, "c:1:99999").texto

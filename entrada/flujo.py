@@ -43,19 +43,43 @@ EJEMPLOS = ("Somos 40 familias en San José, no hay arroz ni leche",
             "Derrumbe en la vía a Chinchiná, no pasan camiones")
 
 
+MENU = [("Pedir comida", "m:pedir"), ("Reportar una vía cerrada", "m:via"),
+        ("Confirmar una entrega", "m:entrega"), ("¿Cómo va mi pedido?", "m:estado")]
+EJEMPLO_ENTREGA = "ENTREGADO DX-7KQ3"
+
+
 def ayuda(con_voz: bool = False) -> str:
-    """Primer mensaje: tres líneas y dos ejemplos. Va en HTML: en Telegram, tocar un <code> lo copia."""
-    como = "Escríbeme o mándame una nota de voz" if con_voz else "Escríbeme"
-    return ("Hola. Aquí se pide comida para tu barrio o se avisa de una vía cerrada.\n"
-            f"{como} con lo que necesitan, para cuántas familias y dónde.\n"
-            "Una persona de la mesa revisa cada mensaje. Con /estado ves cómo va tu pedido.\n\n"
-            "Toca un ejemplo para copiarlo:\n" + "\n".join(f"<code>{e}</code>" for e in EJEMPLOS) +
-            "\n\nNo escribas nombres, cédulas ni teléfonos: no hacen falta.")
+    """Primer mensaje del /start, para quien no sabe qué es un bot: qué es, qué sirve y qué se guarda.
+    Los botones (`MENU`) van pegados a este mensaje; el ejemplo copiable va en el siguiente."""
+    como = ("Toque un botón, escríbame con sus palabras o mándeme una nota de voz." if con_voz
+            else "Toque un botón o escríbame con sus palabras.")
+    return ("Esta es la mesa de despacho de ayuda alimentaria de Manizales.\n\n"
+            "Sirve para pedir comida, avisar que una vía está cerrada y confirmar que una entrega llegó.\n\n"
+            f"{como}\n\n"
+            "Una persona revisa cada mensaje antes de despachar.\n\n"
+            "No guardo su nombre ni su teléfono: solo qué necesita y dónde. Ley 1581 de 2012. "
+            "Para borrar lo que me envió, escriba /borrar.")
+
+
+def inicio(con_voz: bool = False) -> list["Respuesta"]:
+    """El /start completo: el mensaje con los cuatro botones y, después, el ejemplo que se copia al tocarlo
+    (en Telegram, el texto en <code> se copia con un toque)."""
+    return [Respuesta(ayuda(con_voz), list(MENU)),
+            Respuesta(f"Por ejemplo, toque esto para copiarlo:\n<code>{EJEMPLOS[0]}</code>", html=True)]
 
 
 AYUDA = ayuda()
-NO_ENTENDI = ("No entendí si es un pedido de ayuda o un reporte de vía cerrada. Por ejemplo: «Somos 40 "
-              "familias en San José, no hay arroz ni leche» o «Derrumbe en la vía a Chinchiná, no pasan camiones».")
+NO_ENTENDI = "No alcancé a entender. ¿Me ayuda con uno de estos?"
+BOTON_RARO = "No alcancé a entender ese botón. ¿Me ayuda con uno de estos?"
+COMO_PEDIR = ("Escríbame qué les falta, para cuántas familias y en qué barrio o vereda. Por ejemplo:\n"
+              f"<code>{EJEMPLOS[0]}</code>")
+COMO_VIA = ("Escríbame qué vía está cerrada y qué vehículos no pasan. Por ejemplo:\n"
+            f"<code>{EJEMPLOS[1]}</code>")
+COMO_ENTREGA = ("Escríbame ENTREGADO y el código que trae el paquete. Por ejemplo:\n"
+                f"<code>{EJEMPLO_ENTREGA}</code>\n"
+                "Vale desde el chat de quien pidió para ese punto o del conductor que lo lleva.")
+BORRAR_PREGUNTA = ("¿Borro lo que me ha enviado? Quito el texto de sus pedidos y su código de chat. "
+                   "Los pedidos que no han salido se cancelan. No se puede deshacer.")
 SIN_LEER = ("Recibí tu mensaje y quedó guardado. No pude leerlo automáticamente, así que un despachador "
             "lo revisará.")
 COMO_ENVIAR_PIN = ("Toca el botón «Enviar mi ubicación» que aparece abajo, o usa el clip del chat y elige "
@@ -67,6 +91,7 @@ class Respuesta:
     texto: str
     botones: list[tuple[str, str]] = field(default_factory=list)    # (etiqueta, dato del botón)
     pedir_ubicacion: bool = False       # el bot muestra el teclado que comparte la ubicación
+    html: bool = False                  # texto con <code>: el bot lo envía con parse_mode HTML
 
 
 @dataclass
@@ -155,7 +180,7 @@ class Mesa:
             guardar.guardar_crudo(self.con, x.texto, rem)
             return [Respuesta(SIN_LEER)]
         if x.tipo == "otro":
-            return [Respuesta(NO_ENTENDI)]
+            return [Respuesta(NO_ENTENDI, list(MENU))]
         respuestas = []
         if x.pedido is not None:
             dicho = x.pedido.familias is not None
@@ -175,7 +200,7 @@ class Mesa:
                    resumen: str, notas: list[str] | None = None) -> Respuesta:
         p = Pendiente(tabla, fila, x.texto)
         self.pendientes.setdefault(rem, []).append(p)
-        cabeza = f"{resumen} Queda en revisión del despachador."
+        cabeza = f"{resumen} ¿Está bien? Si algo no es así, escríbamelo otra vez y el despachador ve la corrección."
         if notas:
             cabeza += "\n" + " ".join(notas)
         dudas = [d for d in x.dudas if d.strip() and not d.startswith("Leído por reglas")][:2]   # nota interna
@@ -220,11 +245,21 @@ class Mesa:
         """Datos de botón: `s:<ubicacion>` sí; `c:<ubicacion>:<lugar>` otra opción; `p:<ubicacion>` pin."""
         rem = hash_remitente(chat_id)
         partes = (dato or "").split(":")
+        if partes[0] == "m":                # botones del /start y de «no alcancé a entender»
+            que = partes[1] if len(partes) > 1 else ""
+            if que == "estado":
+                return self.estado(chat_id)
+            texto = {"pedir": COMO_PEDIR, "via": COMO_VIA, "entrega": COMO_ENTREGA}.get(que)
+            return Respuesta(texto, html=True) if texto else Respuesta(BOTON_RARO, list(MENU))
+        if partes[0] == "b":                # b:si / b:no, la confirmación de /borrar
+            if partes[1:] == ["si"]:
+                return self._borrar(rem)
+            return Respuesta("Listo, no borré nada.")
         try:
             accion, uid = partes[0], int(partes[1])
             lugar_id = int(partes[2]) if accion == "c" else None
         except (IndexError, ValueError):
-            return Respuesta("No reconocí ese botón. Escríbeme de nuevo, por favor.")
+            return Respuesta(BOTON_RARO, list(MENU))
         if accion == "p":
             return Respuesta(COMO_ENVIAR_PIN, pedir_ubicacion=True)
         if accion == "f":                   # f:<pedido>:<familias>; vale aunque hayan pasado los dos minutos
@@ -300,6 +335,26 @@ class Mesa:
             return Respuesta(f"{texto}\n\n{pregunta} Toca una opción o escribe el número.", botones)
         return Respuesta(texto)
 
+    # ---------- /borrar ----------
+
+    def borrar(self, chat_id) -> Respuesta:
+        """Primero pregunta: es irreversible."""
+        return Respuesta(BORRAR_PREGUNTA, [("Sí, borrar", "b:si"), ("No, dejarlo", "b:no")])
+
+    def _borrar(self, rem: str) -> Respuesta:
+        h = guardar.borrar_remitente(self.con, rem)
+        self.pendientes.pop(rem, None)
+        self.por_familias.pop(rem, None)
+        if not h["pedidos"]:
+            return Respuesta("No tenía pedidos suyos guardados. Los reportes de vías no guardan quién los envió.")
+        n, c = h["pedidos"], h["cancelados"]
+        cuantos = "su pedido" if n == 1 else f"sus {n} pedidos"
+        cancel = ("" if not c else " Quedó cancelado." if n == c == 1 else
+                  f" Los {c} que no habían salido quedaron cancelados." if c > 1 else " Uno que no había salido quedó cancelado.")
+        sigue = " Lo que ya va en camino sigue, sin sus datos." if c < n else ""
+        return Respuesta(f"Listo. Borré el texto y su código de {cuantos}.{cancel}{sigue} "
+                         "Los reportes de vías no guardan quién los envió.")
+
     # ---------- ENTREGADO DX-7KQ3 ----------
 
     def _entregar(self, rem: str, codigo: str) -> Respuesta:
@@ -348,7 +403,7 @@ class Mesa:
     def estado(self, chat_id) -> Respuesta:
         filas = guardar.pedidos_de(self.con, hash_remitente(chat_id))
         if not filas:
-            return Respuesta("No tengo pedidos tuyos todavía. Escríbeme qué necesitan y dónde.")
+            return Respuesta("No tengo pedidos suyos todavía. Escríbame qué necesitan y dónde.")
         lineas = []
         for f in filas:
             donde = f"en {f['punto']}" if f["punto"] else "sin lugar confirmado"
