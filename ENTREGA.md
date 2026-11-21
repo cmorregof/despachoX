@@ -28,7 +28,7 @@ Todo va en una sola carpeta de Drive, llamada «DespachoX · Equipo 19 · Vertic
 | 2 | Anexo técnico de la ficha, en PDF, sin la nota interna | `docs/FICHA.md` | Borrar la línea que empieza con «Nota interna, se borra antes de cargar» (hoy es la línea 6) y los corchetes pendientes, como «[Pendiente: lo graba Jacobo…]». Las mismas reglas de cifras de la fila 1 | Samuel | Carlos |
 | 3 | Informe corto, en PDF | `docs/informe/informe_corto.pdf` | Si cambia alguna cifra, recompilar con `docs/informe/compilar.sh`. Las fuentes tipográficas Ancízar no están en el repositorio, así que solo compila el computador de Carlos | Carlos | Samuel |
 | 4 | Enlace al video de respaldo | Lo graba Jacobo con `docs/GUION_DEMO.md` | Subirlo a la misma carpeta, o como video no listado, y abrirlo sin sesión | Jacobo | Carlos |
-| 5 | Enlace al repositorio | https://github.com/cmorregof/despachoX | Que la sección «Para el jurado» siga arriba en `README.md`. Que `main` tenga lo fusionado en la mañana. Que `git ls-files` no muestre ningún `.env` ni clave | Carlos | Jacobo |
+| 5 | Enlace al repositorio | https://github.com/cmorregof/despachoX | Que la sección «Para el jurado» siga arriba en `README.md`. Que `main` tenga lo fusionado en la mañana. Que `git ls-files` no muestre ningún `.env` ni clave (el `.env.example` sí va, con los valores vacíos) | Carlos | Jacobo |
 | 6 | Enlace al tablero y al bot | https://despachox-production.up.railway.app/ y https://t.me/despachox_bot | Abrir el tablero desde un celular con datos móviles. Antes de la demo, pulsar «Reiniciar datos de prueba» en el tablero de la nube, como pide el relevo de Fable | Jacobo | Samuel |
 
 ## Horario
