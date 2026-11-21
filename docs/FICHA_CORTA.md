@@ -125,6 +125,6 @@ Todas las cifras, supuestos y riesgos están en el anexo técnico, `docs/FICHA.m
 | 50 puntos reales; 178 registros de cierres | `datos_publicos/`, fila por fila | Por verificar |
 | 54.000 t; 9,76 millones de t | La República; DNP, 2016 | Por verificar |
 | Mediciones del prototipo | Repositorio; detalle en `docs/FICHA.md` | Medidas |
-| Simulación con velocidades de la tesis UNAL de 2019 | `docs/SIMULACION.md`, sección 9 | Medidas; falta 9.3 |
+| Simulación con velocidades de la tesis UNAL de 2019 | `docs/SIMULACION.md`, sección 9 | Medidas, 9.3 incluida |
 | 1,75 a 4,50 USD por 10.000 mensajes | `entrada/ESCALA.md` | Estimada |
 | 390.625 combinaciones del código | Cálculo nuestro | Calculada |
