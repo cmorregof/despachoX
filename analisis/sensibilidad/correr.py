@@ -70,9 +70,13 @@ def hechas(variante: str) -> set:
     """(semilla, política) que ya están en algún CSV de la variante."""
     out = set()
     for ruta in sorted((RESULTADOS / variante).glob("*.csv")):
-        with open(ruta, newline="") as fh:
-            out |= {(int(f["semilla"]), f["politica"]) for f in csv.DictReader(fh)}
+        with open(ruta, newline="") as fh:     # una fila cortada por un timeout queda fuera
+            out |= {(int(f["semilla"]), f["politica"]) for f in csv.DictReader(fh) if completa(f)}
     return out
+
+
+def completa(f: dict) -> bool:
+    return None not in f.values() and all(v != "" for k, v in f.items() if k in ("semilla", "politica", "segundos_tarea"))
 
 
 def _preparar(vel: float) -> None:
@@ -141,6 +145,22 @@ def main(argv=None) -> int:
 
     inicio, t0 = dt.datetime.now(), time.perf_counter()
     filas, errores, canceladas = [], [], 0
+    marca, escritores = f"{inicio:%Y%m%d_%H%M%S}", {}
+
+    def guardar(f: dict) -> None:
+        """Cada fila se escribe al terminar su tarea: si la tanda se corta, lo hecho queda en disco."""
+        v = f["variante"]
+        if v not in escritores:
+            (RESULTADOS / v).mkdir(parents=True, exist_ok=True)
+            ruta = RESULTADOS / v / f"tanda_{marca}.csv"
+            fh = open(ruta, "w", newline="")
+            w = csv.DictWriter(fh, fieldnames=["variante"] + [k for k in f if k != "variante"])
+            w.writeheader()
+            escritores[v] = (fh, w, ruta)
+        fh, w, _ = escritores[v]
+        w.writerow({k: (round(x, 4) if isinstance(x, float) else x) for k, x in f.items()})
+        fh.flush()
+
     with ProcessPoolExecutor(a.procesos, initializer=_preparar, initargs=(vel,)) as ex:
         futuros = {ex.submit(_tarea, t): t for t in tareas}
         for fut in as_completed(futuros):
@@ -154,6 +174,8 @@ def main(argv=None) -> int:
                 print(f"ERROR {v} {s} {pol}: {e}", file=sys.stderr, flush=True)
                 continue
             filas += nuevas
+            for f in nuevas:
+                guardar(f)
             f = nuevas[0]
             print(f"{v:15s} {s} {pol:16s} {f['segundos_tarea']:6.1f} s  críticos {f['a_tiempo_criticos_pct']:5.1f}  "
                   f"vencido {f['perecedero_vencido_pct']:4.1f}  llamadas {f['recalculos']}", flush=True)
@@ -162,19 +184,8 @@ def main(argv=None) -> int:
     total = time.perf_counter() - t0
     canceladas = max(canceladas, 0)
 
-    marca = f"{inicio:%Y%m%d_%H%M%S}"
-    for v in variantes:
-        suyas = sorted((f for f in filas if f["variante"] == v), key=lambda f: (f["semilla"], POLITICAS.index(f["politica"])))
-        if not suyas:
-            continue
-        (RESULTADOS / v).mkdir(parents=True, exist_ok=True)
-        ruta = RESULTADOS / v / f"tanda_{marca}.csv"
-        campos = ["variante"] + [k for k in suyas[0] if k != "variante"]
-        with open(ruta, "w", newline="") as fh:
-            w = csv.DictWriter(fh, fieldnames=campos)
-            w.writeheader()
-            for f in suyas:
-                w.writerow({k: (round(x, 4) if isinstance(x, float) else x) for k, x in f.items()})
+    for fh, _, ruta in escritores.values():
+        fh.close()
         print(f"Escrito {ruta}")
     c1, c5, c15 = os.getloadavg()
     linea = (f"{inicio:%Y-%m-%d %H:%M:%S} commit {_commit()} variantes {','.join(variantes)} "

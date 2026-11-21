@@ -19,7 +19,7 @@ import numpy as np
 from despacho.sim.correr import _num, ic95
 from despacho.sim.metricas import METRICAS
 
-from .correr import BASE, POLITICAS, RESULTADOS, VARIANTES, parametros
+from .correr import BASE, POLITICAS, RESULTADOS, VARIANTES, completa, parametros
 
 LINEAS_BASE = ("ingenua", "experta", "optimiza_una_vez")
 INDICADORES = ("a_tiempo_criticos_pct", "perecedero_vencido_pct")
@@ -43,6 +43,8 @@ def leer(variante: str) -> tuple:
     for ruta in sorted((RESULTADOS / variante).glob("*.csv")):
         with open(ruta, newline="") as fh:
             for f in csv.DictReader(fh):
+                if not completa(f):          # fila cortada por un timeout
+                    continue
                 por = datos.setdefault(f["politica"], {})
                 s = int(f["semilla"])
                 if s in por:
@@ -54,6 +56,26 @@ def leer(variante: str) -> tuple:
 
 def x(filas, m) -> np.ndarray:
     return np.array([float(f[m]) for f in filas], float)
+
+
+def compacta(tabla: list) -> str:
+    """Una tabla por indicador: medias por política y diferencias pareadas de `despachox`."""
+    titulos = {"a_tiempo_criticos_pct": "Pedidos de puntos críticos entregados a tiempo (%)",
+               "perecedero_vencido_pct": "Kilos perecederos vencidos (%)",
+               "a_tiempo_todos_pct": "Pedidos entregados a tiempo, todos los puntos (%)"}
+    L = []
+    for m, titulo in titulos.items():
+        L += [f"### {titulo}", "",
+              "| Variante | Semillas | `despachox` | `ingenua` | `experta` | `despachox` − `ingenua` (IC 95 %) | "
+              "`despachox` − `experta` (IC 95 %) |", "|---|---:|---:|---:|---:|---|---|"]
+        for f in tabla:
+            celdas = [ETIQUETA[f["variante"]], str(f["semillas"])]
+            celdas += [_num(f[f"{p}:{m}"]) for p in ("despachox", "ingenua", "experta")]
+            for b in ("ingenua", "experta"):
+                celdas.append(f"{_num(f[f'dx-{b}:{m}'])} [{_num(f[f'dx-{b}:{m}:lo'])}; {_num(f[f'dx-{b}:{m}:hi'])}]")
+            L.append("| " + " | ".join(celdas) + " |")
+        L.append("")
+    return "\n".join(L)
 
 
 def main(argv=None) -> None:
@@ -103,7 +125,12 @@ def main(argv=None) -> None:
         L += ["", "| Comparación | Indicador | Diferencia media | IC 95 % | Semillas: mejor / igual / peor |",
               "|---|---|---:|---|---|"]
         fila = {"variante": v, "semillas": len(completas), "vehiculos": round(float(x(d, "vehiculos").mean()), 2),
-                "pedidos": round(float(x(d, "pedidos").mean()), 1)}
+                "pedidos": round(float(x(d, "pedidos").mean()), 1), "puntos": round(float(x(d, "puntos").mean()), 1),
+                "toneladas": round(float(x(d, "kg_pedidos").mean()) / 1000, 2),
+                "cierres": round(float(x(d, "cierres").mean()), 2),
+                "llamadas_optimizador": int(sum(x(por[p], "recalculos").sum() for p in ("despachox", "optimiza_una_vez") if p in por)),
+                "llamadas_con_error": fallos, "segundos_despachox": round(float(x(d, "segundos_tarea").mean()), 1),
+                "segundos_por_llamada": round(float(x(d, "recalculo_medio_s").mean()), 3)}
         for pol in ("despachox",) + LINEAS_BASE:
             if pol in por:
                 for m in INDICADORES + OTRAS:
@@ -123,6 +150,17 @@ def main(argv=None) -> None:
                 fila.update({f"dx-{b}:{m}": round(media, 3), f"dx-{b}:{m}:lo": round(lo, 3),
                              f"dx-{b}:{m}:hi": round(hi, 3), f"dx-{b}:{m}:mejor": mejor, f"dx-{b}:{m}:peor": peor})
         L.append("")
+        venc = {pol: float(np.max(x(por[pol], "perecedero_vencido_pct"))) for pol in por}
+        L += ["Máximo de perecedero vencido en una jornada (%): "
+              + ", ".join(f"`{pol}` {_num(venc[pol], 2)}" for pol in por) + ".", ""]
+        fila.update({f"{pol}:max_vencido": round(venc[pol], 4) for pol in por})
+        if v == "flota_menos_2":
+            menos1 = leer("flota_menos_1")[0].get("despachox", {})
+            iguales = sum(1 for f in d if int(f["semilla"]) in menos1
+                          and int(menos1[int(f["semilla"])]["vehiculos"]) == int(f["vehiculos"]))
+            L += [f"Jornadas en que la flota con dos camperos menos es igual a la de uno menos "
+                  f"(el generador deja al menos un campero): {iguales} de {len(d)}.", ""]
+            fila["iguales_a_flota_menos_1"] = iguales
         if v == "referencia":
             referencia = datos
         elif v.startswith("factor") and referencia is not None:
@@ -135,6 +173,7 @@ def main(argv=None) -> None:
             fila["control_lineas_base_distintas"] = distintas
         tabla.append(fila)
     (RESULTADOS / "resumen.md").write_text("\n".join(L) + "\n")
+    (RESULTADOS / "tabla_compacta.md").write_text(compacta(tabla) + "\n")
     if tabla:
         campos = list(dict.fromkeys(k for f in tabla for k in f))
         with open(RESULTADOS / "tabla.csv", "w", newline="") as fh:

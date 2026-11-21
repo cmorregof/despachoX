@@ -40,7 +40,9 @@ Generado por `python -m analisis.sensibilidad.verificar`. Velocidades en km/h, m
 | ladder | 0,1 | campero | 20,0 | 20,0 | 20,0 | 0,00 |
 | ladder | 0,1 | moto | 22,2 | 22,2 | 22,2 | 0,00 |
 
-Mayor diferencia entre la red parcheada y el CSV: 1,006 km/h. El camión no tiene valor en las vías que no le son aptas (residential), porque no pasa por ellas.
+Mayor diferencia entre la red parcheada y el CSV: 0,000 km/h, sin contar el camión en `residential`. El camión no puede usar esas vías. Solo pasa por los pares de nodos que tienen, además del tramo residencial, un tramo paralelo apto de otro tipo, y su media sale de esos tramos.
+
+La columna «Modelo» es la velocidad que la simulación usaba antes: el `travel_time` del grafo (el `maxspeed` de OSM donde existe y, si no, `VELOCIDADES`) dividido por `FACTOR_TIEMPO`.
 
 ## 2. Multiplicadores 0,8 y 1,2
 

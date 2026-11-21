@@ -108,12 +108,15 @@ def main() -> None:
             csv_v = vm.kmh(vel, via, t, 1.0)
             s = sim1.get(via, {}).get(t, float("nan"))
             dif = s - csv_v if math.isfinite(s) else float("nan")
-            if math.isfinite(dif):
+            if math.isfinite(dif) and not (t == "camion" and via in red_sim.VIAS_SIN_CAMION):
                 peor = max(peor, abs(dif))
             L.append(f"| {via} | {_num(km_via[via] / 1000)} | {t} | {_num(modelo[via][t])} | {_num(csv_v)} | "
                      f"{_num(s)} | {_num(dif, 2)} |")
-    L += ["", f"Mayor diferencia entre la red parcheada y el CSV: {_num(peor, 3)} km/h. "
-          "El camión no tiene valor en las vías que no le son aptas (residential), porque no pasa por ellas.", ""]
+    L += ["", f"Mayor diferencia entre la red parcheada y el CSV: {_num(peor, 3)} km/h, sin contar el camión en "
+          "`residential`. El camión no puede usar esas vías. Solo pasa por los pares de nodos que tienen, "
+          "además del tramo residencial, un tramo paralelo apto de otro tipo, y su media sale de esos tramos.", "",
+          "La columna «Modelo» es la velocidad que la simulación usaba antes: el `travel_time` del grafo (el "
+          "`maxspeed` de OSM donde existe y, si no, `VELOCIDADES`) dividido por `FACTOR_TIEMPO`.", ""]
 
     L += ["## 2. Multiplicadores 0,8 y 1,2", "",
           "| Multiplicador | Tipo de vía | Vehículo | CSV × multiplicador | Simulación parcheada |", "|---:|---|---|---:|---:|"]
