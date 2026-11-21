@@ -7,7 +7,7 @@ Versión 1, noche del viernes 20 al sábado 21 de noviembre, rama `pitch-noche`.
 - **Conteo de palabras.** El texto en pantalla tiene 15 palabras como mucho, contando el título. No cuentan el pie de fuente ni las etiquetas del visual (ejes, mapa, recuadros), que se listan aparte y van cortas.
 - **Asterisco.** Marca una cifra por verificar. Si a la 1:00 p. m. nadie ha abierto su fuente, la cifra se quita de la diapositiva.
 - **Simulación.** Toda figura de la simulación lleva la etiqueta «Simulación», su línea base y su número de jornadas. Las cifras de simulación salen de `docs/SIMULACION.md`, sección 9, y de `despacho/sim/resultados_velocidades/tablas.md`.
-- **Estilo.** La paleta del informe corto: tinta #4F4086, ámbar #A36752, crema #EBD3A2 y ceniza #6E6878, sobre fondo claro. La letra es Ancízar Serif si está instalada; sus archivos no están en el repositorio público y los tiene Carlos. Si no está, una serif del sistema.
+- **Estilo.** La paleta del informe corto: tinta #4F4086, ámbar #A36752, crema #EBD3A2 y ceniza #6E6878, sobre fondo claro. La letra es Ancízar Serif si está instalada. Sus archivos no están en el repositorio público y los tiene Carlos. Si no está, una serif del sistema.
 - **Plantilla.** El kit de la hackathon trae una «plantilla de presentación» que el viernes dio acceso denegado (`docs/PLATAFORMA_INNOVO.md`). Si la organización la comparte, estas diapositivas se montan en ella.
 - **Entrega.** iNNOVO pide un enlace de Drive, con permiso para que el jurado lo abra, antes de las 2:30 p. m. Conviene subir el PDF de las diapositivas.
 - **Figuras existentes.** Están en `docs/informe/figuras/`: `barras_abaco.pdf`, `mapa_manizales.pdf` y `piezas_sueltas.tex`. Los dos PDF se regeneran con los scripts de `docs/informe/figuras/scripts/`. La figura TikZ se compila suelta con los colores definidos en `docs/informe/informe_corto.tex`.
@@ -85,7 +85,7 @@ Datos: `docs/informe/informe_corto.tex`, tabla 1 («Quién despacha, quién pide
 
 **Pie de fuente.** «Juntas: Alcaldía de Manizales, 2025*. Papeles propuestos por el equipo con la investigación 10; el Banco aún no ha visto la propuesta.» Si hubo visita al Banco, la última frase se cambia por lo que pasó.
 
-**Nota del orador.** Que el Banco sea el usuario principal es inferencia nuestra, y depende de la conversación con el Banco. Según `docs/PILOTO_TERRITORIOS.md`, los albergues de los coliseos cerraron el 29 de agosto (La Patria, 1 de septiembre, revisada por máquina el 21 nov en `docs/FUENTES.md`, `fuentes-noche`, sección 12). Por eso los puntos críticos de hoy serían CDI, hogares infantiles, centros de salud y Centros Vida, que es una inferencia de ese documento.
+**Nota del orador.** Que el Banco sea el usuario principal es una inferencia nuestra, y la conversación con el Banco la confirma o la cambia. Según `docs/PILOTO_TERRITORIOS.md`, los albergues de los coliseos cerraron el 29 de agosto (La Patria, 1 de septiembre, revisada por máquina el 21 nov en `docs/FUENTES.md`, `fuentes-noche`, sección 12). De ahí ese documento infiere que los puntos críticos de hoy serían CDI, hogares infantiles, centros de salud y Centros Vida.
 
 **Criterio.** 1, beneficiarios, y 6, beneficiarios.
 
@@ -101,7 +101,7 @@ Datos: `docs/informe/informe_corto.tex`, tabla 1 («Quién despacha, quién pide
 
 **Pie de fuente.** «Elaborado con la investigación 10 del equipo. El RUD cerró el 4 de septiembre (Vanguardia, 5 de octubre de 2026*).»
 
-**Nota del orador.** Las barreras con evidencia son de propósito y de dueño, porque cada pieza sirve a su dueño y a otro fin (investigación 10, sección 3). Costo, capacitación, nombres locales y confianza son hipótesis sin fuente pública. Si preguntan por Google Maps o Waze, la respuesta es que dan una ruta para un carro, pero no reparten pedidos entre vehículos distintos ni saben qué se vence.
+**Nota del orador.** Las barreras que tienen evidencia son de propósito y de dueño, porque cada pieza sirve a su dueño y a otro fin (investigación 10, sección 3). Costo, capacitación, nombres locales y confianza son hipótesis sin fuente pública. Si preguntan por Google Maps o Waze, respondemos que dan una ruta para un carro, pero no reparten pedidos entre vehículos distintos ni saben qué se vence.
 
 **Criterio.** 1, si hay algo parecido, y 2, pertinencia y creatividad, porque el aporte es la integración.
 
@@ -117,7 +117,7 @@ Sale uno o dos segundos mientras el operador cambia al tablero. Si el cambio es 
 
 **Visual.** El tablero a pantalla completa. Aparte, una tarjeta impresa que no es diapositiva, con el QR del bot y el mensaje «derrumbe en la avenida del centro, no pasa camion, si pasa moto». El QR lo genera rol A con el enlace real del bot.
 
-**Nota del orador.** El bloque 5 de `pitch/GUION.md`. Si algo falla, se pasa al video de respaldo.
+**Nota del orador.** Se dice el bloque 5 de `pitch/GUION.md`. Si algo falla, se pasa al video de respaldo.
 
 **Criterio.** 2, funcionamiento y demostración.
 
@@ -136,7 +136,7 @@ Sale uno o dos segundos mientras el operador cambia al tablero. Si el cambio es 
 
 **Pie de fuente.** «Tabla: `despacho/territorio.py`, con datos sintéticos. Simulación del equipo, 21 de noviembre de 2026. 30 escenarios por carga, 360 jornadas. Velocidades de la tesis UNAL de 2019, tabla 14. IC del 95 %: `despacho/sim/resultados_velocidades/tablas.md`.»
 
-**Nota del orador.** La tabla dice «sin pedidos registrados» y nunca «sin necesidad», porque que un barrio no pida no quiere decir que esté bien (`despacho/territorio.py`). Si un punto crítico deja de pedir, entra a la cola una visita de verificación, que nunca sale con comida. Si preguntan por la simulación, se dicen la línea base, el número de jornadas y los supuestos. También lo que no prueba: no mide el valor de recibir pedidos por chat ni el de la trazabilidad (`docs/SIMULACION.md`, sección 7).
+**Nota del orador.** La tabla dice «sin pedidos registrados» y nunca «sin necesidad», porque si un barrio no pide, eso no quiere decir que esté bien (`despacho/territorio.py`). Si un punto crítico deja de pedir, entra a la cola una visita de verificación, que nunca sale con comida. Si preguntan por la simulación, se dicen la línea base, el número de jornadas y los supuestos. También se dice lo que no prueba. No mide el valor de recibir pedidos por chat ni el de la trazabilidad (`docs/SIMULACION.md`, sección 7).
 
 **Criterio.** 2, porque el prototipo mide, y 6, indicadores verificables.
 
@@ -166,7 +166,7 @@ Debajo de la línea, la regla de cambio: «Si el Banco no reparte, el piloto pas
 
 **Pie de fuente.** «Calamidad pública de Manizales vigente hasta el 9 de agosto de 2027 (Alcaldía, 16 de octubre de 2026*). A25: IDEA, UNAL Sede Manizales. Pueblo Hondo: Alcaldía, 27 ago 2026*. Maracas: INVÍAS, registro #767, 15 ene 2023*.»
 
-**Nota del orador.** La recuperación del territorio, para este piloto, es que la capacidad de despachar quede en manos locales, con el Banco, las juntas y la UGR, y que se use entre desastres (`docs/FICHA_CORTA.md`, componente 4; lecciones del FOREC en la investigación 10, sección 5.4). Al Banco se le piden tres datos sin información personal: su catálogo de puntos, su inventario con vencimientos y un mes de despachos (`docs/PILOTO.md`, sección 6). Hay un criterio de parada. Si la reconstrucción en frío no ahorra kilómetros ni desperdicio, el piloto se rediseña antes de pedirle tiempo a nadie (`docs/PILOTO.md`, sección 5). El territorio es la propuesta 2, que Carlos eligió el 21 de noviembre a las 6:10 a. m. Ciudadela del Norte es la comuna más poblada, con 58.776 habitantes (ASIS 2023*). El PMA recorrió con la Alcaldía las veredas con más daño para identificar necesidades de seguridad alimentaria, y en esa nota hablan las juntas de Alto Bonito y Alto del Guamo (Alcaldía, 20 de agosto*). Al final decide el Banco, donde tenga más organizaciones inscritas.
+**Nota del orador.** En este piloto, recuperar el territorio quiere decir que la capacidad de despachar quede en manos locales, con el Banco, las juntas y la UGR, y que se use entre desastres (`docs/FICHA_CORTA.md`, componente 4; lecciones del FOREC en la investigación 10, sección 5.4). Al Banco le pedimos tres datos sin información personal: su catálogo de puntos, su inventario con vencimientos y un mes de despachos (`docs/PILOTO.md`, sección 6). Hay un criterio de parada. Si la reconstrucción en frío no ahorra kilómetros ni desperdicio, el piloto se rediseña antes de pedirle tiempo a nadie (`docs/PILOTO.md`, sección 5). El territorio es la propuesta 2, que Carlos eligió el 21 de noviembre a las 6:10 a. m. Ciudadela del Norte es la comuna más poblada, con 58.776 habitantes (ASIS 2023*). El PMA recorrió con la Alcaldía las veredas con más daño para identificar necesidades de seguridad alimentaria, y en esa nota hablan las juntas de Alto Bonito y Alto del Guamo (Alcaldía, 20 de agosto*). Al final decide el Banco, donde tenga más organizaciones inscritas.
 
 **Criterio.** 4, hitos, entregables y validación; 5, aliados y riesgo, por la regla de cambio; 3, el A25.
 
@@ -207,7 +207,7 @@ Debajo, métodos y datos: ruteo con capacidad y ventanas de tiempo en OR-Tools s
 
 **Pie de fuente.** «IDEA, reporte A25 de 2020*. Solicitud de la patente 37476, folio 18*. Investigaciones 07 y 08 del equipo.»
 
-**Nota del orador.** El 16 de febrero de 2026 Manizales declaró alerta amarilla con 200 mm en menos de 25 días, que es el umbral amarillo del A25. La nota de prensa no nombra al IDEA, así que la relación es un cotejo nuestro. El A25 está en el código con lluvia sintética y apagado por defecto. Las vías a más de 3 km de toda estación, entre ellas la salida a Letras, no reciben alerta (`docs/A25.md`, sección 2). Los factores de costo, ×2 en naranja y ×4 en roja, y la cobertura de 3 km son supuestos nuestros (`docs/A25.md`, secciones 2, 4 y 7). El visto bueno de un profesor del IDEA está en gestión, y se actualiza el sábado. La arquitectura del modelo que lee, el código que calcula y la persona que decide viene de CARMEN, proyecto 56031 de Minciencias, según Carlos; no hay fuente pública en el repositorio [FALTA FUENTE]. La palabra «vigente» para la patente se dice solo si se confirma la anualidad 2026.
+**Nota del orador.** El 16 de febrero de 2026 Manizales declaró alerta amarilla con 200 mm en menos de 25 días, que es el umbral amarillo del A25. La nota de prensa no nombra al IDEA, así que la relación es un cotejo nuestro. El A25 está en el código con lluvia sintética y apagado por defecto. Las vías a más de 3 km de toda estación, entre ellas la salida a Letras, no reciben alerta (`docs/A25.md`, sección 2). Los factores de costo, ×2 en naranja y ×4 en roja, y la cobertura de 3 km son supuestos nuestros (`docs/A25.md`, secciones 2, 4 y 7). Estamos gestionando el visto bueno de un profesor del IDEA, y el sábado lo actualizamos. La arquitectura del modelo que lee, el código que calcula y la persona que decide viene de CARMEN, proyecto 56031 de Minciencias, según Carlos. No hay fuente pública en el repositorio [FALTA FUENTE]. La palabra «vigente» para la patente se dice solo si se confirma la anualidad 2026.
 
 **Criterio.** 3, conocimiento utilizado.
 
@@ -221,7 +221,7 @@ Debajo, métodos y datos: ruteo con capacidad y ventanas de tiempo en OR-Tools s
 
 **Pie de fuente.** «Medido con la red bloqueada, no con el wifi apagado: de la carga de datos a una entrega registrada en 23 s*.»
 
-**Nota del orador.** El 11 de agosto en la mañana, el 28 % de las estaciones base de Caldas estaba sin servicio, según el informe de MinTIC que cita Noticias RCN*. En esa nota, la recomendación de priorizar los mensajes de texto es de la CRC*. La página de MinTIC sobre la emergencia, actualizada el 13 de agosto, también recomienda usar mensajes de texto*. El lector de SMS acertó 20 de 20 mensajes sintéticos en una prueba que no es independiente. Falta probarlo todo con el wifi apagado y con un celular real, y el mapa del tablero todavía necesita internet.
+**Nota del orador.** El 11 de agosto en la mañana, el 28 % de las estaciones base de Caldas estaba sin servicio, según el informe de MinTIC que cita Noticias RCN*. En esa nota, la recomendación de priorizar los mensajes de texto es de la CRC*. La página de MinTIC sobre la emergencia, actualizada el 13 de agosto, también recomienda usar mensajes de texto*. El lector de SMS acertó 20 de 20 mensajes sintéticos en una prueba que no es independiente. Falta probarlo todo con el wifi apagado y con un celular real. Además, el mapa del tablero todavía necesita internet.
 
 **Criterio.** 5, factibilidad y riesgo de conectividad, y 2, funcionamiento.
 
@@ -235,7 +235,7 @@ Debajo, métodos y datos: ruteo con capacidad y ventanas de tiempo en OR-Tools s
 
 **Pie de fuente.** «Simulación del equipo, 21 de noviembre de 2026. 30 escenarios por carga, 360 jornadas, y cada diferencia compara 30 jornadas por política. Lo que no prueba: `docs/SIMULACION.md`, sección 7.»
 
-**Nota del orador.** Se reporta tal como salió. La primera corrida queda reemplazada por la sección 9 y no se cita. Frente al despachador con oficio se dicen los kilómetros, 46,0, 56,0 y 42,2 km menos por jornada según la carga, y el total de entregas a tiempo, que empata con carga holgada y media y con carga alta da 3,0 puntos [0,7; 5,3]. La ventaja en críticos no se dice. Esa corrida cambia a la vez la red y la velocidad, y la corrida que separa los dos efectos (`docs/SIMULACION.md`, sección 9.3) no ha llegado.
+**Nota del orador.** La reportamos tal como salió. La primera corrida queda reemplazada por la sección 9 y no se cita. Frente al despachador con oficio se dicen los kilómetros y el total de entregas a tiempo. Son 46,0, 56,0 y 42,2 km menos por jornada según la carga. El total de entregas a tiempo empata con carga holgada y media, y con carga alta da 3,0 puntos [0,7; 5,3]. La ventaja en críticos no se dice. Esa corrida cambia a la vez la red y la velocidad, y la corrida que separa los dos efectos (`docs/SIMULACION.md`, sección 9.3) no ha llegado.
 
 **Criterio.** 2 y 6.
 
@@ -263,7 +263,7 @@ Debajo, métodos y datos: ruteo con capacidad y ventanas de tiempo en OR-Tools s
 
 **Pie de fuente.** «Fuentes en `docs/PILOTO_TERRITORIOS.md`. Distancias por la red vial del equipo.»
 
-**Nota del orador.** Carlos eligió la 2 el 21 de noviembre a las 6:10 a. m. Ciudadela del Norte es la comuna más poblada. Además, el PMA ya levantó necesidades en las veredas de la propuesta, y sus juntas hablaron en público. El documento recomendaba la 1, porque el sismo dejó daño con fuente en sus dos partes y sus accesos se caen también sin sismo. Además, en la 1 comuna y vereda quedan sobre una sola ruta, mientras que en la 2 la ruta a Alto Bonito sale por la comuna San José. La 3 conviene si el IDEA respalda la prueba del A25.
+**Nota del orador.** Carlos eligió la 2 el 21 de noviembre a las 6:10 a. m. Ciudadela del Norte es la comuna más poblada. Además, el PMA ya levantó necesidades en las veredas de la propuesta, y sus juntas hablaron en público. El documento recomendaba la 1, porque el sismo dejó daño con fuente en sus dos partes y sus accesos se caen también sin sismo. En la 1, además, comuna y vereda quedan sobre una sola ruta. En la 2, en cambio, la ruta a Alto Bonito sale por la comuna San José. La 3 conviene si el IDEA respalda la prueba del A25.
 
 **Criterio.** 4, y también 1 por el territorio.
 
