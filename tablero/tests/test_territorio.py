@@ -97,3 +97,9 @@ def test_pestana_territorio_en_la_app():
     fuente = (CARPETA / "app.py").read_text(encoding="utf-8")
     assert '"Territorio"' in fuente and "Pendiente: despacho.territorio" in fuente
     assert "Barrios y veredas sin pedidos registrados" in fuente and '"Descargar CSV"' in fuente
+
+
+def test_nombre_visible_convite():
+    fuente = (CARPETA / "app.py").read_text(encoding="utf-8")
+    assert 'NOMBRE = "Convite"' in fuente
+    assert 'page_title=f"{NOMBRE} · Mesa de despacho"' in fuente and 'title(f"{NOMBRE} · Mesa de despacho")' in fuente

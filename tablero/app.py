@@ -26,6 +26,7 @@ sys.path[:] = [str(RAIZ)] + [p for p in sys.path if Path(p or ".").resolve() not
 from datos import db  # noqa: E402
 from tablero import datos as T  # noqa: E402
 
+NOMBRE = "Convite"          # nombre visible (canal, 20/11 23:30); módulos y archivos no cambian
 CENTRO = (5.07, -75.52)
 SEGUNDOS_REFRESCO = 5
 ALTERNATIVAS = 3          # cuántas alternativas de ubicación se ofrecen por propuesta
@@ -557,10 +558,10 @@ def mesa() -> None:
 
 
 def main() -> None:
-    st.set_page_config(page_title="DespachoX · Mesa de despacho", layout="wide")
+    st.set_page_config(page_title=f"{NOMBRE} · Mesa de despacho", layout="wide")
     st.markdown(ESTILO, unsafe_allow_html=True)
     c1, c2 = st.columns([5, 1])
-    c1.title("DespachoX · Mesa de despacho")
+    c1.title(f"{NOMBRE} · Mesa de despacho")
     c2.text_input("Despachador", key="quien", placeholder="Tu nombre", label_visibility="collapsed")
     mesa()
 
