@@ -153,7 +153,7 @@ Tres resultados de la segunda ronda completan el cuadro [M]. Se corrieron con la
 | Un cierre no llega o llega tarde | Reporte del conductor por chat, confirmado por el despachador. En el piloto se cruza con la Unidad de Gestión del Riesgo y con el #767 de INVÍAS, y el A25 sirve de alerta previa |
 | Alguien marca como entregado un paquete ajeno, porque los códigos admiten 390.625 combinaciones | En el piloto, la confirmación solo cuenta si viene del punto de destino o del conductor |
 | Solicitudes falsas o en ráfaga | Filtro por reglas con parámetros declarados como supuestos, que se calibran con datos del piloto. Solo una persona confirma o descarta |
-| Datos personales | No se guardan nombres ni teléfonos, y el remitente queda como un código. Ley 1581 de 2012 |
+| Datos personales | El remitente queda como un código, y los pedidos de prueba son sintéticos. Ley 1581 de 2012 |
 | La simulación sobrestima el beneficio | Se repitió con velocidades derivadas de mediciones GPS de un bus en Manizales y asignadas por tipo de vía y pendiente (tesis UNAL de 2019, tabla 14, pp. 46 a 48), y en el piloto se mide con odómetro o GPS |
 | El aliado no adopta la herramienta | Operación en sombra antes de pedir cualquier cambio de proceso |
 | Dependencia de un proveedor de inteligencia artificial | La lectura del mensaje es un módulo aislado. Se puede cambiar de modelo o usar el lector por reglas |

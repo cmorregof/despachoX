@@ -31,11 +31,9 @@ El anexo técnico, con todas las cifras, supuestos y riesgos, está en `docs/FIC
 - Un conductor reporta un derrumbe que deja al camión sin acceso. El despachador confirma, y el plan nuevo manda un campero.
 - El despachador aprueba cada plan con su nombre. Cada paquete lleva un código y se cierra cuando alguien escribe «ENTREGADO» y el código por chat o SMS [M].
 
-**Demostración.** La demo de tres minutos recorre ese flujo y está ensayada. El jurado puede escribirle al bot con el QR. [Video de respaldo: por grabar.]
+**Demostración.** La demo de tres minutos recorre ese flujo y está ensayada. El jurado puede escribirle al bot con el QR.
 
 **Sin internet.** Pedidos, cierres y entregas entran también por SMS, que un programa de reglas lee sin red. Leyó 20 de 20 SMS sintéticos, en una prueba no independiente [M]. Con la red bloqueada, un portátil llegó a la hoja de ruta con QR y a una entrega registrada en 23 s [M]. Falta probarlo con el wifi apagado y con un celular real.
-
-**En construcción.** La vista por comuna y vereda está en construcción para antes del congelamiento.
 
 **Simulación.** Con 30 escenarios por nivel de carga y 360 jornadas sobre la red real de Manizales, Convite sube los críticos a tiempo en 23,3, 44,7 y 57,9 puntos frente al despacho por orden de llegada [M]. Cada diferencia compara 30 jornadas por política, y ningún intervalo del 95 % toca el cero. Frente a un despachador con oficio, recorre 46,0, 56,0 y 42,2 km menos por jornada. En el total de entregas a tiempo empata con carga holgada y media, y con carga alta gana 3,0 puntos. Los perecederos vencidos quedan en 0,0 %, frente a 1,4 %, 3,4 % y 5,6 % por orden de ingreso, por una regla de bodega que el despachador con oficio también cumple. Priorizar hace esperar al punto peor atendido entre 1,95 y 3,82 horas más que por orden de llegada. Las velocidades son derivadas de mediciones GPS de un bus en Manizales y asignadas por tipo de vía y pendiente (tesis UNAL de 2019, tabla 14, pp. 46 a 48). La simulación usa la media por tipo de vía. La vida útil no se repitió con lo medido, y la corrida le sigue dando al huevo horas cuando dura días.
 
