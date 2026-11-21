@@ -1,5 +1,5 @@
 # Torre de control · A-entrada · rol A (entrada)
-Última actualización: 2026-11-20 19:00 (hora de Colombia)
+Última actualización: 2026-11-20 20:00 (hora de Colombia)
 
 Desde las 16:05 el módulo lo dirige Samuel con `encargos/A2_BOT_SAMUEL.md`. Se trabaja en la rama `samuel-bot`; Carlos fusiona a `main` a las 6:30 p. m., 11:00 p. m. y 8:00 a. m.
 
@@ -25,6 +25,8 @@ Etapa 1 del encargo A2 hecha en `samuel-bot` y probada con el extractor falso: �
 - 18:00 · Encargo A2, etapa 3 (rama `samuel-bot`): `entrada/carga.py` y `entrada/ESCALA.md`. Medido con extractor falso (1,8 s de media): 5.000 mensajes a la vez, 914 por minuto, 0 errores, 0 perdidos; con 5 % de fallos de la API, 59 guardados crudos y 0 perdidos. Cuello de botella: `lugares/nomenclator.buscar` (97 % de 65 ms por mensaje en el hilo del bot). Cambios: un solo cliente de Anthropic con 2 reintentos del SDK, `concurrent_updates(32)`, `Mesa.atender_seguro` guarda crudo si falla la base. Falta la corrida de 100 con el modelo real (sin clave aquí). 66 pasan, 1 se omite.
 
 - 19:00 · Alerta por silencio, pedida por Samuel (rama `samuel-bot`): columna `pedidos.origen` ('mensaje' | 'silencio') en `datos/esquema.sql`, con migración idempotente en `datos/db.py` (`_migrar`); `entrada/silencio.py` (umbral 6 h, jornada desde las 06:00, solo puntos críticos, una alerta viva por punto, urgencia 2, sin familias ni kilos); un pedido real ubicado en el punto la descarta; reloj en el bot cada 10 minutos; `python -m entrada.silencio`. `entrada/pruebas/test_silencio.py`: 8 pruebas. Suite completa del repositorio: 146 pasan, 3 se omiten.
+
+- 20:00 · `docs/PILOTO.md`, pedido por Samuel: tesis del uso diario (banco de alimentos), casos RUD, Providencia y Salva RS, cierres viales de 2017 a 2023 con enlace, A25, doble propuesta de valor con las cifras de `docs/SIMULACION.md`, plan 30/60/90 con el día 60 como día normal de reparto en paralelo y los tres datos que se le piden al operador. Tres cifras nuevas en `docs/FUENTES.md` (DNP 2016, ABACO 2025, Banco de Manizales en ABACO), todas de resumen de búsqueda y sin abrir. Pendiente: el escenario sin cierres, que corre simulacion.
 
 ## En curso (qué, hasta dónde llegó, qué falta)
 - Prueba desde un teléfono con el bot real: nadie le ha escrito todavía.

@@ -283,3 +283,20 @@ El tablero debería pintar las filas con `pedidos.origen = 'silencio'` de otro c
 ### 19:00 · A-entrada (Samuel) → B-despacho, Carlos · AVISO
 Riesgo: si el despachador **confirma** una alerta (`origen='silencio'`), el optimizador la trata como un pedido sin familias y la carga con 1 familia y 10 kg de mercado genérico. Una visita de verificación saldría con comida. Propuesta para `despacho/`: no surtir pedidos con `origen='silencio'`, o planearlos como parada de 0 kg. Mientras tanto, la regla para la demostración: la alerta se descarta o se reemplaza por un pedido real, no se confirma tal cual.
 
+### 20:00 · A-entrada (Samuel) → Fable, Carlos · LISTO
+`docs/PILOTO.md` en `samuel-bot`: DespachoX se gana el puesto en la operación diaria del banco de alimentos. Resumen en diez líneas para el **componente 5 de `docs/FICHA.md`**:
+1. DespachoX se gana el puesto en la operación diaria del Banco de Alimentos de Manizales, no solo el día del desastre.
+2. El RUD y Providencia exigieron un trámite nuevo en plena emergencia y excluyeron gente; Salva RS fue adoptado al tercer día porque era simple [F].
+3. Uso diario: repartir desde bodega a fundaciones y comedores lo que está por vencer, que es lo que el prototipo ya resuelve.
+4. No cubre todavía la recogida en donantes ni los pedidos recurrentes: después del día 90.
+5. Escala diaria: ABACO manejó unas 54.000 t en 2025 [F, por abrir], frente a 9,76 Mt perdidas o desperdiciadas al año en Colombia [F, DNP 2016].
+6. Las vías se cierran sin sismo (2017, 2021, 2023) [F], y por eso existe el A25 del IDEA-UNAL.
+7. Valor diario: entre 47 y 75 km menos por jornada que un despachador con oficio, del 5 % al 11 % [M, simulación con cierres]; sin cierres, [pendiente].
+8. Valor en emergencia: críticos a tiempo +12 a +46 puntos frente al orden de llegada; empate frente a un despachador con oficio [M].
+9. Hito del día 60: un día normal de reparto en paralelo, midiendo kilómetros y desperdicio contra la forma actual del operador.
+10. Al operador se le pide el catálogo de puntos, el inventario con vencimientos y un mes de despachos, sin datos personales.
+Tres cifras nuevas en `docs/FUENTES.md`, todas de resumen de búsqueda y sin abrir: hay que abrirlas antes del pitch.
+
+### 20:00 · A-entrada (Samuel) → simulacion · PREGUNTA
+Para `docs/PILOTO.md`, sección 4: ¿pueden correr el escenario **sin cierres** (0 cierres por jornada, el día normal del banco) y reportar kilómetros de `despachox` contra `experta`, con las mismas 30 semillas por carga? Mientras tanto queda marcado [pendiente].
+
