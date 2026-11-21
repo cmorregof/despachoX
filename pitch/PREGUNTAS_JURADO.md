@@ -68,9 +68,9 @@ No decide solo, porque el modelo lee y estructura, el optimizador y las reglas c
 
 **10. ¿Y sin internet?**
 
-La mañana del 11 de agosto el 28 % de las estaciones base de Caldas estaba sin servicio, y MinTIC recomendó usar mensajes de texto [F]. DespachoX recibe pedidos, cierres y entregas por SMS leídos por reglas, y con la red bloqueada un portátil llegó a la hoja de ruta impresa y a una entrega registrada en 23 s [M]. Falta la prueba con el wifi apagado y con un celular real, y el mapa del tablero todavía necesita internet.
+La mañana del 11 de agosto el 28 % de las estaciones base de Caldas estaba sin servicio, según MinTIC. La CRC recomendó priorizar los mensajes de texto, y la página de MinTIC sobre la emergencia también los recomienda [F]. DespachoX recibe pedidos, cierres y entregas por SMS leídos por reglas, y con la red bloqueada un portátil llegó a la hoja de ruta impresa y a una entrega registrada en 23 s [M]. Falta la prueba con el wifi apagado y con un celular real, y el mapa del tablero todavía necesita internet.
 
-*Respaldo.* `docs/SIN_CONEXION.md`; `docs/investigacion/09_canales_sin_internet.md`, sección 1; `docs/RIESGOS.md`, R1.
+*Respaldo.* `docs/SIN_CONEXION.md`; `docs/investigacion/09_canales_sin_internet.md`, sección 1; `docs/RIESGOS.md`, R1. Noticias RCN, 11 de agosto, cita el informe de MinTIC para las estaciones y a la CRC para los mensajes de texto; la página de MinTIC es del 13 de agosto (`docs/FUENTES.md`, rama `fuentes-noche`, sección 7).
 
 **11. ¿Cuánto mejora frente a como se despacha hoy?**
 
