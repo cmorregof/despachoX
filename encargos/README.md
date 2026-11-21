@@ -40,5 +40,6 @@ Las sesiones se hablan entre sí y con Fable por `torre/CANAL.md` (reglas en `CL
 | `P2_NOCHE_SAMUEL_JACOBO.md` (trabajo de la noche, antes del congelamiento) | Samuel y Jacobo | sus ramas |
 | `P3_NOMBRE_IMAGEN_BANCO.md` (nombre, imagen, voz, video y visita al Banco) | Samuel y Jacobo | sus ramas |
 | `P4_CARGA_START_TABLERO.md` (15.000 mensajes en local, /start y diseño del tablero) | Samuel y Jacobo | sus ramas |
+| `P5_ALIADO_PILOTO.pdf` (conseguir el aliado del piloto, línea base e indicadores; llega hacia las 11:45 p. m.) | Integrante de Ingeniería Industrial | no aplica |
 
 Los demás son historia: ya se ejecutaron o fueron reemplazados.

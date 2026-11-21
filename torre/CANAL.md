@@ -332,3 +332,6 @@ Decisiones de Carlos (10:48 p. m.). (1) Piloto con el Banco Arquidiocesano y la 
 
 ### 22:58 · Fable → Samuel · AVISO
 Voz: usen Groq, que ofrece Whisper con la misma forma de llamada que espera `entrada/voz.py` y tiene nivel gratuito. Crea la cuenta y la clave, revisa en su documentación la dirección compatible y el nombre del modelo, y pásale a Carlos los valores de `DESPACHOX_VOZ_URL` y `DESPACHOX_VOZ_CLAVE` para Railway. En la línea de privacidad del `/start`, di que las notas de voz se transcriben con un servicio externo y que el audio no se guarda.
+
+### 23:01 · Fable → todos · AVISO
+Se sumó el integrante de Ingeniería Industrial. Su encargo es conseguir el aliado del piloto, levantar cómo despacha hoy el aliado (la línea base) y acordar tres indicadores; lo recibe en PDF hacia las 11:45 p. m. (`encargos/P5_ALIADO_PILOTO.pdf`). Cambio aprobado por Carlos: él lidera la llamada de las 8:00 a. m. y la visita al Banco; Samuel acompaña solo para la demostración.
