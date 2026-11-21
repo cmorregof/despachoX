@@ -570,7 +570,8 @@ def _resumen_a25(riesgo, en_alerta: dict, flota: list[dict]) -> dict:
     recorridos = [{"vehiculo_id": vid, "via": via, "nivel": nivel, "km": round(m / 1000, 2)}
                   for (vid, via, nivel), m in sorted(en_alerta.items())]
     lluvia = "sintética" if riesgo.sintetica else "real"
-    avisos = [f"{nombres.get(r['vehiculo_id'], r['vehiculo_id'])} recorre {r['km']:g} km de «{r['via']}» en "
+    avisos = [f"{nombres.get(r['vehiculo_id'], r['vehiculo_id'])} recorre "
+              f"{str(r['km']).replace('.', ',')} km de «{r['via']}» en "
               f"alerta {r['nivel']} del A25 (lluvia {lluvia}), porque no hubo un desvío más barato. "
               "El despachador decide." for r in recorridos]
     return {"activo": True, "fecha": riesgo.fecha.isoformat(), "lluvia": lluvia,

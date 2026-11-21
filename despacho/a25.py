@@ -5,17 +5,18 @@ terminan en D, incluido D. El IDEA lo adoptó a partir de la tesis de Terlien (1
 de Gestión del Riesgo de Manizales le fijó tres niveles de alerta: amarilla desde 200 mm,
 naranja desde 300 mm y roja desde 400 mm (IDEA, Boletín Ambiental 145, marzo de 2018, tabla 2).
 El reporte del IDEA de 2020 llama a los niveles «amarilla o baja», «naranja o media» y «roja o
-alta». Ninguno de los dos documentos dice en palabras si la suma incluye el día del reporte; lo
-comprobamos con los números del reporte de 2020: el A25 de la estación Chec-Uribe del 25 al 31
-de enero de 2020 es la suma de ese día y los 24 anteriores, en los siete días (prueba en
-`despacho/tests/test_a25.py`). Detalle y enlaces en `docs/A25.md`.
+alta». Ninguno de los dos documentos dice en palabras si la suma incluye el día del reporte, y
+por eso lo comprobamos con los números del reporte de 2020. Allí el A25 de la estación Chec-Uribe
+del 25 al 31 de enero de 2020 es la suma de ese día y los 24 anteriores, en los siete días (prueba
+en `despacho/tests/test_a25.py`). Detalle y enlaces en `docs/A25.md`.
 
 Cómo lo usa DespachoX. A cada tramo con nombre (`lugares` de tipo vía, o `datos/semilla/vias.csv`)
 se le asigna la estación más cercana de `datos_publicos/estaciones_a25.csv`, igual que los
 polígonos de Thiessen con que el IDEA promedia la lluvia de la ciudad. El tramo hereda el nivel
-de esa estación. Regla de arquitectura: aquí no interviene ningún modelo de lenguaje; la regla
-calcula y avisa, y el despachador decide. El gancho del optimizador (`DESPACHOX_A25=1`) solo
-encarece los tramos en naranja o roja; nunca los cierra.
+de esa estación. Aquí no interviene ningún modelo de lenguaje, como pide la regla de
+arquitectura: la regla calcula y avisa, y el despachador decide. El gancho del optimizador
+(`DESPACHOX_A25=1`, apagado por defecto) encarece las vías con historial de ladera que están en
+naranja o roja, y nunca las cierra.
 
 Datos. La lluvia por defecto es sintética (`datos/demo/lluvia_sintetica.csv`) y la salida lo dice.
 Para la red real basta un CSV con el mismo formato en `DESPACHOX_LLUVIA` (ver `docs/A25.md`).
@@ -24,6 +25,8 @@ Uso:
     python -m despacho.a25 --fecha 2026-11-21               # alerta por tramo
     python -m despacho.a25 --fecha 2026-11-21 --csv         # lo mismo en CSV
     python -m despacho.a25 --fecha 2026-11-21 --estaciones  # A25 de cada estación
+    python -m despacho.a25 --fecha 2026-11-21 --corredores  # km de cada vía en alerta (red vial)
+    python -m despacho.a25 --fecha 2026-11-21 --comparar    # plan con el gancho apagado y encendido
 """
 from __future__ import annotations
 
@@ -111,7 +114,10 @@ def ventana(serie_diaria: Mapping[date, float | None], fecha: date) -> Ventana:
     con, faltan = [], []
     for d in _dias(fecha):
         v = _valor(serie_diaria.get(d))
-        (faltan.append(d) if v is None else con.append(v))
+        if v is None:
+            faltan.append(d)
+        else:
+            con.append(v)
     valor = round(math.fsum(con), 1) if con else float("nan")
     return Ventana(fecha, valor, len(con), tuple(faltan))
 
@@ -212,7 +218,7 @@ def leer_lluvia(ruta: Path | str | None = None, estaciones: list[Estacion] | Non
     sintetica = columna == COLUMNA_SINTETICA or any("sintetic" in normalizar(c) for c in comentarios)
     series: dict[str, dict[date, float | None]] = {}
     avisos, desconocidas = [], set()
-    for k, r in enumerate(lector, start=2):
+    for k, r in enumerate(lector, start=1):
         eid = por_alias.get(normalizar(r["estacion"]))
         if eid is None:
             desconocidas.add(r["estacion"])
@@ -220,13 +226,16 @@ def leer_lluvia(ruta: Path | str | None = None, estaciones: list[Estacion] | Non
         try:
             d = date.fromisoformat((r["fecha"] or "").strip()[:10])
         except ValueError:
-            avisos.append(f"fila {k}: fecha ilegible «{r['fecha']}»; se descarta")
+            avisos.append(f"registro {k}: fecha ilegible «{r['fecha']}»; se descarta")
             continue
         bruto = (r.get(columna) or "").strip()
         v = _valor(bruto) if bruto else None
         if bruto and v is None:
-            avisos.append(f"fila {k}: lluvia inválida «{bruto}» en {eid} el {d}; cuenta como dato faltante")
-        series.setdefault(eid, {})[d] = v
+            avisos.append(f"registro {k}: lluvia inválida «{bruto}» en {eid} el {d}; cuenta como dato faltante")
+        serie = series.setdefault(eid, {})
+        if d in serie and serie[d] != v:
+            avisos.append(f"registro {k}: {eid} el {d} aparece dos veces; vale el último ({v})")
+        serie[d] = v
     if desconocidas:
         avisos.append("estaciones que no están en estaciones_a25.csv: " + ", ".join(sorted(desconocidas)))
     return Lluvia(series, sintetica, str(ruta), avisos)
