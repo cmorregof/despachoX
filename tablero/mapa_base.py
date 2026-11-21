@@ -6,10 +6,17 @@ colores. El filtro va dentro del HTML del mapa porque streamlit-folium lo dibuja
 """
 from __future__ import annotations
 
+import html
+
 import folium
 
 TESELAS = "OpenStreetMap"     # https://tile.openstreetmap.org, atribución «© colaboradores de OpenStreetMap»
 FILTRO_TESELAS = ".leaflet-tile-pane { filter: grayscale(0.6) brightness(1.05) contrast(0.95); }"
+
+
+def seguro(texto) -> str:
+    """Texto para un tooltip o popup: folium lo inserta como HTML, así que se escapa siempre."""
+    return html.escape("" if texto is None else str(texto))
 
 
 def crear(centro: tuple[float, float], zoom: int = 13) -> folium.Map:

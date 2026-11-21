@@ -26,6 +26,7 @@ sys.path[:] = [str(RAIZ)] + [p for p in sys.path if Path(p or ".").resolve() not
 from datos import db  # noqa: E402
 from tablero import datos as T  # noqa: E402
 from tablero import mapa_base  # noqa: E402
+from tablero.mapa_base import seguro as S  # noqa: E402  - todo texto de la base que va al mapa
 
 NOMBRE = "Convite"          # nombre visible (canal, 20/11 23:30); módulos y archivos no cambian
 CENTRO = (5.07, -75.52)
@@ -203,15 +204,15 @@ def capa(con, plan: dict | None, rutas: list[dict], revisar: dict, pin: dict | N
         for s in r["paradas"]:
             if len(s["geometria"]) >= 2:
                 folium.PolyLine(s["geometria"], color=c, weight=6, opacity=0.85,
-                                tooltip=f"{r['nombre']} · parada {s['orden']}").add_to(fg)
+                                tooltip=S(f"{r['nombre']} · parada {s['orden']}")).add_to(fg)
         if len(r["regreso"]) >= 2:
             folium.PolyLine(r["regreso"], color=c, weight=3, opacity=0.6, dash_array="4 8",
-                            tooltip=f"{r['nombre']} · regreso al acopio").add_to(fg)
+                            tooltip=S(f"{r['nombre']} · regreso al acopio")).add_to(fg)
 
     for p in puntos.values():
         folium.CircleMarker([p["lat"], p["lon"]], radius=13 if p["critico"] else 6,
                             color=ROJO if p["critico"] else "#374151", weight=4 if p["critico"] else 1.5,
-                            fill=False, tooltip=p["nombre"] + (" · PUNTO CRÍTICO" if p["critico"] else "")
+                            fill=False, tooltip=S(p["nombre"] + (" · PUNTO CRÍTICO" if p["critico"] else ""))
                             ).add_to(fg)
     for d in pedidos:
         p = puntos.get(d["punto_id"])
@@ -220,38 +221,38 @@ def capa(con, plan: dict | None, rutas: list[dict], revisar: dict, pin: dict | N
                                 color="white", fill=True, fill_opacity=0.9,
                                 fill_color=COLOR_SILENCIO if d.get("origen") == T.ORIGEN_SILENCIO
                                 else COLOR_PEDIDO[d["estado"]],
-                                tooltip=f"Pedido {d['id']} · {d['estado']} · urgencia {d['urgencia']} · "
-                                        f"{d['kg_estimado'] or '?'} kg · {p['nombre']}").add_to(fg)
+                                tooltip=S(f"Pedido {d['id']} · {d['estado']} · urgencia {d['urgencia']} · "
+                                          f"{d['kg_estimado'] or '?'} kg · {p['nombre']}")).add_to(fg)
     for r in rutas:
         for s in r["paradas"]:
             if s["lat"] is not None:
                 folium.Marker([s["lat"], s["lon"]], icon=numero(s["orden"], colores[r["vehiculo_id"]]),
-                              tooltip=f"{r['nombre']} · parada {s['orden']} · {s['punto']} · "
-                                      f"llega {hora(s['llegada_estimada'])}"
-                                      + ("" if s["a_tiempo"] else " · TARDE")).add_to(fg)
+                              tooltip=S(f"{r['nombre']} · parada {s['orden']} · {s['punto']} · "
+                                        f"llega {hora(s['llegada_estimada'])}"
+                                        + ("" if s["a_tiempo"] else " · TARDE"))).add_to(fg)
     for a in acopios:
-        folium.Marker([a["lat"], a["lon"]], tooltip=f"Acopio · {a['nombre']}",
+        folium.Marker([a["lat"], a["lon"]], tooltip=S(f"Acopio · {a['nombre']}"),
                       icon=folium.Icon(color="darkgreen", icon="warehouse", prefix="fa")).add_to(fg)
     for c in cierres:
         reportado = c["estado"] == "reportado"
         folium.Circle([c["lat"], c["lon"]], radius=140, color=ROJO, weight=5,
                       dash_array="8 10" if reportado else None, fill=not reportado, fill_opacity=0.45,
-                      tooltip=f"Cierre {c['id']} · {'por confirmar' if reportado else 'confirmado'} · "
-                              f"{c['lugar'] or c['descripcion'] or ''}").add_to(fg)
+                      tooltip=S(f"Cierre {c['id']} · {'por confirmar' if reportado else 'confirmado'} · "
+                                f"{c['lugar'] or c['descripcion'] or ''}")).add_to(fg)
 
     for u in revisar["ubicaciones"]:
         que = f"{'Pedido' if u['tabla'] == 'pedidos' else 'Cierre'} {u['fila_id']}"
         if u["lat"] is not None:
             folium.Marker([u["lat"], u["lon"]], icon=folium.Icon(color="purple", icon="question", prefix="fa"),
-                          tooltip=f"Propuesta · {que} · «{u['texto']}» = {u['lugar'] or '?'}").add_to(fg)
+                          tooltip=S(f"Propuesta · {que} · «{u['texto']}» = {u['lugar'] or '?'}")).add_to(fg)
         for c in u["alternativas"][:ALTERNATIVAS]:
             if c.get("lat") is not None:
                 folium.CircleMarker([c["lat"], c["lon"]], radius=8, color=MORADO, weight=3, fill=True,
                                     fill_opacity=0.25, dash_array="3 5",
-                                    tooltip=f"Alternativa · {que} · {c.get('nombre')}").add_to(fg)
+                                    tooltip=S(f"Alternativa · {que} · {c.get('nombre')}")).add_to(fg)
     if pin and pin.get("punto"):
         folium.Marker(pin["punto"], icon=folium.Icon(color="red", icon="location-dot", prefix="fa"),
-                      tooltip="Punto marcado: falta guardarlo").add_to(fg)
+                      tooltip=S("Punto marcado: falta guardarlo")).add_to(fg)
 
     st.session_state["capa"] = (firma, fg)
     return fg
@@ -307,7 +308,7 @@ def bloque_plan(con, plan: dict | None, rutas: list[dict]) -> None:
 
     res = plan["resumen"]
     estado = {"propuesto": "PROPUESTO · falta aprobar",
-              "aprobado": f"APROBADO por {plan['aprobado_por'] or '?'} a las {hora(plan['aprobado_en'])}"
+              "aprobado": f"APROBADO por {html.escape(plan['aprobado_por'] or '?')} a las {hora(plan['aprobado_en'])}"
               }[plan["estado"]]
     st.markdown(f'<span class="grande">Plan {plan["id"]} · {estado}</span>', unsafe_allow_html=True)
     atendidos = sum(len(r["paradas"]) for r in rutas)
@@ -584,6 +585,21 @@ def estado_de_accion(accion: str | None) -> str | None:
     return None
 
 
+def reinicio_datos(con) -> None:
+    """Botón para volver a la semilla antes de una demo. Pide confirmación con una casilla aparte."""
+    with st.expander("Reiniciar datos de prueba"):
+        st.caption("Borra pedidos, cierres, planes, inventario y ubicaciones de esta base y carga la semilla "
+                   "sintética (`python -m despacho.semilla --cargar --reiniciar`). Solo para pruebas y demos.")
+        seguro = st.checkbox("Sí, borrar los datos y cargar la semilla", key="confirmar_reinicio")
+        if st.button("Reiniciar datos de prueba", type="primary", disabled=not seguro, key="reiniciar_datos"):
+            r = correr("Cargando la semilla…", T.reiniciar_datos_prueba, con, quien())
+            st.session_state.pop("confirmar_reinicio", None)
+            st.session_state.pop("capa", None)
+            avisar("ok" if r.ok else "error", f"Datos de prueba reiniciados por {quien()}." if r.ok
+                   else f"No se pudo reiniciar: {r.mensaje}")
+            refrescar()
+
+
 def detalle_bitacora(con) -> None:
     filas = T.bitacora(con, 60)
     if not filas:
@@ -623,6 +639,7 @@ def mesa() -> None:
             detalle_territorio(con)
         with t_bitacora:
             detalle_bitacora(con)
+            reinicio_datos(con)
     finally:
         con.close()
 

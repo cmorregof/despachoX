@@ -464,6 +464,32 @@ def ejecutar_despacho(modulo: str, *args: str, correr=subprocess.run, espera_s: 
     return Corrida(True, plan_id)
 
 
+SEMILLA = ("despacho.semilla", "--cargar", "--reiniciar")
+ESPERA_SEMILLA_S = 300
+
+
+def reiniciar_datos_prueba(con: sqlite3.Connection, quien: str, correr=subprocess.run,
+                           espera_s: int = ESPERA_SEMILLA_S) -> Corrida:
+    """Borra los datos de la base y carga la semilla (`python -m despacho.semilla --cargar --reiniciar`).
+
+    El proceso hereda DESPACHOX_DB, así que reinicia la misma base que mira el tablero. La entrada de
+    la bitácora se escribe después, para que el reinicio no la borre.
+    """
+    try:
+        r = correr([sys.executable, "-m", *SEMILLA], cwd=RAIZ, capture_output=True, text=True,
+                   timeout=espera_s)
+    except subprocess.TimeoutExpired:
+        return Corrida(False, None, f"despacho.semilla no respondió en {espera_s} s")
+    except OSError as e:
+        return Corrida(False, None, f"no se pudo ejecutar despacho.semilla: {e}")
+    if r.returncode != 0:
+        error = ((r.stderr or "").strip().splitlines() or ["despacho.semilla terminó con error"])[-1]
+        return Corrida(False, None, error)
+    db.anotar(con, (quien or "").strip() or "despachador", "reiniciar datos de prueba",
+              "despacho.semilla --cargar --reiniciar")
+    return Corrida(True, None)
+
+
 def calcular_plan() -> Corrida:
     return ejecutar_despacho("optimizar")
 
