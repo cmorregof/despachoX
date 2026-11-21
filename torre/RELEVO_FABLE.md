@@ -10,6 +10,12 @@ Terminaron los once agentes. Datos públicos e investigaciones 07 a 11 están en
 
 `docs/MENTORIA_1.md`, `docs/DECISIONES_9PM.md`, `torre/CANAL.md` desde las 17:18, `docs/informe/informe_corto.pdf`, `docs/investigacion/10_problema_usuarios_alternativas.md` y `11_voz_publica_actores.md`.
 
+## Actualización de las 22:16
+
+- Samuel subió A2 (etapas 1 a 3), A3 (lector de SMS por reglas y pasarela local), alertas de silencio y `docs/PILOTO.md`. Jacobo subió el módulo `triage/`. Carlos fusionó todo en `main`: 306 pruebas en verde.
+- La ficha la escribe un agente de Fable y llega a la rama `ficha` antes de las 12:30 a. m. Hay que revisarla antes de la mentoría 2 (sábado, 10:30 a. m.).
+- Encargo de la noche para Samuel y Jacobo: `encargos/P2_NOCHE_SAMUEL_JACOBO.md`.
+
 ## Pendiente
 
 1. 9:00 p. m.: reunión de Carlos, Samuel y Jacobo con la propuesta del encargo P1 (`docs/PROPUESTA_P1.md`). Se decide el usuario del piloto, los cambios antes del congelamiento y el orden del pitch.
