@@ -357,6 +357,14 @@ Probar: `python -m pytest -q` (342 pasan y 3 se omiten) y `python -m despacho.te
 ### 23:38 · Fable → todos · AVISO
 Esta noche trabajan siete agentes de Fable, cada uno en su rama, y nada de eso entra a `main` sin revisión: `pitch-noche` (guion y diapositivas), `defensa-noche` (plan de 30 a 90 días, riesgos y preguntas del jurado), `fuentes-noche` (`docs/FUENTES.md` consolidado, `docs/VERIFICAR_SAMUEL.md`, `ENTREGA.md` y README para el jurado), `qa-noche` (calidad, QR, silencio y Ley 1581), `a25` (alertas de lluvia antecedente con lluvia sintética; la fusión la decide Carlos), `demo-noche` (demo ensayable y tiempos del optimizador) y `manuscrito`. Ninguno toca `tablero/` ni el `/start`. Samuel y Jacobo: sigan en lo suyo; si van a editar `README.md`, `docs/FUENTES.md` o `pitch/`, avisen aquí primero. Antes de la demo hay que pulsar «Reiniciar datos de prueba» en el tablero de la nube, porque la base conserva lotes viejos.
 
+### 23:48 · Noche-2 → todos · AVISO
+Noche-2 es una sesión de apoyo de Carlos que trabaja hasta las 6:30 a. m. con siete agentes, cada uno en su clon y en su rama. Ramas y carpetas: `n2-eval-lector` (`evaluacion/lector/`), `n2-eval-inyeccion` (`evaluacion/inyeccion/`), `n2-sensibilidad` (`analisis/sensibilidad/` y `docs/SENSIBILIDAD.md`), `n2-figuras` (`figuras_pitch/`), `n2-privacidad` (`docs/PRIVACIDAD.md`), `n2-aliados` (`aliados/DIRECTORIO.md`) y `n2-jurado` (`revision/JURADO.md`).
+No escribimos en las ramas de Fable, Samuel ni Jacobo, ni en `despacho/`, `entrada/`, `datos/`, `datos_publicos/`, `tablero/`, `pitch/` o `torre/`. A `main` solo suben estas entradas y `torre/RELEVO_NOCHE2.md`. La sensibilidad corre `despacho.sim.correr` con base 20261150 y factor crítico 3, sin repetir los escenarios de la simulación principal. No hay `ANTHROPIC_API_KEY` en el entorno, así que el lector y la inyección se evalúan solo por reglas. Fable decide qué se fusiona desde las 6:10.
+
+
+### 23:50 · B-despacho → todos · AVISO
+Fusionado a `main`. Dos sesiones B hicieron en paralelo el factor 3, el empaque 1,2, las alertas por silencio y T1. Vale la versión que ya estaba en `main` (`resumen.verificar`, `territorio.resumen` y `silencio`); la otra se descartó y no cambia nada para nadie. Entra una sola cosa nueva: un producto con la clave `supuesto`, que es como marca el bot los kilos por ración, sale en `resumen.cantidad_supuesta` como «kilos por ración (leche: 2 kg por familia)». Samuel: tu pedido de las 4:30 p. m. queda hecho. Pruebas: 345 pasan.
+
 ### 22:30 · A-entrada (Samuel) → Fable, Carlos, Jacobo · CIFRA DUDOSA
 «Para recibir mercados había que llevar el formato azul que entregan los Bomberos **después de revisar la vivienda**» (`docs/FICHA.md`, componente 1). La página de la Alcaldía del 15 de agosto confirma mercados, kits y formato azul de Bomberos, pero no dice que se entregue después de revisar la vivienda. Que no entre al pitch esa parte. Detalle en `docs/FUENTES.md`.
 

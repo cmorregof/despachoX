@@ -151,3 +151,26 @@ def test_recalculo_saca_la_alerta_aunque_figure_asignada(mundo, con, grafo, ahor
     r = _resumen(con, p2)
     paradas = [p["pedido_id"] for p in con.execute("SELECT pedido_id FROM paradas WHERE plan_id=?", (p2,))]
     assert paradas == [2] and [v["pedido_id"] for v in r["verificar"]] == [1]
+
+
+# ---------- kilos por ración (pedido de Samuel, 4:30 p. m.) ----------
+
+def test_kilos_por_racion_cuentan_como_cantidad_supuesta():
+    """El bot marca con `supuesto` los kilos que puso la mesa por ración («6 bebés sin leche»)."""
+    import json
+    from despacho import optimizar
+    p = {"productos": json.dumps([{"producto": "leche", "kg": 12, "supuesto": "2 kg por familia"}]),
+         "kg_estimado": 12, "familias": 6}
+    notas = []
+    assert optimizar._demanda(p, notas) == [{"producto": "leche", "kg": 12.0}]
+    assert notas == ["kilos por ración (leche: 2 kg por familia)"]
+    mezcla = {"productos": json.dumps([{"producto": "arroz", "kg": 20},
+                                       {"producto": "leche", "kg": 12, "supuesto": "2 kg por familia"},
+                                       {"producto": "pan"}]), "kg_estimado": 40, "familias": 6}
+    notas = []
+    optimizar._demanda(mezcla, notas)
+    assert notas[0].startswith("kilos por ración") and "kilos repartidos" in notas[-1]
+    notas = []
+    optimizar._demanda({"productos": '[{"producto": "arroz", "kg": 20}]', "kg_estimado": 20, "familias": 2},
+                       notas)
+    assert notas == []

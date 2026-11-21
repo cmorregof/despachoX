@@ -1,5 +1,5 @@
 # Torre de control · Carlos · capitán
-Última actualización: viernes 20 de noviembre de 2026, 23:20 (agente B-noche)
+Última actualización: viernes 20 de noviembre de 2026, 23:50
 
 ## Estado en una frase
 El módulo B corre de punta a punta: semilla cargada, plan en 10 s y recálculo que evita la vía cerrada. Faltan las pruebas (agente en curso) y, esta noche, la simulación.
@@ -88,6 +88,11 @@ Pruebas: `despacho/tests` 25 pasan (12 nuevas en `test_ronda3.py`); simulación 
 - Ensayo de la demo por terminal, en base temporal con el grafo regional, antes y después de los cambios: plan 1 con 17 de 17 y 3 de 3 críticos; plan 2 con 18 de 18 y San José en el Camión 1; recálculo con la avenida del Centro cerrada: punto 14 aislado para camión, el 21 pasa al Campero 1, ningún pedido de San José en camión, 18 de 18, 3 de 3, sin retrasos. Igual que el guion.
 - Pruebas: 342 pasan y 3 se omiten (eran 306). Nuevas: `despacho/tests/test_noche.py` (factores, empaque, silencio) y `test_territorio.py`.
 - Pendiente: que el tablero muestre `resumen.verificar` (Jacobo) y la pestaña «Territorio» (parte C de T1). El factor de empaque multiplica el tiempo restante y no la vida desde el empaque, como sugiere `docs/investigacion/07_patentes_a_fondo.md`; cambiarlo exige un campo nuevo (`empacado_en`) y queda para el piloto.
+
+### Fusión de las 23:50 (sesión B-despacho de la ronda 3)
+- Dos sesiones B hicieron en paralelo el factor 3, el empaque 1,2, las alertas por silencio y T1. Quedó la versión que ya estaba en `main` (agente B-noche), porque ya estaba anunciada y la usa el tablero. La otra versión sigue en el historial de `carlos-despacho` (commits 677daed y c9e5119) y no se usa.
+- Lo único nuevo que entró: un producto con la clave `supuesto` (kilos que pone el bot por ración) cuenta como cantidad supuesta, como pidió Samuel a las 4:30 p. m. Prueba en `despacho/tests/test_noche.py`. Pruebas en todo el repositorio: 345 pasan y 1 se omite.
+- Lección: antes de lanzar dos sesiones sobre `despacho/`, revisar en el canal quién tiene cada tarea.
 
 ## En curso
 - Nada de B. Pendiente de otra sesión: encargo S2 de la simulación (barrido de `FACTOR_CRITICO`), que no se ejecutó, y el indicador A25 como riesgo de tramo.

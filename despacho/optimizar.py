@@ -112,10 +112,14 @@ def _demanda(p: dict, notas: list[str] | None = None) -> list[dict]:
 
 def _por_que_supuesta(p: dict, lineas: list[dict]) -> list[str]:
     """Qué completó la red de seguridad de `_demanda`. Vacía si todo lo dijo quien pidió."""
-    declarados = [l for l in _productos(p) if l["kg"] > 0]
+    productos = _productos(p)
+    declarados = [l for l in productos if l["kg"] > 0 and not l.get("supuesto")]
+    por_racion = [f"{l['producto']}: {l['supuesto']}" for l in productos if l["kg"] > 0 and l.get("supuesto")]
     if lineas and len(declarados) == len(lineas):
-        return []                          # cada producto trae sus kilos
-    notas = []
+        return []                          # cada producto trae sus kilos, dichos por quien pidió
+    notas = [f"kilos por ración ({', '.join(por_racion)})"] if por_racion else []
+    if por_racion and len(declarados) + len(por_racion) == len(lineas):
+        return notas
     if not p["kg_estimado"]:
         if p["familias"]:
             notas.append(f"kilos estimados con {KG_POR_FAMILIA:g} kg por familia")
@@ -139,7 +143,10 @@ def _productos(p: dict) -> list[dict]:
                 kg = float(l.get("kg") or 0)
             except (TypeError, ValueError):
                 kg = 0.0
-            salida.append({"producto": nombre, "kg": max(0.0, kg)})
+            fila = {"producto": nombre, "kg": max(0.0, kg)}
+            if l.get("supuesto"):                    # kilos que puso la mesa por ración (entrada/raciones.py)
+                fila["supuesto"] = str(l["supuesto"])
+            salida.append(fila)
     except (TypeError, ValueError, AttributeError):
         return []
     return salida
@@ -149,7 +156,7 @@ def _demanda_lineas(p: dict) -> list[dict]:
     total = float(p["kg_estimado"] or (p["familias"] or 1) * KG_POR_FAMILIA)
     con_kg, sin_kg = [], []
     for l in _productos(p):
-        (con_kg if l["kg"] > 0 else sin_kg).append(l)
+        (con_kg if l["kg"] > 0 else sin_kg).append({"producto": l["producto"], "kg": l["kg"]})
     if sin_kg:
         resto = total - sum(l["kg"] for l in con_kg)
         if resto <= 0:                       # los kilos declarados ya cubren el total
