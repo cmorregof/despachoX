@@ -9,7 +9,7 @@ Todas las cifras, supuestos y riesgos están en el anexo técnico, `docs/FICHA.m
 
 **El problema.** Después del sismo, la comida donada llegó a la región y se atascó en el despacho. En las fuentes que revisamos, ninguna herramienta en uso une el pedido de cada barrio o vereda, el vehículo, la vía abierta y la confirmación de entrega.
 
-**La evidencia.** En Manizales, el censo del 24 de agosto contó 8.240 damnificados (Noticias RCN; por verificar). ABACO, la red de bancos de alimentos, hizo de la ciudad uno de sus principales acopios (Noticias RCN; por verificar). Según Portafolio, el 16 de agosto la red tenía 404.587 kg en acopio y 157.164 kg en tránsito, y había entregado 41.163 kg (por verificar). En Manizales la comida se repartió por listas. Para recibir mercados había que llevar el formato azul de Bomberos, y los kits se entregaron por turnos en la sede de la Cruz Roja Seccional Caldas (Alcaldía; por verificar). La Gobernación dejó los kits en su centro logístico, donde los recogieron los vehículos de cada municipio (Gobernación; por verificar).
+**La evidencia.** En Manizales, el censo del 24 de agosto contó 8.240 damnificados (Noticias RCN; por verificar). ABACO, la red de bancos de alimentos, hizo de la ciudad uno de sus principales puntos de acopio (Noticias RCN; por verificar). Según Portafolio, el 16 de agosto la red tenía 404.587 kg en acopio y 157.164 kg en tránsito, y había entregado 41.163 kg (por verificar). En Manizales la comida se repartió por listas. Para recibir mercados había que llevar el formato azul de Bomberos, y los kits se entregaron por turnos en la sede de la Cruz Roja Seccional Caldas (Alcaldía; por verificar). La Gobernación dejó los kits en su centro logístico, donde los recogieron los vehículos de cada municipio (Gobernación; por verificar).
 
 **Las vías.** El 12 de agosto seguían cerradas las vías Pereira–Chinchiná, entre los kilómetros 22 y 24, y Manizales–Fresno en Herveo, entre los kilómetros 36+800 y 40+300 (Semana; por verificar). Las vías se cierran también sin sismo. La salida a Letras suma 87 registros de cierre por deslizamiento o derrumbe entre 2017 y 2026, 4 de ellos del sismo. Un mismo derrumbe puede tener varios registros (INVÍAS y prensa; cálculo nuestro; por verificar). El registro oficial del cierre Pereira–Chinchiná apareció 9 horas y 46 minutos después del sismo (cálculo nuestro; por verificar).
 
@@ -23,7 +23,7 @@ Todas las cifras, supuestos y riesgos están en el anexo técnico, `docs/FICHA.m
 
 **Qué es.** Convite es una mesa de despacho de ayuda alimentaria. El modelo de lenguaje lee los mensajes; el optimizador y las reglas calculan; el despachador decide.
 
-**Lo que funciona hoy.** El bot de Telegram y el tablero corren en la nube desde el viernes, y las 306 pruebas automáticas del repositorio pasan [M].
+**Lo que funciona hoy.** El bot de Telegram y el tablero corren en la nube desde el viernes, y el sábado pasaron 530 pruebas automáticas [M].
 
 - Un líder pide por chat. En quince mensajes sintéticos, el extractor acertó 62 de 64 campos [M].
 - El ubicador conoce 452 nombres y apodos de Manizales y pide confirmar el lugar. En 44 frases de prueba no propuso con seguridad ningún lugar equivocado [M].

@@ -72,5 +72,5 @@ pandoc /tmp/ficha_anexo.md -o DespachoX_ficha_anexo.pdf --pdf-engine=lualatex -V
 
 1. Si se sube solo la ficha corta o también el anexo técnico.
 2. La hora del pitch, 2:00 o 2:30 p. m.
-3. Si el jurado recibe el mismo enlace del tablero que se usa en la demo. La base de la nube es una sola, así que lo que haga el jurado en el tablero se ve después en la demo.
+3. Decidido el 21 de noviembre: el jurado no recibe la clave del tablero. Queda la razón: La base de la nube es una sola, así que lo que haga el jurado en el tablero se ve después en la demo.
 4. Los responsables de cada fila de esta lista.

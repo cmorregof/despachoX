@@ -14,7 +14,7 @@ Samuel Rosso (líder) · Carlos Orrego · Jacobo Vasco · Nicolás Ramírez · J
 - En la nube, el tablero está en [despachox-production.up.railway.app](https://despachox-production.up.railway.app/) y el bot en [t.me/despachox_bot](https://t.me/despachox_bot), con el código QR más abajo. El tablero de la nube pide clave, así que lo mostramos en la demo y en el video. Al bot, en cambio, usted puede escribirle un pedido como «somos 40 familias en san jose no hay arroz ni leche». El bot le devuelve el lugar que entendió para que usted lo confirme, y el pedido entra a la cola del tablero.
 - La demo de tres minutos, con los mensajes y los clics exactos, está en [`docs/GUION_DEMO.md`](docs/GUION_DEMO.md).
 - Sin internet, el sistema arranca en un portátil con `bash despliegue/local.sh`. Los niveles de respaldo, del SMS a la hoja de ruta impresa, están en [`docs/SIN_CONEXION.md`](docs/SIN_CONEXION.md).
-- Las pruebas automáticas corren con `python -m pytest -q`. En la revisión del viernes a las 11:15 p. m. pasaron 342 y se omitieron 3 (`torre/CANAL.md`).
+- Las pruebas automáticas corren con `python -m pytest -q`. En la revisión del sábado a las 6:50 a. m. pasaron 530 y se omitió 1 (`torre/CANAL.md`).
 
 **Dónde está la evidencia.** Cada cifra lleva su tipo (medida por el equipo, tomada de una fuente o estimada) y su estado de verificación en [`docs/FUENTES.md`](docs/FUENTES.md). Los resultados de la simulación salen de jornadas sintéticas. Los reportamos con su línea base, el número de escenarios y los supuestos (`docs/SIMULACION.md`, sección 9).
 

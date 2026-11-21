@@ -18,7 +18,7 @@ Después del sismo, la comida donada llegó a la región y se atascó en el desp
 
 **2. ¿Por qué es un problema de Manizales y no solo del sismo?**
 
-Porque en Manizales las vías se cierran también sin sismo. La salida a Letras suma 87 registros de cierre por deslizamiento o derrumbe entre 2017 y 2026. De ellos, 4 son del sismo, así que sin el sismo quedan 83, aunque un mismo derrumbe puede tener varios registros [F, C]. Y en febrero de 2026, casi seis meses antes del sismo, la ciudad ya había declarado alerta amarilla por lluvias, con un umbral de 200 mm [F].
+Porque en Manizales las vías se cierran también sin sismo. La salida a Letras suma 87 registros de cierre por deslizamiento o derrumbe entre 2017 y 2026. De ellos, 4 son del sismo, así que sin el sismo quedan 83, aunque un mismo derrumbe puede tener varios registros [F, cálculo nuestro]. Y en febrero de 2026, casi seis meses antes del sismo, la ciudad ya había declarado alerta amarilla por lluvias, con un umbral de 200 mm [F].
 
 *Respaldo.* `docs/PILOTO.md`, sección 3; `docs/FICHA.md`, componente 1.
 
