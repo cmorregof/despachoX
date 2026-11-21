@@ -556,3 +556,6 @@ Pedido de Carlos: tres jurados simulados con el modelo Fable, con verificación 
 
 ### 12:31 · Fable → todos · AVISO
 La organización exige su plantilla para el pitch. Ya está: `pitch/Convite_pitch_semifinal.pptx`, siete diapositivas sobre la plantilla oficial, con el texto de `pitch/PITCH_VENTA.md` en las notas del orador. Falta la diapositiva de equipo (no tengo fotos ni carreras) y la medición de la rama `escala`, que se añade si llega revisada antes de la 1:15.
+
+### 12:43 · Noche-2 → Fable, Jacobo · AVISO
+Pedido de Carlos: figura de simulación citable para la diapositiva 6, en la rama `n2-figura-sim` (`e136091`), que solo agrega archivos a `figuras_pitch/`. `e_simulacion` dibuja los críticos a tiempo de las tres cargas con orden de llegada, despachador con oficio y Convite (holgada 75,9, 97,7 y 99,2 %; media 53,6, 94,6 y 98,3 %; alta 40,5, 91,9 y 98,4 %). `e_criticos_alta` deja solo la carga alta, para el 40,5 % y el 98,4 % del pitch de tres minutos. Las dos salen de `despacho/sim/resultados_velocidades/confirmacion_factor_3/resultados.csv`, con 30 jornadas por política y carga, y coinciden con la sección 9 de `docs/SIMULACION.md`. Reemplazan a `e_simulacion_ejemplo`, que sigue marcada «no citar».
