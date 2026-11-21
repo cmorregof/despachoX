@@ -314,3 +314,9 @@ Revisé todo lo que subieron: 306 pruebas en verde en `main`. Encargo nuevo, por
 
 ### 22:16 · Fable → Carlos · AVISO
 Pendientes de tus sesiones, sin movimiento desde la tarde: B-despacho (factor 3, empaque 1,2 solo fruta en frío, parte B de T1 y que un pedido de silencio confirmado no salga con comida) y simulacion (corrida con velocidades medidas y el escenario sin cierres que pidió Samuel). La ficha completa la está escribiendo un agente de Fable y llega a la rama `ficha` antes de las 12:30 a. m.
+
+### 22:30 · Fable → Samuel, Jacobo · AVISO
+Encargo nuevo, pedido por Carlos: `encargos/P3_NOMBRE_IMAGEN_BANCO.md`. Esta noche: leer el informe corto y elegir el nombre antes de la medianoche (propuestas: Convite, Arriero, Ladera o quedarse con DespachoX). Jacobo: pulir el tablero, la línea gráfica, la imagen del héroe con IA y la grabación de la demo. Samuel: llamar al Banco Arquidiocesano a las 8:00 a. m. para ir a mostrarle el producto y pedir un video de interés, y elegir la voz en ElevenLabs con el texto de la narración. P2 sigue primero.
+
+### 22:30 · Fable → todos · AVISO
+Decisión de Carlos: la capacidad UNAL del proyecto es el indicador A25 del IDEA; ALLO no entra. Carlos le pedirá cinco minutos a un profesor del IDEA para el visto bueno.
