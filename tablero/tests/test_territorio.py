@@ -108,9 +108,9 @@ def test_nombre_visible_convite():
 def test_tema_con_la_paleta_del_informe():
     import tomllib
     tema = tomllib.loads((CARPETA.parent / ".streamlit" / "config.toml").read_text(encoding="utf-8"))["theme"]
-    assert tema["base"] == "light" and tema["primaryColor"] == "#4F4086"
+    assert tema["base"] == "light" and tema["primaryColor"] == "#1F5C4A"
     assert tema["font"] == tema["headingFont"]                     # una sola tipografía
     fuente = (CARPETA / "app.py").read_text(encoding="utf-8")
-    for color in ("#4F4086", "#A36752", "#EBD3A2", "#6E6878"):
+    for color in ("#1F5C4A", "#D9982B", "#E4EADB", "#5C6A62"):
         assert color in fuente
     assert "mapa_base.crear(" in fuente and "carto" not in fuente.lower()   # mapa de fondo claro
