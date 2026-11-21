@@ -200,7 +200,7 @@ Debajo de la línea, la regla de cambio: «Si el Banco no reparte, el piloto pas
 |---|---|---|---|
 | A25 del IDEA, Sede Manizales | Lluvia acumulada de 25 días por estación. Alerta amarilla desde 200 mm, naranja desde 300 y roja desde 400* | Encarece, sin cerrarlas, las vías con historial de deslizamientos que están en alerta naranja o roja, según la estación más cercana | En `main`, con lluvia sintética y apagado por defecto. En el piloto, días 60 a 90, con lluvia real |
 | Patente 37476, composición que captura etileno | Alarga la vida útil de un lote | Parámetro supuesto de 1,2, solo en fruta perecedera de un acopio con frío | En el código como supuesto. Único respaldo: cota inferior en gulupa a 8 °C* |
-| Tesis de maestría, UNAL Manizales, 2019 | 22,6 km/h medidos con GPS en un bus de la ciudad* | Recalibra las velocidades de la simulación | La usa: `docs/SIMULACION.md`, sección 9 |
+| Tesis de maestría, UNAL Manizales, 2019 | Velocidades derivadas de mediciones GPS de un bus en Manizales y asignadas por tipo de vía y pendiente (tesis UNAL de 2019, tabla 14, pp. 46 a 48)* | Recalibra las velocidades de la simulación | La usa: `docs/SIMULACION.md`, sección 9 |
 | Tesis de maestría, UNAL Manizales, 2017, dirigida por William Ariel Sarache Castro | Análisis de la red de ayuda humanitaria de Manizales* | Orienta el mapa de actores del piloto | Por verificar |
 
 Debajo, métodos y datos: ruteo con capacidad y ventanas de tiempo en OR-Tools sobre la red de OpenStreetMap, 50 puntos de entrega reales con fuente (35 críticos), 178 registros de cierres viales y una simulación pareada con dos líneas base. Pedidos y lotes son sintéticos.

@@ -46,7 +46,7 @@ El anexo técnico, con todas las cifras, supuestos y riesgos, está en `docs/FIC
 **Otras capacidades UNAL.**
 
 - **Patente 37476**, composición que captura etileno. Está en el optimizador como parámetro supuesto que alarga la vida útil de un lote. Su único respaldo es una cota inferior de 1,2 en gulupa a 8 °C (cálculo nuestro sobre la solicitud; por verificar). Su ensayo por producto se propone con el laboratorio de empaques del ICTA.
-- **Velocidades medidas.** Una tesis de maestría de la UNAL Manizales midió con GPS 22,6 km/h de media en un bus de la ciudad (por verificar), y con ese dato se está recalibrando la simulación.
+- **Velocidades de la tesis.** Una tesis de maestría de la UNAL Manizales da 22,6 km/h de media en la ruta de un bus de transporte de trabajadores de la CHEC (p. 50; por verificar). La simulación usa sus velocidades por tipo de vía (tabla 14).
 - **Logística humanitaria.** Una tesis de 2017 sobre la red de ayuda de Manizales, dirigida por William Ariel Sarache Castro, orienta el mapa de actores del piloto.
 - **Arquitectura.** La regla del modelo que lee, el código que calcula y la persona que decide viene de CARMEN, proyecto 56031 de Minciencias, y la aporta Carlos Orrego, profesor de la Sede.
 
@@ -59,7 +59,7 @@ El anexo técnico, con todas las cifras, supuestos y riesgos, está en `docs/FIC
 | Días | Hito y entregables | Responsables | Recursos | Validación |
 |---|---|---|---|---|
 | 0 a 15 | **Acuerdo y línea base.** Carta de intención del Banco y aval de la UGR. Catálogo de puntos, inventario con vencimientos y un mes de despachos, sin datos personales. Dos semanas de bitácora del despacho actual | Samuel (acuerdo), Jacobo (bitácora), Carlos (datos) | Horas del despachador; acompañamiento previsto para los premiados | Carta firmada; línea base de entregas a tiempo, kilómetros y kilos vencidos |
-| 15 a 30 | **Reconstrucción en frío.** Lo que habría planeado DespachoX para cada día del mes registrado, frente a lo que se hizo. Simulación con velocidades medidas | Carlos; por asignar la revisión externa | Registros del Banco y un portátil | Real contra reconstruido. Sin mejora en kilómetros ni desperdicio, se rediseña el piloto |
+| 15 a 30 | **Reconstrucción en frío.** Lo que habría planeado DespachoX para cada día del mes registrado, frente a lo que se hizo. Simulación con velocidades de la tesis | Carlos; por asignar la revisión externa | Registros del Banco y un portátil | Real contra reconstruido. Sin mejora en kilómetros ni desperdicio, se rediseña el piloto |
 | 30 a 60 | **Uso en paralelo.** Las organizaciones piden por chat o SMS. En un día normal, el Banco reparte como siempre y DespachoX planea en sombra | Samuel (juntas), Jacobo (tablero), Carlos (optimizador) | Celular con SIM, impresora y vehículos del Banco | Veinte pedidos reales de punta a punta; kilómetros y kilos vencidos frente a la forma actual |
 | 60 a 90 | **Prueba de esfuerzo y decisión.** Simulacro con la UGR y un cierre planeado. A25 por tramo. Dos semanas en sombra e informe para el Consejo Municipal de Gestión del Riesgo | Todo el equipo; por asignar el informe | Datos del IDEA; horas de la UGR y del Banco | Rutas que evitan tramos en alerta; planes aprobados sin cambios; decisión escrita del Banco |
 

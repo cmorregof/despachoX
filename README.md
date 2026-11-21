@@ -29,7 +29,7 @@ Samuel Rosso (líder) · Carlos Orrego · Jacobo Vasco · Nicolás Ramírez · J
 
 **Datos de prueba.** Todos los pedidos, lotes, personas y teléfonos de prueba de este repositorio son sintéticos, y ninguno corresponde a una persona real (Ley 1581 de 2012). Los lugares sí son reales. Puntos de entrega, acopios y red vial traen su fuente fila por fila en `datos_publicos/` y `datos/semilla/`. En uso real, el remitente queda como un código, y el bot intenta quitar teléfonos y nombres del texto antes de guardarlo, sin garantía de que no quede ninguno.
 
-**Sobre lo que sigue.** Debajo está la bitácora técnica del equipo, tal como se escribió durante la hackathon. Su tabla de estado es del viernes a las 4:00 p. m. Sus cifras de simulación son de la primera corrida, que se repite con las velocidades medidas en Manizales, y las vigentes están en `docs/SIMULACION.md`.
+**Sobre lo que sigue.** Debajo está la bitácora técnica del equipo, tal como se escribió durante la hackathon. Su tabla de estado es del viernes a las 4:00 p. m. Sus cifras de simulación son de la primera corrida, que se repitió con las velocidades de la tesis UNAL de 2019, y las vigentes están en `docs/SIMULACION.md`.
 
 ---
 

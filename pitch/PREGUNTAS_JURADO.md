@@ -90,7 +90,7 @@ Cada paquete nace con un código al aprobar el plan y se cierra cuando alguien e
 
 **13. ¿Qué de la UNAL hay aquí, y qué está ya en el código?**
 
-La capacidad principal es el indicador A25 del IDEA, la lluvia acumulada en 25 días por estación [F]. En DespachoX, el optimizador encarece, sin cerrarlas, las vías con historial de deslizamientos que están en alerta naranja o roja (`docs/A25.md`, sección 2). Ya está en el código con lluvia de prueba y apagado por defecto, y con datos del IDEA entra en los días 60 a 90. Estamos pidiendo el visto bueno de un profesor del instituto. En el código ya está la patente 37476 como parámetro supuesto de vida útil [M], y la simulación se recalibra con velocidades medidas con GPS en una tesis de la Sede [F].
+La capacidad principal es el indicador A25 del IDEA, la lluvia acumulada en 25 días por estación [F]. En DespachoX, el optimizador encarece, sin cerrarlas, las vías con historial de deslizamientos que están en alerta naranja o roja (`docs/A25.md`, sección 2). Ya está en el código con lluvia de prueba y apagado por defecto, y con datos del IDEA entra en los días 60 a 90. Estamos pidiendo el visto bueno de un profesor del instituto. En el código ya está la patente 37476 como parámetro supuesto de vida útil [M], y la simulación ya usa velocidades derivadas de mediciones GPS de un bus en Manizales y asignadas por tipo de vía y pendiente (tesis UNAL de 2019, tabla 14, pp. 46 a 48) [F].
 
 *Respaldo.* `docs/FICHA.md`, componente 3; `encargos/P5_ALIADO_PILOTO.pdf`, sección 5.
 
@@ -104,7 +104,7 @@ El núcleo es un ruteo de vehículos con capacidad y ventanas de tiempo, resuelt
 
 **15. ¿La simulación no está hecha a su favor?**
 
-Pusimos como línea base a un despachador con oficio que prioriza lo urgente y rota la bodega, porque una regla intuitiva puede quedar cerca del óptimo (Cook y Lodree, 2017). Encontramos dos supuestos optimistas, 39,0 km/h en vías primarias cuando un bus medido con GPS en Manizales promedió 22,6 km/h, y un huevo que vencía en horas cuando dura días [M, F]. La corrida se repitió esta noche con las velocidades de la tesis UNAL de 2019 (`docs/SIMULACION.md`, sección 9). La vida útil por producto todavía no se corrió.
+Pusimos como línea base a un despachador con oficio que prioriza lo urgente y rota la bodega, porque una regla intuitiva puede quedar cerca del óptimo (Cook y Lodree, 2017). Encontramos dos supuestos optimistas, 39,0 km/h en vías primarias frente a 22,6 km/h de media en la ruta de un bus diésel en Manizales (tesis UNAL de 2019, p. 50), y un huevo que vencía en horas cuando dura días [M, F]. La corrida se repitió esta noche con las velocidades de la tesis UNAL de 2019 (`docs/SIMULACION.md`, sección 9). La vida útil por producto todavía no se corrió.
 
 *Respaldo.* `docs/SIMULACION.md`, sección 3; `docs/datos/flota_perecederos_costos.md`, secciones 1 y 3; `docs/RIESGOS.md`, R6.
 
