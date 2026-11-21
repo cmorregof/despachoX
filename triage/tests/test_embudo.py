@@ -165,17 +165,15 @@ def test_extractor_se_usa_y_si_falla_no_se_cae(con, params, z, hora):
 
 def test_zona_debil_espera_agente_y_validacion_integrada(con, params, z, hora):
     zona = z["Albergue Coliseo"]
-    con.execute("UPDATE zonas SET lambda_h=2.0 WHERE id=?", (zona.id,))
-    con.commit()
     p = dict(params, hora_evento=a_iso(hora(0)))
-    embudo.procesar_lote(con, [], p, hora(3))
+    embudo.procesar_lote(con, [], p, hora(6))                    # 6 h sin contacto
     assert censo.zona_por_id(con, zona.id).es_debil == 1
-    embudo.procesar_lote(con, [sol(hora(3.5), "vecino", zona, productos=("arroz",))], p, hora(3.5))
+    embudo.procesar_lote(con, [sol(hora(6.5), "vecino", zona, productos=("arroz",))], p, hora(6.5))
     f = fila(con, 1)
     assert f["estado"] == "espera_agente" and f["tarea_id"] is not None
     agentes.enrolar(con, h("agente"), "Cruz Roja", [zona.id], "coordinador:ana")
     r = agentes.validar(con, h("agente"), f["tarea_id"], zona.lat, zona.lon,
-                        [{"familias": 30, "productos": ["arroz", "agua"]}], hora(4), p)
+                        [{"familias": 30, "productos": ["arroz", "agua"]}], hora(7), p)
     assert r["ok"] and r["consolidadas"] == [1]
     nueva = fila(con, r["solicitudes"][0])
     assert nueva["estado"] in ("confirmada_regla", "en_cola") and "validada_agente" in json.loads(
@@ -225,11 +223,9 @@ def test_cada_estado_se_alcanza(con, params, z, hora):
                                    productos=("arroz", "agua")) for i in range(3)], params, hora(3))
     vistos |= set(estados(con).values())
     zona = z["Albergue Coliseo"]
-    con.execute("UPDATE zonas SET lambda_h=2.0 WHERE id=?", (zona.id,))
-    con.commit()
     p = dict(params, hora_evento=a_iso(hora(0)))
-    embudo.procesar_lote(con, [], p, hora(3))
-    embudo.procesar_lote(con, [sol(hora(3.5), "debil", zona)], p, hora(3.5))
+    embudo.procesar_lote(con, [], p, hora(6))                    # 6 h sin contacto
+    embudo.procesar_lote(con, [sol(hora(6.5), "debil", zona)], p, hora(6.5))
     vistos |= set(estados(con).values())
     embudo.cambiar_estado(con, [2], "confirmada", "despachador:luis")
     embudo.cambiar_estado(con, [1], "descartada", "despachador:luis")

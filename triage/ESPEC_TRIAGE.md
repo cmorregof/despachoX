@@ -1,6 +1,6 @@
 # ESPEC_TRIAGE · Encargo para Claude Code: módulo de triage de solicitudes
 
-Versión 0.2 · 2026-11-20 · Autor: Jacobo Vasco (rol C) con Claude
+Versión 0.3 · 2026-11-20 (B.6.1: definición única de silencio) · Autor: Jacobo Vasco (rol C) con Claude
 Ubicación de este archivo: `triage/ESPEC_TRIAGE.md`
 
 Este documento tiene tres partes:
@@ -296,18 +296,24 @@ tau*    = max( tau_piso, min(tau_c, tau_cap) )            tau_piso = 0.70 (SUPUE
 ## B.6 Zonas débiles, casos borde y agentes
 
 ### B.6.1 Zona silenciosa (`debiles.detectar`)
-Para cada zona con `afectacion > 0` y sin solicitudes en `[evento, ahora]`, con `T = horas desde el evento ≥ 3`:
+Definición única de silencio, acordada en el aviso de `torre/CANAL.md` del 20/11 a las 23:30 (Jacobo y Samuel) y compartida con `entrada/silencio.py` y `despacho.territorio.silencio()`:
+
+- Una zona con `afectacion > 0` está **en silencio** cuando lleva `silencio_h` horas o más sin contacto (6 h, SUPUESTO), contadas desde la hora más tardía entre el inicio de la jornada (`jornada_inicio`, 06:00 de Bogotá) y `hora_evento`, o desde el último contacto si es posterior.
+- **Contacto** = una solicitud de la zona con canal `chat` y `lugar_confirmado = 1`, o cualquier solicitud de canal `agente`, en un estado distinto de `cuarentena` y `descartada`. Un mensaje en cuarentena no cuenta: un ataque de bots no apaga la alerta.
+- `silencio_h` y `jornada_inicio` se importan de `entrada.silencio` (`UMBRAL_H`, `DESPACHOX_JORNADA_INICIO`); una prueba comprueba que coinciden.
+- Sin `hora_evento` el triage no evalúa silencio. La hora del evento es un parámetro que se guarda en `parametros`.
+- La prueba de Poisson **ya no decide** si hay silencio; solo ordena las tareas de campo:
 ```
-mu_z = lambda_z × T
-si exp(−mu_z) < alpha_sil (0.01) → es_debil = 1
+mu_z = lambda_z × horas_de_silencio
+prioridad_tarea = H_af,z × (1 + aislada) × (1 − exp(−mu_z))
 ```
-La hora del evento es un parámetro (`hora_evento`) que se guarda en `parametros`.
+`alpha_sil` y `T_min_sil_h` siguen en `config.py`, obsoletos para la decisión, para poder leer versiones guardadas de parámetros.
 
 ### B.6.2 Zona aislada (opcional, solo si hay grafo)
 `debiles.aislada(grafo, nodo_zona, nodos_acopio, aristas_cerradas) -> bool`: devuelve verdadero si no hay camino en `networkx` desde ningún acopio después de quitar las aristas cerradas. Sin grafo, devuelve `False` y no falla. Las pruebas usan un grafo pequeño hecho a mano.
 
 ### B.6.3 Regla de negocio: solo entra por el agente
-- Al marcar una zona como débil, se crea una tarea de campo con `prioridad = H_af,z × (1 + aislada)`.
+- Al marcar una zona como débil, se crea una tarea de campo con la `prioridad_tarea` de B.6.1.
 - Una solicitud que no venga de un agente y caiga en una zona débil pasa a `espera_agente` y se liga a la tarea.
 - **Escalamiento:** si una tarea sigue en estado `abierta` o `asignada` más de `t_escala = 6 h` (SUPUESTO), pasa a `escalada` y se anota en la bitácora. Una persona puede entonces confirmar a mano las solicitudes en espera.
 - La zona deja de ser débil solo con `debiles.reabrir(con, zona_id, quien)`, que requiere un humano o un agente.
@@ -436,7 +442,9 @@ PARAMETROS_DEFECTO = {
     "cv_min": 0.1, "salto_km": 3, "ventana_salto_h": 1,
     "pi_0": 0.90, "r_costo": 4, "tau_piso": 0.70, "K_revision_h": 60,
     "epsilon": 0.05, "max_cambio_w": 0.5,
-    "alpha_sil": 0.01, "T_min_sil_h": 3, "t_escala_h": 6, "auditoria_agente": 0.10,
+    "silencio_h": 6, "jornada_inicio": "06:00",   # importados de entrada.silencio
+    "alpha_sil": 0.01, "T_min_sil_h": 3,          # obsoletos para la decisión (B.6.1)
+    "t_escala_h": 6, "auditoria_agente": 0.10,
     "agente_r_poligono_m": 500, "agente_r_centroide_m": 1500,
     "jaccard_productos": 0.5,
     "u_albergue": 3, "u_critico": 3, "u_otro": 1, "beta_ais": 1.0, "gamma": 0.5,
@@ -495,7 +503,7 @@ Cada escenario se genera con la semilla 2026 sobre las zonas de la semilla y se 
 | 1 | Ataque: 200 solicitudes en 10 min desde 50 remitentes nuevos en un barrio, con texto casi igual | ≥ 95 % en `cuarentena`. El cupo consumido del barrio es 0 |
 | 2 | Réplica: todas las zonas afectadas triplican su tasa normal en la misma hora | < 5 % en `cuarentena`. Hay una entrada `posible_nuevo_evento` en la bitácora |
 | 3 | Vereda con un solo mensaje real, de remitente nuevo y con lugar confirmado | No queda en `cuarentena`. Su prioridad es igual a la de una solicitud urbana con las mismas familias y el mismo tipo de punto |
-| 4 | Zona afectada sin mensajes durante 3 h | `es_debil = 1` y una tarea `abierta`. A las 6 h sin validación, la tarea pasa a `escalada` |
+| 4 | Zona afectada sin contacto durante 6 h (B.6.1) | Antes de 6 h no es débil; a las 6 h, `es_debil = 1` y una tarea `abierta`. 6 h después de creada sin validación, la tarea pasa a `escalada` |
 | 5 | Mensaje por chat desde una zona débil | `espera_agente`. Nunca `confirmada_regla` |
 | 6 | Agente que valida desde 2 km fuera de su zona | Rechazo con motivo `ubicacion_agente` |
 | 7 | Extractor que siempre lanza una excepción | El lote termina. Ninguna solicitud se pierde. Las que no tienen campos quedan `en_cola` con `extraccion_fallida` |
@@ -511,7 +519,7 @@ Además, hay que probar los archivos mal formados: CSV vacío, columnas desconoc
 - `cluster`: igual a la referencia por fuerza bruta; entrada vacía; un punto; todos ruido; condición de tiempo.
 - `antifraude`: recarga de la cubeta; valor p de Poisson contra `scipy`; ráfaga global; Jaccard; CV con intervalos iguales; patrones de inyección.
 - `puntaje`: `logit(0.9) = 2.1972`; reconstrucción de `w` desde Beta; `tau*` en los tres casos (gana costo, gana capacidad, gana el piso); tope de cambio ±0.5; una versión nueva no se aplica sin aprobación humana.
-- `debiles`: `exp(−mu)` contra `alpha_sil`; grafo aislado y no aislado; escalamiento.
+- `debiles`: silencio a las 6 h; mensajes en cuarentena y lugar sin confirmar no son contacto; la validación de agente sí; orden por `prioridad_tarea`; conteo desde el evento si es posterior a las 06:00; grafo aislado y no aislado; escalamiento.
 - `agentes`: no agente; fuera de zona; validación correcta.
 - `cola`: orden por prioridad; aumento con la espera; lotes con conteos exactos.
 - `embudo`: cada estado se alcanza; con `integrar=False`, la tabla `pedidos` no cambia; solo un humano puede descartar.
