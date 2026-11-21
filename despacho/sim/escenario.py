@@ -5,7 +5,9 @@ aleatorio derivado de la semilla, de modo que cambiar un parámetro no altera lo
 """
 from __future__ import annotations
 
+import csv
 from dataclasses import dataclass, field
+from pathlib import Path
 
 import numpy as np
 from scipy.sparse.csgraph import dijkstra
@@ -13,6 +15,7 @@ from scipy.sparse.csgraph import dijkstra
 from .red_sim import CENTRO_MANIZALES, TIPOS, Red, cargar_red
 
 H = 3600.0
+DATOS_PUBLICOS = Path(__file__).resolve().parents[2] / "datos_publicos"
 
 
 @dataclass
@@ -41,6 +44,10 @@ class Parametros:
     lote_kg_max: float = 400.0
     vence_h_min: float = 6.0
     vence_h_max: float = 48.0
+    # "rango": cada lote vence entre vence_h_min y vence_h_max horas después del inicio.
+    # "csv": cada lote es un producto de la canasta con la vida útil de datos_publicos/vida_util.csv
+    # (ver `vida_util_csv`), y ya consumió una fracción uniforme entre 0 y 1 de esa vida al empezar.
+    vida_util: str = "rango"
     # flota: capacidad en kg y un vehículo por cada tantos puntos
     capacidad_kg: dict = field(default_factory=lambda: {"camion": 3000.0, "campero": 700.0, "moto": 60.0})
     puntos_por_vehiculo: dict = field(default_factory=lambda: {"camion": 30, "campero": 15, "moto": 20})
@@ -101,6 +108,7 @@ class Lote:
     id: int            # orden de ingreso a bodega
     kg: float
     vence: float
+    producto: str = ""  # solo con vida_util="csv"
 
 
 @dataclass
@@ -189,6 +197,41 @@ def _lotes(pedidos, p: Parametros, rng) -> list:
     return lotes
 
 
+def vida_util_csv(carpeta: Path = DATOS_PUBLICOS) -> list:
+    """[(producto, horas de vida útil, kg por familia y día)] de los perecederos de la canasta.
+
+    - Productos y pesos: los de `raciones.csv` con kilos por familia y día.
+    - Vida útil: las filas perecederas de `vida_util.csv` con cifra en horas, buscadas por producto
+      o por variedad (la papa es una variedad de verdura en ese archivo). El acopio de la
+      simulación tiene frío, así que vale `horas_con_frio` y, si no hay, `horas_sin_frio`.
+      Entre varias variedades se toma la menor, que es la cifra conservadora.
+    - Quedan fuera los productos sin cifra en horas (fruta) o sin kilos en la ración (pollo, pan).
+    """
+    with open(carpeta / "raciones.csv", newline="", encoding="utf-8") as fh:
+        pesos = {f["producto"]: float(f["kg_por_familia_dia"]) for f in csv.DictReader(fh)
+                 if f["kg_por_familia_dia"]}
+    with open(carpeta / "vida_util.csv", newline="", encoding="utf-8") as fh:
+        filas = [f for f in csv.DictReader(fh) if f["perecedero"] == "1"]
+    canasta = []
+    for producto, peso in pesos.items():
+        horas = [float(f["horas_con_frio"] or f["horas_sin_frio"]) for f in filas
+                 if (f["variedad"] == producto or (f["producto"] == producto and f["variedad"] not in pesos))
+                 and (f["horas_con_frio"] or f["horas_sin_frio"])]
+        if horas:
+            canasta.append((producto, min(horas), peso))
+    return canasta
+
+
+def _vida_util_de_csv(lotes, rng) -> None:
+    """Cambia el vencimiento de cada lote por el de un producto de la canasta, sorteado según su
+    peso en la ración. El lote ya gastó una fracción uniforme de su vida útil (supuesto)."""
+    canasta = vida_util_csv()
+    pesos = np.array([c[2] for c in canasta], float)
+    for l in lotes:
+        producto, horas, _ = canasta[int(rng.choice(len(canasta), p=pesos / pesos.sum()))]
+        l.producto, l.vence = producto, float(horas * rng.random() * H)
+
+
 def _flota(n_puntos: int, p: Parametros) -> list:
     flota = []
     for tipo in TIPOS:
@@ -256,5 +299,10 @@ def generar(semilla: int, red: Red | str = "auto", p: Parametros | None = None,
     pedidos = _pedidos(puntos, p, r_ped)
     u = r_err.random(len(pedidos)).tolist()
     errado = [int((q.punto_id - 1 + r_err.integers(1, len(puntos))) % len(puntos)) + 1 for q in pedidos]
-    return Escenario(semilla, red, acopio, puntos, pedidos, _lotes(pedidos, p, r_lot),
+    lotes = _lotes(pedidos, p, r_lot)
+    if p.vida_util == "csv":          # mismos lotes y kilos; cambia solo el vencimiento
+        _vida_util_de_csv(lotes, np.random.default_rng(np.random.SeedSequence(semilla).spawn(7)[6]))
+    elif p.vida_util != "rango":
+        raise ValueError(f"vida_util={p.vida_util!r}: use 'rango' o 'csv'")
+    return Escenario(semilla, red, acopio, puntos, pedidos, lotes,
                      _flota(len(puntos), p), _cierres(red, acopio, puntos, n_cierres, p, r_cie), p, u, errado)

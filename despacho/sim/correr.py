@@ -146,6 +146,8 @@ def main(argv=None):
     ap.add_argument("--camperos-menos", type=int, help="camperos que se le quitan a la flota")
     ap.add_argument("--velocidades", choices=MODOS_VELOCIDAD,
                     help="modelo (las de despacho/red.py, por defecto) o medidas (datos_publicos/velocidades.csv)")
+    ap.add_argument("--vida-util", choices=("rango", "csv"),
+                    help="rango (6 a 48 h, por defecto) o csv (por producto, datos_publicos/vida_util.csv)")
     a = ap.parse_args(argv)
 
     extra, variante = {}, []
@@ -165,6 +167,9 @@ def main(argv=None):
     if a.camperos_menos is not None:
         extra["camperos_menos"] = a.camperos_menos
         variante.append(f"flota con {a.camperos_menos} camperos menos")
+    if a.vida_util is not None and a.vida_util != "rango":
+        extra["vida_util"] = a.vida_util
+        variante.append("vida útil por producto de datos_publicos/vida_util.csv")
 
     cargas = list(NIVELES_CARGA) if a.carga == "todas" else a.carga.split(",")
     politicas = a.politicas.split(",")
