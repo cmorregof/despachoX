@@ -136,7 +136,7 @@ Los cierres se sortean entre los tramos que usan los caminos más cortos del aco
 
 Actualizada el 20 de noviembre de 2026 con la segunda ronda (sección 8).
 
-- **No prueba que DespachoX supere a un buen despachador humano cuando la información es perfecta.** Con la red urbana y las velocidades del modelo (sección 8.3), una regla simple de prioridad y de rotación de bodega iguala a DespachoX en críticos a tiempo. Con carga media y alta, le gana por cerca de 2 puntos en entregas a tiempo de todos los puntos. Subir el peso de los puntos críticos no cambió eso (sección 8.2). Con las velocidades de la tesis UNAL de 2019 en la red ampliada (sección 9), DespachoX gana en críticos y empata en el total, salvo con carga alta. Esa corrida cambia a la vez la red y la velocidad (sección 9.3). DespachoX también gana con la flota corta (8.6) y cuando hay pedidos mal ubicados (8.4).
+- **No prueba que DespachoX supere a un buen despachador humano cuando la información es perfecta.** Con la red urbana y las velocidades del modelo (sección 8.3), una regla simple de prioridad y de rotación de bodega iguala a DespachoX en críticos a tiempo. Con carga media y alta, le gana por cerca de 2 puntos en entregas a tiempo de todos los puntos. Subir el peso de los puntos críticos no cambió eso (sección 8.2). Con las velocidades de la tesis UNAL de 2019 en la red ampliada (sección 9), DespachoX gana en críticos y empata en el total, salvo con carga alta. En la misma red, con las velocidades del modelo, la ventaja en críticos solo excluye el cero con carga alta, y con las de la tesis crece 2,8 y 3,7 puntos en carga media y alta, pareado por semilla (sección 9.3). DespachoX también gana con la flota corta (8.6) y cuando hay pedidos mal ubicados (8.4).
 - **Mide solo en parte el valor de la entrada por chat.** La sección 8.4 modela un tipo de error, el pedido registrado en otro punto, y una corrección, la confirmación de ubicación. La tasa de error de 10 % o 20 % es nuestra y no tiene fuente. Además, suponemos que el despachador experto no confirma. Uno que llame a cada comité tendría el mismo beneficio, a costa de un tiempo que no modelamos.
 - **No modela cierres registrados tarde ni falsos.** El encargo S2 lo proponía y lo dejamos por fuera, porque exige separar lo que sabe cada conductor de lo que sabe el despacho. Todo cierre reportado es cierto y se confirma en 5 minutos.
 - **No mide la trazabilidad.** El código QR y la confirmación de entrega no entran en la simulación.
@@ -466,16 +466,52 @@ Todo lo demás es igual que en las secciones 2 y 6.
 | Hora del día | La velocidad del bus en horas de entrada, almuerzo y salida vale para toda la jornada y para los tres vehículos | supuesto nuestro |
 | `maxspeed` de OpenStreetMap | No se usa | supuesto nuestro |
 | Lo que sabe el optimizador | Planea con las mismas velocidades de la jornada simulada, igual que las líneas base. El producto no cambió: `despacho/red.py` sigue con las velocidades del modelo, así que sus tiempos de llegada salen más cortos que estos. Cambiar `red.py` es decisión de B. No se midió un optimizador que planee con velocidades equivocadas | supuesto nuestro |
+| Velocidades del producto | El producto sigue con las velocidades del modelo. `despacho/red.py`, líneas 36 a 44, fija `VELOCIDADES` (por ejemplo, `primary` 40 km/h) y la línea 95 las aplica con `maxspeed` de OpenStreetMap donde lo hay. `despacho/matriz.py`, líneas 33 y 122, saca de ahí los tiempos de cada vehículo. Ningún archivo del producto lee `datos_publicos/velocidades.csv`. Solo la simulación lo lee, con `DESPACHOX_SIM_VELOCIDADES=medidas` (`despacho/sim/red_sim.py`, líneas 49 a 66 y 303 a 304), y `despacho/sim/adaptador_b.py` (línea 37) le pasa esas velocidades al optimizador. En esta sección el optimizador planea con las velocidades de la tesis. En el producto planea con las del modelo, más rápidas (`primary` 23,3 km/h en el CSV) | medido en el código |
 | Cuándo se recalcula | La política simulada recalcula con cada cierre confirmado, con cada tanda de 30 minutos y cada vez que un vehículo vuelve al acopio (sección 3). El producto recalcula con un cierre confirmado o cuando lo pide el despachador (`despacho/recalcular.py`) | supuesto nuestro |
 | Red | `manizales_region.graphml`, la del producto | trazado de OpenStreetMap |
 | Máquina | 2 núcleos, compartidos con otras sesiones. La búsqueda del optimizador se corta por reloj, así que con la máquina cargada busca menos | condición de la corrida |
 
 ### 9.7 Qué decir en el pitch (por aprobar)
 
-1. Con velocidades derivadas de mediciones GPS de un bus en Manizales y asignadas por tipo de vía y pendiente (tesis UNAL de 2019, tabla 14, pp. 46 a 48), Convite entrega a tiempo 23,3, 44,7 y 57,9 puntos porcentuales más de pedidos críticos que el despacho por orden de llegada, según la carga. Son 90 escenarios simulados con cierres de vías, 30 por carga, y cada diferencia compara 30 jornadas por política.
-2. Frente a un despachador con oficio que ya prioriza lo urgente, Convite recorre 46,0, 56,0 y 42,2 km menos por jornada, según la carga. En el total de entregas a tiempo empata con carga holgada y media, y con carga alta gana 3,0 puntos. En críticos a tiempo gana 1,5, 3,7 y 6,5 puntos. Con las velocidades del modelo en la misma red, la ventaja en críticos era de 0,3, 0,9 y 2,8 puntos (9.3).
-3. Con Convite y con el despachador con oficio, los perecederos vencidos quedan en 0,0 %, y el despacho por orden de llegada pasa la meta del 5 % con carga alta.
+Todo lo que sigue es simulación medida por nosotros. Cada diferencia compara 30 jornadas por política en cada carga, con las semillas 20261150 a 20261179, factor crítico 3 e IC del 95 %. La línea base es `ingenua` (orden de llegada) o `experta` (el despachador con oficio), y cada frase dice cuál. En prosa para el jurado el producto se llama Convite.
 
-Si preguntan por el total de entregas a tiempo: con las velocidades de la tesis, DespachoX empata con el despachador con oficio en carga holgada y media y le gana 3,0 puntos en carga alta. Con las velocidades de antes quedaba 2,6 y 2,7 puntos debajo en carga media y alta.
+**Lo que ahora se puede decir.**
 
-Marcas: por aprobar. Fuente de las velocidades: revisado por máquina; falta que una persona abra la tesis. Son cifras de simulación medidas por nosotros: 30 escenarios por carga, 90 en total, semillas 20261150 a 20261179, factor crítico 3, IC del 95 %. La comparación con las velocidades de antes es pareada, sobre la misma red y las mismas semillas (9.3).
+1. Con velocidades derivadas de mediciones GPS de un bus en Manizales y asignadas por tipo de vía y pendiente (tesis UNAL de 2019, tabla 14, pp. 46 a 48), Convite entrega a tiempo 23,3, 44,7 y 57,9 puntos porcentuales más de pedidos críticos que el despacho por orden de llegada, según la carga. Son 90 escenarios simulados con cierres de vías, 30 por carga.
+2. Frente al despachador con oficio, con las velocidades de la tesis, Convite entrega a tiempo 1,5, 3,7 y 6,5 puntos más de pedidos críticos con carga holgada, media y alta. Los tres intervalos excluyen el cero.
+3. En la misma red y con las mismas semillas, con las velocidades del modelo, esa ventaja es de 0,3, 0,9 y 2,8 puntos. Solo con carga alta el intervalo excluye el cero, con [0,8; 4,7].
+4. Al pasar a las velocidades de la tesis, la ventaja en críticos crece 2,8 [0,9; 4,6] puntos con carga media y 3,7 [2,0; 5,5] con carga alta, pareado por semilla. Con carga holgada crece 1,2 [−0,2; 2,7], y ese intervalo incluye el cero.
+5. Por eso, con carga media la ventaja en críticos aparece cuando los viajes son lentos. Con carga alta ya existe con las velocidades del modelo y crece con las de la tesis. Con carga holgada la simulación no permite atribuirla a la velocidad.
+6. Convite recorre 46,0, 56,0 y 42,2 km menos por jornada que el despachador con oficio con las velocidades de la tesis, y 62,6, 51,5 y 44,6 km menos con las del modelo.
+7. En el total de entregas a tiempo, con las velocidades de la tesis, Convite empata con el despachador con oficio en carga holgada y media, con −0,5 y −0,8 puntos, y gana 3,0 [0,7; 5,3] con carga alta. Con las velocidades del modelo queda 0,8, 2,6 y 2,7 puntos debajo, y en carga media y alta el intervalo excluye el cero.
+8. Con Convite y con el despachador con oficio, los perecederos vencidos quedan en 0,0 % en las dos corridas. El despacho por orden de llegada pierde en promedio 5,6 % con carga alta y las velocidades de la tesis, por encima de la meta del 5 % del reto.
+
+**Lo que sigue sin poderse decir.**
+
+- Que Convite supera a un despachador humano. `experta` es una regla que escribimos nosotros y que tiene información perfecta.
+- Que la ventaja en críticos «viene de la velocidad y no de la red» en todas las cargas. En la misma red, la velocidad suma 2,8 y 3,7 puntos con carga media y alta. Con carga alta y las velocidades del modelo, la red ampliada ya daba 2,8 puntos y la urbana 0,8 (sección 8.3), y esa comparación no es pareada.
+- Que el cambio medido es solo de la velocidad. Con cada versión de velocidad los cierres se sortean sobre otros caminos y pueden caer en otros tramos (9.1). El número de cierres por semilla es el mismo.
+- Que las velocidades de la tesis son las de un camión de ayuda. Vienen de un bus, sin la pendiente de cada tramo, y el 53 % de la red es `unclassified` asimilada a vía local (9.6).
+- Que el producto logra hoy estas cifras. En la simulación el optimizador planea con las velocidades de la tesis, y el producto planea con las del modelo (9.6).
+- Que Convite gana en el total de entregas a tiempo, salvo con carga alta y las velocidades de la tesis.
+- Que el 0,0 % de vencidos es mérito del optimizador. Lo logra la regla de bodega, que también usa `experta`.
+- Que Convite es más equitativo. Con las velocidades de la tesis, el punto peor atendido espera 0,53 y 0,61 horas más que con el despachador con oficio en carga media y alta, y los dos intervalos excluyen el cero.
+- Nada de un día sin cierres (9.4) ni de vida útil por producto (9.5) con estas velocidades. No se corrieron.
+
+**Frase de voz para el bloque 6 (34 palabras).**
+
+> En simulación, con 30 jornadas por política y carga alta, Convite entrega a tiempo de 2,8 a 6,5 puntos más de pedidos críticos que un despachador con oficio, según la velocidad de las vías.
+
+**Fila para la diapositiva de respaldo.** Críticos a tiempo, Convite menos despachador con oficio (`despachox` − `experta`), en puntos porcentuales, con IC del 95 %. Simulación, 30 jornadas por política y carga, misma red y mismas semillas.
+
+| Carga | Velocidades de la tesis UNAL 2019 | Velocidades del modelo | Cuánto suma la velocidad (pareado) |
+|---|---|---|---|
+| Holgada | 1,5 [0,2; 2,8] | 0,3 [−0,9; 1,4] | 1,2 [−0,2; 2,7] |
+| Media | 3,7 [1,7; 5,7] | 0,9 [−0,2; 2,1] | 2,8 [0,9; 4,6] |
+| Alta | 6,5 [4,4; 8,7] | 2,8 [0,8; 4,7] | 3,7 [2,0; 5,5] |
+
+**Si preguntan «si una regla simple empata, ¿qué aporta el optimizador?».**
+
+> Con viajes cortos y carga holgada o media, la regla simple empata con Convite en críticos a tiempo. Lo medimos y lo decimos. Aun así, en simulación Convite recorre de 42,2 a 56,0 km menos por jornada que esa regla, con 30 jornadas por política en cada carga. Además, cuando los viajes se alargan, la regla pierde más. Con carga alta y las velocidades de la tesis UNAL, la regla baja 3,8 puntos en críticos a tiempo y Convite no cambia de forma medible. Por eso la ventaja de Convite crece 3,7 puntos en esa carga. Esa regla la escribimos nosotros, con toda la información a la vista. En una operación real alguien tendría que aplicarla a mano y rehacer las rutas con cada cierre, y Convite lo hace solo.
+
+Marcas: por aprobar. Fuente de las velocidades: revisado por máquina; falta que una persona abra la tesis. La comparación entre las dos velocidades es pareada, sobre la misma red y las mismas semillas (9.3). La comparación con la sección 8.3 no es pareada.
