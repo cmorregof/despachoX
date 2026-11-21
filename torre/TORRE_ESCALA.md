@@ -1,5 +1,5 @@
 # Torre de control · Carlos · sesión de Claude Code para el encargo S3 (rama `escala`)
-Última actualización: sábado 21 de noviembre de 2026, 12:20
+Última actualización: sábado 21 de noviembre de 2026, 12:30
 
 Torre aparte de `TORRE_CAPITAN.md` para no chocar con las otras sesiones de Carlos. Fable revisa y fusiona la rama.
 
@@ -22,6 +22,8 @@ Las tres partes del encargo S3 están hechas en la rama `escala` y medidas: 15.0
 - Tabla nueva `resumenes_grupo`: avisado en el canal.
 
 - 12:02 · Tablero con grupos encendidos, 15.000 pedidos: 9,9 s en vez de 13,2; 278 botones en vez de 15.170; agrupar 0,07 s; memoria 522 MB. Quedan `por_revisar` (5,6 s) y el mapa por pedido.
+
+- 12:30 · `por_revisar` con una sola consulta de repetidos: de 5,6 a 0,02 s; página de 13,2 a 6,5 s (4,4 con grupos). Es una optimización posterior al congelamiento; Fable decide si entra.
 
 ## Lo que no se hizo o no se midió
 - `planificar` con 15.000 pedidos sueltos (tabla de tiempos de unos 20 GB).

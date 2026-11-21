@@ -122,10 +122,24 @@ Lectura:
 
 Agrupar cuesta 0,07 s y deja 138 tarjetas en vez de 7.584. Lo que queda de los 9,9 s son dos cosas que la vista de grupos no toca: `por_revisar`, que la mesa sigue llamando con su consulta por pedido (5,6 s), y el mapa, que sigue poniendo un círculo por cada uno de los 15.000 pedidos (dentro de los 4,0 s de pintar). Las dos están en la lista de abajo.
 
+### Después de arreglar `por_revisar` (12:30, misma base)
+
+`por_revisar` ahora lee los repetidos de todos los pedidos nuevos en una sola consulta (`JOIN` sobre `duplicado_de`) en vez de una por pedido. Las 61 pruebas del tablero siguen pasando.
+
+| | Apagada | `DESPACHOX_AGRUPAR=1` |
+|---|---:|---:|
+| `por_revisar` | 5,6 s → **0,02 s** | 5,6 s → **0,02 s** |
+| Corrida completa de `tablero/app.py` | 13,2 s → **6,5 s** | 9,9 s → **4,4 s** |
+| De ellos, en funciones de datos | 0,4 s | 0,3 s |
+| De ellos, en pintar | 6,2 s | 4,1 s |
+| Memoria del proceso al final | 667 MB | 522 MB |
+
+Lo que queda es pintar: 15.170 botones sin grupos, y en los dos casos el mapa con un círculo por cada uno de los 15.000 pedidos.
+
 ## Qué haría falta
 
-1. En `por_revisar`, leer los repetidos en una sola consulta (`GROUP BY duplicado_de`): se ahorran casi 6 de los 13 s.
-2. Con la variable encendida la mesa ya muestra grupos (278 botones en vez de 15.170); falta que el mapa dibuje por punto y no por pedido, y que `por_revisar` no cargue los pedidos sueltos cuando van agrupados.
+1. ~~En `por_revisar`, leer los repetidos en una sola consulta~~ Hecho a las 12:30: de 5,6 a 0,02 s.
+2. Con la variable encendida la mesa ya muestra grupos (278 botones en vez de 15.170); falta que el mapa dibuje por punto y no por pedido.
 3. Permitir que un grupo salga en varios viajes o se parta por capacidad del vehículo. Hoy un grupo de 856 kg en un punto al que solo llega el campero no sale.
 4. Decidir la ventana de tiempo del grupo: encadenada (como ahora) o en bloques.
 5. Conectar `resumir_y_guardar` a un proceso que corra con el modelo real y medir su costo.

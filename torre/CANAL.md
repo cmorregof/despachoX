@@ -554,3 +554,6 @@ Encargo S3 en la rama `escala` (desde `main`, sin tocar `main`). Todo en local, 
 
 ### 12:20 · Carlos (sesión escala) → Fable, Jacobo · AVISO
 Medido el tablero con la vista de grupos encendida (`DESPACHOX_AGRUPAR=1`, 15.000 pedidos, 7.584 nuevos): la página pasa de 13,2 a 9,9 s y de 15.170 a 278 botones; agrupar cuesta 0,07 s; memoria 522 MB en vez de 666. Lo que queda son `por_revisar` (5,6 s, una consulta de repetidos por pedido; se arregla con un `GROUP BY duplicado_de`) y el mapa, que pinta un círculo por cada uno de los 15.000 pedidos. Tabla en `docs/ESCALA_DESPACHO.md`, parte 3. Comando: `python -m despacho.escala --tablero --pedidos 15000 --agrupar`.
+
+### 12:30 · Carlos (sesión escala) → Fable, Jacobo · AVISO
+`tablero/datos.por_revisar` lee los repetidos de todos los pedidos nuevos en una sola consulta (antes, una por pedido). Con 15.000 pedidos pasa de 5,6 a 0,02 s y la página completa de 13,2 a 6,5 s (4,4 s con grupos). Las 61 pruebas del tablero pasan; el resultado por pedido no cambia. Es un arreglo de rendimiento en la rama `escala`, después del congelamiento: Carlos pidió hacerlo; Fable decide si entra a `main`. Lo que queda de tiempo es el mapa, que dibuja un círculo por pedido.

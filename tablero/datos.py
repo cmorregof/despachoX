@@ -311,13 +311,20 @@ def por_revisar(con: sqlite3.Connection) -> dict:
         pu = puntos.get(d["punto_id"])
         d["punto"] = pu["nombre"] if pu else None
         d["critico"] = int(pu["critico"] or 0) if pu else 0
+    # Los repetidos de todos los pedidos nuevos en una sola consulta: con miles de pedidos, una
+    # consulta por pedido tardaba 5,6 s (docs/ESCALA_DESPACHO.md).
+    repetidos: dict[int, list[dict]] = {}
+    for r in filas(con, "SELECT d.id, d.texto_original, d.duplicado_de FROM pedidos d "
+                        "JOIN pedidos m ON m.id = d.duplicado_de "
+                        "WHERE m.estado='nuevo' AND m.duplicado_de IS NULL AND d.estado != 'descartado' "
+                        "ORDER BY d.id"):
+        repetidos.setdefault(r.pop("duplicado_de"), []).append(r)
     for d in pedidos:
         pu = puntos.get(d["punto_id"])
         d["punto"] = pu["nombre"] if pu else None
         d["critico"] = int(pu["critico"] or 0) if pu else 0
         d["sin_ubicar"] = pu is None
-        d["duplicados"] = filas(con, "SELECT id, texto_original FROM pedidos WHERE duplicado_de=? "
-                                     "AND estado != 'descartado' ORDER BY id", (d["id"],))
+        d["duplicados"] = repetidos.get(d["id"], [])
     # Un pedido confirmado sin punto no entra al plan: también hay que mostrarlo.
     sin_ubicar = filas(con, "SELECT * FROM pedidos WHERE estado='confirmado' AND punto_id IS NULL ORDER BY id")
     cierres = filas(con, "SELECT * FROM cierres WHERE estado='reportado' ORDER BY id")
