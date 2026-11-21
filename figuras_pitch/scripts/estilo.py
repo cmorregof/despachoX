@@ -3,10 +3,15 @@
 Cada figura se guarda en 1920 × 1080 px (PNG) y en SVG con los textos convertidos en trazos, así que el SVG se ve
 igual en cualquier computador aunque no tenga la fuente.
 
-Fuente. La del informe es Ancízar Serif, que no está en el repositorio. Por defecto se usa PT Serif (licencia OFL),
-que viene con macOS, y si no está, DejaVu Serif, que trae matplotlib. Con --fuente se elige otra familia instalada
-(por ejemplo --fuente "Ancizar Serif") o un archivo .ttf, .otf o .ttc que esté en el disco. Ningún archivo de
-fuente se copia al repositorio.
+Fuente. La del informe es Ancízar Serif, que no está en el repositorio. Si está instalada en el computador, las
+figuras la usan. Si no, usan PT Serif (licencia OFL), que viene con macOS, y si tampoco está, DejaVu Serif, que trae
+matplotlib. Con --fuente se elige otra familia instalada o un archivo .ttf, .otf o .ttc del disco. La familia se
+busca también en las carpetas de fuentes del sistema, porque la caché de matplotlib puede ser anterior a la
+instalación. Ningún archivo de fuente se copia al repositorio.
+
+Revisión. `guardar` busca textos por debajo de 24 px, cortados por el borde o encimados, imprime una línea AVISO por
+cada uno y los devuelve. `terminar` sale con código 1 si hubo alguno, para que nadie proyecte una figura dañada sin
+enterarse.
 """
 from __future__ import annotations
 
@@ -15,7 +20,7 @@ import itertools
 import os
 import sys
 import textwrap
-import warnings
+import unicodedata
 from pathlib import Path
 
 import matplotlib
@@ -35,8 +40,10 @@ GRIS_RED = "#D9D6DD"       # red vial de fondo, como GRIS_RED de mapa_manizales.
 
 ANCHO_PX, ALTO_PX, DPI = 1920, 1080, 100
 MIN_PX = 24                 # ningún texto por debajo de esto al proyectar
-FUENTES_POR_DEFECTO = ("PT Serif", "DejaVu Serif")
+FUENTES_POR_DEFECTO = ("Ancizar Serif", "PT Serif", "DejaVu Serif")
 RUTA_PT_SERIF = "/System/Library/Fonts/Supplemental/PTSerif.ttc"
+CARPETAS_FUENTES = [*font_manager.OSXFontDirectories, *font_manager.X11FontDirectories,
+                    os.path.join(os.environ.get("WINDIR", "C:\\Windows"), "Fonts")]
 
 
 def pt(px: float) -> float:
@@ -56,6 +63,45 @@ def _familias_instaladas() -> set[str]:
     return {f.name for f in font_manager.fontManager.ttflist}
 
 
+def _clave(texto: str) -> str:
+    """Minúsculas, sin tildes ni espacios: «Ancízar Serif» y «AncizarSerif-Bold» comparten «ancizarserif»."""
+    plano = unicodedata.normalize("NFKD", texto.lower())
+    return "".join(c for c in plano if c.isalnum() and not unicodedata.combining(c))
+
+
+def _instalada(familia: str) -> str | None:
+    """Nombre exacto de la familia instalada que coincide con `familia`, sin mirar tildes ni mayúsculas."""
+    clave = _clave(familia)
+    return next((f for f in sorted(_familias_instaladas()) if _clave(f) == clave), None)
+
+
+def _registrar_familia(familia: str, a_fondo: bool = False) -> str | None:
+    """Registra en matplotlib los archivos de `familia` que haya en las carpetas de fuentes del sistema.
+
+    Primero mira los archivos cuyo nombre contiene el de la familia. Con `a_fondo`, si no halla ninguno, abre cada
+    archivo y lee su nombre de familia, que es más lento. Devuelve el nombre de la familia ya disponible, o None.
+    """
+    if _instalada(familia):
+        return _instalada(familia)
+    carpetas = [c for c in CARPETAS_FUENTES if os.path.isdir(c)]
+    archivos = font_manager.findSystemFonts(fontpaths=carpetas)
+    clave = _clave(familia)
+    candidatos = [a for a in archivos if clave in _clave(Path(a).stem)]
+    if not candidatos and a_fondo:
+        for a in archivos:
+            try:
+                if _clave(font_manager.FontProperties(fname=a).get_name()) == clave:
+                    candidatos.append(a)
+            except Exception:  # noqa: BLE001  (archivo que FreeType no abre)
+                continue
+    for a in candidatos:
+        try:
+            font_manager.fontManager.addfont(a)
+        except Exception:  # noqa: BLE001
+            continue
+    return _instalada(familia)
+
+
 def configurar_fuente(pedida: str | None = None) -> str:
     """Fija la familia de todas las figuras y devuelve el nombre que quedó en uso."""
     if os.path.exists(RUTA_PT_SERIF) and "PT Serif" not in _familias_instaladas():
@@ -68,12 +114,12 @@ def configurar_fuente(pedida: str | None = None) -> str:
         if os.path.isfile(pedida):
             font_manager.fontManager.addfont(pedida)
             familia = font_manager.FontProperties(fname=pedida).get_name()
-        elif pedida in _familias_instaladas():
-            familia = pedida
         else:
-            print(f"aviso: la fuente «{pedida}» no está instalada; uso la de siempre", file=sys.stderr)
+            familia = _registrar_familia(pedida, a_fondo=True)
     if familia is None:
-        familia = next((f for f in FUENTES_POR_DEFECTO if f in _familias_instaladas()), "DejaVu Serif")
+        familia = next((f for f in map(_registrar_familia, FUENTES_POR_DEFECTO) if f), "DejaVu Serif")
+        if pedida:
+            print(f"aviso: la fuente «{pedida}» no está instalada; uso {familia}", file=sys.stderr)
     plt.rcParams.update({
         "font.family": familia,
         "font.size": pt(PX_TEXTO),
@@ -94,7 +140,8 @@ def configurar_fuente(pedida: str | None = None) -> str:
 def argumentos(descripcion: str) -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description=descripcion)
     p.add_argument("--fuente", default=None,
-                   help="familia instalada o archivo de fuente (por defecto PT Serif, si no DejaVu Serif)")
+                   help="familia instalada o archivo de fuente (por defecto Ancizar Serif si está instalada, "
+                        "si no PT Serif, y si no DejaVu Serif)")
     p.add_argument("--salida", default=str(CARPETA),
                    help="carpeta base; las figuras quedan en <salida>/png y <salida>/svg (por defecto figuras_pitch/)")
     return p
@@ -103,12 +150,6 @@ def argumentos(descripcion: str) -> argparse.ArgumentParser:
 def lienzo():
     """Figura vacía de 1920 × 1080 px."""
     return plt.figure(figsize=(ANCHO_PX / DPI, ALTO_PX / DPI), dpi=DPI)
-
-
-def titulo(fig, texto: str, subtitulo: str | None = None, x: float = 0.04, y: float = 0.93):
-    fig.text(x, y, texto, fontsize=pt(PX_TITULO), fontweight="bold", color=TEXTO, va="baseline", ha="left")
-    if subtitulo:
-        fig.text(x, y - 0.065, subtitulo, fontsize=pt(PX_SUBTITULO), color=CENIZA, va="baseline", ha="left")
 
 
 def ancho_px(fig, t) -> float:
@@ -123,6 +164,18 @@ def encajar(fig, t, maximo_px: float):
     return t
 
 
+def titulo(fig, texto: str, subtitulo: str | None = None, x: float = 0.04, y: float = 0.93):
+    """Título y subtítulo arriba a la izquierda. Si una familia ancha no cabe, se achican sin bajar de 24 px."""
+    disponible = ANCHO_PX * (1 - 2 * x)
+    t1 = encajar(fig, fig.text(x, y, texto, fontsize=pt(PX_TITULO), fontweight="bold", color=TEXTO,
+                               va="baseline", ha="left"), disponible)
+    t2 = None
+    if subtitulo:
+        t2 = encajar(fig, fig.text(x, y - 0.065, subtitulo, fontsize=pt(PX_SUBTITULO), color=CENIZA,
+                                   va="baseline", ha="left"), disponible)
+    return t1, t2
+
+
 def pie(fig, texto: str, x: float = 0.04, y: float = 0.03, ancho: int = 150, derecha_px: float = 40):
     """Fuente de la figura, abajo a la izquierda. Respeta los \\n y parte las líneas para que no pasen el borde."""
     disponible = ANCHO_PX * (1 - x) - derecha_px
@@ -135,10 +188,33 @@ def pie(fig, texto: str, x: float = 0.04, y: float = 0.03, ancho: int = 150, der
         ancho = int(ancho * 0.95)
 
 
+def caja_px(fig, artista):
+    """Caja en píxeles del PNG (origen abajo a la izquierda) de un texto, unos ejes u otro artista."""
+    render = fig.canvas.get_renderer()
+    if hasattr(artista, "get_tightbbox") and not isinstance(artista, matplotlib.text.Text):
+        return artista.get_tightbbox(render)
+    return artista.get_window_extent(render)
+
+
+def despejar(fig, ax, piso_px: float, aire_px: float = 18):
+    """Sube el borde inferior de `ax`, con sus rótulos, hasta `piso_px` + `aire_px`. El borde superior no se mueve.
+
+    Así un pie de varias líneas, que crece con una familia más ancha, nunca tapa los rótulos del eje.
+    """
+    fig.canvas.draw()
+    falta = piso_px + aire_px - caja_px(fig, ax).y0
+    if falta > 0:
+        x0, y0, w, h = ax.get_position().bounds
+        d = falta / ALTO_PX
+        ax.set_position([x0, y0 + d, w, h - d])
+    return ax
+
+
 def sello(fig, texto: str, x: float = 0.96, y: float = 0.93, color: str = AMBAR):
     """Recuadro de advertencia, arriba a la derecha (por ejemplo «Cifras por verificar»)."""
-    fig.text(x, y, texto, fontsize=pt(PX_ROTULO), color=color, fontweight="bold", ha="right", va="baseline",
-             bbox=dict(boxstyle="round,pad=0.45", facecolor=FONDO, edgecolor=color, linewidth=3))
+    return fig.text(x, y, texto, fontsize=pt(PX_ROTULO), color=color, fontweight="bold", ha="right",
+                    va="baseline", bbox=dict(boxstyle="round,pad=0.45", facecolor=FONDO, edgecolor=color,
+                                             linewidth=3))
 
 
 def miles(n: float, decimales: int = 0) -> str:
@@ -175,13 +251,16 @@ def revisar_textos(fig, nombre: str, ignorar: tuple[str, ...] = ()) -> list[str]
     return avisos
 
 
-def guardar(fig, nombre: str, salida: str | Path, ignorar: tuple[str, ...] = ()) -> list[Path]:
-    """Guarda <salida>/png/<nombre>.png (1920 × 1080) y <salida>/svg/<nombre>.svg, y revisa los textos."""
+def guardar(fig, nombre: str, salida: str | Path, ignorar: tuple[str, ...] = ()) -> list[str]:
+    """Guarda <salida>/png/<nombre>.png (1920 × 1080) y <salida>/svg/<nombre>.svg. Devuelve los avisos de texto.
+
+    Los archivos se escriben aunque haya avisos, para poder mirarlos, pero cada aviso sale en una línea AVISO.
+    """
     salida = Path(salida)
     (salida / "png").mkdir(parents=True, exist_ok=True)
     (salida / "svg").mkdir(parents=True, exist_ok=True)
-    for aviso in revisar_textos(fig, nombre, ignorar):
-        warnings.warn(aviso, stacklevel=2)
+    avisos = revisar_textos(fig, nombre, ignorar)
+    for aviso in avisos:
         print("AVISO", aviso, file=sys.stderr)
     rutas = [salida / "png" / f"{nombre}.png", salida / "svg" / f"{nombre}.svg"]
     fig.savefig(rutas[0], dpi=DPI, metadata={"Software": None})
@@ -189,4 +268,12 @@ def guardar(fig, nombre: str, salida: str | Path, ignorar: tuple[str, ...] = ())
     plt.close(fig)
     for r in rutas:
         print(f"escrito {r}")
-    return rutas
+    return avisos
+
+
+def terminar(avisos: list[str]) -> None:
+    """Sale con código 1 si hubo avisos de texto. Las figuras quedan escritas, pero no están listas para proyectar."""
+    if avisos:
+        print(f"{len(avisos)} AVISO: hay textos pequeños, cortados o encimados. Revise la figura antes de "
+              "proyectarla.", file=sys.stderr)
+        sys.exit(1)

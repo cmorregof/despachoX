@@ -1,12 +1,16 @@
-"""Regenera las cinco figuras del pitch con un solo comando.
+"""Regenera todas las figuras del pitch con un solo comando.
 
-Uso (desde la raíz del repositorio, con un Python que tenga matplotlib, osmnx y geopandas):
+Uso (desde cualquier carpeta, con un Python que tenga matplotlib, osmnx y geopandas):
     DESPACHOX_SIN_RED=1 python figuras_pitch/scripts/todas.py [--fuente FAMILIA] [--salida CARPETA]
-                                                              [--sim CSV_O_CARPETA] [--marca-sim TEXTO]
+        [--sim CSV_O_CARPETA] [--titulo-sim TEXTO] [--marca-sim TEXTO]
 
-Sin --sim, la figura (e) se dibuja con despacho/sim/resultados/resultados.csv y la marca «Ejemplo con resultados
-anteriores, no citar». Cuando lleguen los resultados nuevos, pase --sim con su ruta y --marca-sim "" para quitar la
-marca (y --titulo-sim con el mensaje que la figura deba decir).
+Figura (e). Sin --sim se dibuja con despacho/sim/resultados/resultados.csv. Si el contenido de ese archivo, o del que
+se pase con --sim, es una corrida que no se cita (CORRIDAS_ANTERIORES en sim_resultados.py), la figura se llama
+e_simulacion_ejemplo y lleva la marca «Ejemplo con resultados anteriores, no citar». Con cualquier otro contenido se
+llama e_simulacion y no lleva marca, salvo que se pida una con --marca-sim. La decisión mira el contenido del CSV y
+no su ruta, así que no importa cómo se escriba la ruta ni si una corrida nueva sobrescribe la carpeta vieja.
+
+Al final imprime un resumen por figura y sale con código 1 si algún script falló o dejó líneas AVISO.
 """
 import argparse
 import subprocess
@@ -15,36 +19,53 @@ from pathlib import Path
 
 AQUI = Path(__file__).resolve().parent
 RAIZ = AQUI.parents[1]
-SIM_EJEMPLO = "despacho/sim/resultados/resultados.csv"
-MARCA_EJEMPLO = "Ejemplo con resultados anteriores, no citar"
+SIM_POR_DEFECTO = RAIZ / "despacho" / "sim" / "resultados" / "resultados.csv"
+sys.path.insert(0, str(AQUI))
+from sim_resultados import corrida_anterior  # noqa: E402
 
 
 def main():
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    p.add_argument("--fuente", default=None)
+    p.add_argument("--fuente", default=None, help="familia instalada o archivo de fuente")
     p.add_argument("--salida", default=str(RAIZ / "figuras_pitch"))
-    p.add_argument("--sim", default=SIM_EJEMPLO)
-    p.add_argument("--marca-sim", default=None)
-    p.add_argument("--titulo-sim", default=None)
+    p.add_argument("--sim", default=None, help="resultados.csv o carpeta de la simulación para la figura (e)")
+    p.add_argument("--marca-sim", default=None, help="advertencia visible en la figura (e); las corridas que no se "
+                                                     "citan la llevan siempre")
+    p.add_argument("--titulo-sim", default=None, help="título de la figura (e), con lo que muestran los resultados")
     args = p.parse_args()
-    comunes = ["--salida", args.salida] + (["--fuente", args.fuente] if args.fuente else [])
-    marca = args.marca_sim if args.marca_sim is not None else (MARCA_EJEMPLO if args.sim == SIM_EJEMPLO else "")
-    nombre_sim = "e_simulacion_ejemplo" if args.sim == SIM_EJEMPLO else "e_simulacion"
+    sim = Path(args.sim).resolve() if args.sim else SIM_POR_DEFECTO
+    anterior = corrida_anterior(sim)
+    nombre_sim = "e_simulacion_ejemplo" if anterior else "e_simulacion"
+    print(f"figura (e): {sim} -> {nombre_sim}" + (f" ({anterior})" if anterior else ""))
+    comunes = ["--salida", str(Path(args.salida).resolve())] + (["--fuente", args.fuente] if args.fuente else [])
     pasos = [
         ["mapa_territorios.py"],
+        ["mapa_territorios.py", "--solo", "1"],
         ["cuello_despacho.py"],
         ["regla_arquitectura.py"],
         ["cierres_sin_sismo.py"],
-        ["sim_resultados.py", "--entrada", args.sim, "--nombre", nombre_sim, "--marca", marca]
+        ["sim_resultados.py", "--entrada", str(sim), "--nombre", nombre_sim]
+        + (["--marca", args.marca_sim] if args.marca_sim is not None else [])
         + (["--titulo", args.titulo_sim] if args.titulo_sim else []),
     ]
-    fallos = 0
+    resumen = []
     for paso in pasos:
         orden = [sys.executable, str(AQUI / paso[0])] + paso[1:] + comunes
-        print(f"\n== {paso[0]}", flush=True)
-        r = subprocess.run(orden, cwd=RAIZ)
-        fallos += r.returncode != 0
-    sys.exit(1 if fallos else 0)
+        etiqueta = " ".join(paso[:3]) if paso[1:2] == ["--solo"] else paso[0]
+        print(f"\n== {etiqueta}", flush=True)
+        r = subprocess.run(orden, cwd=RAIZ, stderr=subprocess.PIPE, text=True)
+        sys.stderr.write(r.stderr)
+        sys.stderr.flush()
+        avisos = sum(1 for linea in r.stderr.splitlines() if linea.startswith("AVISO "))
+        estado = (f"{avisos} AVISO" if avisos else f"falló con código {r.returncode}" if r.returncode else "bien")
+        resumen.append((etiqueta, estado))
+    print("\nResumen:")
+    for nombre, estado in resumen:
+        print(f"  {nombre}: {estado}")
+    malos = [n for n, est in resumen if est != "bien"]
+    if malos:
+        print(f"Hay que revisar {len(malos)} figura(s) antes de proyectarlas: {', '.join(malos)}", file=sys.stderr)
+    sys.exit(1 if malos else 0)
 
 
 if __name__ == "__main__":

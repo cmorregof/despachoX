@@ -93,7 +93,7 @@ def main():
     e.pie(fig, "Regla de arquitectura de docs/ESTRATEGIA.md. Según docs/FICHA.md, los SMS los lee un programa de "
                "reglas, sin modelo ni red.\nEse lector toma el lugar del modelo si este falla. El despachador aprueba "
                "cada plan con su nombre.")
-    e.guardar(fig, NOMBRE, args.salida)
+    e.terminar(e.guardar(fig, NOMBRE, args.salida))
 
 
 if __name__ == "__main__":

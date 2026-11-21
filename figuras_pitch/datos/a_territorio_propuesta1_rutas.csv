@@ -1,0 +1,5 @@
+lugar,lat,lon,origen_coordenada,km_por_la_red,metros_al_nodo_mas_cercano
+CDI El Carmen 1,5.060917,-75.519544,"datos_publicos/puntos.csv, id 16",3.24,5
+CDI Jesús de la Buena Esperanza,5.061775,-75.520942,"datos_publicos/puntos.csv, id 17",3.26,12
+CDI Pulgarcito,5.064978,-75.521072,"datos_publicos/puntos.csv, id 25",2.9,2
+Bajo Tablazo,5.029143,-75.53819,datos/semilla/lugares_extra.csv (Nominatim),9.28,701
