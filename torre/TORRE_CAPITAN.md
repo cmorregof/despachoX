@@ -1,5 +1,5 @@
 # Torre de control · Carlos · capitán
-Última actualización: viernes 20 de noviembre de 2026, 23:00
+Última actualización: viernes 20 de noviembre de 2026, 23:50
 
 ## Estado en una frase
 El módulo B corre de punta a punta: semilla cargada, plan en 10 s y recálculo que evita la vía cerrada. Faltan las pruebas (agente en curso) y, esta noche, la simulación.
@@ -85,8 +85,9 @@ Pruebas: `despacho/tests` 25 pasan (12 nuevas en `test_ronda3.py`); simulación 
 - Una alerta por silencio confirmada (`pedidos.origen='silencio'`) entra al plan como parada de verificación de 0 kg: no gasta inventario, no lleva paquete, no cuenta como entrega a un crítico y sale en `resumen.visitas` y en los avisos.
 - T1, parte B: `despacho/territorio.py` con `resumen()` y `silencio()`, más línea de órdenes y CSV. Comuna de los barrios: la de `puntos` y, si no, `datos/semilla/barrios.csv`. Dos decisiones mías: las alertas por silencio no cuentan como pedidos, y los pedidos sin punto salen en una fila «sin ubicar». Con la semilla, un plan aprobado y cuatro entregas: diez comunas y 132 barrios y veredas sin pedidos registrados.
 - Uní a esta rama el B3 que otra sesión había subido a `carlos-despacho` (hoja de ruta con QR). Trae `fpdf2`, `pypdfium2` y `zxing-cpp`; los instalé en `.venv`.
-- Pruebas: 326 pasan y 1 se omite en todo el repositorio.
-- Sin hacer: el empaque a 1,2 solo para fruta en frío, porque quedó como «decide Carlos», y a las 22:30 la capacidad UNAL pasó a ser el A25.
+- Empaque (decisión de Carlos, 11:00 p. m.): factor 1,2 solo para lotes de fruta en acopios con `tiene_frio=1`; en lo demás, 1,0. Nota en `resumen.supuestos`: «cota inferior medida en gulupa a 8 °C en la solicitud de la patente UNAL 37476; pendiente de datos del ICTA para otros productos». En la semilla, el empaque pasa de los dos lotes de verdura a los dos de fruta del Acopio Oriente (el que tiene frío); el generador sigue llamando a `rng` igual, así que no se mueve el resto de la semilla.
+- Ensayo del guion después del cambio, en una base nueva: plan con el pedido 21, 18 de 18 y 3 de 3 críticos; con el cierre de la avenida del Centro, San José pasa del Camión 1 al Campero 1 y siguen 18 de 18.
+- Pruebas: 328 pasan y 1 se omite.
 
 ## En curso
 - Nada de B. Pendiente de otra sesión: encargo S2 de la simulación (barrido de `FACTOR_CRITICO`), que no se ejecutó, y el indicador A25 como riesgo de tramo.

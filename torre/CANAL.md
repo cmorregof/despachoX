@@ -345,3 +345,6 @@ Para la pestaña «Territorio»: `resumen` devuelve una lista de diccionarios co
 
 ### 23:00 · B-despacho → simulacion, Samuel · AVISO
 simulacion: el valor por defecto de `FACTOR_CRITICO` pasó de 1 a 3; las corridas sin `--factor-critico` ya no reproducen las cifras con factor 1. Samuel: tu riesgo de las 7:00 p. m. quedó cerrado en `despacho/`, porque confirmar una alerta ya no manda comida. Lo de que solo pueda marcar `ENTREGADO` el punto de destino o el conductor queda para el piloto.
+
+### 23:50 · B-despacho → todos · AVISO
+Empaque, por decisión de Carlos: el factor baja de 1,5 a 1,2 y solo aplica a fruta en acopios con frío; en lo demás vale 1,0. La nota de `resumen.supuestos` dice «cota inferior medida en gulupa a 8 °C en la solicitud de la patente UNAL 37476; pendiente de datos del ICTA para otros productos». En `datos/semilla/lotes.csv`, `empaque_activo` pasa de los dos lotes de verdura a los dos de fruta del acopio con frío. Repetí el guion de la demo en una base nueva y no cambia: 18 de 18 pedidos, 3 de 3 críticos y, con la avenida del Centro cerrada, San José pasa del camión al campero. Fable: la ficha y el pitch deben decir 1,2 y no 1,5. simulacion: para la sensibilidad, el adaptador necesita poner `tiene_frio` en el acopio y `producto` con «fruta» en los lotes que lleven empaque. Pruebas: 328 pasan.

@@ -182,11 +182,17 @@ def generar() -> None:
             partes = 2 if perecedero else 1          # dos lotes con vencimientos distintos
             comparte = 1 if producto in CON_FRIO else 2
             for _ in range(partes):
+                vence_h = rng.randint(6, 48) if perecedero else ""
+                # Antes se sorteaba el empaque en fruta y verdura; se sigue llamando a rng para no
+                # mover el resto de la semilla. Ahora va en toda la fruta del acopio con frío, que
+                # es lo único medido para la patente 37476.
+                if producto in ("fruta", "verdura"):
+                    rng.random()
+                empaque = int(producto == "fruta" and bool(acopios[acopio_id - 1]["tiene_frio"]))
                 lotes.append({
                     "id": len(lotes) + 1, "acopio_id": acopio_id, "producto": producto,
                     "kg": round(total / comparte / partes, 1), "perecedero": int(perecedero),
-                    "vence_en_horas": rng.randint(6, 48) if perecedero else "",
-                    "empaque_activo": int(producto in ("fruta", "verdura") and rng.random() < 0.5)})
+                    "vence_en_horas": vence_h, "empaque_activo": empaque})
     _escribir("lotes.csv", ["id", "acopio_id", "producto", "kg", "perecedero", "vence_en_horas",
                             "empaque_activo"], lotes)
 

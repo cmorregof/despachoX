@@ -49,11 +49,17 @@ PESO_RETRASO = {1: 1, 2: 3, 3: 10}                # costo por segundo de retraso
 FACTOR_CRITICO = max(1, int(os.environ.get("DESPACHOX_FACTOR_CRITICO") or 3))
 PENAL_SIN_ATENDER = 20_000_000                    # por nivel de urgencia
 PENAL_KG_PERECEDERO = 20_000                      # extra por kilo perecedero que se quedaría
-# Empaque captador de etileno (patente UNAL, certificado 37476). Un lote perecedero con
-# `empaque_activo=1` dura más: el tiempo que le queda hasta `vence_en` se multiplica por este
-# factor. Es un supuesto nuestro, no un dato medido; se barre con DESPACHOX_FACTOR_EMPAQUE.
-FACTOR_EMPAQUE_ACTIVO = max(1.0, float(os.environ.get("DESPACHOX_FACTOR_EMPAQUE") or 1.5))
-NOTA_EMPAQUE = "supuesto, pendiente de datos del ICTA; patente UNAL 37476"
+# Empaque captador de etileno (patente UNAL, certificado 37476). Un lote de fruta con
+# `empaque_activo=1` en un acopio con frío dura más: el tiempo que le queda hasta `vence_en` se
+# multiplica por este factor. 1,2 es una cota inferior: en la solicitud de la patente, gulupa a
+# 8 °C sin empaque llega al pico de etileno en la semana 5 y con empaque no lo tiene hasta la
+# semana 6 (figuras 1 y 2, folio 18; docs/investigacion/07_patentes_a_fondo.md). No hay medición
+# en otros productos ni sin frío, así que ahí vale 1,0. Lo decidió Carlos el 20 de noviembre a
+# las 11:00 p. m. Se barre con DESPACHOX_FACTOR_EMPAQUE.
+FACTOR_EMPAQUE_ACTIVO = max(1.0, float(os.environ.get("DESPACHOX_FACTOR_EMPAQUE") or 1.2))
+NOTA_EMPAQUE = ("cota inferior medida en gulupa a 8 °C en la solicitud de la patente UNAL 37476; "
+                "pendiente de datos del ICTA para otros productos")
+APLICA_EMPAQUE = "solo fruta en acopios con frío"
 
 
 @dataclass
@@ -167,10 +173,19 @@ def _sirve(lote: dict, producto: str | None) -> bool:
     return a == b or a in b or b in a
 
 
+def es_fruta(producto: str | None) -> bool:
+    n = normalizar(producto or "")
+    return n.startswith("fruta") or n == "gulupa"
+
+
 def vence_efectivo(lote: dict, ahora: datetime) -> datetime | None:
-    """Vencimiento que usa el modelo. Con empaque activo, el tiempo restante se alarga por el factor."""
+    """Vencimiento que usa el modelo. El empaque alarga el tiempo restante solo en fruta con frío.
+
+    `acopio_frio` lo pone `_resolver` a partir de `acopios.tiene_frio`; sin esa clave no se alarga.
+    """
     vence = _fecha(lote.get("vence_en"))
-    if vence is None or not lote.get("perecedero") or not lote.get("empaque_activo") or vence <= ahora:
+    if (vence is None or vence <= ahora or not lote.get("perecedero") or not lote.get("empaque_activo")
+            or not lote.get("acopio_frio") or not es_fruta(lote.get("producto"))):
         return vence
     return ahora + (vence - ahora) * FACTOR_EMPAQUE_ACTIVO
 
@@ -321,10 +336,12 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
             t = matrices[v["tipo"]].tiempo(inicio_de[v["id"]], f"punto:{p['punto_id']}")
             clave = (v["acopio_id"], p["id"])
             segundos_a[clave] = min(segundos_a.get(clave, t), t)
-    existencias = {l["id"]: float(l["kg"]) for l in datos["lotes"]}
+    lotes = [{**l, "acopio_frio": bool((acopios.get(l["acopio_id"]) or {}).get("tiene_frio"))}
+             for l in datos["lotes"]]
+    existencias = {l["id"]: float(l["kg"]) for l in lotes}
     todos_acopios = {p["id"]: list(acopios) for p in datos["ya_asignados"]}
-    surtir(datos["ya_asignados"], datos["lotes"], ahora, todos_acopios, {}, existencias)  # ya comprometido
-    surtido = surtir([p for p in pedidos if not es_visita(p)], datos["lotes"], ahora, acopios_de,
+    surtir(datos["ya_asignados"], lotes, ahora, todos_acopios, {}, existencias)  # ya comprometido
+    surtido = surtir([p for p in pedidos if not es_visita(p)], lotes, ahora, acopios_de,
                      segundos_a, existencias)
     surtido.update({p["id"]: Surtido() for p in pedidos if es_visita(p)})
 
@@ -494,6 +511,7 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
                       "factor_critico": FACTOR_CRITICO,
                       "factor_empaque_activo": FACTOR_EMPAQUE_ACTIVO,
                       "factor_empaque_activo_nota": NOTA_EMPAQUE,
+                      "factor_empaque_activo_aplica": APLICA_EMPAQUE,
                       "factor_tiempo": mod_matriz.FACTOR_TIEMPO, "un_viaje_por_vehiculo": True},
     }
     if not paradas:

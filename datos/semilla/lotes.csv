@@ -23,13 +23,13 @@ id,acopio_id,producto,kg,perecedero,vence_en_horas,empaque_activo
 22,1,huevos,19.5,1,42,0
 23,2,huevos,19.5,1,28,0
 24,2,huevos,19.5,1,26,0
-25,1,fruta,90.7,1,35,0
-26,1,fruta,90.7,1,47,0
+25,1,fruta,90.7,1,35,1
+26,1,fruta,90.7,1,47,1
 27,2,fruta,90.7,1,8,0
 28,2,fruta,90.7,1,26,0
-29,1,verdura,20.0,1,44,1
+29,1,verdura,20.0,1,44,0
 30,1,verdura,20.0,1,13,0
 31,2,verdura,20.0,1,38,0
-32,2,verdura,20.0,1,22,1
+32,2,verdura,20.0,1,22,0
 33,1,pollo,18.0,1,28,0
 34,1,pollo,18.0,1,9,0
