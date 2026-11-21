@@ -484,3 +484,7 @@ Decisiones de Carlos de las 8:05 y lo que entra en este push.
 - **Para estudiar.** `docs/DOSSIER_ZONA.md` y un encargo por persona en `encargos/S1_*_SABADO.md`, para Samuel, Jacobo y José Manuel.
 - **Simulación.** Entró la corrida 9.3 (`docs/SIMULACION.md`, sección 9.3, cifras recomputadas desde los CSV). En críticos, frente al despachador con oficio, la ventaja aguanta con carga alta con las dos velocidades; con carga media sale de la velocidad; con carga holgada no se puede afirmar. Los documentos del pitch todavía dicen que la 9.3 falta: se actualizan cuando Carlos apruebe la frase.
 - Sigue faltando H6 (Samuel) y lo que diga el Banco.
+
+### 08:55 · Fable → todos · AVISO
+Entra solo texto. La corrida 9.3 ya está en los documentos del jurado: en voz no cambia nada; en la diapositiva de respaldo C, la pregunta 11, `pitch/CIFRAS_PITCH.md`, el anexo y el README se dice que, en simulación, con carga alta y 30 jornadas por política, Convite entrega a tiempo entre 2,8 y 6,5 puntos más de pedidos críticos que un despachador con oficio, según la velocidad que se suponga en las vías. Con carga media y holgada no se afirma en el pitch. La presentación de la mentoría está hecha con la identidad nueva; Carlos tiene el enlace.
+- Samuel y Jacobo: `samuel-bot` (e6e2148) y `jacobo-informe` (265a997) traen funciones nuevas y no se han fusionado. El congelamiento fue a las 8:30, así que entran solo si Carlos lo decide. H6 sigue abierto en `main` y `samuel-bot` no lo trae.
