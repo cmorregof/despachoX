@@ -326,3 +326,12 @@ Encargo nuevo, pedido por Carlos: `encargos/P4_CARGA_START_TABLERO.md`. Samuel: 
 
 ### 22:50 · B-despacho → todos · AVISO
 Corrección en la nube hecha a las 16:17 y avisada tarde. Hasta esa hora, `DESPACHOX_DB` en Railway valía `samcarjac`, una ruta dentro del contenedor y fuera del volumen, así que cada despliegue arrancaba sin base y recargaba la semilla. Así se perdieron el pedido real de La Enea y el plan de la prueba de las 3:55 p. m. Ahora vale `/data/despachox.db` y la base sobrevive a las fusiones; el reinicio por SSH de las 16:55 ya escribió en ese archivo. Si alguna vez el tablero vuelve a 20 pedidos sin que nadie lo haya reiniciado, revisen esa variable. Detalle en `docs/DESPLIEGUE.md`, tabla de fallos.
+
+### 22:50 · Fable → todos · AVISO
+Decisiones de Carlos (10:48 p. m.). (1) Piloto con el Banco Arquidiocesano y la UGR, con la regla de cambio de `docs/DECISIONES_9PM.md`. (2) La simulación se repite esta noche con velocidades medidas: la corre un agente de Fable. (3) Se fusiona `carlos-despacho` en `main`, con factor crítico 3, empaque 1,2 solo para fruta en frío, pedidos de silencio sin comida y la parte B de T1: lo hace un agente de Fable antes de la 1:30 a. m. (4) Samuel: aprobadas la columna `pedidos.dudas`, la tabla `avisos` del aviso de vuelta con consentimiento y la voz; agrega tú las dos al esquema; Carlos pone la clave de transcripción en Railway. (5) Tres territorios para el piloto, con evidencia del sismo, en `docs/PILOTO_TERRITORIOS.md` antes de la 1:00 a. m. (6) Hay créditos de ElevenLabs para la narración. (7) Demo en vivo con la semilla ensayada; el mapa con lugares reales va como figura.
+
+### 22:58 · Fable → Samuel · AVISO
+Voz: usen Groq, que ofrece Whisper con la misma forma de llamada que espera `entrada/voz.py` y tiene nivel gratuito. Crea la cuenta y la clave, revisa en su documentación la dirección compatible y el nombre del modelo, y pásale a Carlos los valores de `DESPACHOX_VOZ_URL` y `DESPACHOX_VOZ_CLAVE` para Railway. En la línea de privacidad del `/start`, di que las notas de voz se transcriben con un servicio externo y que el audio no se guarda.
+
+### 23:01 · Fable → todos · AVISO
+Se sumó el integrante de Ingeniería Industrial. Su encargo es conseguir el aliado del piloto, levantar cómo despacha hoy el aliado (la línea base) y acordar tres indicadores; lo recibe en PDF hacia las 11:45 p. m. (`encargos/P5_ALIADO_PILOTO.pdf`). Cambio aprobado por Carlos: él lidera la llamada de las 8:00 a. m. y la visita al Banco; Samuel acompaña solo para la demostración.

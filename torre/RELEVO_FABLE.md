@@ -16,6 +16,10 @@ Terminaron los once agentes. Datos públicos e investigaciones 07 a 11 están en
 - La ficha la escribe un agente de Fable y llega a la rama `ficha` antes de las 12:30 a. m. Hay que revisarla antes de la mentoría 2 (sábado, 10:30 a. m.).
 - Encargo de la noche para Samuel y Jacobo: `encargos/P2_NOCHE_SAMUEL_JACOBO.md`.
 
+## Decisiones de Carlos a las 10:48 p. m.
+
+Las siete están en la entrada del canal de las 22:50. Corren tres agentes de Fable: B-noche (fusión de `carlos-despacho` y ajustes, antes de la 1:30 a. m.), simulación con velocidades medidas (antes de las 6:00 a. m.) y territorios del piloto (antes de la 1:00 a. m.). La ficha corta está en `main` (`docs/FICHA_CORTA.md`). Falta reescribir `pitch/GUION.md` con la historia nueva y las cifras que salgan de la simulación.
+
 ## Pendiente
 
 1. 9:00 p. m.: reunión de Carlos, Samuel y Jacobo con la propuesta del encargo P1 (`docs/PROPUESTA_P1.md`). Se decide el usuario del piloto, los cambios antes del congelamiento y el orden del pitch.

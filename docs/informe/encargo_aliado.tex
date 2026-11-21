@@ -1,0 +1,254 @@
+% Encargo para el integrante de Ingeniería Industrial: conseguir el aliado del piloto.
+% Misma plantilla del informe corto (Ancízar Serif, paleta de prometeo.sty, polyglossia).
+% Compilar desde docs/informe/:  latexmk -lualatex encargo_aliado.tex
+
+\documentclass[11pt,letterpaper,parskip=half-]{scrartcl}
+
+% ----------------------------------------------------------------------------- tipografía
+\usepackage[no-math]{fontspec}
+\usepackage{polyglossia}
+\setdefaultlanguage{spanish}
+\setmainfont{AncizarSerif}[
+  Path=./fuentes/, Extension=.ttf,
+  UprightFont=*-Regular, BoldFont=*-Bold, ItalicFont=*-Italic, BoldItalicFont=*-BoldItalic,
+  Numbers=OldStyle]
+\newfontfamily\ancizarlining{AncizarSerif}[
+  Path=./fuentes/, Extension=.ttf,
+  UprightFont=*-Regular, BoldFont=*-Bold, ItalicFont=*-Italic, BoldItalicFont=*-BoldItalic,
+  Numbers={Lining,Monospaced}]
+\newfontfamily\displayfont{AncizarSerif}[
+  Path=./fuentes/, Extension=.ttf, UprightFont=*-Light, BoldFont=*-Bold, ItalicFont=*-Italic]
+\setmonofont{DejaVu Sans Mono}[Scale=0.80]
+\linespread{1.08}
+\usepackage[protrusion=true, expansion=false]{microtype}
+\usepackage{ragged2e}
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\emergencystretch=2em
+
+% ----------------------------------------------------------------------------- página
+\usepackage[letterpaper, top=2.2cm, bottom=2.3cm, left=2.6cm, right=2.6cm, headsep=0.7cm, footskip=1.0cm]{geometry}
+
+% ----------------------------------------------------------------------------- color (Sanzo Wada, combinación 214)
+\usepackage{xcolor}
+\definecolor{tinta}{HTML}{4F4086}
+\definecolor{ambar}{HTML}{A36752}
+\definecolor{crema}{HTML}{EBD3A2}
+\definecolor{ceniza}{HTML}{6E6878}
+\colorlet{noche}{tinta!78!black}
+\colorlet{papel}{crema!22!white}
+\colorlet{hielo}{tinta!6!white}
+\AtBeginDocument{\color{noche}}
+\gappto\captionsspanish{\renewcommand{\tablename}{Tabla}}
+
+% ----------------------------------------------------------------------------- títulos (KOMA)
+\setkomafont{disposition}{\normalfont\color{tinta}}
+\setkomafont{section}{\Large\scshape}
+\setkomafont{paragraph}{\normalsize\scshape}
+\setkomafont{pageheadfoot}{\normalfont\small\color{ceniza}}
+\setkomafont{pagenumber}{\normalfont\small\color{tinta}}
+\setkomafont{caption}{\small}
+\setkomafont{captionlabel}{\small\scshape\color{tinta}}
+\RedeclareSectionCommand[beforeskip=-1.0\baselineskip plus -0.3\baselineskip,afterskip=0.3\baselineskip]{section}
+\renewcommand*{\sectionformat}{{\color{ambar}\thesection}\enskip}
+
+% ----------------------------------------------------------------------------- encabezados y pies
+\usepackage[headsepline=0.3pt]{scrlayer-scrpage}
+\clearpairofpagestyles
+\ihead{\textsc{DespachoX · Encargo: el aliado del piloto}}
+\ohead{\pagemark}
+\setkomafont{headsepline}{\color{ceniza!50}}
+
+% ----------------------------------------------------------------------------- tablas, listas, figuras, enlaces
+\usepackage{booktabs,tabularx,array,longtable}
+\AtBeginEnvironment{longtable}{\ancizarlining}
+\AtBeginEnvironment{tabularx}{\ancizarlining}
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\usepackage[shortlabels]{enumitem}
+\setlist{itemsep=1pt,topsep=2pt,parsep=0pt}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage[font=small,labelfont={sc,color=tinta},labelsep=period,justification=raggedright,
+  singlelinecheck=false,skip=4pt]{caption}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=tinta,urlcolor=tinta,
+  pdfauthor={Equipo 19, DespachoX},pdftitle={Encargo: conseguir el aliado del piloto}]{hyperref}
+\urlstyle{same}
+\usepackage[most]{tcolorbox}
+\tcbset{enhanced,breakable,boxrule=0pt,arc=0pt,outer arc=0pt,left=9pt,right=9pt,top=5pt,bottom=5pt,
+  fonttitle=\normalfont\scshape\small,before skip=6pt,after skip=6pt}
+\newtcolorbox{exito}{unbreakable,colback=hielo,colframe=tinta,borderline west={2pt}{0pt}{tinta},
+  coltitle=tinta,title={Cuenta como éxito},attach title to upper={\par\smallskip}}
+\newtcolorbox{plantilla}[1]{colback=papel,colframe=ambar,borderline west={2pt}{0pt}{ambar},
+  coltitle=ambar,title={#1},attach title to upper={\par\smallskip},
+  fontupper=\small\setlength{\parskip}{0.2em}}
+
+\DeclareUrlCommand\ruta{\urlstyle{tt}\def\UrlBreaks{\do\/\do\_}\def\UrlBigBreaks{}}
+\newcommand{\horacompilacion}{\directlua{tex.sprint(os.date(string.char(33,37).."H:"..string.char(37).."M", os.time() - 5*3600))}}
+
+\begin{document}
+\RaggedRight
+\thispagestyle{empty}
+
+% ----------------------------------------------------------------------------- bloque de título
+{\small\scshape\color{ceniza} Hackathon UNAL Manizales 2026 · Vertical 04 · Equipo 19, DespachoX\par}
+\vspace{0.3\baselineskip}
+{\displayfont\fontsize{23}{27}\selectfont\color{tinta} Encargo: conseguir el aliado del piloto\par}
+\vspace{0.3\baselineskip}
+{\color{ambar}\rule{\linewidth}{0.6pt}\par}
+{\small
+\textbf{Para:} el integrante de Ingeniería Industrial. \textbf{De:} la coordinación del equipo, por encargo de Carlos.\\
+\textbf{Entrega:} sábado 21 de noviembre a las 12:30 p.\,m., en \ruta{torre/CANAL.md}, para Carlos y para Fable.\\
+{\color{ceniza}Viernes 20 de noviembre de 2026, compilado a las {\ancizarlining\horacompilacion}, hora de Colombia.}\par}
+
+% ----------------------------------------------------------------------------- 1
+\section{Para qué}
+
+La mentoría pidió que la solución hable de personas y de territorio, y no solo de tecnología. Hoy el criterio 5 de la rúbrica, viabilidad y aliados (15 puntos), es el más débil, porque no hemos contactado a nadie. Un aliado real mueve tres criterios a la vez. Sostiene la viabilidad (5) y vuelve creíble el plan de 30 a 90 días (4, 15 puntos). También nos da con quién medir los impactos (6, 10 puntos). Por eso te damos la tarea que más suma.
+
+% ----------------------------------------------------------------------------- 2
+\section{Qué leer esta noche (40 minutos)}
+
+\begin{enumerate}[leftmargin=1.4em]
+\item \ruta{docs/informe/informe_corto.pdf}, el contexto en cinco páginas (15 minutos).
+\item \ruta{docs/FICHA_CORTA.md}, componentes 4 y 5: el plan de 30 a 90 días y los aliados (8 minutos).
+\item \ruta{docs/PILOTO.md}: el uso de todos los días y lo que le pedimos al operador (8 minutos).
+\item \ruta{docs/DECISIONES_9PM.md}: la regla de cambio y las llamadas en orden de prioridad (5 minutos).
+\item El guion de cinco minutos al final de \ruta{docs/MENTORIA_1.md} (4 minutos).
+\end{enumerate}
+
+% ----------------------------------------------------------------------------- 3
+\section{Qué cuenta como éxito antes del sábado a las 12:30 p.\,m.}
+
+\begin{exito}
+\begin{enumerate}[label=(\alph*), leftmargin=1.6em]
+\item Un aliado real dice que probaría DespachoX en un piloto de 30 a 90 días. Lo dice en un video de 30 a 60 segundos grabado con su permiso, o por escrito.
+\item Tienes un contacto con cargo y una fecha para el siguiente paso.
+\item Hay un acuerdo de principio para compartir la línea base sin datos personales. Son tres datos: el catálogo de puntos, el inventario con fechas de vencimiento y un mes de despachos.
+\item Sabes si reparten ellos o recogen las organizaciones, y cómo despachan hoy.
+\end{enumerate}
+\end{exito}
+
+% ----------------------------------------------------------------------------- 4
+\section{Candidatos, en orden}
+
+Primero va quien más cambia el piloto. Habla siempre con la entidad y el cargo. Los datos salen de las investigaciones 10 y 11 y de \ruta{docs/DECISIONES_9PM.md}, y nadie los ha verificado todavía.
+
+\begin{enumerate}[label=\textbf{\arabic*.}, ref=\arabic*, leftmargin=1.4em, itemsep=5pt]
+\item\label{c:banco} \textbf{Banco Arquidiocesano de Alimentos de Manizales.} Calle 49 n.º 27A-85, según Minuto60. No sabemos su horario del sábado, así que llama a las 8:00 a.\,m.\newline
+\emph{Por qué.} Es el usuario principal que proponemos. Fue uno de los principales puntos de acopio de ABACO en agosto, y los bancos de alimentos trabajan a diario con organizaciones inscritas. Nunca ha hablado en público, así que no sabemos cómo despacha.\newline
+\emph{Qué preguntar.} ¿Reparten ustedes o las organizaciones recogen en la bodega? ¿Con qué registran inventario y salidas? ¿Siguen despachando ayuda del sismo? ¿Tienen cuarto frío? ¿Aceptarían 30 días de prueba en paralelo, sin cambiar su forma de trabajar?
+\item \textbf{Unidad de Gestión del Riesgo (UGR) de Manizales}, con la dirección de la unidad.\newline
+\emph{Por qué.} Coordinó la respuesta y organiza simulacros, a los que se inscriben juntas, familias y empresas. La calamidad pública sigue vigente hasta el 9 de agosto de 2027, con un plan de acción específico.\newline
+\emph{Qué preguntar.} ¿Quién despachó los mercados y con qué? ¿Qué dice la estrategia de respuesta sobre el abastecimiento? ¿Cuándo es el próximo simulacro? ¿Avalarían el piloto dentro del plan de acción?
+\item \textbf{Centro Logístico Humanitario de la Gobernación de Caldas}, con la Jefatura de Gestión del Riesgo o el encargado de las ayudas del centro.\newline
+\emph{Por qué.} Recibe el requerimiento de cada municipio y deja los kits cargados para los vehículos municipales. Es la ruta de escalamiento hacia municipios y veredas.\newline
+\emph{Qué preguntar.} ¿Cómo llega un requerimiento municipal y en qué formato? ¿Cuánto tarda? ¿Quién transporta y cómo se entera de un cierre vial?
+\item \textbf{Cruz Roja Seccional Caldas}, con la dirección seccional.\newline
+\emph{Por qué.} Fue el operador logístico que entregó por turnos los kits de alimentos de la Alcaldía, así que conoce el despacho de primera mano.\newline
+\emph{Qué preguntar.} ¿Cómo manejaron los kits, los turnos, las listas y las rutas? ¿Comparten sus registros con la Alcaldía o con el Banco? ¿Pondrían un conductor para el simulacro?
+\item \textbf{ABACO, la red de bancos de alimentos}, con la dirección ejecutiva o la gerencia de Cooperación Internacional.\newline
+\emph{Por qué.} Puede abrir la puerta del Banco de Manizales, y promete al donante un reporte de entrega.\newline
+\emph{Qué preguntar.} ¿Nos presentan con el Banco de Manizales? ¿Cómo arman hoy el reporte de entrega para el donante?
+\end{enumerate}
+
+\emph{De respaldo}, si las instituciones no contestan, busca un comedor comunitario o un hogar infantil, y un líder de junta. Al comedor pregúntale cómo pide y qué le llega dañado; al líder, cómo pidieron en agosto y si les llegó la ayuda.
+
+% ----------------------------------------------------------------------------- 5
+\section{Cómo hacerlo}
+
+\begin{itemize}[leftmargin=1.2em, itemsep=2pt]
+\item \textbf{Esta noche.} Lee los cinco documentos. Con el prompt del anexo B, prepara una propuesta de valor de una página y un guion de dos minutos. Los teléfonos y contactos de las entidades los buscas tú, desde esta noche.
+\item \textbf{Esta noche, por WhatsApp.} Escríbele al profesor Néstor, del IDEA de la Sede Manizales; Carlos te pasa el número. Pídele cinco minutos mañana antes de las 2:00 p.\,m. Necesitamos su visto bueno para usar el indicador A25 del IDEA en el piloto, y su opinión del proyecto. Este es el mensaje modelo:\par\smallskip
+{\leftskip=1.2em\small\itshape
+«Profe Néstor, buenas noches. Soy [nombre], estudiante de Ingeniería Industrial y parte del equipo del profesor Carlos Orrego en la Hackathon UNAL Manizales, vertical de logística y abastecimiento. Construimos una mesa de despacho de ayuda alimentaria para la ladera de Manizales y queremos proponer el indicador A25 del IDEA como la señal de lluvia del piloto. ¿Nos regalaría cinco minutos mañana, antes de las 2:00 p.\,m., para contarle el proyecto y saber si está de acuerdo con que citemos el A25 y cómo deberíamos hacerlo? Muchas gracias.»\par}
+\item \textbf{8:00 a.\,m.} Llama en el orden de la sección 4 hasta agendar una visita. Si el Banco no contesta, llama a ABACO.
+\item \textbf{8:30 a 10:00 a.\,m.} Visita con una demostración de cinco minutos en el celular o el portátil, coordinada con Samuel, que conoce el bot. Ensáyenla esta noche, porque las funciones se congelan a las 8:30 a.\,m. Sales con las respuestas (c) y (d), y con el video o la carta.
+\item \textbf{10:30 a.\,m.} Mentoría. Lleva lo que tengas hasta ese momento.
+\item \textbf{11:00 a.\,m. a 12:30 p.\,m.} Seguimiento por teléfono con la UGR y la Cruz Roja, hasta tener un contacto con cargo y una fecha.
+\item \textbf{12:30 p.\,m.} Resultados para Carlos y Fable en \ruta{torre/CANAL.md}, con lo logrado y lo pendiente.
+\end{itemize}
+
+
+% ----------------------------------------------------------------------------- 6
+\section{Lo que te toca como ingeniero industrial}
+
+Dibuja el proceso actual del aliado en un diagrama sencillo, como el de la figura~\ref{fig:proceso}. Ese diagrama es la línea base del piloto. Llena cada paso con lo que te digan, con tiempos y cantidades cuando los tengan, y marca lo que sea supuesto tuyo.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+  font=\footnotesize,
+  paso/.style={draw=tinta, fill=hielo, line width=0.6pt, text width=2.05cm, minimum height=1.05cm, align=center, inner sep=3pt},
+  pregunta/.style={text width=2.15cm, align=center, font=\scriptsize\color{ceniza}},
+  flecha/.style={-{Stealth[length=2mm]}, tinta, line width=0.7pt}]
+\node[paso] (p1) at (0,0) {{\color{tinta}\textsc{pide}}};
+\node[paso] (p2) at (2.7,0) {{\color{tinta}\textsc{arma el pedido}}};
+\node[paso] (p3) at (5.4,0) {{\color{tinta}\textsc{carga}}};
+\node[paso] (p4) at (8.1,0) {{\color{tinta}\textsc{sale a ruta}}};
+\node[paso] (p5) at (10.8,0) {{\color{tinta}\textsc{entrega}}};
+\node[paso, draw=ambar, fill=papel] (p6) at (13.5,0) {{\color{ambar}\textsc{se pierde}}};
+\foreach \a/\b in {p1/p2, p2/p3, p3/p4, p4/p5, p5/p6} \draw[flecha] (\a) -- (\b);
+\node[pregunta, below=3pt of p1] {¿Quién pide, por qué canal y cada cuánto?};
+\node[pregunta, below=3pt of p2] {¿Quién decide qué sale y con qué registro?};
+\node[pregunta, below=3pt of p3] {¿Qué vehículos, cuánto caben y quién conduce?};
+\node[pregunta, below=3pt of p4] {¿Por dónde va y cómo se entera de un cierre?};
+\node[pregunta, below=3pt of p5] {¿Cuánto tarda y quién recibe o firma?};
+\node[pregunta, below=3pt of p6] {¿Qué se daña o se vence, y por qué?};
+\end{tikzpicture}
+\caption{Plantilla para levantar en la visita el proceso actual del aliado.}
+\label{fig:proceso}
+\end{figure}
+
+Acuerda con ellos tres indicadores, medidos con sus propios registros: entregas a tiempo en puntos críticos, porcentaje de desperdicio y kilómetros o viajes. Pregunta qué llaman ellos «a tiempo» y qué cuentan como pérdida.
+
+% ----------------------------------------------------------------------------- 7
+\section{Reglas}
+
+\begin{itemize}[leftmargin=1.2em]
+\item No prometas costos ni compromisos a nombre de la UNAL.
+\item No ofrezcas nada que el sistema no haga hoy. Hoy recibe pedidos por chat, saca primero lo que vence, asigna una flota mixta, recalcula cuando se cierra una vía y sigue cada paquete con un código QR. No recoge donaciones en los donantes ni maneja pedidos recurrentes.
+\item Pide permiso explícito para grabar y para usar el video en la hackathon. Ninguna persona beneficiaria aparece en cuadro, y no anotas datos personales de quienes reciben la ayuda (Ley 1581 de 2012).
+\item Si el Banco dice que las organizaciones recogen, aplica la regla de cambio: el piloto pasa al flujo de la UGR y la Gobernación. Pregunta igual por su rutina.
+\end{itemize}
+
+% ----------------------------------------------------------------------------- anexos
+\clearpage
+\section*{Anexo A. Plantilla de carta de intención no vinculante}
+
+\begin{plantilla}{Carta de intención · llenar en papel membreteado de la entidad}
+Manizales, \rule{1.2cm}{0.4pt} de noviembre de 2026
+
+Señores del equipo DespachoX (equipo 19), Hackathon UNAL Manizales 2026
+
+\textbf{Asunto:} intención no vinculante de participar en un piloto de 30 a 90 días.
+
+\rule{5.5cm}{0.4pt} (entidad), por medio de \rule{4.5cm}{0.4pt} (nombre y cargo), manifiesta su interés en probar con el equipo DespachoX, durante 30 a 90 días, una mesa de despacho de ayuda alimentaria en \rule{3.5cm}{0.4pt} (territorio). Durante el piloto la entidad podría compartir, sin datos personales, su catálogo de puntos de entrega, su inventario con fechas de vencimiento y un mes de registros de despachos. También designaría una persona de contacto y acordaría con el equipo tres indicadores: entregas a tiempo en puntos críticos, porcentaje de desperdicio y kilómetros o viajes.
+
+El equipo DespachoX usará esos datos solo para el piloto, no los publicará sin autorización y entregará un informe con los resultados. No pedirá datos personales de beneficiarios (Ley 1581 de 2012).
+
+Esta carta expresa una intención. No genera obligaciones económicas, contractuales ni de exclusividad para ninguna de las partes, y no compromete a la Universidad Nacional de Colombia.
+
+Firma \rule{4.5cm}{0.4pt} \qquad Nombre y cargo \rule{5.5cm}{0.4pt}\\ Teléfono o correo institucional \rule{5cm}{0.4pt}
+\end{plantilla}
+
+\section*{Anexo B. Prompt para preparar la visita con Claude}
+
+\begin{plantilla}{Prompt · copia este texto en un chat nuevo de Claude}
+Voy a buscar mañana sábado, en Manizales, un aliado real para el piloto de 30 a 90 días de DespachoX, el proyecto de mi equipo en la Hackathon UNAL Manizales 2026 (vertical de logística y abastecimiento). Soy ingeniero industrial. Ayúdame a preparar la visita.
+
+Contexto. DespachoX es una mesa de despacho de ayuda alimentaria. Hoy recibe pedidos por chat, confirma el lugar, saca primero lo que vence, asigna los pedidos a una flota mixta, recalcula la ruta cuando se cierra una vía y sigue cada paquete con un código QR hasta la entrega. Una persona aprueba cada plan. No recoge donaciones en los donantes ni maneja pedidos recurrentes. Después del sismo del 10 de agosto de 2026 la red de bancos de alimentos acumuló mucha más comida de la que alcanzó a entregar, y en Manizales la comida se repartió por listas y por turnos. Las vías de la ciudad se cierran por derrumbes también sin sismo. Nadie del equipo ha verificado todavía estos datos de prensa y boletines oficiales.
+
+Mis candidatos, en orden: el Banco Arquidiocesano de Alimentos de Manizales, la Unidad de Gestión del Riesgo de Manizales, el Centro Logístico Humanitario de la Gobernación de Caldas, la Cruz Roja Seccional Caldas y ABACO. De respaldo, un comedor comunitario y un líder de junta de acción comunal.
+
+Reglas. No prometo costos ni compromisos a nombre de la UNAL. No ofrezco nada que el sistema no haga hoy. Pido permiso para grabar. No pido datos personales de beneficiarios.
+
+Necesito cuatro cosas, en español claro y sin inventar cifras. Marca como supuesto todo lo que no venga de este texto.\\
+1. Una propuesta de valor de una página para el Banco: qué gana en un día normal y qué gana en una emergencia.\\
+2. Las ocho objeciones más probables, con una respuesta honesta para cada una.\\
+3. Un guion de llamada de dos minutos para pedir una visita de quince minutos.\\
+4. Las preguntas para levantar su proceso actual: quién pide, cómo se arma el pedido, qué vehículos usan, cuánto tarda y qué se daña. Agrega cómo acordar con ellos tres indicadores: entregas a tiempo en puntos críticos, porcentaje de desperdicio y kilómetros o viajes.
+\end{plantilla}
+
+\end{document}
