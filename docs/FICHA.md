@@ -154,13 +154,13 @@ Tres resultados de la segunda ronda completan el cuadro [M]. Los corrimos con la
 | Alguien marca como entregado un paquete ajeno, porque los códigos admiten 390.625 combinaciones | En el piloto, la confirmación solo cuenta si viene del punto de destino o del conductor |
 | Solicitudes falsas o en ráfaga | Filtro por reglas con parámetros declarados como supuestos, que se calibran con datos del piloto. Solo una persona confirma o descarta |
 | Datos personales | El remitente queda como un código, y los pedidos de prueba son sintéticos. Ley 1581 de 2012 |
-| La simulación sobrestima el beneficio | Se repitió con velocidades derivadas de mediciones GPS de un bus en Manizales y asignadas por tipo de vía y pendiente (tesis UNAL de 2019, tabla 14, pp. 46 a 48), y en el piloto se mide con odómetro o GPS |
+| La simulación sobrestima el beneficio | La repetimos con velocidades derivadas de mediciones GPS de un bus en Manizales y asignadas por tipo de vía y pendiente (tesis UNAL de 2019, tabla 14, pp. 46 a 48), y en el piloto se mide con odómetro o GPS |
 | El aliado no adopta la herramienta | Operación en sombra antes de pedir cualquier cambio de proceso |
 | Dependencia de un proveedor de inteligencia artificial | La lectura del mensaje es un módulo aislado. Se puede cambiar de modelo o usar el lector por reglas |
 | Uso de la patente 37476 sin condiciones claras | Entra al prototipo solo como parámetro supuesto. Su uso real se acuerda con la oficina de propiedad intelectual de la UNAL |
 | Priorizar lo crítico hace esperar más al punto peor atendido | El costo se reporta por territorio y se vigila cada semana |
 
-**Aliados y padrinos.** Ningún aliado ha visto todavía la propuesta, y a cada uno se le pide algo concreto.
+**Aliados y padrinos.** Ningún aliado ha visto todavía la propuesta, y a cada uno le pedimos algo concreto.
 
 | Aliado | Papel | Qué se le pide | Estado |
 |---|---|---|---|
@@ -169,7 +169,7 @@ Tres resultados de la segunda ronda completan el cuadro [M]. Los corrimos con la
 | Unidad de Gestión del Riesgo de Manizales | Aliada para simulacros y temporada de lluvias | Aval dentro de la estrategia municipal de respuesta, fecha del próximo simulacro y reportes de cierres | Por contactar |
 | Gobernación de Caldas, Jefatura de Gestión del Riesgo y Centro Logístico Humanitario | Ruta de escalamiento a los municipios | Cómo llega y cuánto tarda un requerimiento municipal | Por contactar |
 | Cruz Roja Colombiana, Seccional Caldas | Operador logístico en campo | Experiencia con los kits por turnos y un conductor para el simulacro | Por contactar |
-| IDEA y SIMAC, UNAL Manizales | Capacidad UNAL principal | Visto bueno para usar el A25 como riesgo por tramo, A25 diario por estación de agosto a noviembre y permiso para citarlo | En gestión: el equipo está pidiendo cinco minutos a un profesor del IDEA |
+| IDEA y SIMAC, UNAL Manizales | Capacidad UNAL principal | Visto bueno para usar el A25 como riesgo por tramo, A25 diario por estación de agosto a noviembre y permiso para citarlo | En gestión. Le estamos pidiendo cinco minutos a un profesor del IDEA |
 | Laboratorio de Empaques y Vida Útil del ICTA, UNAL Bogotá | Capacidad UNAL | Vida útil de cinco a diez productos de la canasta y condiciones para ensayar el empaque | Por contactar |
 | Profesores de logística humanitaria de la Sede Manizales | Asesoría | Quince minutos para validar la formulación y el flujo de aprobación | Por contactar |
 | Oficina de propiedad intelectual de la UNAL | Patente 37476 | Resolución de concesión, anualidad 2026 y condiciones de uso | Por contactar |
@@ -181,7 +181,7 @@ Tres resultados de la segunda ronda completan el cuadro [M]. Los corrimos con la
 
 **Beneficiarios.** Los beneficiarios directos son el despachador y los voluntarios del Banco, que deciden con mejor información, y las organizaciones y juntas del territorio, que saben que su pedido quedó bien entendido. Los beneficiarios finales son las personas que comen en comedores, hogares, albergues y veredas. Los indirectos son los donantes, que reciben la confirmación de cada entrega, y la Unidad de Gestión del Riesgo, que hereda una mesa probada para la próxima emergencia.
 
-**Magnitud.** El problema tiene escala en emergencia y en la rutina. En el sismo, ABACO movió más de 2.000 toneladas para 9.470 familias en 36 municipios (Portafolio, 21 de septiembre; por verificar). En un año normal, la red ABACO manejó unas 54.000 toneladas en 2025, cerca de 42.000 de ellas rescatadas (La República; por verificar). En cambio, Colombia pierde y desperdicia 9,76 millones de toneladas de alimentos al año, el 34 % de la oferta disponible, según el estudio del DNP de 2016 (por verificar). En Manizales hay 204 juntas de acción comunal que pueden pedir por su barrio o su vereda (Alcaldía; por verificar). Cuántas organizaciones y personas atiende el Banco en el territorio del piloto es un dato que todavía no tenemos, y se mide en los días 0 a 15.
+**Magnitud.** El problema tiene escala en emergencia y en la rutina. En el sismo, ABACO movió más de 2.000 toneladas para 9.470 familias en 36 municipios (Portafolio, 21 de septiembre; por verificar). En un año normal, la red ABACO manejó unas 54.000 toneladas en 2025, cerca de 42.000 de ellas rescatadas (La República; por verificar). A escala nacional, Colombia pierde y desperdicia 9,76 millones de toneladas de alimentos al año, el 34 % de la oferta disponible, según el estudio del DNP de 2016 (por verificar). En Manizales hay 204 juntas de acción comunal que pueden pedir por su barrio o su vereda (Alcaldía; por verificar). Todavía no sabemos cuántas organizaciones y personas atiende el Banco en el territorio del piloto. Lo medimos en los días 0 a 15.
 
 **Indicadores verificables.** Todos se miden contra la línea base del propio Banco. Los números de la simulación sirven de referencia, y ninguno es un resultado de campo.
 
@@ -197,7 +197,7 @@ Tres resultados de la segunda ronda completan el cuadro [M]. Los corrimos con la
 | Puntos que dejaron de pedir | Puntos críticos del territorio sin pedidos ni contacto en seis horas | Primera semana del piloto | Todos con visita de verificación | Alerta por silencio y tabla por territorio |
 | Equidad, costo conocido | Espera del punto peor atendido | En simulación, con 30 jornadas por política, entre 1,95 y 3,82 horas más que por orden de llegada | Sin meta. Se reporta y se vigila | Tabla por territorio |
 
-**Cómo se reportan.** Cada resultado se presenta con su línea base, su fecha y su fuente, y se separa lo medido por nosotros de lo tomado de una fuente y de lo estimado. Los resultados de la simulación se reportan tal como salieron, con el número de escenarios y sus supuestos.
+**Cómo se reportan.** Presentamos cada resultado con su línea base, su fecha y su fuente, y separamos lo medido por nosotros de lo tomado de una fuente y de lo estimado. Los resultados de la simulación los reportamos tal como salieron, con el número de escenarios y sus supuestos.
 
 ---
 
