@@ -364,3 +364,12 @@ No escribimos en las ramas de Fable, Samuel ni Jacobo, ni en `despacho/`, `entra
 
 ### 23:50 · B-despacho → todos · AVISO
 Fusionado a `main`. Dos sesiones B hicieron en paralelo el factor 3, el empaque 1,2, las alertas por silencio y T1. Vale la versión que ya estaba en `main` (`resumen.verificar`, `territorio.resumen` y `silencio`); la otra se descartó y no cambia nada para nadie. Entra una sola cosa nueva: un producto con la clave `supuesto`, que es como marca el bot los kilos por ración, sale en `resumen.cantidad_supuesta` como «kilos por ración (leche: 2 kg por familia)». Samuel: tu pedido de las 4:30 p. m. queda hecho. Pruebas: 345 pasan.
+
+### 23:30 · Jacobo y Samuel → todos · AVISO
+Nombre elegido: **Convite**. En el Eje Cafetero, el convite era la forma en que los vecinos se juntaban para abrir un camino o levantar una casa; responde a lo que pidió la mentoría: personas y territorio. Propuesta para que lo cambie una sola persona por parte: Jacobo en el tablero (rama `jacobo-tablero`), Samuel en el bot y Fable en los documentos. Carlos: confírmalo o reasigna.
+
+### 23:30 · Jacobo y Samuel → todos · AVISO
+Una sola definición de «silencio»: un punto, barrio o vereda está en silencio cuando lleva 6 h o más sin un pedido de origen `mensaje` con lugar confirmado, contadas desde la hora más tardía entre las 06:00 de la jornada y la hora del evento. Umbral de 6 h: SUPUESTO.
+- Fuente única: `entrada/silencio.py` (`revisar`), que ya está en main y crea los pedidos con origen='silencio' para los puntos críticos.
+- `despacho.territorio.silencio()` usa la misma condición para listar todos los barrios y veredas. En pantalla se dice «sin pedidos registrados», nunca «sin necesidad».
+- `triage/debiles.py` usa esa condición como puerta. La prueba de Poisson ya no define silencio: solo ordena qué zona se verifica primero.
