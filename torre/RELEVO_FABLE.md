@@ -1,49 +1,42 @@
 # Relevo · coordinación del proyecto (Fable)
 
-Viernes 20 de noviembre, 23:38. Reemplaza al relevo de las 18:08. Si este chat se corta, el siguiente empieza aquí.
+Sábado 21 de noviembre, 6:25 a. m. Reemplaza al relevo de las 23:38. Si este chat se corta, el siguiente empieza aquí.
 
 ## Estado en una frase
 
-`main` está en 917b42b con 342 pruebas en verde: se fusionó `carlos-despacho` con factor crítico 3, empaque 1,2 en fruta con frío, alertas de silencio sin comida y `despacho/territorio.py`. Esta noche trabajan ocho agentes de Fable, siete en su propia rama, y nada de eso entra a `main` sin revisión.
+`main` (c4ce320) tiene el tablero Convite de Jacobo, la clave del tablero y los documentos y evaluaciones de la noche, y pasan 467 pruebas. A las 6:10 Carlos decidió: de las ramas de código solo entra `jacobo-tablero`; el tablero lleva clave; Samuel arregla H6 antes de las 8:30; el piloto va en el territorio P2 (Ciudadela del Norte y El Manantial).
 
-## Agentes de la noche (entregan antes de las 5:30 a. m.)
+## Corriendo
 
-| Rama | Entrega | Criterio |
-|---|---|---|
-| sin rama (`/home/claude/sim-noche`) | Simulación con velocidades medidas: `docs/SIMULACION.md` §9 y una frase para el pitch, hacia las 6:00 a. m. La cadena escribe en `/tmp/simnoche/cadena.log` | 2 y 6 |
-| `pitch-noche` | `pitch/GUION.md` (3 minutos y 1 minuto), `pitch/DIAPOSITIVAS.md`, `pitch/CIFRAS_PITCH.md` | todos |
-| `defensa-noche` | `docs/PLAN_30_90.md`, `docs/RIESGOS.md`, `pitch/PREGUNTAS_JURADO.md` | 4 y 5 |
-| `fuentes-noche` | `docs/FUENTES.md` consolidado, `docs/VERIFICAR_SAMUEL.md`, `ENTREGA.md`, sección del jurado en `README.md` | 1 y 6 |
-| `qa-noche` | `docs/QA_NOCHE.md` y arreglos pequeños con prueba (QR, silencio, Ley 1581, paridad con Railway) | 2 y 5 |
-| `a25` | `despacho/a25.py`, lluvia sintética marcada, gancho apagado por defecto, `docs/A25.md` | 3 |
-| `demo-noche` | `demo/` (preparar, correr, lista de chequeo), `despacho/bench.py` y `despacho/BENCH.md`, pruebas de propiedades | 2 |
-| `manuscrito` | `docs/manuscrito/` en inglés (LaTeX), `VENUES.md`, `CITAS_POR_VERIFICAR.md` | largo plazo |
+- Simulación. A la 1 a. m. se detuvo el servidor de la sesión. La corrida principal ya había terminado (factor 3, velocidades de la tesis, 30 semillas por carga, rama `simulacion`). A las 6:03 se relanzó la corrida con velocidades del modelo en la misma red, que termina hacia las 7:25 (`/tmp/simnoche/cadena.log`). Su agente escribe la §9 de `docs/SIMULACION.md` en la rama `simulacion`.
+- Territorio. Un agente pasa a P2 el guion, las diapositivas, las cifras, el plan, los riesgos, las preguntas y el mapa, en la rama `territorio-p2`, antes de las 7:30.
 
-Los agentes del guion y del manuscrito se lanzaron primero con el modelo Fable y cayeron porque ese cupo se agotó hasta las 6:00 a. m.; se relanzaron con Opus a las 23:35. Los clones de los agentes están en `/home/claude/wt/<rama>`.
+## Siguiente
 
-## Qué hacer a las 6:00 a. m.
+1. Revisar y fusionar `simulacion` y `territorio-p2`.
+2. Llenar los [SIM] del guion, las diapositivas, `pitch/CIFRAS_PITCH.md` y la defensa (plan §5 y §7, R6, R14, preguntas 11, 15, 29 y 30) con `despacho/sim/resultados_velocidades/tablas.md`. Para las velocidades: «derivadas de mediciones GPS de un bus en Manizales y asignadas por tipo de vía y pendiente (tesis UNAL de 2019, tabla 14, pp. 46 a 48)».
+3. Armar la presentación para la mentoría de las 10:30 con `pitch/DIAPOSITIVAS.md` y `figuras_pitch/`.
+4. Erratas: Carlos aprueba `docs/ERRATAS.md` fila por fila. El informe corto se recompila en su computador, porque la fuente Ancízar no está en el repositorio.
+5. Antes de la demo de las 2:00 p. m.: Carlos define `DESPACHOX_CLAVE_TABLERO` en Railway; la base se reinicia con el botón del tablero después de las 10:13, cuando vencen los límites de la semilla.
 
-1. Leer `/tmp/simnoche/cadena.log` y el informe del agente de simulación. Llenar los [SIM] del guion y de las diapositivas con los números nuevos, con la línea base, el número de escenarios y los supuestos.
-2. Revisar cada rama antes de fusionar. Las de documentos (`pitch-noche`, `defensa-noche`, `fuentes-noche`) las puede fusionar Fable. `qa-noche` se fusiona si la suite pasa. `a25` y `demo-noche` necesitan el sí de Carlos antes de las 8:30 a. m., porque traen funciones nuevas.
-3. Correr la medición completa de `despacho/bench.py` cuando la simulación haya terminado.
-4. Dejar a Carlos el resumen de la mañana: qué hay, qué se fusiona antes de las 8:30 y qué decide él.
-5. Antes de la demo: pulsar «Reiniciar datos de prueba» en el tablero de la nube.
+## Decisiones pendientes de Carlos
 
-## Riesgos abiertos
+- La duración y la hora del pitch (la página dice 2:00 y la plataforma 2:30).
+- Quién habla, y el nombre del integrante de Ingeniería Industrial.
+- El nombre Convite.
+- El tamaño de familia: 1,8, 2,9 o 4.
+- Si reconsidera `a25`, `qa-noche` o `demo-noche` antes de las 8:30. Sin `qa-noche`, ENTREGADO por Telegram con el modelo activo no se registra.
+- El manuscrito sigue en su rama (`manuscrito`), sin fusionar, porque el repositorio es público.
 
-- Railway redespliega con `fpdf2`, `pypdfium2` y `zxing-cpp`. A las 23:30 el tablero servía la página de Streamlit; falta verlo con clics.
-- Jacobo debe mostrar `resumen.verificar` y la pestaña «Territorio».
-- Si el cupo de Opus se agota antes de las 6:00 a. m., los agentes se detienen. Lo empujado queda en sus ramas, y el proceso de la simulación sigue solo y escribe en `/home/claude/sim-noche/despacho/sim/resultados_velocidades/`.
+## Dónde está el detalle
 
-## Pendiente de antes
-
-1. Sección del piloto en el informe de contexto.
-2. Cifras del pitch abiertas por una persona (Samuel, con `docs/VERIFICAR_SAMUEL.md`).
-3. Antes de subir al Drive: quitar la nota interna de la ficha y agregar el enlace al video de respaldo.
+- Revisión de cada rama de la noche: `/home/claude/wt/REVISION_NOCHE.md` (notas locales del contenedor de esta sesión).
+- Noche-2: `torre/RELEVO_NOCHE2.md`.
+- Directorio de aliados en PDF: se le envió a Carlos para la llamada de las 8:00 (`aliados/DIRECTORIO.md`).
 
 ## Cómo se trabaja
 
-- Fable sube a `main` solo documentos de coordinación; el código va en ramas y se fusiona con el sí de Carlos, que autorizó a Fable a hacer las fusiones.
-- Las fuentes Ancízar del informe corto no se suben al repositorio público (`docs/informe/fuentes/` está ignorado). Están en la carpeta Proyecto Godel de Carlos.
+- Fable sube a `main` solo documentos de coordinación; el código se fusiona con el sí de Carlos.
+- Las fuentes Ancízar no se suben al repositorio público.
 - Toda cifra del pitch, con fuente abierta por una persona.
-- Congelamiento: sábado 8:30 a. m. Mentoría 2: 10:30 a. m. Entrega en iNNOVO: 1:00 a 2:30 p. m. Pitch: 2:00 p. m.
+- Congelamiento: 8:30 a. m. Mentoría 2: 10:30 a. m. Entrega en iNNOVO: 1:00 a 2:30 p. m. Pitch: 2:00 p. m.
