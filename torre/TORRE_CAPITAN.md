@@ -94,6 +94,13 @@ Pruebas: `despacho/tests` 25 pasan (12 nuevas en `test_ronda3.py`); simulación 
 - Lo único nuevo que entró: un producto con la clave `supuesto` (kilos que pone el bot por ración) cuenta como cantidad supuesta, como pidió Samuel a las 4:30 p. m. Prueba en `despacho/tests/test_noche.py`. Pruebas en todo el repositorio: 345 pasan y 1 se omite.
 - Lección: antes de lanzar dos sesiones sobre `despacho/`, revisar en el canal quién tiene cada tarea.
 
+### Prueba del cierre en la nube (sábado 21, 00:00)
+- Respaldo previo: `/data/respaldo_antes_prueba_cierre.db` (plan 1 de Jacobo aprobado, 17 paquetes, sin cierres).
+- Reporte: «derrumbe en la avenida del centro, no pasa camion, si pasa moto», enviado dentro del contenedor con `entrada.flujo.Mesa` y el modelo real, como lo haría el bot, pero sin Telegram. El modelo entendió «no pasa camión». El nomenclátor ubicó «avenida del centro» como exacto, el remitente pulsó «sí» y el cierre 1 quedó en la arista 582617778 → 323215241, bloqueado solo para camión.
+- Tablero, con el despachador «Carlos (prueba Claude)»: confirmar el cierre, el aviso «Hay un cierre nuevo: recalcular», Recalcular (9 s), «qué cambió» y Aprobar. Todo funcionó.
+- Resultado: para el camión quedaron aislados San José (punto 14) y el punto 3. Los dos pedidos de San José pasaron del Camión 2 al Campero 2 y a la Moto 1. El plan 2 atiende 20 de 20 pedidos. El plan 1 pasó a `reemplazado` solo al aprobar el 2. Hay 20 paquetes en ruta y los de San José conservan su código.
+- Lo que se ve mal y no es el cierre: 13 de 20 a tiempo y 0 de 4 críticos, porque la semilla se cargó a las 4:53 p. m. y los límites de los críticos vencieron a las 8:53 p. m. Antes de la demo hay que reiniciar los datos.
+
 ## En curso
 - Nada de B. Pendiente de otra sesión: encargo S2 de la simulación (barrido de `FACTOR_CRITICO`), que no se ejecutó, y el indicador A25 como riesgo de tramo.
 

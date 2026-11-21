@@ -29,7 +29,7 @@ Haz git pull --rebase, lee las entradas nuevas de torre/CANAL.md y ejecuta la pa
 - [ ] Trazabilidad mínima: paquetes con código al aprobar un plan.
 - [ ] El plan anterior pasa a `reemplazado` al aprobar el nuevo.
 - [ ] Un pedido urgente con cantidad supuesta sale marcado en el plan.
-- [ ] Prueba en la nube el paso que falta: un cierre en la avenida del Centro por el bot, recalcular y aprobar.
+- [x] Prueba en la nube el paso que falta: un cierre en la avenida del Centro por el bot, recalcular y aprobar. (Hecha a las 11:55 p. m. con el flujo del bot y el modelo real, sin Telegram; falta repetirla desde un teléfono.)
 
 ## Tarea 3 · Despacho sin conexión
 
