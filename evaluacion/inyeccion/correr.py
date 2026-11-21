@@ -438,6 +438,11 @@ def correr(m: dict, mundo: Mundo, modo: str = "reglas", extractor=None, elegir=N
             if repetir and paso is pasos[0]:
                 textos = [resolver(t, mundo.fichas) for t in rafaga(repetir, m.get("semilla", 7), con)]
             for t in textos:
+                if t == "@primera_opcion":          # pulsar la primera opción de lugar que el bot ofreció
+                    opciones = [d for s in r.respuestas[-1:] for d in s.get("datos", []) if d.startswith("c:")]
+                    if not opciones:
+                        continue
+                    t = opciones[0]
                 r.textos.append(t)
                 sin_red = "1" if (modo == "reglas" or canal == "sms") else None
                 with entorno(DESPACHOX_SIN_RED=sin_red):

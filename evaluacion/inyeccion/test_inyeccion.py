@@ -239,6 +239,14 @@ def test_estado_solo_muestra_los_pedidos_propios(mundo):
 
 # ---------------------------------------------------------------- casos que siguen paso a paso
 
+@pytest.mark.xfail(strict=True, reason=H6 + "; por SMS la respuesta corta ofrece el mismo texto como lugar")
+def test_el_texto_de_otra_persona_tampoco_sale_por_sms(mundo):
+    from entrada import sms
+    with C.copia(mundo) as caso:
+        respuesta = sms.atender_sms(caso.sms, "sms-atacante-d08", "PEDIDO AGUA FRENTE A LA TIENDA EL ENSAYO")
+    assert "ficticia" not in C.plano(respuesta), respuesta
+
+
 @pytest.mark.xfail(strict=True, reason="H3: un ENTREGADO fallido no deja rastro (flujo.py:298, paquetes.py:94-95)")
 def test_una_rafaga_de_codigos_queda_a_la_vista_del_despachador(por_reglas):
     r = por_reglas["c08"]
