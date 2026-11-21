@@ -6,7 +6,7 @@ Versión 1, noche del viernes 20 al sábado 21 de noviembre, rama `pitch-noche`.
 
 - **Conteo de palabras.** El texto en pantalla tiene 15 palabras como mucho, contando el título. No cuentan el pie de fuente ni las etiquetas del visual (ejes, mapa, recuadros), que se listan aparte y van cortas.
 - **Asterisco.** Marca una cifra por verificar. Si a la 1:00 p. m. nadie ha abierto su fuente, la cifra se quita de la diapositiva.
-- **[SIM].** Marca un número de la simulación nueva, que llega hacia las 6:00 a. m. Toda figura con [SIM] lleva la etiqueta «Simulación», su línea base y su número de jornadas.
+- **Simulación.** Toda figura de la simulación lleva la etiqueta «Simulación», su línea base y su número de jornadas. Las cifras de simulación salen de `docs/SIMULACION.md`, sección 9, y de `despacho/sim/resultados_velocidades/tablas.md`.
 - **Estilo.** La paleta del informe corto: tinta #4F4086, ámbar #A36752, crema #EBD3A2 y ceniza #6E6878, sobre fondo claro. La letra es Ancízar Serif si está instalada; sus archivos no están en el repositorio público y los tiene Carlos. Si no está, una serif del sistema.
 - **Plantilla.** El kit de la hackathon trae una «plantilla de presentación» que el viernes dio acceso denegado (`docs/PLATAFORMA_INNOVO.md`). Si la organización la comparte, estas diapositivas se montan en ella.
 - **Entrega.** iNNOVO pide un enlace de Drive, con permiso para que el jurado lo abra, antes de las 2:30 p. m. Conviene subir el PDF de las diapositivas.
@@ -127,14 +127,14 @@ Sale uno o dos segundos mientras el operador cambia al tablero. Si el cambio es 
 
 ## Diapositiva 6 · Qué medimos
 
-**Texto en pantalla (14 palabras).** «Cada entrega confirmada entra a la tabla de su comuna y vereda.» Y sobre la barra de la derecha, «Simulación: [SIM]».
+**Texto en pantalla (12 palabras).** «Cada entrega confirmada entra a la tabla de su comuna y vereda.» Sobre la barra de la derecha va la etiqueta del visual.
 
 **Visual por hacer, en dos paneles.**
 
 - **Izquierda, la tabla por territorio.** Una captura de la pestaña «Territorio» del tablero, si está lista antes de las 8:30 a. m. Si no, una tabla hecha con `python -m despacho.territorio --csv /tmp/t.csv` sobre la base de la demo, con las columnas `territorio`, `pedidos`, `kg_entregados`, `pct_criticos_a_tiempo` y `espera_mediana_h`. Al lado va la lista de barrios y veredas «sin pedidos registrados», del archivo `_sin_pedidos` que el comando escribe junto a la tabla. Etiqueta obligatoria: «Datos sintéticos de la demo».
-- **Derecha, la simulación.** Barras de entregas a tiempo en puntos críticos por política (orden de llegada, despachador con oficio y DespachoX), con su intervalo del 95 %, para el nivel de carga que se cite en voz alta. Datos: la corrida nueva con velocidades medidas, en la sección nueva de `docs/SIMULACION.md` y en su carpeta de resultados de `despacho/sim/`. Etiqueta obligatoria: «Simulación: [SIM] jornadas sintéticas sobre la red vial de Manizales. Supuestos en docs/SIMULACION.md».
+- **Derecha, la simulación.** Barras de entregas a tiempo en puntos críticos por política (orden de llegada, despachador con oficio y DespachoX) en las tres cargas. Holgada, 75,9, 97,7 y 99,2 %. Media, 53,6, 94,6 y 98,3 %. Alta, 40,5, 91,9 y 98,4 %. Datos: `despacho/sim/resultados_velocidades/tablas.md`, críticos a tiempo, y `docs/SIMULACION.md`, sección 9. Etiqueta obligatoria: «En simulación, con 30 escenarios por nivel de carga y 360 jornadas en total, DespachoX sube los críticos a tiempo 23,3, 44,7 y 57,9 puntos frente al despacho por orden de llegada. Cada diferencia compara 30 jornadas por política. Ningún intervalo del 95 % toca el cero. Supuestos en docs/SIMULACION.md, sección 9».
 
-**Pie de fuente.** «Tabla: `despacho/territorio.py`, con datos sintéticos. Simulación del equipo, 21 de noviembre de 2026 [SIM].»
+**Pie de fuente.** «Tabla: `despacho/territorio.py`, con datos sintéticos. Simulación del equipo, 21 de noviembre de 2026. 30 escenarios por carga, 360 jornadas. Velocidades de la tesis UNAL de 2019, tabla 14. IC del 95 %: `despacho/sim/resultados_velocidades/tablas.md`.»
 
 **Nota del orador.** La tabla dice «sin pedidos registrados» y nunca «sin necesidad», porque que un barrio no pida no quiere decir que esté bien (`despacho/territorio.py`). Si un punto crítico deja de pedir, entra a la cola una visita de verificación, que nunca sale con comida. Si preguntan por la simulación, se dicen la línea base, el número de jornadas y los supuestos. También lo que no prueba: no mide el valor de recibir pedidos por chat ni el de la trazabilidad (`docs/SIMULACION.md`, sección 7).
 
@@ -200,7 +200,7 @@ Debajo de la línea, la regla de cambio: «Si el Banco no reparte, el piloto pas
 |---|---|---|---|
 | A25 del IDEA, Sede Manizales | Lluvia acumulada de 25 días por estación. Alerta amarilla desde 200 mm, naranja desde 300 y roja desde 400* | Sube el costo de cada tramo según la alerta de la estación más cercana, solo en naranja o roja, y nunca lo cierra | Hecho en la rama `a25` con lluvia sintética y apagado por defecto; entra a `main` si Carlos lo fusiona. En el piloto, días 60 a 90, con lluvia real |
 | Patente 37476, composición que captura etileno | Alarga la vida útil de un lote | Parámetro supuesto de 1,2, solo en fruta perecedera de un acopio con frío | En el código como supuesto. Único respaldo: cota inferior en gulupa a 8 °C* |
-| Tesis de maestría, UNAL Manizales, 2019 | 22,6 km/h medidos con GPS en un bus de la ciudad* | Recalibra las velocidades de la simulación | Confirmar que la corrida nueva la usa [SIM] |
+| Tesis de maestría, UNAL Manizales, 2019 | 22,6 km/h medidos con GPS en un bus de la ciudad* | Recalibra las velocidades de la simulación | La usa: `docs/SIMULACION.md`, sección 9 |
 | Tesis de maestría, UNAL Manizales, 2017, dirigida por William Ariel Sarache Castro | Análisis de la red de ayuda humanitaria de Manizales* | Orienta el mapa de actores del piloto | Por verificar |
 
 Debajo, métodos y datos: ruteo con capacidad y ventanas de tiempo en OR-Tools sobre la red de OpenStreetMap, 50 puntos de entrega reales con fuente (35 críticos), 178 registros de cierres viales y una simulación pareada con dos líneas base. Pedidos y lotes son sintéticos.
@@ -229,13 +229,13 @@ Debajo, métodos y datos: ruteo con capacidad y ventanas de tiempo en OR-Tools s
 
 ### C · La simulación en detalle
 
-**Texto en pantalla (8 palabras).** «Simulación: [SIM] jornadas, dos líneas base, supuestos escritos.»
+**Texto en pantalla (8 palabras).** «Simulación: 360 jornadas, dos líneas base, supuestos escritos.»
 
-**Visual por hacer.** La tabla de la corrida nueva. Por nivel de carga, y para orden de llegada, despachador con oficio y DespachoX: críticos a tiempo, entregas a tiempo en todos los puntos, perecederos vencidos, kilómetros y espera del punto peor atendido, con diferencias pareadas e intervalos del 95 %. Datos: la sección nueva de `docs/SIMULACION.md` [SIM]. Debajo, los supuestos que cambiaron: velocidades acotadas a lo medido y vida útil de `datos_publicos/vida_util.csv` (aviso del canal de las 17:31).
+**Visual por hacer.** La tabla de la corrida nueva. Por nivel de carga, y para orden de llegada, despachador con oficio y DespachoX: críticos a tiempo, entregas a tiempo en todos los puntos, perecederos vencidos, kilómetros y espera del punto peor atendido, con diferencias pareadas e intervalos del 95 %. Datos: `despacho/sim/resultados_velocidades/tablas.md`, líneas 14 a 52, copiada sin cambios. La columna `despachox` − `experta` de críticos a tiempo lleva al lado esta salvedad: «Esa corrida cambia a la vez la red y la velocidad, y la corrida que los separa (9.3) está pendiente.» Debajo, el supuesto que cambió, que son las velocidades de la tesis UNAL de 2019. La vida útil por producto no se corrió (`docs/SIMULACION.md`, sección 9.5).
 
-**Pie de fuente.** «Simulación del equipo, 21 de noviembre de 2026 [SIM]. Lo que no prueba: `docs/SIMULACION.md`, sección 7.»
+**Pie de fuente.** «Simulación del equipo, 21 de noviembre de 2026. 30 escenarios por carga, 360 jornadas, y cada diferencia compara 30 jornadas por política. Lo que no prueba: `docs/SIMULACION.md`, sección 7.»
 
-**Nota del orador.** Se reporta tal como salió. La primera corrida queda en revisión y no se cita.
+**Nota del orador.** Se reporta tal como salió. La primera corrida queda reemplazada por la sección 9 y no se cita. Frente al despachador con oficio se dicen los kilómetros, 46,0, 56,0 y 42,2 km menos por jornada según la carga, y el total de entregas a tiempo, que empata con carga holgada y media y con carga alta da 3,0 puntos [0,7; 5,3]. La ventaja en críticos no se dice. Esa corrida cambia a la vez la red y la velocidad, y la corrida que separa los dos efectos (`docs/SIMULACION.md`, sección 9.3) no ha llegado.
 
 **Criterio.** 2 y 6.
 
@@ -273,11 +273,11 @@ Debajo, métodos y datos: ruteo con capacidad y ventanas de tiempo en OR-Tools s
 
 **Texto en pantalla (11 palabras).** «Indicadores del piloto, todos contra la línea base del propio Banco.»
 
-**Visual.** La tabla de indicadores de `docs/PLAN_30_90.md`, sección 5 (rama `defensa-noche`), con definición, línea base y meta. Si esa rama no se fusiona, la de `docs/FICHA_CORTA.md`, componente 6, con indicador, línea base, meta y verificación. Las cifras de simulación de la tabla de la ficha son de la primera corrida y se cambian por [SIM].
+**Visual.** La tabla de indicadores de `docs/PLAN_30_90.md`, sección 5 (rama `defensa-noche`), con definición, línea base y meta. Si esa rama no se fusiona, la de `docs/FICHA_CORTA.md`, componente 6, con indicador, línea base, meta y verificación. Las cifras de simulación de la tabla de la ficha ya son las de `docs/SIMULACION.md`, sección 9.
 
 **Pie de fuente.** «Indicadores del reto: entregas a tiempo en puntos críticos y desperdicio de perecederos por debajo del 5 %.»
 
-**Nota del orador.** La espera del punto peor atendido no tiene meta y se vigila, porque priorizar lo crítico la aumenta. En la simulación nueva esa espera es [SIM].
+**Nota del orador.** La espera del punto peor atendido no tiene meta y se vigila, porque priorizar lo crítico la aumenta. En simulación, con carga media y 30 jornadas por política, el punto peor atendido espera 3,07 horas más que con el despacho por orden de llegada y 0,53 horas más que con el despachador con oficio.
 
 **Criterio.** 6, impactos.
 

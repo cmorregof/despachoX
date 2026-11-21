@@ -16,7 +16,7 @@ Samuel Rosso (líder) · Carlos Orrego · Jacobo Vasco · Nicolás Ramírez · J
 - Sin internet, el sistema arranca en un portátil con `bash despliegue/local.sh`. Los niveles de respaldo, del SMS a la hoja de ruta impresa, están en [`docs/SIN_CONEXION.md`](docs/SIN_CONEXION.md).
 - Las pruebas automáticas corren con `python -m pytest -q`. En la revisión del viernes a las 11:15 p. m. pasaron 342 y se omitieron 3 (`torre/CANAL.md`).
 
-**Dónde está la evidencia.** Cada cifra lleva su tipo (medida por el equipo, tomada de una fuente o estimada) y su estado de verificación en [`docs/FUENTES.md`](docs/FUENTES.md). Los resultados de la simulación salen de jornadas sintéticas, y se reportan con su línea base, el número de escenarios y los supuestos ([SIM]).
+**Dónde está la evidencia.** Cada cifra lleva su tipo (medida por el equipo, tomada de una fuente o estimada) y su estado de verificación en [`docs/FUENTES.md`](docs/FUENTES.md). Los resultados de la simulación salen de jornadas sintéticas, y se reportan con su línea base, el número de escenarios y los supuestos (`docs/SIMULACION.md`, sección 9).
 
 | Criterio | Qué mostramos | Dónde |
 |---|---|---|

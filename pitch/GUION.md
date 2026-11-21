@@ -6,7 +6,7 @@ Versión 2, noche del viernes 20 al sábado 21 de noviembre, rama `pitch-noche`.
 
 **Hora y entrega.** iNNOVO pone la preselección a las 2:30 p. m., mientras que el sitio anterior y `CLAUDE.md` decían 2:00 p. m. La entrega en iNNOVO es un enlace de Drive y cierra a las 2:30 p. m. (`docs/PLATAFORMA_INNOVO.md`).
 
-**Marcas.** Un asterisco (*) marca una cifra o un hecho por verificar, y su fila está en `pitch/CIFRAS_PITCH.md`. [SIM] marca un número de la simulación nueva, que llega hacia las 6:00 a. m. Se dice siempre con su línea base, su número de jornadas y la palabra «simulación». [DECIDE CARLOS] marca una decisión pendiente. Si a la 1:00 p. m. nadie ha abierto la fuente de una cifra con asterisco, esa cifra sale del pitch.
+**Marcas.** Un asterisco (*) marca una cifra o un hecho por verificar, y su fila está en `pitch/CIFRAS_PITCH.md`. Las cifras de simulación salen de `docs/SIMULACION.md`, sección 9, y se dicen siempre con su línea base, su número de jornadas y la palabra «simulación». [DECIDE CARLOS] marca una decisión pendiente. Si a la 1:00 p. m. nadie ha abierto la fuente de una cifra con asterisco, esa cifra sale del pitch.
 
 ## Quién hace qué
 
@@ -100,9 +100,9 @@ Al terminar la frase, el operador pasa al tablero.
 
 **Habla:** Voz 2. **Pantalla:** diapositiva 6, la tabla por comuna y vereda y la barra de la simulación.
 
-> Cada paquete lleva un código QR, y la entrega queda registrada cuando ese código llega por chat o SMS. Con esos registros, el prototipo arma una tabla por comuna y vereda que mide el piloto. En [SIM] jornadas simuladas, los críticos a tiempo suben [SIM] puntos frente al despacho por orden de llegada.
+> Cada paquete lleva un código QR, y la entrega queda registrada cuando ese código llega por chat o SMS. Con esos registros, el prototipo arma una tabla por comuna y vereda que mide el piloto. En simulación, con carga media, comparamos 30 jornadas por política. Frente al despacho por orden de llegada, DespachoX sube los críticos a tiempo de 53,6 % a 98,3 %. Son 44,7 puntos, con un intervalo del 95 % de 37,7 a 51,6.
 
-Si la corrida nueva no da una subida clara frente al orden de llegada, la frase se reescribe con lo que salió, sin buscarle otra línea base. La comparación con un despachador con oficio va siempre en la diapositiva. Decirla en voz alta depende de la pregunta 2 de `docs/FICHA_MENTORIA.md`, que se les hace a los mentores en la mentoría 2 [DECIDE CARLOS]. Si se dice, la frase es «Frente a un despachador con oficio, [SIM].» Si el resultado nuevo vuelve a ser un empate en críticos, se añade la frase de `docs/PROBLEMA.md`: «El valor está en que esa pericia quede disponible para cualquier voluntario, a cualquier hora.»
+Las cifras son de `despacho/sim/resultados_velocidades/tablas.md`, críticos a tiempo, carga media. La comparación con un despachador con oficio va siempre en la diapositiva. Decirla en voz alta depende de la pregunta 2 de `docs/FICHA_MENTORIA.md`, que se les hace a los mentores en la mentoría 2 [DECIDE CARLOS]. Si se dice, la frase es «En simulación, frente a un despachador con oficio que ya atiende primero lo urgente, DespachoX recorre 56,0 km menos por jornada con carga media. Compara 30 jornadas por política. En el total de entregas a tiempo empatan, con −0,8 puntos y un intervalo de −3,1 a 1,4.» Frente al despachador con oficio solo se dicen los kilómetros y el total de entregas a tiempo. La ventaja en críticos a tiempo no se dice. Esa corrida cambia a la vez la red y la velocidad, y la corrida que separa los dos efectos (`docs/SIMULACION.md`, sección 9.3) no ha llegado.
 
 ### Bloque 7 · El piloto de 30 a 90 días · 2:30 a 2:52 · criterios 3, 4 y 5
 
@@ -160,7 +160,7 @@ Se añaden estos textos, en este orden. Sus cifras están en `pitch/CIFRAS_PITCH
 3. **Después del bloque 4 (12 s).** «En Manizales, la comida del sismo se repartió por listas. Para recibir un mercado había que llevar el formato azul de Bomberos*, y los kits se entregaron por turnos en la sede de la Cruz Roja Seccional Caldas*.»
 4. **Después del añadido 3 (14 s).** «Después del sismo de 1999, según un estudio de la Javeriana de Cali, las gerencias del FOREC actuaron con autonomía frente a las autoridades locales, y eso debilitó la gobernanza del territorio*. Por eso el piloto queda en manos de Manizales.»
 5. **En la demo (60 s más).** La demo completa de tres minutos de `docs/GUION_DEMO.md`, con el pedido de San José enviado en vivo.
-6. **En el bloque 6 (15 s).** La simulación completa, con las dos líneas base, los kilómetros, los perecederos vencidos y lo que cuesta priorizar, que es la espera del punto peor atendido. Todo [SIM].
+6. **En el bloque 6 (15 s).** «En simulación, con carga media y 30 jornadas por política, frente a un despachador con oficio DespachoX recorre 56,0 km menos por jornada, y en el total de entregas a tiempo empatan. Con los dos, los perecederos vencidos quedan en 0,0 %, y por orden de llegada se vence el 3,4 %. Priorizar tiene un costo, porque el punto peor atendido espera 3,07 horas más que por orden de llegada.» Son unas 65 palabras, más que los 15 s, y el ensayo cronometrado dice si se recorta.
 7. **En el bloque 7 (20 s).** «Del día 0 al 15, acuerdo y línea base. Del 15 al 30, reconstruimos un mes de despachos del Banco. Del 30 al 60, el Banco reparte como siempre y DespachoX planea en sombra. Del 60 al 90, simulacro con la UGR y decisión escrita del Banco. El piloto cabe en la calamidad pública de Manizales, vigente hasta el 9 de agosto de 2027*.»
 8. **Antes del bloque 8 (15 s).** «Al Banco le pedimos tres datos sin información personal: sus puntos de entrega, su inventario con vencimientos y un mes de despachos. Sin internet, el plan sale en un portátil y la ruta se imprime con un QR por paquete*. No guardamos el teléfono de quien escribe. Queda como un código.»
 
@@ -183,7 +183,7 @@ Sirve para un turno de un minuto, una presentación rápida en Conecta+ o un pas
 1. **Duración.** Se asumió tres minutos. Hay que preguntar en la mesa a las 8:30 a. m.
 2. **Voces.** Quién es Voz 1 y quién es Voz 2.
 3. **Territorio.** Decidido el 21 de noviembre a las 6:10 a. m. El piloto va en Ciudadela del Norte y El Manantial, la propuesta 2 de `docs/PILOTO_TERRITORIOS.md`. Las propuestas 1 y 3 quedan como alternativas.
-4. **Despachador con oficio.** Si la comparación se dice en voz alta en el bloque 6 o queda solo en pantalla. Depende de la mentoría 2 y del resultado nuevo.
+4. **Despachador con oficio.** Si los kilómetros y el empate en el total se dicen en voz alta en el bloque 6 o quedan solo en pantalla. Depende de la mentoría 2. La ventaja en críticos no se dice mientras falte la corrida 9.3.
 5. **A25.** Si entra al código antes del congelamiento, cambia la última frase del bloque 7.
 6. **Nombre.** DespachoX o Convite, que propusieron Jacobo y Samuel a las 11:30 p. m. El bloque 8 trae la variante.
 7. **Frase del Banco.** Si hubo visita y permiso, entra en el bloque 7.
@@ -191,7 +191,7 @@ Sirve para un turno de un minuto, una presentación rápida en Conecta+ o un pas
 ## Lo que falta para que este guion sea verdad
 
 1. Abrir la fuente de cada cifra con asterisco. La lista por orden de prioridad está al final de `pitch/CIFRAS_PITCH.md`.
-2. Los números [SIM] de la corrida nueva, con su línea base, su número de jornadas y sus supuestos.
+2. La corrida 9.3 de `docs/SIMULACION.md`, que separa el efecto de la red del de la velocidad. Mientras no llegue, la ventaja en críticos frente al despachador con oficio no se dice.
 3. La tabla por territorio en pantalla. Puede ser la pestaña «Territorio» del tablero o, si no llega antes de las 8:30 a. m., la figura hecha con `python -m despacho.territorio`.
 4. El video de respaldo.
 5. Dos ensayos cronometrados con la demo real, el segundo con datos móviles.

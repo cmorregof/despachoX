@@ -2,7 +2,7 @@
 
 Banco de 30 preguntas para ensayar la defensa del sábado, agrupadas por criterio de la rúbrica. Versión del sábado 21 de noviembre de 2026, en la madrugada, rama `defensa-noche`. Cada respuesta cabe en dos o tres frases y nombra el archivo que la respalda. Las cinco preguntas que dejó la mentoría 1 llevan la marca «mentoría 1».
 
-**Marcas.** [F] dato de una fuente, que alguien del equipo debe abrir en `docs/FUENTES.md` antes de decirlo en voz alta. [M] medido por el equipo. [E] estimado. [I] inferencia nuestra. [H] hipótesis por validar. [SIM] número de la simulación con velocidades medidas, que llega hacia las 6:00 a. m. [P5] se actualiza con el resultado de la visita al Banco, que el integrante de Ingeniería Industrial reporta a las 12:30 p. m.
+**Marcas.** [F] dato de una fuente, que alguien del equipo debe abrir en `docs/FUENTES.md` antes de decirlo en voz alta. [M] medido por el equipo. [E] estimado. [I] inferencia nuestra. [H] hipótesis por validar. Las cifras de simulación salen de `docs/SIMULACION.md`, sección 9, y de `despacho/sim/resultados_velocidades/tablas.md`. [P5] se actualiza con el resultado de la visita al Banco, que el integrante de Ingeniería Industrial reporta a las 12:30 p. m.
 
 **Regla para responder.** Si no sabemos algo, lo decimos y nombramos el hito del piloto que lo va a medir. Toda cifra de simulación se dice con su línea base y con la palabra simulación.
 
@@ -74,11 +74,11 @@ La mañana del 11 de agosto el 28 % de las estaciones base de Caldas estaba sin 
 
 **11. ¿Cuánto mejora frente a como se despacha hoy?**
 
-No sabemos todavía cómo despacha hoy el Banco, y por eso el piloto lo mide con su propia línea base y con la reconstrucción de un mes. En simulación comparamos contra dos líneas base, el despacho por orden de llegada y un despachador con oficio que atiende primero lo urgente y saca primero lo que vence. Con velocidades medidas, los críticos a tiempo cambian en [SIM] puntos frente a la primera y en [SIM] frente a la segunda.
+No sabemos todavía cómo despacha hoy el Banco, y por eso el piloto lo mide con su propia línea base y con la reconstrucción de un mes. En simulación comparamos contra dos líneas base, el despacho por orden de llegada y un despachador con oficio que atiende primero lo urgente y saca primero lo que vence. En simulación, con las velocidades de la tesis UNAL de 2019 y 30 jornadas por política, DespachoX sube los críticos a tiempo 23,3, 44,7 y 57,9 puntos frente al despacho por orden de llegada, según la carga. Frente al despachador con oficio recorre 46,0, 56,0 y 42,2 km menos por jornada. En el total de entregas a tiempo empata con carga holgada y media, y con carga alta gana 3,0 puntos, con un intervalo de 0,7 a 5,3.
 
-*Respaldo.* `docs/SIMULACION.md`, sección 3; `docs/PLAN_30_90.md`, días 15 y 30.
+*Respaldo.* `docs/SIMULACION.md`, secciones 3 y 9; `docs/PLAN_30_90.md`, días 15 y 30.
 
-*Nota para quien responde.* Si la corrida nueva vuelve a dar empate frente al despachador con oficio, se dice así. Lo que la simulación no mide es el valor de saber qué se pidió, dónde está cerrado y qué se entregó (`docs/SUGERENCIAS.md`, sección 4).
+*Nota para quien responde.* La ventaja en críticos frente al despachador con oficio no se da como resultado. Esa corrida cambia a la vez la red y la velocidad, y la corrida que separa los dos efectos (`docs/SIMULACION.md`, sección 9.3) no ha llegado. Lo que la simulación no mide es el valor de saber qué se pidió, dónde está cerrado y qué se entregó (`docs/SUGERENCIAS.md`, sección 4).
 
 **12. ¿Cómo saben que un paquete llegó, y qué pasa si alguien pide dos veces?**
 
@@ -104,7 +104,7 @@ El núcleo es un ruteo de vehículos con capacidad y ventanas de tiempo, resuelt
 
 **15. ¿La simulación no está hecha a su favor?**
 
-Pusimos como línea base a un despachador con oficio que prioriza lo urgente y rota la bodega, porque una regla intuitiva puede quedar cerca del óptimo (Cook y Lodree, 2017). Encontramos dos supuestos optimistas, 39,0 km/h en vías primarias cuando un bus medido con GPS en Manizales promedió 22,6 km/h, y un huevo que vencía en horas cuando dura días [M, F]. La corrida se repitió esta noche con lo medido, y se reportan las dos versiones [SIM].
+Pusimos como línea base a un despachador con oficio que prioriza lo urgente y rota la bodega, porque una regla intuitiva puede quedar cerca del óptimo (Cook y Lodree, 2017). Encontramos dos supuestos optimistas, 39,0 km/h en vías primarias cuando un bus medido con GPS en Manizales promedió 22,6 km/h, y un huevo que vencía en horas cuando dura días [M, F]. La corrida se repitió esta noche con las velocidades de la tesis UNAL de 2019 (`docs/SIMULACION.md`, sección 9). La vida útil por producto todavía no se corrió.
 
 *Respaldo.* `docs/SIMULACION.md`, sección 3; `docs/datos/flota_perecederos_costos.md`, secciones 1 y 3; `docs/RIESGOS.md`, R6.
 
@@ -198,12 +198,12 @@ Todavía no lo sabemos para el territorio del piloto, y se mide en los días 0 a
 
 **29. ¿Qué metas ponen a los dos indicadores del reto?**
 
-Las entregas a tiempo en puntos críticos deben quedar iguales o mejores que la línea base del Banco, medida en sus dos semanas de bitácora. El desperdicio de perecederos debe quedar por debajo del 5 %, la meta del reto, medido con el inventario y sus vencimientos. La simulación solo sirve de referencia [SIM], porque ninguno de sus números viene de una operación real.
+Las entregas a tiempo en puntos críticos deben quedar iguales o mejores que la línea base del Banco, medida en sus dos semanas de bitácora. El desperdicio de perecederos debe quedar por debajo del 5 %, la meta del reto, medido con el inventario y sus vencimientos. La simulación solo sirve de referencia, porque ninguno de sus números viene de una operación real.
 
 *Respaldo.* `docs/FICHA.md`, componente 6; `docs/PLAN_30_90.md`, sección 5.
 
 **30. ¿Priorizar lo crítico no deja peor a otros?**
 
-Sí tiene un costo, que la simulación mide como la espera adicional del punto peor atendido frente al despacho por orden de llegada [SIM]. Ese indicador no tiene meta, y se reporta cada semana por comuna y vereda en la tabla por territorio. El despachador puede cambiar cualquier plan que deje a un punto esperando demasiado.
+Sí tiene un costo, que la simulación mide como la espera adicional del punto peor atendido frente al despacho por orden de llegada. En simulación, con carga media y 30 jornadas por política, el punto peor atendido espera 3,07 horas más que con el despacho por orden de llegada y 0,53 horas más que con el despachador con oficio. Ese indicador no tiene meta, y se reporta cada semana por comuna y vereda en la tabla por territorio. El despachador puede cambiar cualquier plan que deje a un punto esperando demasiado.
 
 *Respaldo.* `docs/FICHA.md`, componente 6; `docs/RIESGOS.md`, R14.
