@@ -35,7 +35,7 @@ Quien habla no toca el computador.
 
 La demo de este guion no depende de nada nuevo. Es la de `docs/GUION_DEMO.md`, con la semilla ensayada.
 
-1. Entre 30 y 10 minutos antes, los pasos 1 a 7 de la sección «Preparación» de `docs/GUION_DEMO.md`. La semilla se carga menos de 30 minutos antes y nunca más de 90. Si la demo corre en la nube, hay que reiniciar la base, porque conserva lotes viejos. En `main` el tablero no tiene botón para eso. Se pone `DESPACHOX_REINICIAR=1` en Railway, se espera el redespliegue y se quita la variable, porque si se queda borra la base en cada despliegue (`despliegue/arranque.sh`).
+1. Entre 30 y 10 minutos antes, los pasos 1 a 7 de la sección «Preparación» de `docs/GUION_DEMO.md`. La semilla se carga menos de 30 minutos antes y nunca más de 90. Si la demo corre en la nube, hay que reiniciar la base, porque conserva lotes viejos. Se usa el botón «Reiniciar datos de prueba» del tablero, en la pestaña «Bitácora». También sirve poner `DESPACHOX_REINICIAR=1` en Railway, esperar el redespliegue y quitar la variable, porque si se queda borra la base en cada despliegue (`despliegue/arranque.sh`).
 2. Antes de entrar, los pasos «0:20 a 0:55» y «0:55 a 1:30» de ese mismo guion: enviar el pedido de San José, confirmarlo, calcular el plan y aprobarlo. Así el pitch arranca con el plan aprobado. Resultado esperado: 18 de 18 pedidos, 3 de 3 críticos a tiempo y San José en camión. Si no da eso, no hay demo en vivo y se usa el video.
 3. Tarjeta impresa con el QR del bot y el mensaje del cierre, tal cual: «derrumbe en la avenida del centro, no pasa camion, si pasa moto». El QR lo genera rol A con el enlace real del bot.
 4. Video de respaldo abierto en otra pestaña, en pausa en el segundo cero. Lo graba Jacobo (encargo P3), y hay que confirmar que existe.
@@ -108,10 +108,10 @@ Las cifras son de `despacho/sim/resultados_velocidades/tablas.md`, críticos a t
 
 **Habla:** Voz 2. **Pantalla:** diapositiva 7, la línea de tiempo del piloto y el mapa del territorio.
 
-> El piloto es para la recuperación del territorio. Dura 90 días en la rutina del Banco, con la Unidad de Gestión del Riesgo, en Ciudadela del Norte y El Manantial. Así la capacidad queda en Manizales y se usa entre desastres. Al final suma, tramo por tramo, la alerta de lluvia A25 del IDEA de la UNAL.
+> El piloto es para la recuperación del territorio. Dura 90 días en la rutina del Banco, con la Unidad de Gestión del Riesgo, en Ciudadela del Norte y El Manantial. Así la capacidad queda en Manizales y se usa entre desastres. La alerta de lluvia A25 del IDEA de la UNAL ya está en el código, por ahora con lluvia de prueba.
 
 - **Territorio.** Ciudadela del Norte y El Manantial es la propuesta 2 de `docs/PILOTO_TERRITORIOS.md`, y Carlos la eligió el 21 de noviembre a las 6:10 a. m. Es la comuna más poblada, con 58.776 habitantes (ASIS 2023). Además, el PMA recorrió con la Alcaldía las veredas con más daño para identificar necesidades de seguridad alimentaria, y en esa nota hablan las juntas de Alto del Guamo y Alto Bonito (Alcaldía, 20 de agosto). Al final decide el Banco. Con el nombre nuevo, el bloque pasa de 56 a 57 palabras, unos 0,4 s más, y el ensayo cronometrado dice si cabe en sus 22 segundos.
-- **A25.** La rama `a25` lo trae al optimizador con lluvia sintética y apagado por defecto. Encendido, encarece los tramos en alerta naranja o roja y nunca los cierra (`despacho/a25.py` en esa rama). Si Carlos la fusiona antes de las 8:30 a. m., la última frase pasa a ser «La alerta de lluvia A25 del IDEA de la UNAL ya está en el código, por ahora con lluvia de prueba». Si no, queda como está, porque entra en los días 60 a 90 (`docs/FICHA_CORTA.md`, componente 3).
+- **A25.** Está en `main`, en `despacho/a25.py`, con lluvia sintética y apagado por defecto. Encendido, el optimizador encarece, sin cerrarlas, las vías con historial de deslizamientos que están en alerta naranja o roja (`docs/A25.md`, sección 2). Con la lluvia real del IDEA entra en los días 60 a 90 (`docs/FICHA_CORTA.md`, componente 3).
 - **Visita al Banco.** Si hubo conversación el sábado y la persona dio permiso, esta frase reemplaza a «Así la capacidad queda...»: «Esta mañana se lo mostramos a [cargo] del Banco, que nos dijo: «[frase textual]».» Sin permiso o sin conversación, no se menciona.
 
 ### Bloque 8 · Regla de cambio y cierre · 2:52 a 3:00 · criterios 4 y 5
@@ -184,7 +184,7 @@ Sirve para un turno de un minuto, una presentación rápida en Conecta+ o un pas
 2. **Voces.** Quién es Voz 1 y quién es Voz 2.
 3. **Territorio.** Decidido el 21 de noviembre a las 6:10 a. m. El piloto va en Ciudadela del Norte y El Manantial, la propuesta 2 de `docs/PILOTO_TERRITORIOS.md`. Las propuestas 1 y 3 quedan como alternativas.
 4. **Despachador con oficio.** Si los kilómetros y el empate en el total se dicen en voz alta en el bloque 6 o quedan solo en pantalla. Depende de la mentoría 2. La ventaja en críticos no se dice mientras falte la corrida 9.3.
-5. **A25.** Si entra al código antes del congelamiento, cambia la última frase del bloque 7.
+5. **A25.** Decidido. Está en `main`, y el bloque 7 dice que ya está en el código, por ahora con lluvia de prueba.
 6. **Nombre.** DespachoX o Convite, que propusieron Jacobo y Samuel a las 11:30 p. m. El bloque 8 trae la variante.
 7. **Frase del Banco.** Si hubo visita y permiso, entra en el bloque 7.
 

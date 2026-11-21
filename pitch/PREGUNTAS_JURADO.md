@@ -62,7 +62,7 @@ En quince mensajes sintéticos escritos por el equipo, el extractor acertó 62 d
 
 **9. ¿El sistema decide solo? ¿Y si manda un camión por una ladera inestable?**
 
-No decide solo, porque el modelo lee y estructura, el optimizador y las reglas calculan, y el despachador decide. Una persona confirma cada cierre antes del recálculo y aprueba cada plan con su nombre, que queda en la bitácora [M]. En el piloto, si el IDEA entrega sus datos, el A25 subirá el costo de los tramos en alerta para que las rutas eviten las laderas.
+No decide solo, porque el modelo lee y estructura, el optimizador y las reglas calculan, y el despachador decide. Una persona confirma cada cierre antes del recálculo y aprueba cada plan con su nombre, que queda en la bitácora [M]. En el piloto, si el IDEA entrega sus datos, el A25 encarecerá, sin cerrarlas, las vías con historial de deslizamientos que estén en alerta naranja o roja.
 
 *Respaldo.* `CLAUDE.md`, regla de arquitectura; `docs/FICHA.md`, componentes 2 y 3.
 
@@ -90,7 +90,7 @@ Cada paquete nace con un código al aprobar el plan y se cierra cuando alguien e
 
 **13. ¿Qué de la UNAL hay aquí, y qué está ya en el código?**
 
-La capacidad principal es el indicador A25 del IDEA, la lluvia acumulada en 25 días por estación, que en el piloto subirá el costo de cada tramo según la alerta de la estación más cercana [F]. Hoy no está en el código, porque entra en los días 60 a 90 con datos del IDEA, y estamos pidiendo el visto bueno de un profesor del instituto. En el código ya está la patente 37476 como parámetro supuesto de vida útil [M], y la simulación se recalibra con velocidades medidas con GPS en una tesis de la Sede [F].
+La capacidad principal es el indicador A25 del IDEA, la lluvia acumulada en 25 días por estación [F]. En DespachoX, el optimizador encarece, sin cerrarlas, las vías con historial de deslizamientos que están en alerta naranja o roja (`docs/A25.md`, sección 2). Ya está en el código con lluvia de prueba y apagado por defecto, y con datos del IDEA entra en los días 60 a 90. Estamos pidiendo el visto bueno de un profesor del instituto. En el código ya está la patente 37476 como parámetro supuesto de vida útil [M], y la simulación se recalibra con velocidades medidas con GPS en una tesis de la Sede [F].
 
 *Respaldo.* `docs/FICHA.md`, componente 3; `encargos/P5_ALIADO_PILOTO.pdf`, sección 5.
 

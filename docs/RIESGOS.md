@@ -66,7 +66,7 @@ R6 ya tiene una mitigación hecha, porque la simulación se repitió con las vel
 
 **R11 · Sin cierres reales.** Las vías se cierran sin sismo, pero nada garantiza un cierre en el territorio elegido dentro de 90 días [I]. El repositorio tiene 178 registros de cierres del sismo y de 2017 a 2026, tomados del #767 de INVÍAS y de prensa, para armar el cierre del simulacro [F] (`docs/FICHA.md`, componente 3). La UGR, por su lado, ya organiza simulacros con inscripción por formulario [F] (investigación 11, sección 2.8).
 
-**R12 · A25.** El A25 es la capacidad UNAL principal y hoy no está en el código (`docs/FICHA.md`, componente 3). Integrarlo sin datos del IDEA obligaría a inventar umbrales y tramos (`docs/SUGERENCIAS.md`, sección 6). El encargo P5 ya pide el visto bueno de un profesor del IDEA antes del pitch.
+**R12 · A25.** El A25 es la capacidad UNAL principal y ya está en el código con lluvia sintética y apagado por defecto. Encenderlo con lluvia real exige los datos diarios del IDEA (`docs/FICHA.md`, componente 3; `docs/A25.md`). Integrarlo sin datos del IDEA obligaría a inventar umbrales y tramos (`docs/SUGERENCIAS.md`, sección 6). El encargo P5 ya pide el visto bueno de un profesor del IDEA antes del pitch.
 
 **R13 · Confirmaciones y solicitudes falsas.** Los códigos de entrega admiten 390.625 combinaciones, así que alguien que adivine uno puede marcarlo como entregado [M] (`docs/FICHA.md`, componente 5). El filtro de solicitudes detecta ráfagas, textos coordinados y remitentes que concentran pedidos. Se probó solo con diez escenarios sintéticos, y todavía corre aparte del bot [M] (`docs/FICHA.md`, componente 2).
 

@@ -198,7 +198,7 @@ Debajo de la línea, la regla de cambio: «Si el Banco no reparte, el piloto pas
 
 | Capacidad | Qué es | Dónde entra | Estado |
 |---|---|---|---|
-| A25 del IDEA, Sede Manizales | Lluvia acumulada de 25 días por estación. Alerta amarilla desde 200 mm, naranja desde 300 y roja desde 400* | Sube el costo de cada tramo según la alerta de la estación más cercana, solo en naranja o roja, y nunca lo cierra | Hecho en la rama `a25` con lluvia sintética y apagado por defecto; entra a `main` si Carlos lo fusiona. En el piloto, días 60 a 90, con lluvia real |
+| A25 del IDEA, Sede Manizales | Lluvia acumulada de 25 días por estación. Alerta amarilla desde 200 mm, naranja desde 300 y roja desde 400* | Encarece, sin cerrarlas, las vías con historial de deslizamientos que están en alerta naranja o roja, según la estación más cercana | En `main`, con lluvia sintética y apagado por defecto. En el piloto, días 60 a 90, con lluvia real |
 | Patente 37476, composición que captura etileno | Alarga la vida útil de un lote | Parámetro supuesto de 1,2, solo en fruta perecedera de un acopio con frío | En el código como supuesto. Único respaldo: cota inferior en gulupa a 8 °C* |
 | Tesis de maestría, UNAL Manizales, 2019 | 22,6 km/h medidos con GPS en un bus de la ciudad* | Recalibra las velocidades de la simulación | La usa: `docs/SIMULACION.md`, sección 9 |
 | Tesis de maestría, UNAL Manizales, 2017, dirigida por William Ariel Sarache Castro | Análisis de la red de ayuda humanitaria de Manizales* | Orienta el mapa de actores del piloto | Por verificar |
@@ -207,7 +207,7 @@ Debajo, métodos y datos: ruteo con capacidad y ventanas de tiempo en OR-Tools s
 
 **Pie de fuente.** «IDEA, reporte A25 de 2020*. Solicitud de la patente 37476, folio 18*. Investigaciones 07 y 08 del equipo.»
 
-**Nota del orador.** El 16 de febrero de 2026 Manizales declaró alerta amarilla con 200 mm en menos de 25 días, que es el umbral amarillo del A25. La nota de prensa no nombra al IDEA, así que la relación es un cotejo nuestro. El visto bueno de un profesor del IDEA está en gestión, y se actualiza el sábado. La arquitectura del modelo que lee, el código que calcula y la persona que decide viene de CARMEN, proyecto 56031 de Minciencias, según Carlos; no hay fuente pública en el repositorio [FALTA FUENTE]. La palabra «vigente» para la patente se dice solo si se confirma la anualidad 2026.
+**Nota del orador.** El 16 de febrero de 2026 Manizales declaró alerta amarilla con 200 mm en menos de 25 días, que es el umbral amarillo del A25. La nota de prensa no nombra al IDEA, así que la relación es un cotejo nuestro. El A25 está en el código con lluvia sintética y apagado por defecto. Las vías a más de 3 km de toda estación, entre ellas la salida a Letras, no reciben alerta (`docs/A25.md`, sección 2). Los factores de costo, ×2 en naranja y ×4 en roja, y la cobertura de 3 km son supuestos nuestros (`docs/A25.md`, secciones 2, 4 y 7). El visto bueno de un profesor del IDEA está en gestión, y se actualiza el sábado. La arquitectura del modelo que lee, el código que calcula y la persona que decide viene de CARMEN, proyecto 56031 de Minciencias, según Carlos; no hay fuente pública en el repositorio [FALTA FUENTE]. La palabra «vigente» para la patente se dice solo si se confirma la anualidad 2026.
 
 **Criterio.** 3, conocimiento utilizado.
 

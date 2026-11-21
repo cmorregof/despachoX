@@ -41,7 +41,7 @@ El anexo técnico, con todas las cifras, supuestos y riesgos, está en `docs/FIC
 
 ## 3. Conocimiento utilizado (15 puntos)
 
-**El A25 del IDEA, capacidad principal.** La capacidad UNAL principal es el indicador A25 del IDEA, Sede Manizales, que mide la lluvia acumulada en 25 días por estación. La Unidad de Gestión del Riesgo lo adoptó a partir de la tesis de Terlien (1996), que asoció unos 200 mm en 25 días con alta probabilidad de deslizamientos (IDEA; por verificar). Sus umbrales de alerta son 200, 300 y 400 mm, y el reporte de 2020 cubre 14 estaciones (IDEA; por verificar). El 16 de febrero de 2026 Manizales declaró alerta amarilla con el umbral de 200 mm (Blu Radio; por verificar). En DespachoX, la alerta de la estación más cercana sube el costo de cada tramo, para que el optimizador evite las laderas en alerta. Entra en el piloto, en los días 60 a 90, y hoy no está en el código. El equipo está pidiendo cinco minutos a un profesor del IDEA para que revise ese uso y dé su visto bueno.
+**El A25 del IDEA, capacidad principal.** La capacidad UNAL principal es el indicador A25 del IDEA, Sede Manizales, que mide la lluvia acumulada en 25 días por estación. La Unidad de Gestión del Riesgo lo adoptó a partir de la tesis de Terlien (1996), que asoció unos 200 mm en 25 días con alta probabilidad de deslizamientos (IDEA; por verificar). Sus umbrales de alerta son 200, 300 y 400 mm, y el reporte de 2020 cubre 14 estaciones (IDEA; por verificar). El 16 de febrero de 2026 Manizales declaró alerta amarilla con el umbral de 200 mm (Blu Radio; por verificar). En DespachoX, el optimizador encarece, sin cerrarlas, las vías con historial de deslizamientos en alerta naranja o roja. Ya está en el código, con lluvia de prueba y apagado por defecto, y en los días 60 a 90 del piloto entra con los datos diarios del IDEA. El equipo está pidiendo cinco minutos a un profesor del IDEA para que revise ese uso y dé su visto bueno.
 
 **Otras capacidades UNAL.**
 
@@ -81,7 +81,7 @@ El anexo técnico, con todas las cifras, supuestos y riesgos, está en `docs/FIC
 - **El modelo entiende mal un pedido.** Quien pide confirma el lugar, y el despachador revisa cada plan.
 - **Se cae internet.** Quedan los SMS y la hoja impresa, aunque el mapa del tablero todavía necesita red.
 - **Una entrega se confirma en falso.** El código admite 390.625 combinaciones, así que en el piloto solo cuenta la confirmación del destino o del conductor.
-- **Datos personales.** No se guardan nombres ni teléfonos, según la Ley 1581 de 2012.
+- **Datos personales.** El remitente queda como un código, y los pedidos de prueba son sintéticos, según la Ley 1581 de 2012.
 - **La patente.** Entra como parámetro supuesto, y su uso se acuerda con la oficina de propiedad intelectual.
 
 **Aliados.** Ninguno ha visto todavía la propuesta.

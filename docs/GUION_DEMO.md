@@ -35,7 +35,7 @@ Vías que **no** se usan en la demo: vía a Chinchiná, La Siria y Panamericana 
 
 Entre 30 y 10 minutos antes. Todo desde la raíz del repositorio, con el `.venv`.
 
-1. Reiniciar la base: `.venv/bin/python -m despacho.semilla --cargar --reiniciar`. Debe informar 15 puntos, 2 acopios, 5 vehículos, 34 lotes, 20 pedidos y un nomenclátor de 450 apodos. El reinicio borra también los apodos aprendidos en ensayos anteriores. Si la demo corre en la nube, este paso no sirve, porque el tablero de `main` no tiene botón de reinicio. En Railway se pone la variable `DESPACHOX_REINICIAR=1`, se espera el redespliegue y se quita la variable, porque si se queda borra la base en cada despliegue (`despliegue/arranque.sh`; `docs/DESPLIEGUE.md`). Entre el reinicio y la demo nadie le escribe al bot de la nube, para que el pedido nuevo siga siendo el 21.
+1. Reiniciar la base: `.venv/bin/python -m despacho.semilla --cargar --reiniciar`. Debe informar 15 puntos, 2 acopios, 5 vehículos, 34 lotes, 20 pedidos y un nomenclátor de 450 apodos. El reinicio borra también los apodos aprendidos en ensayos anteriores. Si la demo corre en la nube, se usa el botón «Reiniciar datos de prueba» del tablero, en la pestaña «Bitácora». También sirve poner en Railway la variable `DESPACHOX_REINICIAR=1`, esperar el redespliegue y quitar la variable, porque si se queda borra la base en cada despliegue (`despliegue/arranque.sh`; `docs/DESPLIEGUE.md`). Entre el reinicio y la demo nadie le escribe al bot de la nube, para que el pedido nuevo siga siendo el 21.
 2. Comprobar el nomenclátor con los mismos filtros que usa el bot, uno para pedidos y otro para cierres (`TIPOS` en `entrada/flujo.py`):
 
    ```

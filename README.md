@@ -11,7 +11,7 @@ Samuel Rosso (líder) · Carlos Orrego · Jacobo Vasco · Nicolás Ramírez · J
 
 **Cómo verlo funcionar.**
 
-- En la nube, el tablero está en [despachox-production.up.railway.app](https://despachox-production.up.railway.app/) y el bot en [t.me/despachox_bot](https://t.me/despachox_bot), con el código QR más abajo. Escríbale al bot un pedido como «somos 40 familias en san jose no hay arroz ni leche». El bot le devuelve el lugar que entendió para que usted lo confirme, y el pedido entra a la cola del tablero.
+- En la nube, el tablero está en [despachox-production.up.railway.app](https://despachox-production.up.railway.app/) y el bot en [t.me/despachox_bot](https://t.me/despachox_bot), con el código QR más abajo. El tablero de la nube pide clave, y lo mostramos en la demo y en el video. Usted puede escribirle al bot. Escríbale al bot un pedido como «somos 40 familias en san jose no hay arroz ni leche». El bot le devuelve el lugar que entendió para que usted lo confirme, y el pedido entra a la cola del tablero.
 - La demo de tres minutos, con los mensajes y los clics exactos, está en [`docs/GUION_DEMO.md`](docs/GUION_DEMO.md).
 - Sin internet, el sistema arranca en un portátil con `bash despliegue/local.sh`. Los niveles de respaldo, del SMS a la hoja de ruta impresa, están en [`docs/SIN_CONEXION.md`](docs/SIN_CONEXION.md).
 - Las pruebas automáticas corren con `python -m pytest -q`. En la revisión del viernes a las 11:15 p. m. pasaron 342 y se omitieron 3 (`torre/CANAL.md`).
@@ -27,7 +27,7 @@ Samuel Rosso (líder) · Carlos Orrego · Jacobo Vasco · Nicolás Ramírez · J
 | 5. Viabilidad y aliados | Costos, riesgos, operación sin internet y lo que se le pide a cada aliado | [`docs/FICHA.md`](docs/FICHA.md) (componente 5), [`docs/SIN_CONEXION.md`](docs/SIN_CONEXION.md), `entrada/SMS.md` |
 | 6. Impactos | Indicadores con línea base, meta y forma de verificarlos | [`docs/FICHA.md`](docs/FICHA.md) (componente 6) |
 
-**Datos de prueba.** Todos los pedidos, lotes, personas y teléfonos de prueba de este repositorio son sintéticos, y ninguno corresponde a una persona real (Ley 1581 de 2012). Los lugares sí son reales. Puntos de entrega, acopios y red vial traen su fuente fila por fila en `datos_publicos/` y `datos/semilla/`. En uso real, el bot borra teléfonos y nombres antes de guardar, y el remitente queda como un código.
+**Datos de prueba.** Todos los pedidos, lotes, personas y teléfonos de prueba de este repositorio son sintéticos, y ninguno corresponde a una persona real (Ley 1581 de 2012). Los lugares sí son reales. Puntos de entrega, acopios y red vial traen su fuente fila por fila en `datos_publicos/` y `datos/semilla/`. En uso real, el remitente queda como un código, y el bot intenta quitar teléfonos y nombres del texto antes de guardarlo, sin garantía de que no quede ninguno.
 
 **Sobre lo que sigue.** Debajo está la bitácora técnica del equipo, tal como se escribió durante la hackathon. Su tabla de estado es del viernes a las 4:00 p. m. Sus cifras de simulación son de la primera corrida, que se repite con las velocidades medidas en Manizales, y las vigentes están en `docs/SIMULACION.md`.
 
@@ -68,7 +68,7 @@ Un ejemplo de punta a punta:
 
 | Carpeta | Qué hace | En palabras simples | Dueño |
 |---|---|---|---|
-| `entrada/` | Bot de Telegram | Recibe mensajes, usa un modelo de lenguaje para sacar los datos, borra teléfonos y nombres, y guarda el pedido o el cierre | Samuel |
+| `entrada/` | Bot de Telegram | Recibe mensajes, usa un modelo de lenguaje para sacar los datos, intenta quitar teléfonos y nombres, y guarda el pedido o el cierre | Samuel |
 | `tablero/` | Pantalla del despachador | Mapa con pedidos, cierres y rutas; botones para confirmar, calcular, aprobar y rechazar; bitácora de decisiones | Jacobo |
 | `despacho/` | Optimizador | Reparte los pedidos entre camiones, camperos y motos sobre el mapa real de vías, saca primero lo que vence primero y recalcula cuando se cierra una vía | Carlos |
 | `lugares/` | Ubicador de lugares | Convierte «por la siria» en un punto del mapa. Conoce 452 nombres y apodos de Manizales. Si no sabe, lo dice y pide la ubicación. Nada se ubica sin que una persona confirme | Carlos |
@@ -140,7 +140,7 @@ Haz git pull --rebase, lee encargos/A2_BOT_SAMUEL.md y ejecútalo.
 **En la nube (ya funciona):** le escribes al bot en Telegram y abres el tablero. Es la misma base de datos para todos: lo que confirmes o apruebes lo ven los demás. Si el mapa sale gris en Brave, desactiva los escudos de Brave para esa página.
 
 - Bot: [t.me/despachox_bot](https://t.me/despachox_bot) (o escanea el código de abajo)
-- Tablero: [despachox-production.up.railway.app](https://despachox-production.up.railway.app/)
+- Tablero: [despachox-production.up.railway.app](https://despachox-production.up.railway.app/). Pide clave, y se muestra en la demo y en el video
 
 <img src="recursos/qr_bot.png" alt="Código QR del bot de DespachoX en Telegram" width="220">
 
