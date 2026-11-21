@@ -179,7 +179,7 @@ Estas filas sostienen el argumento de la adopción, que se adopta bajo presión 
 
 ### 12. Territorios del piloto
 
-Estas cifras vienen de `docs/PILOTO_TERRITORIOS.md`, que trae el enlace de cada una. Según ese documento, sus fuentes se abrieron con un lector automático el 20 de noviembre. Esta noche se volvieron a revisar cuatro de ellas.
+Estas cifras vienen de `docs/PILOTO_TERRITORIOS.md`, que trae el enlace de cada una. Según ese documento, sus fuentes se abrieron con un lector automático el 20 de noviembre. Esta noche se volvieron a revisar cinco de ellas.
 
 | Cifra | Fuente | Tipo | Estado |
 |---|---|---|---|
@@ -187,7 +187,7 @@ Estas cifras vienen de `docs/PILOTO_TERRITORIOS.md`, que trae el enlace de cada 
 | Distancias por la red desde el Banco: 2,9 a 3,3 km a los CDI de La Macarena, 9,3 km a Bajo Tablazo, 2,4 a 4,1 km a los puntos de Ciudadela del Norte, 8,8 km a Alto Bonito, 4,2 a 7,2 km a los críticos de Atardeceres, 7,4 km a La Aurora y 36,4 km al Kilómetro 41. Según TERR, el grafo no llega a la vereda, y su nodo más cercano queda a 701 m | Red vial del equipo | M | Medidas por el agente de territorios |
 | En la vereda Java colapsó la banca de la vía y unas 150 familias quedaron incomunicadas, según un líder local | La Patria, 19 mar 2025 (enlace en TERR) | F | Revisada por máquina, 21 nov. La nota es del 19 de marzo de 2025, anterior al sismo, y habla de un «desprendimiento total de la banca» en la vereda Java, del corregimiento El Tablazo. Lo dice un habitante de la vereda que es delegado de la Junta Administradora Local |
 | En Pueblo Hondo, cuatro viviendas tuvieron pérdida total | Alcaldía de Manizales, 27 ago 2026 (enlace en TERR) | F | Revisada por máquina, 21 nov. La nota ubica la vereda en el corregimiento El Manantial |
-| Derrumbes en el #767: Bajo Tablazo en 2017 y 2019; cinco en Manizales–Neira entre 2017 y 2023; diez en Manizales–Medellín entre 2017 y 2019 | INVÍAS, registro #767 (consultas en TERR) | F | Por verificar |
+| Derrumbes en el #767: Bajo Tablazo en 2017 y 2019; cinco en Manizales–Neira entre 2017 y 2023; diez en Manizales–Medellín entre 2017 y 2019 | INVÍAS, registro #767 (consultas en TERR) | F | Revisada por máquina con consulta directa, 21 nov. Las tres consultas devuelven 2, 5 y 10 registros con esos años. El de Maracas es del 15 de enero de 2023, y el de Alto Bonito, de 2019. Lo de los siete en Irra o entre los km 48 y 66 no se revisó |
 | El 21 de octubre, la comuna Atardeceres superó 300 mm de lluvia acumulada y quedó en alerta naranja | Alcaldía de Manizales (enlace en TERR) | F; que sea el umbral naranja del A25 es I | Revisada por máquina, 21 nov. La nota del 21 de octubre pone en alerta naranja a dos estaciones, en la comuna Atardeceres y en los alrededores de la estación Uribe. No menciona el A25 ni al IDEA, ni da la fecha de las mediciones |
 | Los albergues de los coliseos cerraron el 29 de agosto | La Patria, 1 sep 2026, citada en la investigación 11 | F | Revisada por máquina, 21 nov. La nota dice que en los coliseos Menor y Mayor estuvieron 300 personas de 146 familias, y que la operación de reubicación terminó el sábado 29 de agosto, según el secretario de Desarrollo Social encargado |
 
