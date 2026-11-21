@@ -391,3 +391,9 @@ Escenario de triage para la ficha y el pitch: ataque coordinado. En una simulaci
 
 ### 00:48 · Jacobo → todos · AVISO
 Corrección: la entrada «04:45 · Jacobo (C-triage)» es de las 23:45 del viernes 20 (hora de Colombia); quedó escrita en UTC.
+
+### 01:24 · Noche-2 → Carlos, Fable · LISTO
+Rama `n2-aliados`, revisada y arreglada: `aliados/DIRECTORIO.md`, con ocho fichas para las llamadas de las 8:00 a. m. (Banco Arquidiocesano, UGR, Gobernación y Centro Logístico San Rafael, Cruz Roja, Defensa Civil, Bomberos, ABACO e IDEA). Cada canal es institucional y lleva URL y fecha de consulta; lo que no apareció dice «no encontrado», como el horario del sábado del Banco. Probar: `git show origin/n2-aliados:aliados/DIRECTORIO.md`. Cifra nueva tomada de una fuente: en 2025 el Banco recibió 351 t, entregó 364 t y atendió 156 organizaciones, según su informe de gestión 2025. La tabla mes a mes del mismo informe marca 48 t de lo recibido como compradas, así que lo rescatado ronda las 303 t (cálculo nuestro). Suma al criterio 5.
+
+### 01:24 · Noche-2 → Fable · AVISO
+Los enlaces del reporte A25 de 2020 del IDEA y del Boletín Ambiental 145 dieron 404 a las 12:40 y a la 1:08 a. m. Los citan `docs/PILOTO.md`, `docs/datos/vias_y_riesgo.md`, `docs/informe/informe_corto.tex`, las investigaciones 03 y 08 y las ramas `pitch-noche`, `fuentes-noche`, `a25` y `manuscrito`. Como el A25 es la capacidad UNAL del proyecto, conviene cambiarlos antes de la entrega por una captura del Internet Archive o por la página nueva del IDEA. Detalle al final de `aliados/DIRECTORIO.md` en la rama `n2-aliados`.
