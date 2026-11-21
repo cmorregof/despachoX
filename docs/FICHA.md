@@ -65,7 +65,7 @@ Marcas: **[F]** dato de una fuente · **[M]** medido por el equipo · **[E]** es
 
 **Video de respaldo.** [Pendiente: lo graba Jacobo antes de la entrega. Enlace por agregar.]
 
-**Resultado de la simulación.** La simulación compara cuatro formas de despachar la misma jornada sobre la red vial real de Manizales y sus accesos [M]. Pedidos, lotes, flota y cierres son sintéticos. Son 30 semillas por cada uno de tres niveles de carga, 360 jornadas en total. Cada diferencia compara 30 jornadas por política, es pareada por semilla y lleva intervalo de confianza del 95 %. Hay dos líneas base. La política ingenua atiende por orden de llegada y saca de bodega por orden de ingreso. La política experta imita a un despachador con oficio, que atiende primero lo urgente y saca primero lo que vence.
+**Resultado de la simulación.** La simulación compara cuatro formas de despachar la misma jornada sobre la red vial real de Manizales, Villamaría y sus accesos [M]. Pedidos, lotes, flota y cierres son sintéticos. Son 30 semillas por cada uno de tres niveles de carga, 360 jornadas en total. Cada diferencia compara 30 jornadas por política, es pareada por semilla y lleva intervalo de confianza del 95 %. Hay dos líneas base. La política ingenua atiende por orden de llegada y saca de bodega por orden de ingreso. La política experta imita a un despachador con oficio, que atiende primero lo urgente y saca primero lo que vence.
 
 | Indicador | Carga holgada | Carga media | Carga alta |
 |---|---|---|---|
@@ -187,15 +187,15 @@ Tres resultados de la segunda ronda completan el cuadro [M]. Se corrieron con la
 
 | Indicador | Definición | Línea base | Meta | Cómo se verifica |
 |---|---|---|---|---|
-| Entregas a tiempo en puntos críticos | Pedidos de puntos críticos entregados antes de su hora límite, sobre el total de pedidos de puntos críticos | La del Banco, de las dos semanas de bitácora. En simulación con carga media, 69,1 % por orden de llegada y 98,5 % con un despachador con oficio | Igual o mayor que la línea base del Banco | Bitácora y código confirmado de cada entrega |
+| Entregas a tiempo en puntos críticos | Pedidos de puntos críticos entregados antes de su hora límite, sobre el total de pedidos de puntos críticos | La del Banco, de las dos semanas de bitácora. En simulación con carga media y 30 jornadas por política, 53,6 % por orden de llegada y 94,6 % con un despachador con oficio | Igual o mayor que la línea base del Banco | Bitácora y código confirmado de cada entrega |
 | Desperdicio de perecederos | Kilos perecederos vencidos antes de entregarse, sobre los kilos perecederos en bodega | Los kilos vencidos del registro del Banco | Menos del 5 %, la meta del reto | Inventario con vencimientos y bitácora |
 | Kilos entregados sobre kilos en acopio, por semana | Kilos con entrega confirmada sobre kilos disponibles en bodega | La del Banco. Referencia nacional al sexto día del sismo: 41.163 kg entregados con 404.587 kg en acopio (Portafolio; por verificar) | Mayor que la línea base | Inventario y confirmaciones de entrega |
-| Kilómetros por jornada con la misma flota | Kilómetros recorridos para atender los mismos pedidos | Odómetro o GPS del día de reparto en paralelo | Menos kilómetros que la forma actual. En simulación, entre 46,7 y 75,1 km menos que un despachador con oficio, con velocidades por corregir | Odómetro o GPS |
+| Kilómetros por jornada con la misma flota | Kilómetros recorridos para atender los mismos pedidos | Odómetro o GPS del día de reparto en paralelo | Menos kilómetros que la forma actual. En simulación, con 30 jornadas por política, entre 42,2 y 56,0 km menos que un despachador con oficio | Odómetro o GPS |
 | Trazabilidad | Paquetes con entrega confirmada sobre paquetes despachados | Por preguntar al Banco | Más del 90 % | Bitácora del sistema |
 | Tiempo del pedido a la entrega | Horas entre el pedido y su confirmación de entrega, por territorio | Bitácora de las dos semanas | Se reporta por comuna y vereda | Bitácora del sistema |
 | Tiempo de recálculo | Segundos entre confirmar un cierre y tener un plan nuevo | Hoy se resuelve por teléfono, sin registro | Menos de 30 segundos. Hoy el plan de la demo sale en 3,4 a 3,8 s [M] | Medición directa en el sistema |
 | Puntos que dejaron de pedir | Puntos críticos del territorio sin pedidos ni contacto en seis horas | Primera semana del piloto | Todos con visita de verificación | Alerta por silencio y tabla por territorio |
-| Equidad, costo conocido | Espera del punto peor atendido | En simulación, entre 0,93 y 4,25 horas más que por orden de llegada | Sin meta. Se reporta y se vigila | Tabla por territorio |
+| Equidad, costo conocido | Espera del punto peor atendido | En simulación, con 30 jornadas por política, entre 1,95 y 3,82 horas más que por orden de llegada | Sin meta. Se reporta y se vigila | Tabla por territorio |
 
 **Cómo se reportan.** Cada resultado se presenta con su línea base, su fecha y su fuente, y se separa lo medido por nosotros de lo tomado de una fuente y de lo estimado. Los resultados de la simulación se reportan tal como salieron, con el número de escenarios y sus supuestos.
 
