@@ -7,8 +7,9 @@ Uso (desde cualquier carpeta, con un Python que tenga matplotlib, osmnx y geopan
 Figura (e). Sin --sim se dibuja con despacho/sim/resultados/resultados.csv. Si el contenido de ese archivo, o del que
 se pase con --sim, es una corrida que no se cita (CORRIDAS_ANTERIORES en sim_resultados.py), la figura se llama
 e_simulacion_ejemplo y lleva la marca «Ejemplo con resultados anteriores, no citar». Con cualquier otro contenido se
-llama e_simulacion y no lleva marca, salvo que se pida una con --marca-sim. La decisión mira el contenido del CSV, así
-que da igual cómo se escriba la ruta o si una corrida nueva sobrescribe la carpeta vieja.
+llama e_simulacion y no lleva marca, salvo que se pida una con --marca-sim. Esa marca es solo un recuadro, por ejemplo
+«Preliminar», sin la marca de agua «NO CITAR», que queda para las corridas que no se citan. La decisión mira el
+contenido del CSV, así que da igual cómo se escriba la ruta o si una corrida nueva sobrescribe la carpeta vieja.
 
 Al final imprime un resumen por figura y sale con código 1 si algún script falló o dejó líneas AVISO.
 """
@@ -29,8 +30,9 @@ def main():
     p.add_argument("--fuente", default=None, help="familia instalada o archivo de fuente")
     p.add_argument("--salida", default=str(RAIZ / "figuras_pitch"))
     p.add_argument("--sim", default=None, help="resultados.csv o carpeta de la simulación para la figura (e)")
-    p.add_argument("--marca-sim", default=None, help="advertencia visible en la figura (e); las corridas que no se "
-                                                     "citan la llevan siempre")
+    p.add_argument("--marca-sim", default=None, help="recuadro de advertencia en la figura (e), por ejemplo "
+                                                     "«Preliminar», sin marca de agua. Las corridas que no se citan "
+                                                     "llevan siempre su marca y la marca de agua «NO CITAR»")
     p.add_argument("--titulo-sim", default=None, help="título de la figura (e), con lo que muestran los resultados")
     args = p.parse_args()
     sim = Path(args.sim).resolve() if args.sim else SIM_POR_DEFECTO
