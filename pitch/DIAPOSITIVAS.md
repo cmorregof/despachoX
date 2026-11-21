@@ -11,6 +11,7 @@ Versión 1, viernes 20 de noviembre en la noche, rama `pitch-noche`. Contenido d
 - **Plantilla.** El kit de la hackathon trae una «plantilla de presentación» que el viernes dio acceso denegado (`docs/PLATAFORMA_INNOVO.md`). Si la organización la comparte, estas diapositivas se montan en ella.
 - **Entrega.** iNNOVO pide un enlace de Drive, con permiso para que el jurado lo abra, antes de las 2:30 p. m. Conviene subir el PDF de las diapositivas.
 - **Figuras existentes.** Están en `docs/informe/figuras/`: `barras_abaco.pdf`, `mapa_manizales.pdf` y `piezas_sueltas.tex`. Los dos PDF se regeneran con los scripts de `docs/informe/figuras/scripts/`. La figura TikZ se compila suelta con los colores definidos en `docs/informe/informe_corto.tex`.
+- **Figuras por hacer.** La sesión Noche-2 tiene una rama, `n2-figuras`, que prepara figuras para el pitch en `figuras_pitch/` (canal, 11:48 p. m.). Si llegan antes de montar, se usan las que coincidan con estas diapositivas, siempre que cada cifra tenga su fila en `pitch/CIFRAS_PITCH.md`.
 
 ## Orden en el pitch de tres minutos
 
@@ -35,9 +36,9 @@ Las diapositivas A a H son de respaldo. Solo salen si un jurado pregunta, o en l
 
 **Visual.** Figura existente `docs/informe/figuras/barras_abaco.pdf`, la figura 2 del informe corto. Son tres barras horizontales con los kilos de la red de bancos de alimentos al sexto día: 404.587 en acopio, 157.164 en tránsito y 41.163 entregados*. La genera `docs/informe/figuras/scripts/barras_abaco.py`.
 
-**Pie de fuente.** «Red de bancos de alimentos, todo el país, al sexto día del sismo. Portafolio, 16 de agosto de 2026*.»
+**Pie de fuente.** «Bancos de alimentos, seis días después del sismo. Portafolio, 16 de agosto de 2026*.»
 
-**Nota del orador.** La cifra es de todo el país, así que se dice «en todo el país». Si preguntan por Manizales, la ciudad fue uno de los principales puntos de acopio de la red (Noticias RCN, 10 de agosto*). No hay cifra pública de lo que despachó el Banco de Manizales, y eso se dice así.
+**Nota del orador.** La nota atribuye las cifras a «los Bancos de Alimentos» y no las limita a Manizales, aunque tampoco dice «en todo el país» de forma explícita (discrepancia D3 de `docs/FUENTES.md`, rama `fuentes-noche`). Por eso se dice «los bancos de alimentos» y nunca «Manizales». Si preguntan por Manizales, la ciudad fue uno de los principales puntos de acopio de la red (Noticias RCN, 10 de agosto*). No hay cifra pública de lo que despachó el Banco de Manizales, y eso se dice así.
 
 **Criterio.** 1, problema y vertical: evidencia.
 
@@ -49,12 +50,12 @@ Las diapositivas A a H son de respaldo. Solo salen si un jurado pregunta, o en l
 
 **Texto en pantalla (7 palabras).** «Las vías se cierran también sin sismo.»
 
-**Etiquetas del mapa.** Sobre la flecha de la salida a Letras: «87 registros de cierre desde 2017, 4 del sismo*». Sobre la flecha de la autopista del Café: «21 oct 2026: un carril, solo livianos*».
+**Etiquetas del mapa.** Sobre la flecha de la salida a Letras: «87 registros de cierre desde 2017, 4 del sismo*». Sobre la flecha de la vía a Pereira y Chinchiná: «21 oct 2026: un carril, solo livianos*».
 
 **Visual.** Figura existente `docs/informe/figuras/mapa_manizales.pdf`, la figura 1 del informe corto. Muestra la red vial, los 50 puntos de entrega reales del escenario público (35 críticos), los dos acopios y dos flechas hacia los corredores cerrados del 10 al 12 de agosto. Las dos etiquetas se añaden en el editor de diapositivas, sin tocar el script. Datos de las etiquetas:
 
 - Letras: `docs/datos/vias_y_riesgo.md`, sección 3, tabla por corredor, fila «salida a Letras» (total 87). Las 4 del sismo son las filas S04, S09, S10 y S11 de `datos_publicos/cierres_historicos.csv` (conteo nuestro sobre ese archivo).
-- Autopista del Café: `docs/datos/vias_y_riesgo.md`, sección 2, «Septiembre a noviembre», y la fila S22 del mismo archivo.
+- Vía a Pereira: `docs/datos/vias_y_riesgo.md`, sección 2, «Septiembre a noviembre», y la fila S22 del mismo archivo. El registro de INVÍAS nombra el tramo «Puente La Libertad – Tres Puertas», PR 19+300, en Risaralda, con ruta alterna por La Siria. Llamarlo autopista del Café es lectura nuestra (`docs/FUENTES.md`, rama `fuentes-noche`, sección 6), y por eso en voz alta se dice «la vía a Pereira».
 
 No conviene una gráfica de registros por año, porque esos conteos son mínimos y no sirven para comparar años (`docs/datos/vias_y_riesgo.md`, sección 3).
 
@@ -149,16 +150,17 @@ Sale uno o dos segundos mientras el operador cambia al tablero. Si el cambio es 
 
 **Visual por hacer, en dos piezas.**
 
-- **Línea de tiempo.** Cuatro tramos, cada uno con su hito y su validación en pocas palabras, tomados de `docs/FICHA_CORTA.md`, componente 4.
+- **Línea de tiempo.** Cinco hitos, cada uno con la decisión que lo cierra y su responsable principal, tomados de `docs/PLAN_30_90.md`, sección 6, que está en la rama `defensa-noche`. Si esa rama no se fusiona, se usa la tabla de `docs/FICHA_CORTA.md`, componente 4, que tiene los mismos tramos.
 
-| Días | Hito | Validación |
-|---|---|---|
-| 0 a 15 | Acuerdo y línea base, con carta del Banco y aval de la UGR | Carta firmada y línea base medida |
-| 15 a 30 | Reconstrucción en frío de un mes | Real contra reconstruido |
-| 30 a 60 | Un día normal planeado en sombra | Kilómetros y kilos vencidos frente a la forma actual |
-| 60 a 90 | Simulacro con la UGR y A25 por tramo | Decisión escrita del Banco |
+| Día | Hito | Decisión | Responsable principal |
+|---|---|---|---|
+| 0 | Acuerdo y arranque | ¿Hay aliado, y reparte? | Integrante de Ingeniería Industrial |
+| 15 | Línea base | ¿Hay contra qué comparar? | Integrante de Ingeniería Industrial y Jacobo |
+| 30 | Reconstrucción en frío de un mes | ¿Mejora lo que el Banco ya hace? | Carlos |
+| 60 | Uso en paralelo en el territorio | ¿Funciona con pedidos reales? | Samuel y Jacobo |
+| 90 | Simulacro con la UGR, A25 por tramo y decisión | ¿El Banco lo adopta? | Todo el equipo; decide el Banco |
 
-Debajo de la línea, la regla de cambio: «Si el Banco no reparte, el piloto pasa al flujo de la UGR y la Gobernación». Los responsables de cada tramo se toman del plan que escribe otro agente esta noche.
+Debajo de la línea, la regla de cambio: «Si el Banco no reparte, el piloto pasa al flujo de la UGR y la Gobernación». `docs/PLAN_30_90.md` propone el día 15 como plazo para aplicarla, y ese plazo lo confirma Carlos.
 
 - **El corredor del territorio.** La opción rápida es un esquema: Banco Arquidiocesano, luego los tres CDI de La Macarena a entre 2,9 y 3,3 km, y luego Bajo Tablazo a 9,3 km por la vía a Chinchiná [M]. La opción con más tiempo es un mapa con `datos_publicos/puntos.csv`, `datos_publicos/acopios.csv` y la red vial. Las distancias salen de `docs/PILOTO_TERRITORIOS.md`, propuesta 1. Etiquetas: «Sismo: daños en El Carmen y Bajo Tablazo*» y «Java, 2025: unas 150 familias incomunicadas, según un líder local*».
 
@@ -176,7 +178,7 @@ Debajo de la línea, la regla de cambio: «Si el Banco no reparte, el piloto pas
 
 **Texto en pantalla (12 palabras).** «DespachoX · Equipo 19 · Que la comida llegue aunque la vía se cierre.»
 
-**Visual.** El nombre en grande. Debajo, en letra pequeña, el repositorio `github.com/cmorregof/despachoX` y los nombres del equipo: Samuel Rosso, Carlos Orrego, Nicolás Ramírez, Jacobo Vasco y José Manuel Aristizábal (`docs/ESTRATEGIA.md`). Si el equipo cambió de nombre en el encargo P3, va el nombre nuevo.
+**Visual.** El nombre en grande. Debajo, en letra pequeña, el repositorio `github.com/cmorregof/despachoX` y los nombres del equipo: Samuel Rosso, Carlos Orrego, Nicolás Ramírez, Jacobo Vasco y José Manuel Aristizábal (`docs/ESTRATEGIA.md`). Si Carlos confirma el nombre «Convite», que propusieron Jacobo y Samuel a las 11:30 p. m., el texto pasa a ser «Convite · Equipo 19 · Que la comida llegue aunque la vía se cierre» (12 palabras), y el nombre cambia en todas las diapositivas.
 
 **Nota del orador.** La regla de cambio y la última frase del bloque 8.
 
@@ -205,7 +207,7 @@ Debajo, métodos y datos: ruteo con capacidad y ventanas de tiempo en OR-Tools s
 
 **Pie de fuente.** «IDEA, reporte A25 de 2020*. Solicitud de la patente 37476, folio 18*. Investigaciones 07 y 08 del equipo.»
 
-**Nota del orador.** El 16 de febrero de 2026 Manizales declaró alerta amarilla con 200 mm en menos de 25 días, que es el umbral amarillo del A25. La nota de prensa no nombra al IDEA, así que la relación es un cotejo nuestro. El visto bueno de un profesor del IDEA está en gestión, y se actualiza el sábado. La arquitectura del modelo que lee, el código que calcula y la persona que decide viene de CARMEN, proyecto 56031 de Minciencias. La palabra «vigente» para la patente se dice solo si se confirma la anualidad 2026.
+**Nota del orador.** El 16 de febrero de 2026 Manizales declaró alerta amarilla con 200 mm en menos de 25 días, que es el umbral amarillo del A25. La nota de prensa no nombra al IDEA, así que la relación es un cotejo nuestro. El visto bueno de un profesor del IDEA está en gestión, y se actualiza el sábado. La arquitectura del modelo que lee, el código que calcula y la persona que decide viene de CARMEN, proyecto 56031 de Minciencias, según Carlos; no hay fuente pública en el repositorio [FALTA FUENTE]. La palabra «vigente» para la patente se dice solo si se confirma la anualidad 2026.
 
 **Criterio.** 3, conocimiento utilizado.
 

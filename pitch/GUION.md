@@ -35,7 +35,7 @@ Quien habla no toca el computador.
 
 La demo de este guion no depende de nada nuevo. Es la de `docs/GUION_DEMO.md`, con la semilla ensayada.
 
-1. Entre 30 y 10 minutos antes, los pasos 1 a 7 de la sección «Preparación» de `docs/GUION_DEMO.md`. La semilla se carga menos de 30 minutos antes y nunca más de 90.
+1. Entre 30 y 10 minutos antes, los pasos 1 a 7 de la sección «Preparación» de `docs/GUION_DEMO.md`. La semilla se carga menos de 30 minutos antes y nunca más de 90. Si la demo corre en la nube, el reinicio de la base es el botón «Reiniciar datos de prueba» del tablero, porque la base de la nube conserva lotes viejos (canal, aviso de Fable de las 11:38 p. m.).
 2. Antes de entrar, los pasos «0:20 a 0:55» y «0:55 a 1:30» de ese mismo guion: enviar el pedido de San José, confirmarlo, calcular el plan y aprobarlo. Así el pitch arranca con el plan aprobado. Resultado esperado: 18 de 18 pedidos, 3 de 3 críticos a tiempo y San José en camión. Si no da eso, no hay demo en vivo y se usa el video.
 3. Tarjeta impresa con el QR del bot y el mensaje del cierre, tal cual: «derrumbe en la avenida del centro, no pasa camion, si pasa moto». El QR lo genera rol A con el enlace real del bot.
 4. Video de respaldo abierto en otra pestaña, en pausa en el segundo cero. Lo graba Jacobo (encargo P3), y hay que confirmar que existe.
@@ -50,9 +50,9 @@ Los tiempos suponen 2,5 palabras por segundo y suman 3:00 con la demo. El ensayo
 
 **Habla:** Voz 1. **Pantalla:** diapositiva 1, las barras de la red de bancos de alimentos al sexto día.
 
-> Después del sismo, Manizales fue uno de los principales puntos de acopio de la red de bancos de alimentos*. La comida llegó. Lo que se atascó fue despacharla. Al sexto día, en todo el país, la red tenía 404 toneladas en acopio y había entregado 41*.
+> Después del sismo, Manizales fue uno de los principales puntos de acopio de la red de bancos de alimentos*. La comida llegó. Lo que se atascó fue despacharla. Seis días después, los bancos de alimentos tenían 404 toneladas en acopio y habían entregado 41*.
 
-Las toneladas se dicen truncadas. En pantalla van los kilos exactos, 404.587 y 41.163.
+Las toneladas se dicen truncadas, y en pantalla van los kilos exactos, 404.587 y 41.163. La nota de Portafolio atribuye las cifras a «los Bancos de Alimentos» y no dice «en todo el país» de forma explícita (discrepancia D3 de `docs/FUENTES.md` en la rama `fuentes-noche`). Por eso no se dice «Manizales» ni «en todo el país». «Seis días después» sale de la fecha de la nota, el 16 de agosto.
 
 ### Bloque 2 · Las vías se cierran sin sismo · 0:19 a 0:33 · criterio 1
 
@@ -83,7 +83,7 @@ Al terminar la frase, el operador pasa al tablero.
 | Tiempo | Qué pasa y qué se ve | Qué dice Voz 1 |
 |---|---|---|
 | 1:06 a 1:16 | Tablero con el plan aprobado | «Esta es la mesa de despacho. El plan aprobado ya incluye un pedido de prueba que llegó por chat desde San José. Ahora necesito a alguien del jurado.» |
-| 1:16 a 1:33 | Rol A le entrega al jurado el teléfono con el chat abierto y la tarjeta. El jurado escribe el mensaje de la tarjeta. El bot responde «Ubiqué «avenida del centro» en: avenida del Centro (via). ¿Es correcto?», y el jurado toca **Sí, es ahí** | Mientras escribe: «El 21 de octubre, la autopista del Café quedó a un carril y solo pasaban livianos*. Quien lo sabe primero es el conductor.» |
+| 1:16 a 1:33 | Rol A le entrega al jurado el teléfono con el chat abierto y la tarjeta. El jurado escribe el mensaje de la tarjeta. El bot responde «Ubiqué «avenida del centro» en: avenida del Centro (via). ¿Es correcto?», y el jurado toca **Sí, es ahí** | Mientras escribe: «El 21 de octubre, un deslizamiento dejó a un carril la vía a Pereira, y solo pasaban livianos*. Quien lo sabe primero es el conductor.» |
 | 1:33 a 1:41 | En el mapa aparece el cierre como reportado | «El sistema no cierra la vía por un mensaje. La deja reportada hasta que el despachador la confirme.» |
 | 1:41 a 1:51 | El operador hace clic en **Confirmar** en el cierre. Aparece «Hay un cierre nuevo: recalcular». Clic en **Recalcular**. El plan nuevo sale en menos de diez segundos | «El despachador confirma y pide recalcular.» |
 | 1:51 a 2:03 | Plan nuevo. En los avisos se lee `camion: punto:14 quedó aislado de la red`, y el pedido de San José pasa de un camión a un campero | «Con la avenida cerrada, el camión ya no llega a San José. El sistema le pasa el pedido a un campero, que sí entra, y los tres puntos críticos siguen a tiempo*.» |
@@ -122,7 +122,11 @@ La comparación con un despachador con oficio va siempre en la diapositiva. Deci
 >
 > **Voz 1:** Somos DespachoX.
 
-Si el equipo cambió de nombre en el encargo P3, el nombre nuevo va aquí y en las diapositivas.
+**Variante si Carlos confirma el nombre «Convite».** Jacobo y Samuel lo propusieron en el canal a las 11:30 p. m. y le piden a Carlos que lo confirme. Si lo confirma, «DespachoX» se cambia por «Convite» en todo este guion y en las diapositivas, y la última frase pasa a ser esta:
+
+> **Voz 1:** Somos Convite. En el Eje Cafetero, el convite era la forma en que los vecinos se juntaban para abrir un camino.
+
+La explicación del nombre es la que dieron Jacobo y Samuel en el canal. Para que quepa, se corta la frase del 21 de octubre de la demo.
 
 ## Qué cortar
 
@@ -153,7 +157,7 @@ Se añaden estos textos, en este orden. Sus cifras están en `pitch/CIFRAS_PITCH
 
 1. **En el bloque 2, antes de la salida a Letras (6 s).** «Manizales está sobre una cuchilla y casi todas sus vías de acceso van por ladera.»
 2. **Después del bloque 2 (10 s).** «El día del sismo, la Policía anunció al mediodía el cierre de Pereira–Chinchiná*. El registro oficial apareció 9 horas y 46 minutos después del sismo*.»
-3. **Después del bloque 4 (12 s).** «En Manizales, la comida del sismo se repartió por listas. Para recibir un mercado había que llevar el formato azul de Bomberos, y la Cruz Roja Seccional Caldas entregó los kits por turnos*.»
+3. **Después del bloque 4 (12 s).** «En Manizales, la comida del sismo se repartió por listas. Para recibir un mercado había que llevar el formato azul de Bomberos*, y los kits se entregaron por turnos en la sede de la Cruz Roja Seccional Caldas*.»
 4. **Después del añadido 3 (14 s).** «Después del sismo de 1999, según un estudio de la Javeriana de Cali, las gerencias del FOREC actuaron con autonomía frente a las autoridades locales, y eso debilitó la gobernanza del territorio*. Por eso el piloto queda en manos de Manizales.»
 5. **En la demo (60 s más).** La demo completa de tres minutos de `docs/GUION_DEMO.md`, con el pedido de San José enviado en vivo.
 6. **En el bloque 6 (15 s).** La simulación completa, con las dos líneas base, los kilómetros, los perecederos vencidos y lo que cuesta priorizar, que es la espera del punto peor atendido. Todo [SIM].
@@ -168,7 +172,7 @@ Sirve para un turno de un minuto, una presentación rápida en Conecta+ o un pas
 
 | Tiempo | Qué se dice |
 |---|---|
-| 0:00 a 0:16 | «Después del sismo, la comida llegó a la región. Lo que se atascó fue despacharla. Al sexto día, en todo el país, la red de bancos de alimentos tenía 404 toneladas en acopio y había entregado 41*.» |
+| 0:00 a 0:16 | «Después del sismo, la comida llegó a la región. Lo que se atascó fue despacharla. Seis días después, los bancos de alimentos tenían 404 toneladas en acopio y habían entregado 41*.» |
 | 0:16 a 0:20 | «Y en Manizales las vías se cierran también sin sismo.» |
 | 0:20 a 0:41 | «DespachoX es una mesa de despacho para el Banco Arquidiocesano de Alimentos. Comedores, hogares y juntas piden por chat o SMS, y los conductores reportan los derrumbes. El optimizador reparte entre camión, campero y moto, saca primero lo que vence primero y recalcula si se cierra una vía. El despachador aprueba cada plan.» |
 | 0:41 a 0:58 | «El piloto de 90 días entra a la rutina del Banco en La Macarena y El Tablazo, con la Unidad de Gestión del Riesgo y el A25 del IDEA de la UNAL. Todo se mide contra la línea base del propio Banco.» |
@@ -181,7 +185,7 @@ Sirve para un turno de un minuto, una presentación rápida en Conecta+ o un pas
 3. **Territorio.** La Macarena y El Tablazo, como recomienda `docs/PILOTO_TERRITORIOS.md`, o una de las otras dos propuestas.
 4. **Despachador con oficio.** Si la comparación se dice en voz alta en el bloque 6 o queda solo en pantalla. Depende de la mentoría 2 y del resultado nuevo.
 5. **A25.** Si entra al código antes del congelamiento, cambia la última frase del bloque 7.
-6. **Nombre del equipo.** DespachoX o el que salga del encargo P3.
+6. **Nombre.** DespachoX o Convite, que propusieron Jacobo y Samuel a las 11:30 p. m. El bloque 8 trae la variante.
 7. **Frase del Banco.** Si hubo visita y permiso, entra en el bloque 7.
 
 ## Lo que falta para que este guion sea verdad
