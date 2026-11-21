@@ -415,10 +415,14 @@ Todo lo demás es igual que en las secciones 2 y 6.
 | Supuesto | Valor | Estado |
 |---|---|---|
 | Velocidad por tipo de vía y vehículo | `datos_publicos/velocidades.csv`, donde hay dato: velocidades derivadas de mediciones GPS de un bus en Manizales y asignadas por tipo de vía y pendiente (tesis UNAL de 2019, tabla 14, pp. 46 a 48). Asignar `tertiary` a colectora y `unclassified` y `residential` a vía local es un supuesto del CSV | revisado por máquina; falta que una persona abra la tesis |
+| Pendiente | La simulación no usa la pendiente de cada tramo. Cada tipo de vía lleva una sola velocidad, la media de las cuatro clases de pendiente de la tabla 14. Por ejemplo, `primary` lleva 23,3 km/h, la media de 23,8, 21,8, 23,4 y 24,2 | cálculo del CSV |
+| `trunk` | Se asimila a vía nacional, con 26,5 km/h en todos los tramos. La tesis solo da ese valor con pendiente de 8 % o más | supuesto del CSV |
+| `unclassified` | Se asimila a vía local urbana, con 21,9 km/h. Son 2.251 de los 4.262 km de la red, un 53 %, sobre todo caminos rurales de los accesos. En vía destapada la velocidad puede ser menor | supuesto del CSV |
 | Campero y moto | El campero, igual que el camión; la moto, 11 % más rápido | supuesto del CSV |
 | Hora del día | La velocidad del bus en horas de entrada, almuerzo y salida vale para toda la jornada y para los tres vehículos | supuesto nuestro |
 | `maxspeed` de OpenStreetMap | No se usa | supuesto nuestro |
 | Lo que sabe el optimizador | Planea con las mismas velocidades de la jornada simulada, igual que las líneas base. El producto no cambió: `despacho/red.py` sigue con las velocidades del modelo, así que sus tiempos de llegada salen más cortos que estos. Cambiar `red.py` es decisión de B. No se midió un optimizador que planee con velocidades equivocadas | supuesto nuestro |
+| Cuándo se recalcula | La política simulada recalcula con cada cierre confirmado, con cada tanda de 30 minutos y cada vez que un vehículo vuelve al acopio (sección 3). El producto recalcula con un cierre confirmado o cuando lo pide el despachador (`despacho/recalcular.py`) | supuesto nuestro |
 | Red | `manizales_region.graphml`, la del producto | trazado de OpenStreetMap |
 | Máquina | 2 núcleos, compartidos con otras sesiones. La búsqueda del optimizador se corta por reloj, así que con la máquina cargada busca menos | condición de la corrida |
 
