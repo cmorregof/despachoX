@@ -146,27 +146,29 @@ Sale uno o dos segundos mientras el operador cambia al tablero. Si el cambio es 
 
 ## Diapositiva 7 · El piloto
 
-**Texto en pantalla (15 palabras).** «Piloto de 90 días en la rutina del Banco: Ciudadela del Norte y El Manantial.»
+**Texto en pantalla (15 palabras).** «90 días: Ciudadela del Norte y El Manantial, y una zona más cada 30 días.»
 
 **Visual por hacer, en dos piezas.**
 
 - **Línea de tiempo.** Cinco hitos, cada uno con la decisión que lo cierra y su responsable principal, tomados de `docs/PLAN_30_90.md`, sección 6, que está en la rama `defensa-noche`. Si esa rama no se fusiona, se usa la tabla de `docs/FICHA_CORTA.md`, componente 4, que tiene los mismos tramos.
 
-| Día | Hito | Decisión | Responsable principal |
-|---|---|---|---|
-| 0 | Acuerdo y arranque | ¿Hay aliado, y reparte? | Integrante de Ingeniería Industrial |
-| 15 | Línea base | ¿Hay contra qué comparar? | Integrante de Ingeniería Industrial y Jacobo |
-| 30 | Reconstrucción en frío de un mes | ¿Mejora lo que el Banco ya hace? | Carlos |
-| 60 | Uso en paralelo en el territorio | ¿Funciona con pedidos reales? | Samuel y Jacobo |
-| 90 | Simulacro con la UGR, A25 por tramo y decisión | ¿El Banco lo adopta? | Todo el equipo; decide el Banco |
+| Día | Hito | Zonas | Decisión | Responsable principal |
+|---|---|---|---|---|
+| 0 | Acuerdo y arranque | Ciudadela del Norte y El Manantial | ¿Hay aliado, y reparte? | Integrante de Ingeniería Industrial |
+| 15 | Línea base | Ciudadela del Norte y El Manantial | ¿Hay contra qué comparar? | Integrante de Ingeniería Industrial y Jacobo |
+| 30 | Reconstrucción en frío de un mes | Ciudadela del Norte y El Manantial | ¿Mejora lo que el Banco ya hace? ¿Entra la segunda zona? | Carlos |
+| 60 | Uso en paralelo en el territorio | Se suma La Macarena y El Tablazo | ¿Funciona con pedidos reales? ¿Entra la tercera zona? | Samuel y Jacobo |
+| 90 | Simulacro con la UGR, A25 por tramo y decisión | Se suma Atardeceres y Kilómetro 41 | ¿El Banco lo adopta? | Todo el equipo; decide el Banco |
+
+En la línea de tiempo, cada zona va como una franja que empieza en su día de entrada. Las etiquetas del visual son los nombres de las zonas, cortos. Cada zona entra solo si la anterior cumplió su criterio de validación y el Banco lo confirma (`docs/PLAN_30_90.md`, sección 4).
 
 Debajo de la línea, la regla de cambio: «Si el Banco no reparte, el piloto pasa al flujo de la UGR y la Gobernación». `docs/PLAN_30_90.md` propone el día 15 como plazo para aplicarla, y ese plazo lo confirma Carlos.
 
-- **El mapa del territorio.** Ya está hecho, en `figuras_pitch/png/a_territorio_propuesta2.png` y su SVG en `figuras_pitch/svg/`. Muestra el Banco y los cuatro puntos del catálogo en Ciudadela del Norte, que son dos CDI, un centro de salud y un CISCO, a entre 2,4 y 4,1 km [M]. También muestra Alto Bonito, en El Manantial, a 8,8 km, con una ruta que sale por la comuna San José [M]. Las distancias son las de `docs/PILOTO_TERRITORIOS.md`, propuesta 2, y la rama `territorio-p2` las volvió a medir por la red vial con el método de Noche-2, con el mismo resultado (`figuras_pitch/README.md`). Etiquetas que se añaden en el editor de diapositivas: «Sismo: cuatro viviendas perdidas en Pueblo Hondo*» y «En Maracas, la vía a Neira no tiene ruta alterna*».
+- **El mapa del territorio.** Ya está hecho, en `figuras_pitch/png/a_territorio_propuesta2.png` y su SVG en `figuras_pitch/svg/`. Muestra el Banco y los cuatro puntos del catálogo en Ciudadela del Norte, que son dos CDI, un centro de salud y un CISCO, a entre 2,4 y 4,1 km [M]. También muestra Alto Bonito, en El Manantial, a 8,8 km, con una ruta que sale por la comuna San José [M]. Las distancias son las de `docs/PILOTO_TERRITORIOS.md`, propuesta 2, y la rama `territorio-p2` las volvió a medir por la red vial con el método de Noche-2, con el mismo resultado (`figuras_pitch/README.md`). Etiquetas que se añaden en el editor de diapositivas: «Sismo: cuatro viviendas perdidas en Pueblo Hondo*» y «En Maracas, la vía a Neira no tiene ruta alterna*». El mapa muestra solo la primera zona. No hay mapa de las otras dos, y la distancia a Bajo Tablazo está por confirmar.
 
 **Pie de fuente.** «Calamidad pública de Manizales vigente hasta el 9 de agosto de 2027 (Alcaldía, 16 de octubre de 2026*). A25: IDEA, UNAL Sede Manizales. Pueblo Hondo: Alcaldía, 27 ago 2026*. Maracas: INVÍAS, registro #767, 15 ene 2023*.»
 
-**Nota del orador.** En este piloto, recuperar el territorio quiere decir que la capacidad de despachar quede en manos locales, con el Banco, las juntas y la UGR, y que se use entre desastres (`docs/FICHA_CORTA.md`, componente 4; lecciones del FOREC en la investigación 10, sección 5.4). Al Banco le pedimos tres datos sin información personal: su catálogo de puntos, su inventario con vencimientos y un mes de despachos (`docs/PILOTO.md`, sección 6). Hay un criterio de parada. Si la reconstrucción en frío no ahorra kilómetros ni desperdicio, el piloto se rediseña antes de pedirle tiempo a nadie (`docs/PILOTO.md`, sección 5). El territorio es la propuesta 2, que Carlos eligió el 21 de noviembre a las 6:10 a. m. Ciudadela del Norte es la comuna más poblada, con 58.776 habitantes (ASIS 2023*). El PMA recorrió con la Alcaldía las veredas con más daño para identificar necesidades de seguridad alimentaria, y en esa nota hablan las juntas de Alto Bonito y Alto del Guamo (Alcaldía, 20 de agosto*). Al final decide el Banco, donde tenga más organizaciones inscritas.
+**Nota del orador.** En este piloto, recuperar el territorio quiere decir que la capacidad de despachar quede en manos locales, con el Banco, las juntas y la UGR, y que se use entre desastres (`docs/FICHA_CORTA.md`, componente 4; lecciones del FOREC en la investigación 10, sección 5.4). Al Banco le pedimos tres datos sin información personal: su catálogo de puntos, su inventario con vencimientos y un mes de despachos (`docs/PILOTO.md`, sección 6). Hay un criterio de parada. Si la reconstrucción en frío no ahorra kilómetros ni desperdicio, el piloto se rediseña antes de pedirle tiempo a nadie (`docs/PILOTO.md`, sección 5). El territorio es la propuesta 2, que Carlos eligió el 21 de noviembre a las 6:10 a. m. Ciudadela del Norte es la comuna más poblada, con 58.776 habitantes (ASIS 2023*). El PMA recorrió con la Alcaldía las veredas con más daño para identificar necesidades de seguridad alimentaria, y en esa nota hablan las juntas de Alto Bonito y Alto del Guamo (Alcaldía, 20 de agosto*). A las 8:05 a. m. Carlos decidió que el piloto crece por zonas. El día 30 se suma La Macarena y El Tablazo, y el día 60, Atardeceres y Kilómetro 41, cada una si la anterior cumplió su criterio y el Banco lo confirma.
 
 **Criterio.** 4, hitos, entregables y validación; 5, aliados y riesgo, por la regla de cambio; 3, el A25.
 
@@ -257,13 +259,13 @@ Debajo, métodos y datos: ruteo con capacidad y ventanas de tiempo en OR-Tools s
 
 ### E · Tres territorios
 
-**Texto en pantalla (8 palabras).** «Tres territorios posibles. Al final decide el Banco.»
+**Texto en pantalla (10 palabras).** «Tres zonas, una cada 30 días, si el Banco lo confirma.»
 
-**Visual.** Tres columnas con las viñetas de `docs/PILOTO_TERRITORIOS.md`, sección «Para la diapositiva», sin cambiar ninguna cifra: La Macarena y El Tablazo; Ciudadela del Norte y El Manantial; Atardeceres y Kilómetro 41. La columna de Ciudadela del Norte y El Manantial va resaltada, porque es la del piloto.
+**Visual.** Tres columnas con las viñetas de `docs/PILOTO_TERRITORIOS.md`, sección «Para la diapositiva», sin cambiar ninguna cifra: La Macarena y El Tablazo; Ciudadela del Norte y El Manantial; Atardeceres y Kilómetro 41. Las columnas van en el orden de entrada: Ciudadela del Norte y El Manantial (día 0), La Macarena y El Tablazo (día 30) y Atardeceres y Kilómetro 41 (día 60). La primera va resaltada, porque es donde empieza el piloto.
 
 **Pie de fuente.** «Fuentes en `docs/PILOTO_TERRITORIOS.md`. Distancias por la red vial del equipo.»
 
-**Nota del orador.** Carlos eligió la 2 el 21 de noviembre a las 6:10 a. m. Ciudadela del Norte es la comuna más poblada. Además, el PMA ya levantó necesidades en las veredas de la propuesta, y sus juntas hablaron en público. El documento recomendaba la 1, porque el sismo dejó daño con fuente en sus dos partes y sus accesos se caen también sin sismo. En la 1, además, comuna y vereda quedan sobre una sola ruta. En la 2, en cambio, la ruta a Alto Bonito sale por la comuna San José. La 3 conviene si el IDEA respalda la prueba del A25.
+**Nota del orador.** Carlos eligió la 2 el 21 de noviembre a las 6:10 a. m., y a las 8:05 a. m. decidió que la 1 entra el día 30 y la 3 el día 60. Ciudadela del Norte es la comuna más poblada. Además, el PMA ya levantó necesidades en las veredas de la propuesta, y sus juntas hablaron en público. Antes de esa decisión, `docs/PILOTO_TERRITORIOS.md` recomendaba la 1, porque el sismo dejó daño con fuente en sus dos partes y sus accesos se caen también sin sismo. En la 1, además, comuna y vereda quedan sobre una sola ruta. En la 2, en cambio, la ruta a Alto Bonito sale por la comuna San José. La 3 conviene si el IDEA respalda la prueba del A25.
 
 **Criterio.** 4, y también 1 por el territorio.
 

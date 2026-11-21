@@ -39,7 +39,7 @@ Todas las cifras, supuestos y riesgos están en el anexo técnico, `docs/FICHA.m
 
 ## 3. Conocimiento utilizado (15 puntos)
 
-**El A25 del IDEA, capacidad UNAL principal.** El indicador A25 del IDEA, Sede Manizales, mide la lluvia acumulada en 25 días por estación. La Unidad de Gestión del Riesgo lo adoptó a partir de la tesis de Terlien (1996), que asoció unos 200 mm en 25 días con alta probabilidad de deslizamientos (IDEA; por verificar). Sus umbrales de alerta son 200, 300 y 400 mm, y el reporte de 2020 cubre 14 estaciones (IDEA; por verificar). El 16 de febrero de 2026 Manizales declaró alerta amarilla con el umbral de 200 mm (Blu Radio; por verificar). En Convite, el optimizador encarece, sin cerrarlas, las vías con historial de deslizamientos en alerta naranja o roja. Ya está en el código, con lluvia de prueba y apagado por defecto. En los días 60 a 90 del piloto entra con los datos diarios del IDEA. Le estamos pidiendo cinco minutos a un profesor del IDEA para que revise ese uso y lo avale.
+**El A25 del IDEA, capacidad UNAL principal.** El A25 del IDEA, Sede Manizales, mide la lluvia acumulada en 25 días por estación. La Unidad de Gestión del Riesgo (UGR) lo adoptó a partir de la tesis de Terlien (1996), que asoció unos 200 mm en 25 días con alta probabilidad de deslizamientos (IDEA; por verificar). Sus umbrales de alerta son 200, 300 y 400 mm, y el reporte de 2020 cubre 14 estaciones (IDEA; por verificar). El 16 de febrero de 2026 Manizales declaró alerta amarilla con el umbral de 200 mm (Blu Radio; por verificar). En Convite, el optimizador encarece, sin cerrarlas, las vías con historial de deslizamientos en alerta naranja o roja. Ya está en el código, con lluvia de prueba y apagado por defecto. En los días 60 a 90 del piloto entra con los datos diarios del IDEA. Le pedimos a un profesor del IDEA cinco minutos para revisar y avalar ese uso.
 
 **Otras capacidades UNAL.**
 
@@ -52,18 +52,18 @@ Todas las cifras, supuestos y riesgos están en el anexo técnico, `docs/FICHA.m
 
 ## 4. Plan de 30 a 90 días (15 puntos)
 
-**El piloto.** Convite entra a la operación diaria del Banco, en una comuna y una vereda [por definir con el Banco]. La Unidad de Gestión del Riesgo (UGR) acompaña los simulacros y la temporada de lluvias, y la Gobernación es la ruta de escalamiento. Así sirve a la recuperación del territorio, porque deja la capacidad en manos locales y se usa entre desastres. Lo medimos contra la línea base del Banco con la tabla por territorio, la bitácora y el QR de cada entrega.
+**El piloto.** Convite entra a la rutina del Banco en Ciudadela del Norte y El Manantial, y suma una zona cada 30 días si la anterior cumplió su validación y el Banco lo confirma. La UGR acompaña simulacros y lluvias, y la Gobernación es la ruta de escalamiento. Sirve a la recuperación del territorio porque deja la capacidad en manos locales y se usa entre desastres. Lo medimos contra la línea base del Banco con la tabla por territorio, la bitácora y el QR.
 
 | Días | Hito y entregables | Responsables | Recursos | Validación |
 |---|---|---|---|---|
 | 0 a 15 | **Acuerdo y línea base.** Carta de intención del Banco y aval de la UGR. Catálogo de puntos, inventario con vencimientos y un mes de despachos, sin datos personales. Dos semanas de bitácora del despacho actual | Samuel (acuerdo), Jacobo (bitácora), Carlos (datos) | Horas del despachador; acompañamiento previsto para los premiados | Carta firmada; línea base de entregas a tiempo, kilómetros y kilos vencidos |
-| 15 a 30 | **Reconstrucción en frío.** Lo que habría planeado Convite para cada día del mes registrado, frente a lo que se hizo. Simulación con velocidades de la tesis | Carlos; por asignar la revisión externa | Registros del Banco y un portátil | Real contra reconstruido. Sin mejora en kilómetros ni desperdicio, se rediseña el piloto |
-| 30 a 60 | **Uso en paralelo.** Las organizaciones piden por chat o SMS. En un día normal, el Banco reparte como siempre y Convite planea en sombra | Samuel (juntas), Jacobo (tablero), Carlos (optimizador) | Celular con SIM, impresora y vehículos del Banco | Veinte pedidos reales de punta a punta; kilómetros y kilos vencidos frente a la forma actual |
-| 60 a 90 | **Prueba de esfuerzo y decisión.** Simulacro con la UGR y un cierre planeado. A25 por tramo. Dos semanas en sombra e informe para el Consejo Municipal de Gestión del Riesgo | Todo el equipo; por asignar el informe | Datos del IDEA; horas de la UGR y del Banco | Rutas que evitan tramos en alerta; planes aprobados sin cambios; decisión escrita del Banco |
+| 15 a 30 | **Reconstrucción en frío.** Cada día del mes registrado, el plan de Convite frente a lo hecho. Simulación con velocidades de la tesis | Carlos; por asignar la revisión externa | Registros del Banco y un portátil | Real contra reconstruido. Sin mejora en kilómetros ni desperdicio, se rediseña el piloto |
+| 30 a 60 | **Uso en paralelo; entra La Macarena y El Tablazo.** Las organizaciones piden por chat o SMS. Un día normal, el Banco reparte y Convite planea en sombra | Samuel (juntas), Jacobo (tablero), Carlos (optimizador) | Celular con SIM, impresora y vehículos del Banco | Veinte pedidos reales de punta a punta; kilómetros y kilos vencidos frente a la forma actual |
+| 60 a 90 | **Prueba de esfuerzo y decisión; entra Atardeceres y Kilómetro 41.** Simulacro con la UGR y un cierre planeado. A25 por tramo. Dos semanas en sombra e informe para el Consejo Municipal de Gestión del Riesgo | Todo el equipo; por asignar el informe | Datos del IDEA; horas de la UGR y del Banco | Rutas que evitan tramos en alerta; planes aprobados sin cambios; decisión escrita del Banco |
 
-**Regla de cambio.** Si el Banco confirma que las organizaciones recogen en su bodega y nadie reparte, el piloto pasa al flujo de requerimientos de la UGR y la Gobernación.
+**Regla de cambio.** Si el Banco confirma que nadie reparte y las organizaciones recogen en la bodega, el piloto pasa al flujo de requerimientos de la UGR y la Gobernación.
 
-**Marco.** El piloto cabe en la calamidad pública de Manizales, vigente hasta el 9 de agosto de 2027 (Alcaldía; por verificar).
+**Marco.** Cabe en la calamidad pública de Manizales, vigente hasta el 9 de agosto de 2027 (Alcaldía; por verificar).
 
 ## 5. Viabilidad y aliados (15 puntos)
 

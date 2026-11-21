@@ -1,6 +1,6 @@
 % Figura 3 del informe corto: las piezas que existen y la que falta.
 % Fuente: docs/investigacion/10_problema_usuarios_alternativas.md, secciones 1 a 3.
-% Se incluye con \input desde informe_corto.tex, que define los colores tinta, ambar, ceniza, hielo y papel.
+% Se incluye con \input desde informe_corto.tex, que define los colores tinta, ambar, ceniza, hielo y papel (paleta verde de Convite).
 \begin{tikzpicture}[
   font=\small,
   pieza/.style={draw=tinta, fill=hielo, line width=0.6pt, text width=3.2cm, minimum height=1.75cm,
@@ -17,9 +17,9 @@
 \node[pieza] (abaco) at (12.0,0)
   {{\color{tinta}Plataforma de ABACO}\\{\footnotesize red de bancos}\\[3pt]{\footnotesize\color{ceniza} recaudo y reporte al donante}};
 \node[falta] (despacho) at (6.0,-2.75)
-  {{\color{ambar}\textsc{la pieza que falta: el despacho}}\\[3pt]
+  {{\color{tinta}\textsc{la pieza que falta: el despacho}}\\[3pt]
    pedido \enspace$\rightarrow$\enspace vehículo \enspace$\rightarrow$\enspace vía \enspace$\rightarrow$\enspace entrega\\[3pt]
-   {\footnotesize\color{ceniza}Es lo que propone DespachoX. Una persona aprueba cada plan.}};
+   {\footnotesize\color{ceniza}Es lo que propone Convite. Una persona aprueba cada plan.}};
 \draw[-{Stealth[length=2.6mm]}, ambar, line width=0.9pt]
-  (despacho.north -| suma.south) -- node[right, font=\footnotesize, text=ambar] {exporta} (suma.south);
+  (despacho.north -| suma.south) -- node[right, font=\footnotesize, text=ceniza] {exportaría, sin fecha} (suma.south);
 \end{tikzpicture}
