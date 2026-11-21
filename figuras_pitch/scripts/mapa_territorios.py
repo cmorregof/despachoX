@@ -69,13 +69,13 @@ DOC_PILOTO = e.RAIZ / "docs" / "PILOTO_TERRITORIOS.md"
 
 PROPUESTAS = [
     {"n": 1, "color": e.AMBAR, "comuna": "La Macarena", "corregimiento": "El Tablazo (Corredor Agroturístico)",
-     "titulo": "La Macarena y El Tablazo", "nota": "Tres CDI y la vereda en un corredor.",
+     "titulo": "La Macarena y El Tablazo", "nota": "Días 30 a 60. Tres CDI y la vereda en un corredor.", "orden": 1,
      "rural": "Bajo Tablazo"},
     {"n": 2, "color": e.TINTA, "comuna": "Ciudadela del Norte", "corregimiento": "El Manantial",
-     "titulo": "Ciudadela del Norte y El Manantial", "nota": "Elegida por el equipo. La comuna más poblada.",
+     "titulo": "Ciudadela del Norte y El Manantial", "nota": "Días 0 a 30. La comuna más poblada.", "orden": 0,
      "rural": "Alto Bonito"},
     {"n": 3, "color": e.CENIZA, "comuna": "Atardeceres", "corregimiento": None,
-     "titulo": "Atardeceres y Kilómetro 41", "nota": "Probaría las alertas de lluvia A25 del IDEA (UNAL).",
+     "titulo": "Atardeceres y Kilómetro 41", "nota": "Días 60 a 90. Alertas de lluvia A25 del IDEA (UNAL).", "orden": 2,
      "rural": "La Aurora"},
 ]
 
@@ -88,13 +88,13 @@ SOLO = {
         "rotulos": ("comuna\nLa Macarena", "corregimiento\nEl Tablazo"),
         "via_rural": "por el mismo corredor", "banco": (0.0, 0.0028, "center", "bottom"),
         "grupo_arriba": True, "rural": (0.0030, 0.0, "left", "center"), "leyenda_loc": "lower right",
-        "y_subtitulo": 215},
+        "y_subtitulo": 215, "subtitulo": "Segunda zona del piloto,\ndel día 30 al 60."},
     2: {"recuadro": (-75.540, 5.050, -75.466, 5.124), "criticos": False, "grupo": "puntos",
         "leyenda": "CDI, centro de salud y CISCO", "titulo": "Ciudadela del Norte\ny El Manantial",
         "rotulos": ("comuna\nCiudadela del Norte", "corregimiento\nEl Manantial"),
         "via_rural": "por la comuna San José", "banco": (0.0, -0.0028, "center", "top"),
         "grupo_arriba": True, "rural": (-0.0030, 0.0, "right", "center"), "leyenda_loc": "upper right",
-        "y_subtitulo": 228, "leyenda_primero": True},
+        "y_subtitulo": 228, "subtitulo": "Primera zona del piloto,\ndel día 0 al 30.", "leyenda_primero": True},
 }
 
 
@@ -477,25 +477,25 @@ def mapa_tres(fig, args, red, aristas, limites, puntos, acopios, banco, rurales)
 
     # Panel derecho: título, propuestas y fuentes. Posiciones en píxeles desde arriba.
     x0 = 1110 / e.ANCHO_PX
-    fig.text(x0, arriba(55), "Tres territorios\npara el piloto", fontsize=e.pt(58), fontweight="bold",
+    fig.text(x0, arriba(55), "El piloto crece\npor zonas", fontsize=e.pt(58), fontweight="bold",
              color=e.TEXTO, va="top", linespacing=1.05)
-    fig.text(x0, arriba(215), "Cada uno une una comuna y un corregimiento.\nDecide el Banco.", fontsize=e.pt(28),
+    fig.text(x0, arriba(215), "Una zona nueva cada 30 días,\nsi la anterior cumplió y el Banco acepta.", fontsize=e.pt(28),
              color=e.CENIZA, va="top", linespacing=1.25)
     y = 330
     ancho_nota = e.ANCHO_PX - 40 - (x0 + 0.036) * e.ANCHO_PX
-    for p in PROPUESTAS:
+    for p in sorted(PROPUESTAS, key=lambda p: p["orden"]):
         fig.text(x0 + 0.013, arriba(y + 22), str(p["n"]), fontsize=e.pt(30), fontweight="bold", color=e.blanco_o_texto(p["color"]),
                  ha="center", va="center", bbox=dict(boxstyle="circle,pad=0.25", facecolor=p["color"],
                                                      edgecolor="none"))
         e.encajar(fig, fig.text(x0 + 0.036, arriba(y), p["titulo"], fontsize=e.pt(32), fontweight="bold",
                                 color=e.color_de_texto(p["color"]), va="top"), ancho_nota)
         e.encajar(fig, fig.text(x0 + 0.036, arriba(y + 52), p["nota"], fontsize=e.pt(28), color=e.TEXTO, va="top",
-                                fontweight="bold" if p["nota"].startswith("Elegida") else "normal"),
+                                fontweight="bold" if p["orden"] == 0 else "normal"),
                   ancho_nota)
         y += 140
     cifras = [(p["n"], p["rural"], e.miles(rutas[p["rural"]]["km"], 1)) for p in PROPUESTAS]
     avisos, _ = sello_y_avisos(fig, NOMBRE, por_confirmar(cifras), x0, 745)
-    e.pie(fig, "Fuente: docs/PILOTO_TERRITORIOS.md (20 nov 2026), con razones por verificar. Rutas y distancias: "
+    e.pie(fig, "Fuente: docs/PILOTO_TERRITORIOS.md (21 nov 2026), con razones por verificar. Rutas y distancias: "
                f"cálculo nuestro sobre la red vial del equipo.{frase_sin_via(rutas)} El km 41 no tiene coordenada "
                "con fuente; su distancia es la del documento. Mapa base © colaboradores de OpenStreetMap (ODbL).",
           x=x0, y=0.02, ancho=60)
@@ -602,7 +602,7 @@ def mapa_propuesta(fig, args, red, aristas, limites, puntos, acopios, banco, rur
     x0 = 1110 / e.ANCHO_PX
     fig.text(x0, arriba(55), cfg["titulo"], fontsize=e.pt(58), fontweight="bold", color=e.TEXTO,
              va="top", linespacing=1.05)
-    fig.text(x0, arriba(cfg["y_subtitulo"]), f"La propuesta {numero} para el piloto.\nDecide el Banco.",
+    fig.text(x0, arriba(cfg["y_subtitulo"]), cfg["subtitulo"],
              fontsize=e.pt(28), color=e.CENIZA, va="top", linespacing=1.25)
     for y, cifra, texto in ((340, rango, f"del Banco a los {len(cdi)} {cfg['grupo']} de la comuna"),
                             (500, f"{e.miles(km_rural, 1)} km", f"del Banco a {p['rural']},\n{cfg['via_rural']}")):
@@ -612,7 +612,7 @@ def mapa_propuesta(fig, args, red, aristas, limites, puntos, acopios, banco, rur
     cifras = [(p["n"], que, e.miles(min(km_cdi), 1)), (p["n"], que, e.miles(max(km_cdi), 1)),
               (p["n"], p["rural"], e.miles(km_rural, 1))]
     avisos, _ = sello_y_avisos(fig, nombre_fig, por_confirmar(cifras), x0, 700)
-    e.pie(fig, f"Fuente: docs/PILOTO_TERRITORIOS.md, propuesta {numero} (20 nov 2026). Rutas y distancias: cálculo "
+    e.pie(fig, f"Fuente: docs/PILOTO_TERRITORIOS.md, propuesta {numero} (21 nov 2026). Rutas y distancias: cálculo "
                "nuestro sobre la red vial del equipo, hasta el punto de la vía más cercano a cada lugar."
                f"{frase_sin_via({p['rural']: ruta})} Mapa base © colaboradores de OpenStreetMap (ODbL).",
           x=x0, y=0.02, ancho=60)
