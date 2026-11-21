@@ -45,7 +45,7 @@ Marcas: **[F]** dato de una fuente · **[M]** medido por el equipo · **[E]** es
 
 **Qué es.** DespachoX es una mesa de despacho para la persona que decide, en un centro de acopio, qué sale, para quién, en qué vehículo y por qué vía. Su regla de arquitectura es fija. El modelo de lenguaje lee y estructura los mensajes; el optimizador y las reglas calculan; el despachador decide. El modelo nunca asigna una ruta ni despacha nada.
 
-**Qué hace hoy, de punta a punta.** El bot y el tablero corren en la nube, sobre una sola base de datos, desde el viernes 20 a las 3:45 p. m. [M].
+**Qué hace hoy, de punta a punta.** El bot y el tablero corren en la nube, sobre una sola base de datos, desde el viernes 20 a las 3:45 p. m. [M]. En la revisión del viernes a las 10:16 p. m., las 306 pruebas automáticas del repositorio pasaron en verde [M].
 
 1. **Pedido por chat.** Un líder escribe al bot de Telegram, por ejemplo «somos 40 familias en san jose no hay arroz ni leche». Un modelo de lenguaje lo convierte en un pedido con lugar, familias, productos y urgencia, y el código convierte personas y bebés en familias y kilos con reglas declaradas. En quince mensajes de prueba escritos por el equipo, el extractor acertó 62 de 64 campos (96,9 %), en una corrida y con unos 1,8 s por mensaje [M]. Antes de guardar, el bot borra teléfonos y nombres, y el remitente queda como un código. Las notas de voz se transcriben cuando el servicio de transcripción está configurado; sin él, el bot pide escribir. Quien pidió consulta el estado de su pedido con `/estado`.
 2. **Lugar confirmado.** El ubicador conoce 452 nombres y apodos de lugares de Manizales y le devuelve la ubicación a quien escribió para que la confirme. En 44 frases de prueba dio 30 aciertos directos, 5 respuestas con opciones y 9 «no sé», sin proponer con seguridad ningún lugar equivocado [M]. Ningún pedido entra al plan sin un lugar confirmado por una persona. Un segundo pedido del mismo punto en menos de dos horas queda marcado como duplicado y no se cuenta dos veces.
@@ -164,7 +164,7 @@ Tres resultados de la segunda ronda completan el cuadro [M]. En 30 semillas nuev
 
 | Aliado | Papel | Qué se le pide | Estado |
 |---|---|---|---|
-| Banco Arquidiocesano de Alimentos de Manizales | Usuario del piloto | Un despachador, los tres datos y 30 días de prueba en paralelo | Por contactar |
+| Banco Arquidiocesano de Alimentos de Manizales | Usuario del piloto | Un despachador, los tres datos y 30 días de prueba en paralelo | Por contactar. Llamada prevista para el sábado 21 a las 8:00 a. m., para mostrarle el producto |
 | ABACO, red de bancos de alimentos | Red del Banco | Respaldo al piloto y formato del reporte al donante | Por contactar |
 | Unidad de Gestión del Riesgo de Manizales | Aliada para simulacros y temporada de lluvias | Aval dentro de la estrategia municipal de respuesta, fecha del próximo simulacro y reportes de cierres | Por contactar |
 | Gobernación de Caldas, Jefatura de Gestión del Riesgo y Centro Logístico Humanitario | Ruta de escalamiento a los municipios | Cómo llega y cuánto tarda un requerimiento municipal | Por contactar |
@@ -245,6 +245,7 @@ Estado de cada cifra al viernes 20 de noviembre en la noche. «Por verificar» s
 | 16 reglas de prioridad, cinco explican el 78 % de las decisiones | Tesis doctoral de la UNAL Bogotá, 2021, grupo SEPRO | F | Por verificar |
 | Ración seca de 555 g por persona y día; 2,9 personas por hogar | Tabla de raciones de ACNUR; DANE, censo de 2018 | F | Por verificar |
 | 50 puntos de entrega reales, 35 críticos, 2 acopios; red de 7.825 nodos; 178 registros de cierres | `datos_publicos/` y `docs/datos/`, cada fila con su fuente | F y M | Por verificar las fuentes de cada fila |
+| 306 pruebas automáticas en verde en `main` | `torre/CANAL.md`, revisión de las 10:16 p. m. del 20 de noviembre | M | Medida |
 | 62 de 64 campos extraídos (96,9 %) en 15 mensajes sintéticos, una corrida, unos 1,8 s por mensaje | `entrada/pruebas/reporte_campos.md` | M | Medida |
 | 452 nombres y apodos; 30 aciertos, 5 con opciones y 9 «no sé» en 44 frases, ningún lugar equivocado con seguridad | `lugares/`, pruebas del ubicador | M | Medida |
 | Plan de la demo en 3,4 a 3,8 s; escenario público con 25 de 25 pedidos y 23 de 23 críticos en 3,5 s | `docs/GUION_DEMO.md`; `docs/datos/escenario_publico.md` | M | Medida |
