@@ -260,7 +260,8 @@ def test_entrada_no_escribe_planes_vehiculos_ni_paquetes():
 
 
 def test_el_bot_solo_atiende_cuatro_ordenes():
-    assert C.ordenes_del_bot() == {"start", "ayuda", "help", "estado"}
+    # samuel-bot sumó /borrar (supresión del titular, docs/PRIVACIDAD.md 7.5), con confirmación de dos botones.
+    assert C.ordenes_del_bot() == {"start", "ayuda", "help", "estado", "borrar"}
 
 
 def test_las_ordenes_escritas_como_texto_tampoco_cambian_nada(mundo):
@@ -291,7 +292,7 @@ def test_estado_solo_lista_los_pedidos_propios(mundo):
     with C.copia(mundo) as caso:
         propios = caso.chat.estado(700001)
         ajeno = caso.chat.estado(900404)
-    assert "Pedido #" in propios.texto and "No tengo pedidos tuyos" in ajeno.texto
+    assert "Pedido #" in propios.texto and "No tengo pedidos suyos" in ajeno.texto   # samuel-bot pasó el bot a «usted»
 
 
 @pytest.mark.xfail(strict=True, reason="H5: /estado (flujo.py:365-366) cita el número del pedido del que el propio "
