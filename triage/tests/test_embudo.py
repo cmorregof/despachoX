@@ -55,11 +55,11 @@ def test_integrar_false_no_toca_pedidos(con, params, z, hora):
 
 
 def test_integrar_true_crea_pedido_confirmado(con, params, z, hora):
-    embudo.procesar_lote(con, [sol(hora(), "a", z["Barrio A"], texto="llamar al 3001234567")],
+    embudo.procesar_lote(con, [sol(hora(), "a", z["Barrio A"], texto="llamar al 300 123 45 67")],
                          params, hora(), integrar=True)
     p = con.execute("SELECT * FROM pedidos").fetchone()
     assert p["estado"] == "confirmado" and p["familias"] == 5
-    assert "3001234567" not in p["texto_original"]
+    assert "123 45" not in p["texto_original"]
     assert fila(con, 1)["pedido_id"] == p["id"]
 
 

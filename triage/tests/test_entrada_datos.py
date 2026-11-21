@@ -16,13 +16,13 @@ def _escribir(tmp_path, nombre, texto, codificacion="utf-8"):
 def test_csv_basico_con_alias_y_hash(tmp_path):
     ruta = _escribir(tmp_path, "s.csv",
                      "Fecha,Telefono,Mensaje,Latitud,Longitud,Familias,productos,lugar_confirmado\n"
-                     "2026-11-20T10:00:00,3001234567,Necesitamos agua,5.06,-75.5,4,\"arroz,agua\",sí\n")
+                     "2026-11-20T10:00:00,tel-sintetico-1,Necesitamos agua,5.06,-75.5,4,\"arroz,agua\",sí\n")
     filas, errores = ed.leer(ruta, sal=SAL)
     assert errores == []
     f = filas[0]
     assert f["recibida_en"] == "2026-11-20T10:00:00-05:00"
-    assert f["remitente_hash"] != "3001234567" and len(f["remitente_hash"]) == 32
-    assert "3001234567" not in json.dumps(f)
+    assert f["remitente_hash"] != "tel-sintetico-1" and len(f["remitente_hash"]) == 32
+    assert "tel-sintetico-1" not in json.dumps(f)
     assert f["productos"] == ["arroz", "agua"] and f["familias"] == 4
     assert f["lugar_confirmado"] is True and f["canal"] == "chat"
 
@@ -30,8 +30,8 @@ def test_csv_basico_con_alias_y_hash(tmp_path):
 def test_hash_ya_calculado_se_conserva():
     h = "ab" * 32
     assert ed.hash_remitente(h, SAL) == h
-    assert ed.hash_remitente("3001234567", SAL) == ed.hash_remitente("3001234567", SAL)
-    assert ed.hash_remitente("3001234567", SAL) != ed.hash_remitente("3001234567", b"otra")
+    assert ed.hash_remitente("tel-sintetico-1", SAL) == ed.hash_remitente("tel-sintetico-1", SAL)
+    assert ed.hash_remitente("tel-sintetico-1", SAL) != ed.hash_remitente("tel-sintetico-1", b"otra")
 
 
 def test_csv_vacio(tmp_path):

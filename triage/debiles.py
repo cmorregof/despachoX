@@ -103,7 +103,7 @@ def escalar(con: sqlite3.Connection, ahora: datetime, params: dict | None = None
     for f in con.execute("SELECT id, creada_en FROM tareas_campo WHERE estado IN "
                          "('abierta','asignada')").fetchall():
         creada = parsear_fecha(f["creada_en"])
-        if creada and ahora - creada > timedelta(hours=p["t_escala_h"]):
+        if creada and ahora - creada >= timedelta(hours=p["t_escala_h"]):
             con.execute("UPDATE tareas_campo SET estado='escalada' WHERE id=?", (f["id"],))
             tdb.anotar_regla(con, QUIEN, "escalar_tarea", {"tarea_id": f["id"]}, ahora)
             escaladas.append(f["id"])
