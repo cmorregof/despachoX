@@ -30,7 +30,7 @@ El orden es el de la decisión 4 de `docs/DECISIONES_9PM.md`.
 | Parte del pitch | Figura | Mensaje |
 |---|---|---|
 | 1. Por qué | (b) `b_cuello_despacho` | La donación llegó y el despacho se atascó. |
-| 2. Para qué | (d) `d_cierres_sin_sismo` | Las vías se cierran también sin sismo, sobre todo la salida a Letras. |
+| 2. Para qué | (d) `d_cierres_sin_sismo` | Las vías de Manizales se cierran también sin sismo, sobre todo la salida a Letras. |
 | 4. Por qué no basta lo que existe | (c) `c_regla_arquitectura` | DespachoX une el pedido, el plan, la decisión y la entrega, y el modelo nunca decide. |
 | 5. Qué medimos y cómo | (e) `e_simulacion_ejemplo` | Plantilla para los resultados nuevos de la simulación. El render de hoy no se cita. |
 | 6. El piloto de 30 a 90 días | (a) `a_territorios_piloto` | Hay tres territorios posibles, y el recomendado pone tres CDI y la vereda en un mismo corredor. |
@@ -50,7 +50,8 @@ La parte 3 (para quién) no tiene figura.
 - **Mensaje.** Entre 2017 y 2026 hay 152 registros de derrumbe o deslizamiento sin contar los del sismo. La salida a Letras tiene 83 y aparece todos los años.
 - **Datos.** `datos_publicos/cierres_historicos.csv`. El conteo queda en `datos/d_cierres_sin_sismo.csv`, por corredor y año.
 - **Fuente.** El registro #767 de INVÍAS y notas de prensa, reunidos en ese CSV con la fuente de cada fila (consulta del 20 de noviembre de 2026). El conteo es nuestro.
-- **Regla del conteo.** Entra la fila cuya causa es remoción en masa (deslizamiento, derrumbe, deslave, desprendimiento o caída de lodo o de rocas). Sale toda fila cuya causa menciona el sismo, y también las dos que dicen «no es derrumbe» (A019 y A078). Se cuentan registros y no eventos, porque un derrumbe puede tener varios registros y el #767 no registra todo.
+- **Regla del conteo.** Entra la fila cuya causa es remoción en masa (deslizamiento, derrumbe, deslave, desprendimiento o caída de lodo o de rocas). Sale toda fila cuya causa menciona el sismo, y también las dos que dicen «no es derrumbe» (A019 y A078). Se cuentan registros y no eventos, porque un derrumbe puede tener varios registros y el #767 no registra todo. Las filas sin corredor van como «otras vías de la región», que son el corredor norte hacia Neira, Aranzazu y Salamina, tramos entre Estación Uribe, Tres Puertas y Puente La Libertad, y una variante de Pereira.
+- **Diferencia con `docs/datos/vias_y_riesgo.md`.** Esa tabla da 35 registros en la vía a Medellín y esta figura da 33, porque allá entran A019 y A078. En la salida a Letras coinciden, con 87 registros si se cuentan los 4 del sismo y 83 sin ellos.
 - **Salvedad.** Un agente marcó la columna `verificado` del CSV, y ninguna persona ha revisado las filas.
 - **Regenerar.** `python figuras_pitch/scripts/cierres_sin_sismo.py`
 
@@ -80,6 +81,13 @@ La parte 3 (para quién) no tiene figura.
   DESPACHOX_SIN_RED=1 python figuras_pitch/scripts/sim_resultados.py \
       --entrada analisis/sensibilidad/resultados --salida figuras_pitch --nombre e_sensibilidad \
       --agrupar variante --filtro carga=alta
+  ```
+
+  Para regenerar las cinco figuras de una vez con los resultados nuevos, `todas.py` recibe la ruta, y entonces la figura se llama `e_simulacion` y no lleva marca:
+
+  ```bash
+  DESPACHOX_SIN_RED=1 python figuras_pitch/scripts/todas.py --sim despacho/sim/<carpeta nueva>/resultados.csv \
+      --titulo-sim "<lo que muestran los resultados>"
   ```
 
   `--filtro` evita mezclar cargas dentro de una variante. `--grupos` y `--politicas` eligen qué se dibuja y en qué orden, y `--marca` pone una advertencia visible. Columnas mínimas: `politica`, `a_tiempo_criticos_pct` y `perecedero_vencido_pct`.

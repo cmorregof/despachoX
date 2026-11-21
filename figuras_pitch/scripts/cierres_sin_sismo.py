@@ -11,7 +11,8 @@ Regla del conteo (es nuestra y se puede discutir):
   lodo o de rocas. No entran las dos filas cuya causa dice «no es derrumbe» (A019 y A078).
 - Sale toda fila cuya causa menciona el sismo. Las demás filas de 2026 se quedan, por ejemplo el deslizamiento
   del 21 de octubre en la autopista del Café (S22), que no lo causó el sismo.
-- Las filas sin corredor en `via_nombre` van como «otros corredores» (corredor norte, Tres Puertas y otros).
+- Las filas sin corredor en `via_nombre` van como «otras vías de la región»: el corredor norte hacia Neira,
+  Aranzazu y Salamina, tramos entre Estación Uribe, Tres Puertas y Puente La Libertad, y una variante de Pereira.
 """
 import re
 from pathlib import Path
@@ -24,7 +25,7 @@ import estilo as e
 NOMBRE = "d_cierres_sin_sismo"
 ENTRADA = e.RAIZ / "datos_publicos" / "cierres_historicos.csv"
 REMOCION = re.compile(r"deslizamiento|derrumbe|deslave|desprendimiento|caída de lodo|caída de rocas", re.I)
-OTROS = "otros corredores"
+OTROS = "otras vías de la región"
 
 
 def contar() -> pd.DataFrame:
@@ -55,8 +56,8 @@ def main():
     print(tabla.to_string())
 
     fig = e.lienzo()
-    e.titulo(fig, "Las vías de Manizales se cierran sin sismo",
-             f"Registros de derrumbe o deslizamiento de 2017 a 2026, sin los del sismo: {total}")
+    e.titulo(fig, "Las vías de Manizales se cierran también sin sismo",
+             f"{total} registros de derrumbe o deslizamiento de 2017 a 2026, sin contar los del sismo")
 
     # Izquierda: por corredor. «Otros corredores» va al final aunque sume más que alguno.
     orden = [c for c in tabla.index if c != OTROS] + ([OTROS] if OTROS in tabla.index else [])
@@ -102,7 +103,7 @@ def main():
 
     e.pie(fig, "Conteo nuestro sobre datos_publicos/cierres_historicos.csv, que reúne el registro #767 de INVÍAS y "
                "notas de prensa (consulta del 20 nov 2026).\nSon registros, no eventos, y el #767 no registra "
-               "todo. Un agente revisó las filas; falta que las verifique una persona.")
+               "todo. 2026 va hasta el 20 de noviembre. Las filas las revisó un agente, no una persona.")
     e.guardar(fig, NOMBRE, args.salida)
 
 

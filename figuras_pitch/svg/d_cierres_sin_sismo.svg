@@ -1710,24 +1710,74 @@ z
     </g>
    </g>
    <g id="text_18">
-    <!-- otros corredores -->
-    <g style="fill: #2e2550" transform="translate(154.335375 621.826435) scale(0.216 -0.216)">
+    <!-- otras vías de la región -->
+    <g style="fill: #2e2550" transform="translate(101.766375 621.826435) scale(0.216 -0.216)">
+     <defs>
+      <path id="PTSerif-Regular-b5" d="M 262 1600 
+Q 262 2003 368 2313 
+Q 474 2624 672 2838 
+Q 870 3053 1148 3165 
+Q 1427 3277 1766 3277 
+Q 2163 3277 2451 3155 
+Q 2739 3034 2921 2813 
+Q 3104 2592 3190 2285 
+Q 3277 1978 3277 1600 
+Q 3277 794 2867 358 
+Q 2458 -77 1766 -77 
+Q 1382 -77 1100 41 
+Q 819 160 633 381 
+Q 448 602 355 912 
+Q 262 1222 262 1600 
+z
+M 877 1600 
+Q 877 1312 931 1056 
+Q 986 800 1104 611 
+Q 1222 422 1414 313 
+Q 1606 205 1875 205 
+Q 2221 205 2441 544 
+Q 2662 883 2662 1600 
+Q 2662 1894 2608 2147 
+Q 2554 2400 2438 2589 
+Q 2323 2778 2144 2886 
+Q 1965 2995 1715 2995 
+Q 1338 2995 1107 2656 
+Q 877 2317 877 1600 
+z
+M 2106 4909 
+Q 2157 4915 2240 4905 
+Q 2323 4896 2413 4877 
+Q 2503 4858 2579 4829 
+Q 2656 4800 2695 4768 
+L 2695 4646 
+L 1498 3680 
+L 1357 3795 
+L 2106 4909 
+z
+" transform="scale(0.015625)"/>
+     </defs>
      <use xlink:href="#PTSerif-Regular-52"/>
      <use xlink:href="#PTSerif-Regular-57" transform="translate(55.296875 0)"/>
      <use xlink:href="#PTSerif-Regular-55" transform="translate(92.390625 0)"/>
-     <use xlink:href="#PTSerif-Regular-52" transform="translate(130.796875 0)"/>
-     <use xlink:href="#PTSerif-Regular-56" transform="translate(186.09375 0)"/>
-     <use xlink:href="#PTSerif-Regular-3" transform="translate(229.390625 0)"/>
-     <use xlink:href="#PTSerif-Regular-46" transform="translate(253.6875 0)"/>
-     <use xlink:href="#PTSerif-Regular-52" transform="translate(300.28125 0)"/>
-     <use xlink:href="#PTSerif-Regular-55" transform="translate(355.578125 0)"/>
-     <use xlink:href="#PTSerif-Regular-55" transform="translate(393.984375 0)"/>
-     <use xlink:href="#PTSerif-Regular-48" transform="translate(432.390625 0)"/>
-     <use xlink:href="#PTSerif-Regular-47" transform="translate(482.6875 0)"/>
-     <use xlink:href="#PTSerif-Regular-52" transform="translate(538.1875 0)"/>
-     <use xlink:href="#PTSerif-Regular-55" transform="translate(593.484375 0)"/>
-     <use xlink:href="#PTSerif-Regular-48" transform="translate(631.890625 0)"/>
-     <use xlink:href="#PTSerif-Regular-56" transform="translate(682.1875 0)"/>
+     <use xlink:href="#PTSerif-Regular-44" transform="translate(130.796875 0)"/>
+     <use xlink:href="#PTSerif-Regular-56" transform="translate(181.296875 0)"/>
+     <use xlink:href="#PTSerif-Regular-3" transform="translate(224.59375 0)"/>
+     <use xlink:href="#PTSerif-Regular-59" transform="translate(248.890625 0)"/>
+     <use xlink:href="#PTSerif-Regular-af" transform="translate(299.59375 0)"/>
+     <use xlink:href="#PTSerif-Regular-44" transform="translate(329.6875 0)"/>
+     <use xlink:href="#PTSerif-Regular-56" transform="translate(380.1875 0)"/>
+     <use xlink:href="#PTSerif-Regular-3" transform="translate(423.484375 0)"/>
+     <use xlink:href="#PTSerif-Regular-47" transform="translate(447.78125 0)"/>
+     <use xlink:href="#PTSerif-Regular-48" transform="translate(503.28125 0)"/>
+     <use xlink:href="#PTSerif-Regular-3" transform="translate(553.578125 0)"/>
+     <use xlink:href="#PTSerif-Regular-4f" transform="translate(577.875 0)"/>
+     <use xlink:href="#PTSerif-Regular-44" transform="translate(607.96875 0)"/>
+     <use xlink:href="#PTSerif-Regular-3" transform="translate(658.46875 0)"/>
+     <use xlink:href="#PTSerif-Regular-55" transform="translate(682.765625 0)"/>
+     <use xlink:href="#PTSerif-Regular-48" transform="translate(721.171875 0)"/>
+     <use xlink:href="#PTSerif-Regular-4a" transform="translate(771.46875 0)"/>
+     <use xlink:href="#PTSerif-Regular-4c" transform="translate(824.0625 0)"/>
+     <use xlink:href="#PTSerif-Regular-b5" transform="translate(854.15625 0)"/>
+     <use xlink:href="#PTSerif-Regular-51" transform="translate(909.453125 0)"/>
     </g>
    </g>
   </g>
@@ -2503,7 +2553,7 @@ z
 " style="fill: #6e6878"/>
   </g>
   <g id="text_39">
-   <!-- Las vías de Manizales se cierran sin sismo -->
+   <!-- Las vías de Manizales se cierran también sin sismo -->
    <g style="fill: #2e2550" transform="translate(55.296 54.432) scale(0.432 -0.432)">
     <defs>
      <path id="PTSerif-Bold-2f" d="M 128 4480 
@@ -2969,6 +3019,33 @@ L 2733 2464
 L 1856 2464 
 z
 " transform="scale(0.015625)"/>
+     <path id="PTSerif-Bold-57" d="M 51 3046 
+Q 294 3200 563 3264 
+L 563 3782 
+Q 614 3821 816 3894 
+Q 1018 3968 1267 4013 
+L 1485 4013 
+L 1485 3200 
+L 2330 3200 
+L 2330 2797 
+L 1485 2797 
+L 1485 1139 
+Q 1485 742 1584 588 
+Q 1683 435 1914 435 
+Q 2029 435 2173 451 
+Q 2317 467 2438 512 
+L 2483 301 
+Q 2426 243 2314 179 
+Q 2202 115 2058 57 
+Q 1914 0 1744 -38 
+Q 1574 -77 1389 -77 
+Q 973 -77 768 140 
+Q 563 358 563 845 
+L 563 2797 
+L 51 2797 
+L 51 3046 
+z
+" transform="scale(0.015625)"/>
      <path id="PTSerif-Bold-50" d="M 3802 0 
 L 2202 0 
 L 2202 250 
@@ -3025,6 +3102,82 @@ L 3443 403
 Q 3552 371 3638 332 
 Q 3725 294 3802 250 
 L 3802 0 
+z
+" transform="scale(0.015625)"/>
+     <path id="PTSerif-Bold-45" d="M 429 4282 
+L -58 4333 
+L -58 4582 
+Q 38 4621 195 4659 
+Q 352 4698 521 4726 
+Q 691 4755 854 4777 
+Q 1018 4800 1133 4813 
+L 1350 4813 
+L 1350 2598 
+L 1363 2598 
+Q 1491 2918 1753 3097 
+Q 2016 3277 2374 3277 
+Q 2938 3277 3251 2886 
+Q 3565 2496 3565 1702 
+Q 3565 826 3101 384 
+Q 2637 -58 1741 -58 
+Q 1581 -58 1382 -35 
+Q 1184 -13 998 19 
+Q 813 51 656 96 
+Q 499 141 429 186 
+L 429 4282 
+z
+M 1958 2765 
+Q 1715 2765 1568 2589 
+Q 1421 2413 1350 2144 
+L 1350 448 
+Q 1440 384 1571 345 
+Q 1702 307 1869 307 
+Q 2234 307 2403 633 
+Q 2573 960 2573 1658 
+Q 2573 2163 2435 2464 
+Q 2298 2765 1958 2765 
+z
+" transform="scale(0.015625)"/>
+     <path id="PTSerif-Bold-ab" d="M 3110 538 
+Q 3059 429 2947 317 
+Q 2835 205 2672 118 
+Q 2509 32 2294 -22 
+Q 2080 -77 1830 -77 
+Q 1434 -77 1126 41 
+Q 819 160 614 381 
+Q 410 602 304 909 
+Q 198 1216 198 1600 
+Q 198 2419 627 2848 
+Q 1056 3277 1818 3277 
+Q 2144 3277 2429 3187 
+Q 2714 3098 2902 2893 
+Q 3091 2688 3164 2355 
+Q 3238 2022 3155 1542 
+L 1190 1542 
+Q 1197 1037 1449 736 
+Q 1702 435 2195 435 
+Q 2406 435 2633 499 
+Q 2861 563 2989 666 
+L 3110 538 
+z
+M 1792 2912 
+Q 1664 2912 1565 2867 
+Q 1466 2822 1392 2704 
+Q 1318 2586 1273 2384 
+Q 1229 2182 1210 1875 
+L 2240 1875 
+Q 2285 2374 2182 2643 
+Q 2080 2912 1792 2912 
+z
+M 1971 4883 
+Q 2022 4896 2140 4893 
+Q 2259 4890 2387 4870 
+Q 2515 4851 2620 4816 
+Q 2726 4781 2758 4742 
+L 2758 4589 
+L 1536 3597 
+L 1280 3738 
+L 1971 4883 
 z
 " transform="scale(0.015625)"/>
      <path id="PTSerif-Bold-52" d="M 198 1600 
@@ -3098,66 +3251,29 @@ z
     <use xlink:href="#PTSerif-Bold-44" transform="translate(1401.953125 0)"/>
     <use xlink:href="#PTSerif-Bold-51" transform="translate(1457.65625 0)"/>
     <use xlink:href="#PTSerif-Bold-3" transform="translate(1522.0625 0)"/>
-    <use xlink:href="#PTSerif-Bold-56" transform="translate(1549.0625 0)"/>
-    <use xlink:href="#PTSerif-Bold-4c" transform="translate(1594.265625 0)"/>
-    <use xlink:href="#PTSerif-Bold-51" transform="translate(1627.46875 0)"/>
-    <use xlink:href="#PTSerif-Bold-3" transform="translate(1691.875 0)"/>
-    <use xlink:href="#PTSerif-Bold-56" transform="translate(1718.875 0)"/>
-    <use xlink:href="#PTSerif-Bold-4c" transform="translate(1764.078125 0)"/>
-    <use xlink:href="#PTSerif-Bold-56" transform="translate(1797.28125 0)"/>
-    <use xlink:href="#PTSerif-Bold-50" transform="translate(1842.484375 0)"/>
-    <use xlink:href="#PTSerif-Bold-52" transform="translate(1934.890625 0)"/>
+    <use xlink:href="#PTSerif-Bold-57" transform="translate(1549.0625 0)"/>
+    <use xlink:href="#PTSerif-Bold-44" transform="translate(1588.96875 0)"/>
+    <use xlink:href="#PTSerif-Bold-50" transform="translate(1644.671875 0)"/>
+    <use xlink:href="#PTSerif-Bold-45" transform="translate(1737.078125 0)"/>
+    <use xlink:href="#PTSerif-Bold-4c" transform="translate(1795.875 0)"/>
+    <use xlink:href="#PTSerif-Bold-ab" transform="translate(1829.078125 0)"/>
+    <use xlink:href="#PTSerif-Bold-51" transform="translate(1882.78125 0)"/>
+    <use xlink:href="#PTSerif-Bold-3" transform="translate(1947.1875 0)"/>
+    <use xlink:href="#PTSerif-Bold-56" transform="translate(1974.1875 0)"/>
+    <use xlink:href="#PTSerif-Bold-4c" transform="translate(2019.390625 0)"/>
+    <use xlink:href="#PTSerif-Bold-51" transform="translate(2052.59375 0)"/>
+    <use xlink:href="#PTSerif-Bold-3" transform="translate(2117 0)"/>
+    <use xlink:href="#PTSerif-Bold-56" transform="translate(2144 0)"/>
+    <use xlink:href="#PTSerif-Bold-4c" transform="translate(2189.203125 0)"/>
+    <use xlink:href="#PTSerif-Bold-56" transform="translate(2222.40625 0)"/>
+    <use xlink:href="#PTSerif-Bold-50" transform="translate(2267.609375 0)"/>
+    <use xlink:href="#PTSerif-Bold-52" transform="translate(2360.015625 0)"/>
    </g>
   </g>
   <g id="text_40">
-   <!-- Registros de derrumbe o deslizamiento de 2017 a 2026, sin los del sismo: 152 -->
+   <!-- 152 registros de derrumbe o deslizamiento de 2017 a 2026, sin contar los del sismo -->
    <g style="fill: #6e6878" transform="translate(55.296 104.976) scale(0.2592 -0.2592)">
     <defs>
-     <path id="PTSerif-Regular-35" d="M 1325 339 
-Q 1472 307 1606 272 
-Q 1741 237 1869 186 
-L 1869 0 
-L 186 0 
-L 186 186 
-Q 326 250 454 282 
-Q 582 314 710 339 
-L 710 4134 
-Q 544 4166 416 4208 
-Q 288 4250 186 4294 
-L 186 4480 
-L 749 4480 
-Q 1005 4480 1309 4505 
-Q 1613 4531 1901 4531 
-Q 2214 4531 2486 4460 
-Q 2758 4390 2956 4236 
-Q 3155 4083 3267 3846 
-Q 3379 3610 3379 3277 
-Q 3379 2810 3132 2502 
-Q 2886 2195 2464 2061 
-Q 2739 1626 3040 1197 
-Q 3341 768 3667 346 
-L 4013 160 
-L 4013 0 
-L 3238 0 
-L 2995 179 
-Q 2816 403 2669 617 
-Q 2522 832 2394 1053 
-Q 2266 1274 2154 1501 
-Q 2042 1728 1926 1984 
-L 1325 1984 
-L 1325 339 
-z
-M 1760 4198 
-Q 1606 4198 1507 4192 
-Q 1408 4186 1325 4166 
-L 1325 2253 
-L 1786 2253 
-Q 2227 2253 2486 2534 
-Q 2746 2816 2746 3277 
-Q 2746 3750 2470 3974 
-Q 2195 4198 1760 4198 
-z
-" transform="scale(0.015625)"/>
      <path id="PTSerif-Regular-45" d="M 493 4365 
 L 6 4416 
 L 6 4582 
@@ -3231,104 +3347,89 @@ Q 672 -1082 454 -1146
 L 326 -954 
 z
 " transform="scale(0.015625)"/>
-     <path id="PTSerif-Regular-1d" d="M 761 2829 
-Q 761 3021 883 3136 
-Q 1005 3251 1197 3251 
-Q 1395 3251 1516 3136 
-Q 1638 3021 1638 2829 
-Q 1638 2643 1516 2528 
-Q 1395 2413 1197 2413 
-Q 1005 2413 883 2528 
-Q 761 2643 761 2829 
-z
-M 761 365 
-Q 761 557 883 672 
-Q 1005 787 1197 787 
-Q 1395 787 1516 672 
-Q 1638 557 1638 365 
-Q 1638 179 1516 64 
-Q 1395 -51 1197 -51 
-Q 1005 -51 883 64 
-Q 761 179 761 365 
-z
-" transform="scale(0.015625)"/>
     </defs>
-    <use xlink:href="#PTSerif-Regular-35"/>
-    <use xlink:href="#PTSerif-Regular-48" transform="translate(63.703125 0)"/>
-    <use xlink:href="#PTSerif-Regular-4a" transform="translate(114 0)"/>
-    <use xlink:href="#PTSerif-Regular-4c" transform="translate(166.59375 0)"/>
-    <use xlink:href="#PTSerif-Regular-56" transform="translate(196.6875 0)"/>
-    <use xlink:href="#PTSerif-Regular-57" transform="translate(239.984375 0)"/>
-    <use xlink:href="#PTSerif-Regular-55" transform="translate(277.078125 0)"/>
-    <use xlink:href="#PTSerif-Regular-52" transform="translate(315.484375 0)"/>
-    <use xlink:href="#PTSerif-Regular-56" transform="translate(370.78125 0)"/>
-    <use xlink:href="#PTSerif-Regular-3" transform="translate(414.078125 0)"/>
-    <use xlink:href="#PTSerif-Regular-47" transform="translate(438.375 0)"/>
-    <use xlink:href="#PTSerif-Regular-48" transform="translate(493.875 0)"/>
-    <use xlink:href="#PTSerif-Regular-3" transform="translate(544.171875 0)"/>
-    <use xlink:href="#PTSerif-Regular-47" transform="translate(568.46875 0)"/>
-    <use xlink:href="#PTSerif-Regular-48" transform="translate(623.96875 0)"/>
-    <use xlink:href="#PTSerif-Regular-55" transform="translate(674.265625 0)"/>
-    <use xlink:href="#PTSerif-Regular-55" transform="translate(712.671875 0)"/>
-    <use xlink:href="#PTSerif-Regular-58" transform="translate(751.078125 0)"/>
-    <use xlink:href="#PTSerif-Regular-50" transform="translate(808.484375 0)"/>
-    <use xlink:href="#PTSerif-Regular-45" transform="translate(894.78125 0)"/>
-    <use xlink:href="#PTSerif-Regular-48" transform="translate(949.28125 0)"/>
-    <use xlink:href="#PTSerif-Regular-3" transform="translate(999.578125 0)"/>
-    <use xlink:href="#PTSerif-Regular-52" transform="translate(1023.875 0)"/>
-    <use xlink:href="#PTSerif-Regular-3" transform="translate(1079.171875 0)"/>
-    <use xlink:href="#PTSerif-Regular-47" transform="translate(1103.46875 0)"/>
-    <use xlink:href="#PTSerif-Regular-48" transform="translate(1158.96875 0)"/>
-    <use xlink:href="#PTSerif-Regular-56" transform="translate(1209.265625 0)"/>
-    <use xlink:href="#PTSerif-Regular-4f" transform="translate(1252.5625 0)"/>
-    <use xlink:href="#PTSerif-Regular-4c" transform="translate(1282.65625 0)"/>
-    <use xlink:href="#PTSerif-Regular-5d" transform="translate(1312.75 0)"/>
-    <use xlink:href="#PTSerif-Regular-44" transform="translate(1361.546875 0)"/>
-    <use xlink:href="#PTSerif-Regular-50" transform="translate(1412.046875 0)"/>
-    <use xlink:href="#PTSerif-Regular-4c" transform="translate(1498.34375 0)"/>
-    <use xlink:href="#PTSerif-Regular-48" transform="translate(1528.4375 0)"/>
-    <use xlink:href="#PTSerif-Regular-51" transform="translate(1578.734375 0)"/>
-    <use xlink:href="#PTSerif-Regular-57" transform="translate(1638.140625 0)"/>
-    <use xlink:href="#PTSerif-Regular-52" transform="translate(1675.234375 0)"/>
-    <use xlink:href="#PTSerif-Regular-3" transform="translate(1730.53125 0)"/>
-    <use xlink:href="#PTSerif-Regular-47" transform="translate(1754.828125 0)"/>
-    <use xlink:href="#PTSerif-Regular-48" transform="translate(1810.328125 0)"/>
-    <use xlink:href="#PTSerif-Regular-3" transform="translate(1860.625 0)"/>
-    <use xlink:href="#PTSerif-Regular-15" transform="translate(1884.921875 0)"/>
-    <use xlink:href="#PTSerif-Regular-13" transform="translate(1938.21875 0)"/>
-    <use xlink:href="#PTSerif-Regular-14" transform="translate(1991.515625 0)"/>
-    <use xlink:href="#PTSerif-Regular-1a" transform="translate(2044.8125 0)"/>
-    <use xlink:href="#PTSerif-Regular-3" transform="translate(2098.109375 0)"/>
-    <use xlink:href="#PTSerif-Regular-44" transform="translate(2122.40625 0)"/>
-    <use xlink:href="#PTSerif-Regular-3" transform="translate(2172.90625 0)"/>
-    <use xlink:href="#PTSerif-Regular-15" transform="translate(2197.203125 0)"/>
-    <use xlink:href="#PTSerif-Regular-13" transform="translate(2250.5 0)"/>
-    <use xlink:href="#PTSerif-Regular-15" transform="translate(2303.796875 0)"/>
-    <use xlink:href="#PTSerif-Regular-19" transform="translate(2357.09375 0)"/>
-    <use xlink:href="#PTSerif-Regular-f" transform="translate(2410.390625 0)"/>
-    <use xlink:href="#PTSerif-Regular-3" transform="translate(2434.6875 0)"/>
-    <use xlink:href="#PTSerif-Regular-56" transform="translate(2458.984375 0)"/>
-    <use xlink:href="#PTSerif-Regular-4c" transform="translate(2502.28125 0)"/>
-    <use xlink:href="#PTSerif-Regular-51" transform="translate(2532.375 0)"/>
-    <use xlink:href="#PTSerif-Regular-3" transform="translate(2591.78125 0)"/>
-    <use xlink:href="#PTSerif-Regular-4f" transform="translate(2616.078125 0)"/>
-    <use xlink:href="#PTSerif-Regular-52" transform="translate(2646.171875 0)"/>
-    <use xlink:href="#PTSerif-Regular-56" transform="translate(2701.46875 0)"/>
-    <use xlink:href="#PTSerif-Regular-3" transform="translate(2744.765625 0)"/>
-    <use xlink:href="#PTSerif-Regular-47" transform="translate(2769.0625 0)"/>
-    <use xlink:href="#PTSerif-Regular-48" transform="translate(2824.5625 0)"/>
-    <use xlink:href="#PTSerif-Regular-4f" transform="translate(2874.859375 0)"/>
-    <use xlink:href="#PTSerif-Regular-3" transform="translate(2904.953125 0)"/>
-    <use xlink:href="#PTSerif-Regular-56" transform="translate(2929.25 0)"/>
-    <use xlink:href="#PTSerif-Regular-4c" transform="translate(2972.546875 0)"/>
-    <use xlink:href="#PTSerif-Regular-56" transform="translate(3002.640625 0)"/>
-    <use xlink:href="#PTSerif-Regular-50" transform="translate(3045.9375 0)"/>
-    <use xlink:href="#PTSerif-Regular-52" transform="translate(3132.234375 0)"/>
-    <use xlink:href="#PTSerif-Regular-1d" transform="translate(3187.53125 0)"/>
-    <use xlink:href="#PTSerif-Regular-3" transform="translate(3220.234375 0)"/>
-    <use xlink:href="#PTSerif-Regular-14" transform="translate(3244.53125 0)"/>
-    <use xlink:href="#PTSerif-Regular-18" transform="translate(3297.828125 0)"/>
-    <use xlink:href="#PTSerif-Regular-15" transform="translate(3351.125 0)"/>
+    <use xlink:href="#PTSerif-Regular-14"/>
+    <use xlink:href="#PTSerif-Regular-18" transform="translate(53.296875 0)"/>
+    <use xlink:href="#PTSerif-Regular-15" transform="translate(106.59375 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(159.890625 0)"/>
+    <use xlink:href="#PTSerif-Regular-55" transform="translate(184.1875 0)"/>
+    <use xlink:href="#PTSerif-Regular-48" transform="translate(222.59375 0)"/>
+    <use xlink:href="#PTSerif-Regular-4a" transform="translate(272.890625 0)"/>
+    <use xlink:href="#PTSerif-Regular-4c" transform="translate(325.484375 0)"/>
+    <use xlink:href="#PTSerif-Regular-56" transform="translate(355.578125 0)"/>
+    <use xlink:href="#PTSerif-Regular-57" transform="translate(398.875 0)"/>
+    <use xlink:href="#PTSerif-Regular-55" transform="translate(435.96875 0)"/>
+    <use xlink:href="#PTSerif-Regular-52" transform="translate(474.375 0)"/>
+    <use xlink:href="#PTSerif-Regular-56" transform="translate(529.671875 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(572.96875 0)"/>
+    <use xlink:href="#PTSerif-Regular-47" transform="translate(597.265625 0)"/>
+    <use xlink:href="#PTSerif-Regular-48" transform="translate(652.765625 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(703.0625 0)"/>
+    <use xlink:href="#PTSerif-Regular-47" transform="translate(727.359375 0)"/>
+    <use xlink:href="#PTSerif-Regular-48" transform="translate(782.859375 0)"/>
+    <use xlink:href="#PTSerif-Regular-55" transform="translate(833.15625 0)"/>
+    <use xlink:href="#PTSerif-Regular-55" transform="translate(871.5625 0)"/>
+    <use xlink:href="#PTSerif-Regular-58" transform="translate(909.96875 0)"/>
+    <use xlink:href="#PTSerif-Regular-50" transform="translate(967.375 0)"/>
+    <use xlink:href="#PTSerif-Regular-45" transform="translate(1053.671875 0)"/>
+    <use xlink:href="#PTSerif-Regular-48" transform="translate(1108.171875 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(1158.46875 0)"/>
+    <use xlink:href="#PTSerif-Regular-52" transform="translate(1182.765625 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(1238.0625 0)"/>
+    <use xlink:href="#PTSerif-Regular-47" transform="translate(1262.359375 0)"/>
+    <use xlink:href="#PTSerif-Regular-48" transform="translate(1317.859375 0)"/>
+    <use xlink:href="#PTSerif-Regular-56" transform="translate(1368.15625 0)"/>
+    <use xlink:href="#PTSerif-Regular-4f" transform="translate(1411.453125 0)"/>
+    <use xlink:href="#PTSerif-Regular-4c" transform="translate(1441.546875 0)"/>
+    <use xlink:href="#PTSerif-Regular-5d" transform="translate(1471.640625 0)"/>
+    <use xlink:href="#PTSerif-Regular-44" transform="translate(1520.4375 0)"/>
+    <use xlink:href="#PTSerif-Regular-50" transform="translate(1570.9375 0)"/>
+    <use xlink:href="#PTSerif-Regular-4c" transform="translate(1657.234375 0)"/>
+    <use xlink:href="#PTSerif-Regular-48" transform="translate(1687.328125 0)"/>
+    <use xlink:href="#PTSerif-Regular-51" transform="translate(1737.625 0)"/>
+    <use xlink:href="#PTSerif-Regular-57" transform="translate(1797.03125 0)"/>
+    <use xlink:href="#PTSerif-Regular-52" transform="translate(1834.125 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(1889.421875 0)"/>
+    <use xlink:href="#PTSerif-Regular-47" transform="translate(1913.71875 0)"/>
+    <use xlink:href="#PTSerif-Regular-48" transform="translate(1969.21875 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(2019.515625 0)"/>
+    <use xlink:href="#PTSerif-Regular-15" transform="translate(2043.8125 0)"/>
+    <use xlink:href="#PTSerif-Regular-13" transform="translate(2097.109375 0)"/>
+    <use xlink:href="#PTSerif-Regular-14" transform="translate(2150.40625 0)"/>
+    <use xlink:href="#PTSerif-Regular-1a" transform="translate(2203.703125 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(2257 0)"/>
+    <use xlink:href="#PTSerif-Regular-44" transform="translate(2281.296875 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(2331.796875 0)"/>
+    <use xlink:href="#PTSerif-Regular-15" transform="translate(2356.09375 0)"/>
+    <use xlink:href="#PTSerif-Regular-13" transform="translate(2409.390625 0)"/>
+    <use xlink:href="#PTSerif-Regular-15" transform="translate(2462.6875 0)"/>
+    <use xlink:href="#PTSerif-Regular-19" transform="translate(2515.984375 0)"/>
+    <use xlink:href="#PTSerif-Regular-f" transform="translate(2569.28125 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(2593.578125 0)"/>
+    <use xlink:href="#PTSerif-Regular-56" transform="translate(2617.875 0)"/>
+    <use xlink:href="#PTSerif-Regular-4c" transform="translate(2661.171875 0)"/>
+    <use xlink:href="#PTSerif-Regular-51" transform="translate(2691.265625 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(2750.671875 0)"/>
+    <use xlink:href="#PTSerif-Regular-46" transform="translate(2774.96875 0)"/>
+    <use xlink:href="#PTSerif-Regular-52" transform="translate(2821.5625 0)"/>
+    <use xlink:href="#PTSerif-Regular-51" transform="translate(2876.859375 0)"/>
+    <use xlink:href="#PTSerif-Regular-57" transform="translate(2936.265625 0)"/>
+    <use xlink:href="#PTSerif-Regular-44" transform="translate(2973.359375 0)"/>
+    <use xlink:href="#PTSerif-Regular-55" transform="translate(3023.859375 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(3062.265625 0)"/>
+    <use xlink:href="#PTSerif-Regular-4f" transform="translate(3086.5625 0)"/>
+    <use xlink:href="#PTSerif-Regular-52" transform="translate(3116.65625 0)"/>
+    <use xlink:href="#PTSerif-Regular-56" transform="translate(3171.953125 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(3215.25 0)"/>
+    <use xlink:href="#PTSerif-Regular-47" transform="translate(3239.546875 0)"/>
+    <use xlink:href="#PTSerif-Regular-48" transform="translate(3295.046875 0)"/>
+    <use xlink:href="#PTSerif-Regular-4f" transform="translate(3345.34375 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(3375.4375 0)"/>
+    <use xlink:href="#PTSerif-Regular-56" transform="translate(3399.734375 0)"/>
+    <use xlink:href="#PTSerif-Regular-4c" transform="translate(3443.03125 0)"/>
+    <use xlink:href="#PTSerif-Regular-56" transform="translate(3473.125 0)"/>
+    <use xlink:href="#PTSerif-Regular-50" transform="translate(3516.421875 0)"/>
+    <use xlink:href="#PTSerif-Regular-52" transform="translate(3602.71875 0)"/>
    </g>
   </g>
   <g id="text_41">
@@ -4096,113 +4197,8 @@ z
     <use xlink:href="#PTSerif-Regular-c" transform="translate(6255.203125 0)"/>
     <use xlink:href="#PTSerif-Regular-11" transform="translate(6289.5 0)"/>
    </g>
-   <!-- Son registros, no eventos, y el #767 no registra todo. Un agente revisó las filas; falta que las verifique una persona. -->
+   <!-- Son registros, no eventos, y el #767 no registra todo. 2026 va hasta el 20 de noviembre. Las filas las revisó un agente, no una persona. -->
    <g style="fill: #6e6878" transform="translate(55.296 747.747788) scale(0.1872 -0.1872)">
-    <defs>
-     <path id="PTSerif-Regular-38" d="M 64 4480 
-L 1690 4480 
-L 1690 4294 
-Q 1568 4243 1446 4204 
-Q 1325 4166 1203 4134 
-L 1203 1517 
-Q 1203 1178 1276 950 
-Q 1350 723 1491 585 
-Q 1632 448 1840 387 
-Q 2048 326 2310 326 
-Q 2816 326 3097 604 
-Q 3379 883 3379 1523 
-L 3379 4077 
-Q 3232 4128 3104 4182 
-Q 2976 4237 2874 4294 
-L 2874 4480 
-L 4237 4480 
-L 4237 4294 
-Q 4115 4224 3990 4166 
-Q 3866 4109 3738 4077 
-L 3738 1510 
-Q 3738 1101 3629 806 
-Q 3520 512 3325 320 
-Q 3130 128 2851 35 
-Q 2573 -58 2234 -58 
-Q 1434 -58 1011 304 
-Q 589 666 589 1414 
-L 589 4134 
-Q 326 4173 64 4294 
-L 64 4480 
-z
-" transform="scale(0.015625)"/>
-     <path id="PTSerif-Regular-b5" d="M 262 1600 
-Q 262 2003 368 2313 
-Q 474 2624 672 2838 
-Q 870 3053 1148 3165 
-Q 1427 3277 1766 3277 
-Q 2163 3277 2451 3155 
-Q 2739 3034 2921 2813 
-Q 3104 2592 3190 2285 
-Q 3277 1978 3277 1600 
-Q 3277 794 2867 358 
-Q 2458 -77 1766 -77 
-Q 1382 -77 1100 41 
-Q 819 160 633 381 
-Q 448 602 355 912 
-Q 262 1222 262 1600 
-z
-M 877 1600 
-Q 877 1312 931 1056 
-Q 986 800 1104 611 
-Q 1222 422 1414 313 
-Q 1606 205 1875 205 
-Q 2221 205 2441 544 
-Q 2662 883 2662 1600 
-Q 2662 1894 2608 2147 
-Q 2554 2400 2438 2589 
-Q 2323 2778 2144 2886 
-Q 1965 2995 1715 2995 
-Q 1338 2995 1107 2656 
-Q 877 2317 877 1600 
-z
-M 2106 4909 
-Q 2157 4915 2240 4905 
-Q 2323 4896 2413 4877 
-Q 2503 4858 2579 4829 
-Q 2656 4800 2695 4768 
-L 2695 4646 
-L 1498 3680 
-L 1357 3795 
-L 2106 4909 
-z
-" transform="scale(0.015625)"/>
-     <path id="PTSerif-Regular-1e" d="M 793 2829 
-Q 793 3021 915 3136 
-Q 1037 3251 1229 3251 
-Q 1427 3251 1548 3136 
-Q 1670 3021 1670 2829 
-Q 1670 2643 1548 2528 
-Q 1427 2413 1229 2413 
-Q 1037 2413 915 2528 
-Q 793 2643 793 2829 
-z
-M 665 -954 
-Q 787 -909 896 -816 
-Q 1005 -723 1085 -608 
-Q 1165 -493 1206 -355 
-Q 1248 -218 1235 -83 
-Q 1158 -13 1030 57 
-Q 902 128 806 160 
-Q 774 282 803 397 
-Q 832 512 889 601 
-Q 947 691 1020 745 
-Q 1094 800 1165 806 
-Q 1389 774 1558 608 
-Q 1728 442 1728 109 
-Q 1728 -70 1664 -265 
-Q 1600 -461 1478 -633 
-Q 1357 -806 1184 -944 
-Q 1011 -1082 793 -1146 
-L 665 -954 
-z
-" transform="scale(0.015625)"/>
-    </defs>
     <use xlink:href="#PTSerif-Regular-36"/>
     <use xlink:href="#PTSerif-Regular-52" transform="translate(53.59375 0)"/>
     <use xlink:href="#PTSerif-Regular-51" transform="translate(108.890625 0)"/>
@@ -4258,70 +4254,87 @@ z
     <use xlink:href="#PTSerif-Regular-52" transform="translate(2232.796875 0)"/>
     <use xlink:href="#PTSerif-Regular-11" transform="translate(2288.09375 0)"/>
     <use xlink:href="#PTSerif-Regular-3" transform="translate(2312 0)"/>
-    <use xlink:href="#PTSerif-Regular-38" transform="translate(2336.296875 0)"/>
-    <use xlink:href="#PTSerif-Regular-51" transform="translate(2403.5 0)"/>
-    <use xlink:href="#PTSerif-Regular-3" transform="translate(2462.90625 0)"/>
-    <use xlink:href="#PTSerif-Regular-44" transform="translate(2487.203125 0)"/>
-    <use xlink:href="#PTSerif-Regular-4a" transform="translate(2537.703125 0)"/>
-    <use xlink:href="#PTSerif-Regular-48" transform="translate(2590.296875 0)"/>
-    <use xlink:href="#PTSerif-Regular-51" transform="translate(2640.59375 0)"/>
-    <use xlink:href="#PTSerif-Regular-57" transform="translate(2700 0)"/>
-    <use xlink:href="#PTSerif-Regular-48" transform="translate(2737.09375 0)"/>
-    <use xlink:href="#PTSerif-Regular-3" transform="translate(2787.390625 0)"/>
-    <use xlink:href="#PTSerif-Regular-55" transform="translate(2811.6875 0)"/>
-    <use xlink:href="#PTSerif-Regular-48" transform="translate(2850.09375 0)"/>
-    <use xlink:href="#PTSerif-Regular-59" transform="translate(2900.390625 0)"/>
-    <use xlink:href="#PTSerif-Regular-4c" transform="translate(2951.09375 0)"/>
-    <use xlink:href="#PTSerif-Regular-56" transform="translate(2981.1875 0)"/>
-    <use xlink:href="#PTSerif-Regular-b5" transform="translate(3024.484375 0)"/>
-    <use xlink:href="#PTSerif-Regular-3" transform="translate(3079.78125 0)"/>
-    <use xlink:href="#PTSerif-Regular-4f" transform="translate(3104.078125 0)"/>
-    <use xlink:href="#PTSerif-Regular-44" transform="translate(3134.171875 0)"/>
-    <use xlink:href="#PTSerif-Regular-56" transform="translate(3184.671875 0)"/>
-    <use xlink:href="#PTSerif-Regular-3" transform="translate(3227.96875 0)"/>
-    <use xlink:href="#PTSerif-Regular-49" transform="translate(3252.265625 0)"/>
-    <use xlink:href="#PTSerif-Regular-4c" transform="translate(3286.46875 0)"/>
-    <use xlink:href="#PTSerif-Regular-4f" transform="translate(3316.5625 0)"/>
-    <use xlink:href="#PTSerif-Regular-44" transform="translate(3346.65625 0)"/>
-    <use xlink:href="#PTSerif-Regular-56" transform="translate(3397.15625 0)"/>
-    <use xlink:href="#PTSerif-Regular-1e" transform="translate(3440.453125 0)"/>
-    <use xlink:href="#PTSerif-Regular-3" transform="translate(3473.65625 0)"/>
-    <use xlink:href="#PTSerif-Regular-49" transform="translate(3497.953125 0)"/>
-    <use xlink:href="#PTSerif-Regular-44" transform="translate(3532.15625 0)"/>
-    <use xlink:href="#PTSerif-Regular-4f" transform="translate(3582.65625 0)"/>
-    <use xlink:href="#PTSerif-Regular-57" transform="translate(3612.75 0)"/>
-    <use xlink:href="#PTSerif-Regular-44" transform="translate(3649.84375 0)"/>
-    <use xlink:href="#PTSerif-Regular-3" transform="translate(3700.34375 0)"/>
-    <use xlink:href="#PTSerif-Regular-54" transform="translate(3724.640625 0)"/>
-    <use xlink:href="#PTSerif-Regular-58" transform="translate(3779.4375 0)"/>
-    <use xlink:href="#PTSerif-Regular-48" transform="translate(3836.84375 0)"/>
-    <use xlink:href="#PTSerif-Regular-3" transform="translate(3887.140625 0)"/>
-    <use xlink:href="#PTSerif-Regular-4f" transform="translate(3911.4375 0)"/>
-    <use xlink:href="#PTSerif-Regular-44" transform="translate(3941.53125 0)"/>
-    <use xlink:href="#PTSerif-Regular-56" transform="translate(3992.03125 0)"/>
-    <use xlink:href="#PTSerif-Regular-3" transform="translate(4035.328125 0)"/>
-    <use xlink:href="#PTSerif-Regular-59" transform="translate(4059.625 0)"/>
-    <use xlink:href="#PTSerif-Regular-48" transform="translate(4110.328125 0)"/>
-    <use xlink:href="#PTSerif-Regular-55" transform="translate(4160.625 0)"/>
-    <use xlink:href="#PTSerif-Regular-4c" transform="translate(4199.03125 0)"/>
-    <use xlink:href="#PTSerif-Regular-49" transform="translate(4229.125 0)"/>
-    <use xlink:href="#PTSerif-Regular-4c" transform="translate(4263.328125 0)"/>
-    <use xlink:href="#PTSerif-Regular-54" transform="translate(4293.421875 0)"/>
-    <use xlink:href="#PTSerif-Regular-58" transform="translate(4348.21875 0)"/>
-    <use xlink:href="#PTSerif-Regular-48" transform="translate(4405.625 0)"/>
-    <use xlink:href="#PTSerif-Regular-3" transform="translate(4455.921875 0)"/>
-    <use xlink:href="#PTSerif-Regular-58" transform="translate(4480.21875 0)"/>
-    <use xlink:href="#PTSerif-Regular-51" transform="translate(4537.625 0)"/>
-    <use xlink:href="#PTSerif-Regular-44" transform="translate(4597.03125 0)"/>
-    <use xlink:href="#PTSerif-Regular-3" transform="translate(4647.53125 0)"/>
-    <use xlink:href="#PTSerif-Regular-53" transform="translate(4671.828125 0)"/>
-    <use xlink:href="#PTSerif-Regular-48" transform="translate(4728.421875 0)"/>
-    <use xlink:href="#PTSerif-Regular-55" transform="translate(4778.71875 0)"/>
-    <use xlink:href="#PTSerif-Regular-56" transform="translate(4817.125 0)"/>
-    <use xlink:href="#PTSerif-Regular-52" transform="translate(4860.421875 0)"/>
-    <use xlink:href="#PTSerif-Regular-51" transform="translate(4915.71875 0)"/>
-    <use xlink:href="#PTSerif-Regular-44" transform="translate(4975.125 0)"/>
-    <use xlink:href="#PTSerif-Regular-11" transform="translate(5025.625 0)"/>
+    <use xlink:href="#PTSerif-Regular-15" transform="translate(2336.296875 0)"/>
+    <use xlink:href="#PTSerif-Regular-13" transform="translate(2389.59375 0)"/>
+    <use xlink:href="#PTSerif-Regular-15" transform="translate(2442.890625 0)"/>
+    <use xlink:href="#PTSerif-Regular-19" transform="translate(2496.1875 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(2549.484375 0)"/>
+    <use xlink:href="#PTSerif-Regular-59" transform="translate(2573.78125 0)"/>
+    <use xlink:href="#PTSerif-Regular-44" transform="translate(2624.484375 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(2674.984375 0)"/>
+    <use xlink:href="#PTSerif-Regular-4b" transform="translate(2699.28125 0)"/>
+    <use xlink:href="#PTSerif-Regular-44" transform="translate(2757.984375 0)"/>
+    <use xlink:href="#PTSerif-Regular-56" transform="translate(2808.484375 0)"/>
+    <use xlink:href="#PTSerif-Regular-57" transform="translate(2851.78125 0)"/>
+    <use xlink:href="#PTSerif-Regular-44" transform="translate(2888.875 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(2939.375 0)"/>
+    <use xlink:href="#PTSerif-Regular-48" transform="translate(2963.671875 0)"/>
+    <use xlink:href="#PTSerif-Regular-4f" transform="translate(3013.96875 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(3044.0625 0)"/>
+    <use xlink:href="#PTSerif-Regular-15" transform="translate(3068.359375 0)"/>
+    <use xlink:href="#PTSerif-Regular-13" transform="translate(3121.65625 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(3174.953125 0)"/>
+    <use xlink:href="#PTSerif-Regular-47" transform="translate(3199.25 0)"/>
+    <use xlink:href="#PTSerif-Regular-48" transform="translate(3254.75 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(3305.046875 0)"/>
+    <use xlink:href="#PTSerif-Regular-51" transform="translate(3329.34375 0)"/>
+    <use xlink:href="#PTSerif-Regular-52" transform="translate(3388.75 0)"/>
+    <use xlink:href="#PTSerif-Regular-59" transform="translate(3444.046875 0)"/>
+    <use xlink:href="#PTSerif-Regular-4c" transform="translate(3494.75 0)"/>
+    <use xlink:href="#PTSerif-Regular-48" transform="translate(3524.84375 0)"/>
+    <use xlink:href="#PTSerif-Regular-50" transform="translate(3575.140625 0)"/>
+    <use xlink:href="#PTSerif-Regular-45" transform="translate(3661.4375 0)"/>
+    <use xlink:href="#PTSerif-Regular-55" transform="translate(3715.9375 0)"/>
+    <use xlink:href="#PTSerif-Regular-48" transform="translate(3754.34375 0)"/>
+    <use xlink:href="#PTSerif-Regular-11" transform="translate(3804.640625 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(3828.546875 0)"/>
+    <use xlink:href="#PTSerif-Regular-2f" transform="translate(3852.84375 0)"/>
+    <use xlink:href="#PTSerif-Regular-44" transform="translate(3907.75 0)"/>
+    <use xlink:href="#PTSerif-Regular-56" transform="translate(3958.25 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(4001.546875 0)"/>
+    <use xlink:href="#PTSerif-Regular-49" transform="translate(4025.84375 0)"/>
+    <use xlink:href="#PTSerif-Regular-4c" transform="translate(4060.046875 0)"/>
+    <use xlink:href="#PTSerif-Regular-4f" transform="translate(4090.140625 0)"/>
+    <use xlink:href="#PTSerif-Regular-44" transform="translate(4120.234375 0)"/>
+    <use xlink:href="#PTSerif-Regular-56" transform="translate(4170.734375 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(4214.03125 0)"/>
+    <use xlink:href="#PTSerif-Regular-4f" transform="translate(4238.328125 0)"/>
+    <use xlink:href="#PTSerif-Regular-44" transform="translate(4268.421875 0)"/>
+    <use xlink:href="#PTSerif-Regular-56" transform="translate(4318.921875 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(4362.21875 0)"/>
+    <use xlink:href="#PTSerif-Regular-55" transform="translate(4386.515625 0)"/>
+    <use xlink:href="#PTSerif-Regular-48" transform="translate(4424.921875 0)"/>
+    <use xlink:href="#PTSerif-Regular-59" transform="translate(4475.21875 0)"/>
+    <use xlink:href="#PTSerif-Regular-4c" transform="translate(4525.921875 0)"/>
+    <use xlink:href="#PTSerif-Regular-56" transform="translate(4556.015625 0)"/>
+    <use xlink:href="#PTSerif-Regular-b5" transform="translate(4599.3125 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(4654.609375 0)"/>
+    <use xlink:href="#PTSerif-Regular-58" transform="translate(4678.90625 0)"/>
+    <use xlink:href="#PTSerif-Regular-51" transform="translate(4736.3125 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(4795.71875 0)"/>
+    <use xlink:href="#PTSerif-Regular-44" transform="translate(4820.015625 0)"/>
+    <use xlink:href="#PTSerif-Regular-4a" transform="translate(4870.515625 0)"/>
+    <use xlink:href="#PTSerif-Regular-48" transform="translate(4923.109375 0)"/>
+    <use xlink:href="#PTSerif-Regular-51" transform="translate(4973.40625 0)"/>
+    <use xlink:href="#PTSerif-Regular-57" transform="translate(5032.8125 0)"/>
+    <use xlink:href="#PTSerif-Regular-48" transform="translate(5069.90625 0)"/>
+    <use xlink:href="#PTSerif-Regular-f" transform="translate(5120.203125 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(5144.5 0)"/>
+    <use xlink:href="#PTSerif-Regular-51" transform="translate(5168.796875 0)"/>
+    <use xlink:href="#PTSerif-Regular-52" transform="translate(5228.203125 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(5283.5 0)"/>
+    <use xlink:href="#PTSerif-Regular-58" transform="translate(5307.796875 0)"/>
+    <use xlink:href="#PTSerif-Regular-51" transform="translate(5365.203125 0)"/>
+    <use xlink:href="#PTSerif-Regular-44" transform="translate(5424.609375 0)"/>
+    <use xlink:href="#PTSerif-Regular-3" transform="translate(5475.109375 0)"/>
+    <use xlink:href="#PTSerif-Regular-53" transform="translate(5499.40625 0)"/>
+    <use xlink:href="#PTSerif-Regular-48" transform="translate(5556 0)"/>
+    <use xlink:href="#PTSerif-Regular-55" transform="translate(5606.296875 0)"/>
+    <use xlink:href="#PTSerif-Regular-56" transform="translate(5644.703125 0)"/>
+    <use xlink:href="#PTSerif-Regular-52" transform="translate(5688 0)"/>
+    <use xlink:href="#PTSerif-Regular-51" transform="translate(5743.296875 0)"/>
+    <use xlink:href="#PTSerif-Regular-44" transform="translate(5802.703125 0)"/>
+    <use xlink:href="#PTSerif-Regular-11" transform="translate(5853.203125 0)"/>
    </g>
   </g>
  </g>

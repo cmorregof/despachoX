@@ -267,8 +267,8 @@ def main():
 
     fig.text(x0, arriba(55), "Tres territorios\npara el piloto", fontsize=e.pt(58), fontweight="bold",
              color=e.TEXTO, va="top", linespacing=1.05)
-    fig.text(x0, arriba(215), "Cada uno une una comuna y un corregimiento.\nDecide el Banco, donde tenga más "
-             "organizaciones.", fontsize=e.pt(28), color=e.CENIZA, va="top", linespacing=1.25)
+    fig.text(x0, arriba(215), "Cada uno une una comuna y un corregimiento.\nElige el Banco, según dónde tenga "
+             "más organizaciones.", fontsize=e.pt(28), color=e.CENIZA, va="top", linespacing=1.25)
     y = 330
     for p in PROPUESTAS:
         fig.text(x0 + 0.013, arriba(y + 22), str(p["n"]), fontsize=e.pt(30), fontweight="bold", color="white",

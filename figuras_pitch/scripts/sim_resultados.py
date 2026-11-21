@@ -155,8 +155,9 @@ def panel(fig, rect, resumen, met, grupos, politicas, estilos, etiqueta, decimal
                     fontsize=e.pt(26), color=e.TEXTO)
     if meta is not None:
         ax.axhline(meta, color=e.AMBAR, linewidth=3, linestyle=(0, (6, 4)))
-        ax.text(len(grupos) - 0.45, meta + tope * 0.02, f"meta del reto: menos de {redondear(meta, 0)} %",
-                ha="right", va="bottom", fontsize=e.pt(26), color=e.AMBAR, fontweight="bold")
+        ax.text(1.0, meta + tope * 0.02, f"meta del reto: menos de {redondear(meta, 0)} %",
+                transform=ax.get_yaxis_transform(), ha="right", va="bottom", fontsize=e.pt(26), color=e.AMBAR,
+                fontweight="bold")
     ax.set_xlim(-0.5, len(grupos) - 0.5)
     ax.set_ylim(0, tope)
     ax.set_xticks(range(len(grupos)))
@@ -185,8 +186,11 @@ def main():
         descripcion += f", {col} = {val}"
     if datos.empty:
         sys.exit("no quedan filas después de los filtros")
-    grupo = args.agrupar or ("carga" if "carga" in datos.columns and datos["carga"].nunique() > 1
-                             else "variante" if datos["variante"].nunique() > 1 else None)
+    varias = "variante" in datos.columns and datos["variante"].nunique() > 1
+    grupo = args.agrupar or ("variante" if varias else "carga" if "carga" in datos.columns else None)
+    if grupo == "variante" and "carga" in datos.columns and datos["carga"].nunique() > 1:
+        print(f"aviso: cada variante mezcla {datos['carga'].nunique()} cargas; use --filtro carga=<valor> "
+              "para dibujar una sola", file=sys.stderr)
     if grupo and grupo not in datos.columns:
         sys.exit(f"la columna «{grupo}» no está en {descripcion}")
     if grupo:
