@@ -97,15 +97,19 @@ class Receptor(BaseHTTPRequestHandler):
     def do_POST(self):
         if urlparse(self.path).path not in ("/sms", "/webhook/sms-received"):
             return self._responder(404, {"error": "use POST /sms"})
+        # El cuerpo se lee siempre antes de contestar: si se contesta con datos sin leer, Windows corta la
+        # conexión y la pasarela ve un error de red en vez del 401 o el 413.
+        largo = int(self.headers.get("Content-Length") or 0)
+        cuerpo = self.rfile.read(min(largo, 1_000_000))
         token = os.environ.get("DESPACHOX_SMS_TOKEN")
         dado = self.headers.get("X-Token") or parse_qs(urlparse(self.path).query).get("token", [None])[0]
         if token and dado != token:
             return self._responder(401, {"error": "token"})
-        largo = int(self.headers.get("Content-Length") or 0)
         if largo > MAX_BYTES:
+            self.close_connection = True
             return self._responder(413, {"error": "muy largo"})
         try:
-            numero, texto, es_sms = extraer_sms(self.rfile.read(largo), self.headers.get("Content-Type") or "")
+            numero, texto, es_sms = extraer_sms(cuerpo, self.headers.get("Content-Type") or "")
         except (ValueError, UnicodeDecodeError):
             return self._responder(400, {"error": "cuerpo ilegible"})
         if not es_sms:
