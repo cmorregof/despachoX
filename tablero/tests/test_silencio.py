@@ -73,3 +73,19 @@ def test_textos_de_la_tarjeta():
     fuente = (CARPETA / "app.py").read_text(encoding="utf-8")
     for texto in ("Sin contacto: verificar", '"Mandar a verificar"', 'T.decidir_silencio'):
         assert texto in fuente
+
+
+def test_pendientes_no_cuentan_alertas_de_silencio(con):
+    i = T.indicadores(con, None)
+    assert i["pedidos_pendientes"] == 1 and i["pedidos_por_confirmar"] == 1     # solo el pedido 2
+    assert i["sin_contacto"] == 1                                               # la alerta 1 (la 3 está descartada)
+    T.decidir_silencio(con, 1, "verificar", "Ana")                              # en verificación sigue abierta
+    i = T.indicadores(con, None)
+    assert i["pedidos_pendientes"] == 1 and i["sin_contacto"] == 1
+    T.decidir_silencio(con, 1, "descartar", "Ana")                              # ya confirmada: no aplica
+    con.execute("UPDATE pedidos SET estado='descartado' WHERE id=1")
+    assert T.indicadores(con, None)["sin_contacto"] == 0
+
+
+def test_ficha_muestra_sin_contacto():
+    assert "sin contacto</span>" in (CARPETA / "app.py").read_text(encoding="utf-8")

@@ -150,7 +150,9 @@ def tabla(filas: list[dict], columna_estado: str | None = None, estado_de=None, 
 def indicadores(ind: dict, plan: dict | None) -> None:
     c1, c2, c3, c4 = st.columns(4)
     tarjeta(c1, "Pedidos pendientes", str(ind["pedidos_pendientes"]),
-            f"{ind['pedidos_por_confirmar']} por confirmar", contexto="en espera")
+            f"{ind['pedidos_por_confirmar']} por confirmar"
+            + (f' · <span class="silencio">{ind["sin_contacto"]} sin contacto</span>' if ind["sin_contacto"] else ""),
+            contexto="en espera")
     tarjeta(c2, "Perecederos que vencen en menos de 12 h", f"{ind['kg_vencen_pronto']:,.0f} kg".replace(",", "."),
             alerta=ind["kg_vencen_pronto"] > 0,
             contexto="vencen pronto" if ind["kg_vencen_pronto"] > 0 else "sin riesgo")

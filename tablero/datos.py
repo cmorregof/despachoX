@@ -269,10 +269,15 @@ def cambios_del_recalculo(con: sqlite3.Connection, p: dict | None) -> dict | Non
 def indicadores(con: sqlite3.Connection, p: dict | None = None, ahora: datetime | None = None) -> dict:
     ahora = _ahora(ahora)
     tope = ahora + timedelta(hours=HORAS_VENCE_PRONTO)
+    # Las alertas por silencio no son pedidos de comida: se cuentan aparte, como «sin contacto».
     pendientes = con.execute("SELECT COUNT(*) FROM pedidos WHERE estado IN ('nuevo','confirmado') "
-                             "AND duplicado_de IS NULL").fetchone()[0]
+                             "AND duplicado_de IS NULL AND COALESCE(origen, 'mensaje') != ?",
+                             (ORIGEN_SILENCIO,)).fetchone()[0]
     por_confirmar = con.execute("SELECT COUNT(*) FROM pedidos WHERE estado='nuevo' "
-                                "AND duplicado_de IS NULL").fetchone()[0]
+                                "AND duplicado_de IS NULL AND COALESCE(origen, 'mensaje') != ?",
+                                (ORIGEN_SILENCIO,)).fetchone()[0]
+    sin_contacto = con.execute("SELECT COUNT(*) FROM pedidos WHERE estado IN ('nuevo','confirmado') "
+                               "AND origen = ?", (ORIGEN_SILENCIO,)).fetchone()[0]
     kg = 0.0
     for lote in filas(con, "SELECT kg, vence_en FROM lotes WHERE perecedero=1 AND vence_en IS NOT NULL"):
         vence = _fecha(lote["vence_en"])
@@ -281,6 +286,7 @@ def indicadores(con: sqlite3.Connection, p: dict | None = None, ahora: datetime 
     activos = con.execute("SELECT COUNT(*) FROM cierres WHERE estado='confirmado'").fetchone()[0]
     reportados = con.execute("SELECT COUNT(*) FROM cierres WHERE estado='reportado'").fetchone()[0]
     return {"pedidos_pendientes": pendientes, "pedidos_por_confirmar": por_confirmar,
+            "sin_contacto": sin_contacto,
             "kg_vencen_pronto": round(kg, 1), "cierres_activos": activos,
             "cierres_reportados": reportados, "puntualidad": puntualidad(con, p)}
 
