@@ -20,7 +20,7 @@ El mismo archivo trae un aviso más. Con la cuenta de Carlos, el «**formato de 
 
 ## Qué se sube
 
-Todo va en una sola carpeta de Drive, llamada «DespachoX · Equipo 19 · Vertical 04». En iNNOVO se registra una sola entrega con el enlace de esa carpeta. Dentro de la carpeta va además un documento corto, «Enlaces», con los tres enlaces que no son archivos.
+Todo va en una sola carpeta de Drive, llamada «DespachoX · Equipo 19 · Vertical 04». En iNNOVO se registra una sola entrega con el enlace de esa carpeta. Dentro de la carpeta va además un documento corto, «Enlaces», con los tres enlaces que no son archivos: el del video, el del repositorio y el del tablero y el bot.
 
 | # | Qué | Sale de | Antes de subir | Prepara | Revisa |
 |---|---|---|---|---|---|
@@ -28,7 +28,7 @@ Todo va en una sola carpeta de Drive, llamada «DespachoX · Equipo 19 · Vertic
 | 2 | Anexo técnico de la ficha, en PDF, sin la nota interna | `docs/FICHA.md` | Borrar la línea que empieza con «Nota interna, se borra antes de cargar» (hoy es la línea 6) y los corchetes pendientes, como «[Pendiente: lo graba Jacobo…]». Las mismas reglas de cifras de la fila 1. Aquí tocan las discrepancias D3, D7, D8, D9, D12, D14, D15, D16, D18, D19, D21 y D24 | Samuel | Carlos |
 | 3 | Informe corto, en PDF | `docs/informe/informe_corto.pdf` | Si cambia alguna cifra, recompilar con `docs/informe/compilar.sh`. Las fuentes tipográficas Ancízar no están en el repositorio, así que solo compila el computador de Carlos. El PDF de hoy trae frases de las discrepancias D3, D7, D8, D9, D10, D11, D14, D18, D21 y D24 | Carlos | Samuel |
 | 4 | Enlace al video de respaldo | Lo graba Jacobo con `docs/GUION_DEMO.md` | Subirlo a la misma carpeta, o como video no listado, y abrirlo sin sesión | Jacobo | Carlos |
-| 5 | Enlace al repositorio | https://github.com/cmorregof/despachoX | Que la sección «Para el jurado» siga arriba en `README.md`. Que `main` tenga lo fusionado en la mañana. Que `git ls-files` no muestre ningún `.env` ni clave (el `.env.example` sí va, con los valores vacíos) | Carlos | Jacobo |
+| 5 | Enlace al repositorio | https://github.com/cmorregof/despachoX | Que la sección «Para el jurado» siga arriba en `README.md`. Que `main` tenga lo que se fusionó en la mañana. Que `git ls-files` no muestre ningún `.env` ni clave (el `.env.example` sí va, con los valores vacíos) | Carlos | Jacobo |
 | 6 | Enlace al tablero y al bot | https://despachox-production.up.railway.app/ y https://t.me/despachox_bot | El tablero de la nube pide clave, y el jurado no la recibe. El tablero se muestra en la demo y en el video, y el jurado puede escribirle al bot. Abrir el tablero desde un celular con datos móviles. Antes de la demo, reiniciar la base de la nube con el botón «Reiniciar datos de prueba» del tablero, en la pestaña «Bitácora». También sirve poner `DESPACHOX_REINICIAR=1` en Railway, esperar el redespliegue y quitar la variable, porque si se queda borra la base en cada despliegue | Jacobo | Samuel |
 
 ## Horario
@@ -64,7 +64,7 @@ pandoc /tmp/ficha_anexo.md -o DespachoX_ficha_anexo.pdf --pdf-engine=lualatex -V
 - [ ] Las frases con discrepancia en `docs/FUENTES.md` quedaron corregidas por Carlos o Fable, o se quitaron.
 - [ ] Las cifras de la simulación son las de la corrida nueva, con su línea base, el número de escenarios y los supuestos.
 - [ ] Ningún documento trae nombres, teléfonos ni direcciones exactas de personas afectadas (Ley 1581 de 2012).
-- [ ] Los seis elementos abren sin sesión de Google, en incógnito y en un celular con datos móviles.
+- [ ] Los seis elementos de la tabla «Qué se sube» abren sin sesión de Google, en incógnito y en un celular con datos móviles.
 - [ ] La entrega aparece en iNNOVO con el nombre acordado, y su captura queda guardada.
 - [ ] Jacobo, Nicolás y José Manuel vincularon su cuenta en iNNOVO.
 
