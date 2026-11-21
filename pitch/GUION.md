@@ -35,7 +35,7 @@ Quien habla no toca el computador.
 
 La demo de este guion no depende de nada nuevo. Es la de `docs/GUION_DEMO.md`, con la semilla ensayada.
 
-1. Entre 30 y 10 minutos antes, los pasos 1 a 7 de la sección «Preparación» de `docs/GUION_DEMO.md`. La semilla se carga menos de 30 minutos antes y nunca más de 90. Si la demo corre en la nube, el reinicio de la base es el botón «Reiniciar datos de prueba» del tablero, porque la base de la nube conserva lotes viejos (canal, aviso de Fable de las 11:38 p. m.).
+1. Entre 30 y 10 minutos antes, los pasos 1 a 7 de la sección «Preparación» de `docs/GUION_DEMO.md`. La semilla se carga menos de 30 minutos antes y nunca más de 90. Si la demo corre en la nube, hay que reiniciar la base, porque conserva lotes viejos. En `main` el tablero no tiene botón para eso. Se pone `DESPACHOX_REINICIAR=1` en Railway, se espera el redespliegue y se quita la variable, porque si se queda borra la base en cada despliegue (`despliegue/arranque.sh`).
 2. Antes de entrar, los pasos «0:20 a 0:55» y «0:55 a 1:30» de ese mismo guion: enviar el pedido de San José, confirmarlo, calcular el plan y aprobarlo. Así el pitch arranca con el plan aprobado. Resultado esperado: 18 de 18 pedidos, 3 de 3 críticos a tiempo y San José en camión. Si no da eso, no hay demo en vivo y se usa el video.
 3. Tarjeta impresa con el QR del bot y el mensaje del cierre, tal cual: «derrumbe en la avenida del centro, no pasa camion, si pasa moto». El QR lo genera rol A con el enlace real del bot.
 4. Video de respaldo abierto en otra pestaña, en pausa en el segundo cero. Lo graba Jacobo (encargo P3), y hay que confirmar que existe.
