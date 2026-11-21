@@ -61,7 +61,7 @@ POLITICAS = {
     "ingenua": ("Orden de llegada", e.CENIZA, e.CENIZA),
     "experta": ("Despachador con oficio", e.AMBAR, e.AMBAR),
     "optimiza_una_vez": ("Optimiza una vez", e.CREMA, e.TINTA),
-    "despachox": ("DespachoX", e.TINTA, e.TINTA),
+    "despachox": ("Convite", e.TINTA, e.TINTA),
 }
 ESTILOS_EXTRA = [("#FFFFFF", e.AMBAR), ("#FFFFFF", e.CENIZA), ("#FFFFFF", e.TINTA)]
 ORDEN_CARGAS = ["holgada", "media", "alta"]
@@ -288,7 +288,7 @@ def rotulo_meta(fig, x0: float, y_base: float, meta: float):
     fig.add_artist(Line2D([x0, x0 + 68 / e.ANCHO_PX], [y_base + 8 / e.ALTO_PX] * 2, transform=fig.transFigure,
                           color=e.AMBAR, linewidth=3, linestyle=(0, (6, 4))))   # dos trazos de la línea
     return fig.text(x0 + 80 / e.ANCHO_PX, y_base, f"meta del reto: menos de {cifra(meta, 0)} %", fontsize=e.pt(26),
-                    color=e.AMBAR, fontweight="bold", va="baseline")
+                    color=e.TEXTO, fontweight="bold", va="baseline")
 
 
 def panel(fig, rect, resumen, met, grupos, politicas, estilos, etiqueta, tope, y_etiqueta, meta=None):
@@ -350,7 +350,7 @@ def panel(fig, rect, resumen, met, grupos, politicas, estilos, etiqueta, tope, y
     ax.yaxis.set_major_formatter(lambda v, _: marca_del_eje(v))
     for lado in ("top", "right", "left"):
         ax.spines[lado].set_visible(False)
-    ax.grid(axis="y", color="#E6E3EA", linewidth=1.2)
+    ax.grid(axis="y", color="#DCE3D6", linewidth=1.2)
     ax.set_axisbelow(True)
     fig.text(rect[0], y_etiqueta, etiqueta, fontsize=e.pt(32), fontweight="bold", color=e.TEXTO)
     return ax, numeros, linea_meta, obstaculos

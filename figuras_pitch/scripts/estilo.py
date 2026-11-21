@@ -1,15 +1,14 @@
-"""Estilo común de las figuras del pitch: paleta del informe, fuente, tamaño de proyección y revisión de textos.
+"""Estilo común de las figuras del pitch: paleta Convite, fuente, tamaño de proyección y revisión de textos.
 
 Cada figura se guarda en 1920 × 1080 px (PNG) y en SVG con los textos convertidos en trazos, así que el SVG se ve
 igual en cualquier computador aunque no tenga la fuente.
 
-Fuente. La del informe es Ancízar Serif, que no está en el repositorio. Si está instalada en el computador, las
-figuras la usan. Si no, usan PT Serif (licencia OFL), que viene con macOS, y si tampoco está, DejaVu Serif, que trae
+Fuente. Ancízar, la familia institucional de la UNAL (SIL OFL 1.1), va en figuras_pitch/fuentes/ y se registra
+siempre. El texto va en Ancízar Sans y los títulos y cifras grandes en Ancízar Serif (`titulos_en_serif`). Si la
+carpeta falta, se usa PT Serif (licencia OFL), que viene con macOS, y si tampoco está, DejaVu Serif, que trae
 matplotlib. Con --fuente se elige otra familia instalada, un archivo .ttf, .otf o .ttc del disco o una carpeta con
 los archivos de una familia. Con un archivo se registran también los demás pesos de su familia que estén en la misma
-carpeta, para que la negrita no salga en peso normal. La familia se busca también en las carpetas de fuentes del
-sistema, porque la caché de matplotlib puede ser anterior a la instalación. Ningún archivo de fuente se copia al
-repositorio.
+carpeta, para que la negrita no salga en peso normal.
 
 Revisión. `guardar` busca textos por debajo de 24 px, cortados por el borde o encimados entre sí o con los
 obstáculos que le pase cada figura (barras y líneas), imprime una línea AVISO por cada uno y los devuelve. `terminar`
@@ -34,15 +33,33 @@ from matplotlib import font_manager  # noqa: E402
 RAIZ = Path(__file__).resolve().parents[2]          # raíz del repositorio
 CARPETA = RAIZ / "figuras_pitch"
 
-# Paleta del informe (docs/informe/figuras/scripts/).
-TINTA, AMBAR, CREMA, CENIZA = "#4F4086", "#A36752", "#EBD3A2", "#6E6878"
-TEXTO = "#2E2550"          # tinta oscura para el texto corrido, la misma de barras_abaco.py
-FONDO = "#FFFFFF"
-GRIS_RED = "#D9D6DD"       # red vial de fondo, como GRIS_RED de mapa_manizales.py pero más claro
+# Paleta Convite «Camino abierto» (recursos/marca/README.md). Los nombres viejos se conservan para no tocar cada
+# script: TINTA es el verde monte (primario), AMBAR el maíz (acento), CREMA la niebla y CENIZA la piedra.
+# El maíz no llega a 3:1 sobre el fondo: va solo como relleno o trazo grueso, nunca como texto.
+VERDE_MONTE, MAIZ, NIEBLA, PIEDRA = "#1F5C4A", "#D9982B", "#E4EADB", "#5C6A62"
+TINTA, AMBAR, CREMA, CENIZA = VERDE_MONTE, MAIZ, NIEBLA, PIEDRA
+TEXTO = "#1C2A24"          # monte oscuro
+FONDO = "#F6F4EA"          # cal
+BORDE = "#CBD6C4"
+TIERRA_ROJA = "#C73A1E"    # solo para la vía cerrada, y siempre punteada y con etiqueta
+GRIS_RED = "#D5DBD2"       # red vial de fondo, gris verdoso claro
+
+
+def color_de_texto(color: str) -> str:
+    """Color para escribir con el tono de `color`: el maíz no sirve como texto, así que pasa a monte oscuro."""
+    return TEXTO if color.upper() == MAIZ else color
+
+
+def blanco_o_texto(fondo: str) -> str:
+    """Color del texto sobre un relleno: blanco sobre verde o piedra, monte oscuro sobre maíz o niebla."""
+    return TEXTO if fondo.upper() in (MAIZ, NIEBLA, FONDO.upper(), "#FFFFFF") else "white"
 
 ANCHO_PX, ALTO_PX, DPI = 1920, 1080, 100
 MIN_PX = 24                 # ningún texto por debajo de esto al proyectar
-FUENTES_POR_DEFECTO = ("Ancizar Serif", "PT Serif", "DejaVu Serif")
+FUENTES_POR_DEFECTO = ("Ancizar Sans", "PT Serif", "DejaVu Serif")
+CARPETA_FUENTES = CARPETA / "fuentes"     # Ancízar Serif y Sans, licencia SIL OFL 1.1 (fuentes/OFL-Ancizar.txt)
+SERIF_TITULOS = "Ancizar Serif"           # títulos y cifras grandes; el resto va en Ancízar Sans
+PX_TITULO_SERIF = 50                      # un texto en negrita de este tamaño o mayor se compone en la serif
 RUTA_PT_SERIF = "/System/Library/Fonts/Supplemental/PTSerif.ttc"
 CARPETAS_FUENTES = [*font_manager.OSXFontDirectories, *font_manager.X11FontDirectories,
                     os.path.join(os.environ.get("WINDIR", "C:\\Windows"), "Fonts")]
@@ -144,6 +161,8 @@ def configurar_fuente(pedida: str | None = None) -> str:
             font_manager.fontManager.addfont(RUTA_PT_SERIF)
         except Exception:  # noqa: BLE001  (si no carga, se sigue con DejaVu Serif)
             pass
+    if CARPETA_FUENTES.is_dir():
+        _agregar(font_manager.findSystemFonts(fontpaths=[str(CARPETA_FUENTES)]))
     familia = None
     if pedida:
         if os.path.exists(pedida):
@@ -246,7 +265,7 @@ def despejar(fig, ax, piso_px: float, aire_px: float = 18):
 
 def sello(fig, texto: str, x: float = 0.96, y: float = 0.93, color: str = AMBAR):
     """Recuadro de advertencia, arriba a la derecha (por ejemplo «Cifras por verificar»)."""
-    return fig.text(x, y, texto, fontsize=pt(PX_ROTULO), color=color, fontweight="bold", ha="right",
+    return fig.text(x, y, texto, fontsize=pt(PX_ROTULO), color=color_de_texto(color), fontweight="bold", ha="right",
                     va="baseline", bbox=dict(boxstyle="round,pad=0.45", facecolor=FONDO, edgecolor=color,
                                              linewidth=3))
 
@@ -296,6 +315,20 @@ def revisar_textos(fig, nombre: str, ignorar: tuple[str, ...] = (), obstaculos=(
     return avisos
 
 
+def titulos_en_serif(fig) -> None:
+    """Pasa a Ancízar Serif los títulos y las cifras grandes (negrita de PX_TITULO_SERIF px o más).
+
+    Solo si el texto corrido está en Ancízar Sans y la serif está registrada; con otra familia no cambia nada.
+    """
+    if plt.rcParams["font.family"][0] != "Ancizar Sans" or not _instalada(SERIF_TITULOS):
+        return
+    for t in fig.findobj(matplotlib.text.Text):
+        peso = t.get_fontweight()
+        negrita = peso in ("bold", "heavy", "black", "semibold", "demibold") or (isinstance(peso, int) and peso >= 600)
+        if negrita and t.get_fontsize() * DPI / 72.0 >= PX_TITULO_SERIF - 0.5:
+            t.set_fontfamily(SERIF_TITULOS)
+
+
 def guardar(fig, nombre: str, salida: str | Path, ignorar: tuple[str, ...] = (), obstaculos=(),
             avisos_extra=()) -> list[str]:
     """Guarda <salida>/png/<nombre>.png (1920 × 1080) y <salida>/svg/<nombre>.svg. Devuelve los avisos.
@@ -306,6 +339,7 @@ def guardar(fig, nombre: str, salida: str | Path, ignorar: tuple[str, ...] = (),
     salida = Path(salida)
     (salida / "png").mkdir(parents=True, exist_ok=True)
     (salida / "svg").mkdir(parents=True, exist_ok=True)
+    titulos_en_serif(fig)
     avisos = revisar_textos(fig, nombre, ignorar, obstaculos) + list(avisos_extra)
     for aviso in avisos:
         print("AVISO", aviso, file=sys.stderr)

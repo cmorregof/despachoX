@@ -89,7 +89,7 @@ def main():
     for yi, fila, kg in zip(y, filas, kilos):
         color = COLORES[fila["rotulo"]]
         ax.text(kg + tope * 0.015, yi, f"{e.miles(kg)} kg", va="center", ha="left",
-                fontsize=e.pt(48), fontweight="bold", color=color)
+                fontsize=e.pt(48), fontweight="bold", color=e.color_de_texto(color))
         ax.text(-tope * 0.025, yi, fila["rotulo"], va="center", ha="right", fontsize=e.pt(42), color=e.TEXTO)
     ax.set_xlim(0, tope * 1.32)
     ax.set_ylim(-0.6, len(filas) - 0.4)

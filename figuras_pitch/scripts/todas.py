@@ -47,6 +47,7 @@ def main():
         ["cuello_despacho.py"],
         ["regla_arquitectura.py"],
         ["cierres_sin_sismo.py"],
+        ["portada_convite.py"],
         ["sim_resultados.py", "--entrada", str(sim), "--nombre", nombre_sim]
         + (["--marca", args.marca_sim] if args.marca_sim is not None else [])
         + (["--titulo", args.titulo_sim] if args.titulo_sim else []),
