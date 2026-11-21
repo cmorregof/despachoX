@@ -47,7 +47,7 @@ VARIANTES = {
     "factor_1": {"factor": 1},
     "factor_5": {"factor": 5},
 }
-POLITICAS = ("despachox", "optimiza_una_vez", "experta", "ingenua")    # las largas primero
+POLITICAS = ("despachox", "optimiza_una_vez", "experta", "ingenua")    # orden en tablas y archivos
 
 
 def parametros(variante: str) -> dict:
