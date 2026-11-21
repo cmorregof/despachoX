@@ -4,7 +4,7 @@ Fichas para las llamadas del sábado 21 de noviembre de 2026, desde las 8:00 a. 
 
 **Cómo se armó.** Cada canal sale del sitio, de las redes o de un documento de la propia entidad o de su entidad madre, y la columna «Fuente» dice de cuál. Cuando el dato lo publica otra entidad, por ejemplo ABACO sobre el Banco, la tabla lo dice. Un directorio de terceros o una ficha de buscador no cuenta, así que lo que solo aparece ahí figura como «no encontrado». Tampoco se copian teléfonos ni correos de personas, aunque estén en un directorio oficial. De cada funcionario va el cargo, y el nombre solo cuando una entidad oficial lo publica. Todo se consultó el 21 de noviembre de 2026, entre la medianoche y la 1:00 a. m., con un lector automático, y falta la revisión de una persona.
 
-**Marcas.** [F] lo dice la fuente enlazada. [I] es inferencia nuestra. [P] es una pregunta para la llamada. «Vía investigación 10» o «vía 11» señala una fuente que encontró otro agente y que esta noche no se volvió a abrir.
+**Marcas.** [F] lo dice la fuente enlazada. [I] es inferencia nuestra. [P] es una pregunta para la llamada. «Vía investigación 10» señala una fuente que encontró otro agente y que esta noche no se volvió a abrir.
 
 **Líneas que no se usan.** La 119 de Bomberos, la 132 de la Cruz Roja y la 144 de la Defensa Civil son líneas de emergencia. Ninguna sirve para ofrecer un piloto.
 
@@ -21,7 +21,7 @@ Fichas para las llamadas del sábado 21 de noviembre de 2026, desde las 8:00 a. 
 | Bomberos de Manizales | A través de la UGR, porque la Alcaldía los fortalece por medio de ella. Nunca por la 119 | Si comparten, sin datos personales, los derrumbes y cierres que les reportan |
 | IDEA, UNAL Sede Manizales | WhatsApp al profesor Néstor con el número que pasa Carlos (P5) y correo a idea_man@unal.edu.co | Cinco minutos antes de las 2:00 p. m. y su visto bueno para usar y citar el A25 |
 
-**El sábado casi nadie atiende.** Ninguna de las ocho entidades publica horario de atención al público para el sábado. La Alcaldía, la Gobernación, la Defensa Civil y ABACO publican horarios de lunes a viernes. El Banco y el IDEA no publican horario, y la Cruz Roja deja ese campo de su sitio como «[PENDIENTE: dato oficial por confirmar]». Por eso el sábado se llama al Banco y se escribe a los demás por sus canales escritos. Las llamadas a la UGR, la Gobernación, la Defensa Civil y el IDEA quedan para el lunes, dentro del horario que publican.
+**Horarios del sábado.** Ninguna de las ocho entidades publica horario de atención al público para el sábado. La Alcaldía, la Gobernación, la Defensa Civil y ABACO publican horarios de lunes a viernes. El Banco y el IDEA no publican horario, y la Cruz Roja deja ese campo de su sitio como «[PENDIENTE: dato oficial por confirmar]». Por eso el sábado se llama al Banco y se escribe a los demás por sus canales escritos. Las llamadas a la UGR, la Gobernación, la Defensa Civil y el IDEA quedan para el lunes, dentro del horario que publican.
 
 ## 1. Banco Arquidiocesano de Alimentos de Manizales
 
@@ -33,11 +33,12 @@ Fichas para las llamadas del sábado 21 de noviembre de 2026, desde las 8:00 a. 
 - Reparte con un cronograma fijo, que asigna fechas, cantidades y tipos de producto según la capacidad y el número de beneficiarios de cada institución. Entrega a través de parroquias, comedores comunitarios, fundaciones y organizaciones sociales [F] (informe 2025). El informe no dice quién transporta.
 - Su propio informe pone como reto de 2026 fortalecer la logística para reducir el desperdicio, asegurar la trazabilidad y optimizar la distribución [F] (informe 2025).
 - En el sismo de agosto fue el principal punto de acopio de ABACO, que hoy lo cuenta entre los bancos activos en la zona afectada. ABACO anuncia también la fase de reconstrucción de los bancos de Pereira, Manizales, Cartago y Buenaventura [F] ([ABACO, fondo para emergencias](https://abaco.org.co/fondoparaemergencias/), cifras con corte al 10 de octubre de 2026).
-- Según prensa que esta noche no se volvió a abrir, en agosto sacó tres camiones con peajes pagados (Portafolio, 16 de agosto, vía investigación 10) y entregó ayuda en Salamina con una parroquia (La Patria, 15 de agosto, vía 11).
+- En agosto, Flypass pagó los peajes de 57 camiones de la red de bancos de alimentos, y tres de ellos operaban en Manizales. La nota cuenta camiones por ciudad, así que no dice si esos tres eran del Banco [F] ([Portafolio, 16 ago 2026](https://www.portafolio.co/economia/regiones/flypass-paga-peajes-de-57-camiones-para-acelerar-la-entrega-de-ayudas-tras-el-terremoto-en-colombia-500521)).
+- Una parroquia de Salamina repartió alimentos y cobijas en colaboración con la Arquidiócesis y su Banco de Alimentos, en un punto de la vía hacia el corregimiento San Félix [F] ([La Patria, 15 ago 2026](https://www.lapatria.com/caldas/en-este-pueblo-patrimonio-del-departamento-entregan-ayudas-con-el-acompanamiento-de-la)).
 
 **Qué ganaría [I].**
 
-- El reto que el Banco escribió para 2026 coincide con lo que DespachoX ya hace, porque saca primero lo que vence y sigue cada paquete hasta la entrega.
+- El reto que el Banco escribió para 2026 coincide con dos funciones que DespachoX ya tiene. Saca primero lo que vence y sigue cada paquete hasta la entrega.
 - Con un 30 % de fruta y verdura en sus salidas, el desperdicio de perecederos es un indicador que puede medir con sus propios registros.
 - La confirmación de entrega con código QR le da evidencia para el reporte a ABACO y a sus donantes.
 - Recibe el informe de la reconstrucción en frío con sus números y la herramienta con sus datos, que siguen siendo suyos (`docs/PILOTO.md`, sección 6).
@@ -118,7 +119,7 @@ Fichas para las llamadas del sábado 21 de noviembre de 2026, desde las 8:00 a. 
 - La Jefatura de Gestión del Riesgo recibe los requerimientos de cada municipio. Desde el Centro Logístico Humanitario (CLH), en el sector de San Rafael de Manizales, organiza la distribución y deja la carga lista para que la lleven los vehículos municipales [F] ([Gobernación, 18 ago 2026](https://escaldas.com/mas-de-8-200-kits-de-ayuda-humanitaria-han-sido-entregados-a-municipios-de-caldas-tras-el-terremoto-del-10-de-agosto/)).
 - Al 2 de septiembre sumaba 18.847 unidades de ayuda entregadas. La Cruz Roja y el Batallón Ayacucho apoyaron la organización, el cargue y la movilización de las ayudas que salen hacia los municipios [F] ([Gobernación, 2 sep 2026](https://escaldas.com/gobierno-de-caldas-ha-movilizado-esta-semana-al-menos-6-800-ayudas-humanitarias-ya-completa-mas-de-18-000-entregas-tras-el-sismo/)).
 - El 19 de noviembre la Secretaría de Medio Ambiente y la Jefatura, en articulación con la UNGRD, anunciaron una inversión de $748.265.975 en vehículos y herramientas para organismos de socorro, con un vehículo para la propia Jefatura [F] ([Gobernación, 19 nov 2026](https://caldas.gov.co/noticias-gobernacion/181-general/17139-caldas-fortalece-la-atencion-de-emergencias-con-una-inversion-superior-a-los-748-millones-adquirio-vehiculos-y-herramientas-para-organismos-de-socorro)).
-- La Cruz Roja cuenta en su historia que en 2023 fortaleció el CLH con apoyo de la Gobernación [F] ([Cruz Roja Seccional Caldas](https://cruzrojacaldas.org/quienes-somos/)). Una nota del 12 de agosto atribuye el CLH a la Cruz Roja (vía 11). Por eso, quién opera hoy el CLH queda como pregunta [P].
+- La Cruz Roja cuenta en su historia que en 2023 fortaleció el CLH con apoyo de la Gobernación [F] ([Cruz Roja Seccional Caldas](https://cruzrojacaldas.org/quienes-somos/)). Además, una nota de la Gobernación del 12 de agosto ubica el CLH en la Cruz Roja Colombiana Seccional Caldas [F] ([Gobernación, 12 ago 2026](https://escaldas.com/caldas-avanza-en-consolidacion-de-cifras-de-afectaciones-y-define-lineas-de-apoyo-para-las-familias-damnificadas-por-el-sismo-en-los-municipios/)). La del 18 de agosto lo pone en el sector de San Rafael. Si las dos hablan del mismo sitio, el CLH funcionaría en la sede de la Cruz Roja, y eso queda como pregunta [P].
 
 **Qué ganaría [I].**
 
@@ -154,9 +155,9 @@ Fichas para las llamadas del sábado 21 de noviembre de 2026, desde las 8:00 a. 
 
 - Fue el operador logístico de la Alcaldía para entregar en su sede el subsidio de arriendo y el kit de alimentos, con turnos y estaciones de verificación [F] ([Alcaldía, 31 ago 2026](https://centrodeinformacion.manizales.gov.co/alcaldia-ugr-y-cruz-roja-intensifican-entrega-de-auxilios-y-alimentos-a-familias-damnificadas-por-el-sismo/)).
 - Tras el sismo coordinó la recepción y la distribución de ayudas humanitarias, en articulación con las autoridades [F] ([Cruz Roja Seccional Caldas](https://cruzrojacaldas.org/quienes-somos/)).
-- Operó la entrega física de donaciones que pasaron por el CLH de la Gobernación [F] ([Gobernación, 2 sep 2026](https://escaldas.com/gobierno-de-caldas-ha-movilizado-esta-semana-al-menos-6-800-ayudas-humanitarias-ya-completa-mas-de-18-000-entregas-tras-el-sismo/)).
+- Operó en territorio la entrega física de una donación de Ecopetrol recibida en el CLH de la Gobernación [F] ([Gobernación, 2 sep 2026](https://escaldas.com/gobierno-de-caldas-ha-movilizado-esta-semana-al-menos-6-800-ayudas-humanitarias-ya-completa-mas-de-18-000-entregas-tras-el-sismo/)).
 - Dice tener cobertura en los 27 municipios de Caldas, con unidades municipales y voluntariado [F] ([Cruz Roja Seccional Caldas](https://cruzrojacaldas.org/quienes-somos/)).
-- Registra hogares con AccessRC y, sin señal, con KoboCollect (DREF de la IFRC, vía investigación 10).
+- La operación DREF de la IFRC con la Cruz Roja Colombiana, publicada el 14 de agosto, prevé 700 kits de alimentos para Caldas. Para registrar hogares contempla AccessRC y, donde no hay señal, KoboCollect [F] ([DREF MDRCO036](https://go-api.ifrc.org/api/DownloadFile/96426/MDRCO036do)).
 
 **Qué ganaría [I].** Una ruta de última milla para sus kits, avisos de cierre compartidos con la UGR y la confirmación de cada entrega por paquete (investigación 10, sección 4.1).
 
@@ -189,7 +190,7 @@ Fichas para las llamadas del sábado 21 de noviembre de 2026, desde las 8:00 a. 
 - Con corte al 10 de octubre de 2026 reporta 34.953 familias atendidas, 6.136.773 kg entregados, 26 bancos y 4 organizaciones aliadas movilizados y $2.229 millones recaudados en dinero [F] ([fondo para emergencias](https://abaco.org.co/fondoparaemergencias/)).
 - Llama al Banco de Manizales su principal punto de acopio del sismo [F] ([fondo para emergencias](https://abaco.org.co/fondoparaemergencias/)).
 - Agrupa 26 bancos, y el de Manizales pertenece a la región Paciandino [F] ([Conócenos](https://abaco.org.co/conocenos/)). Su equipo nacional tiene una gerencia de logística y una de cooperación [F] ([Conócenos](https://abaco.org.co/conocenos/)).
-- Promete al donante un reporte de entrega (página de donaciones, vía investigación 10). La investigación 11 anota que esa página describe hoy otra emergencia.
+- En su página de donaciones promete al donante un reporte de distribución con evidencia de cómo llegó su aporte. Hoy esa página describe el sismo de junio en Venezuela [F] ([página de donaciones](https://donahoy.abaco.org.co/colombia2026)).
 
 **Qué ganaría [I].** Evidencia de entrega por paquete para el reporte al donante, y una vista de la operación de su nodo de Manizales que puede compararse con otros nodos (investigación 10, sección 4.1).
 
@@ -218,7 +219,7 @@ Esta entidad es de segunda línea, porque no está en las llamadas de `docs/DECI
 **Qué hace hoy.**
 
 - La Alcaldía la cuenta entre los organismos que apoyaron la respuesta al sismo, junto con los bomberos y la Cruz Roja [F] ([Alcaldía, 16 oct 2026](https://centrodeinformacion.manizales.gov.co/manizales-presento-informe-al-concejo-de-las-acciones-adelantadas-tras-sismo-del-10-de-agosto/)).
-- Coordinó el censo de damnificados con la Alcaldía (Blu Radio, 13 de agosto, vía investigación 10).
+- El 13 de agosto, el alcalde dijo que en coordinación con el Cuerpo Oficial de Bomberos, la Defensa Civil y la Cruz Roja se habían instalado cuatro puntos para el censo de damnificados [F] ([Blu Radio, 13 ago 2026](https://www.bluradio.com/nacion/manizales-censa-a-mas-de-2-000-damnificados-y-anuncia-subsidios-de-arriendo-desde-la-proxima-semana-rg10)).
 - Recibió dotación dentro de la inversión de la Gobernación del 19 de noviembre [F] ([Gobernación, 19 nov 2026](https://caldas.gov.co/noticias-gobernacion/181-general/17139-caldas-fortalece-la-atencion-de-emergencias-con-una-inversion-superior-a-los-748-millones-adquirio-vehiculos-y-herramientas-para-organismos-de-socorro)).
 - No se encontró evidencia de que haya distribuido alimentos en Manizales [P].
 
@@ -271,7 +272,7 @@ Esta entidad también es de segunda línea, y se le llega por medio de la UGR.
 - Es la unidad académica de la Sede que articula conocimiento sobre gestión del riesgo, adaptación al cambio climático y análisis territorial [F] ([El IDEA](https://idea.manizales.unal.edu.co/the-idea)).
 - Enlaza el Geoportal SIMAC desde su portada [F] ([IDEA](https://idea.manizales.unal.edu.co/)).
 - Publica el indicador A25, con alertas de 200, 300 y 400 mm de lluvia acumulada en 25 días. Su reporte de 2020 cubre 14 estaciones (`docs/PILOTO.md`, sección 3; por verificar).
-- No distribuye ayuda. La Sede montó en agosto un acopio en La Nubia con unos 240 voluntarios (La Patria, 23 de agosto, vía 11).
+- No distribuye ayuda. La Sede montó en agosto un acopio en el edificio S3 de La Nubia, con unos 240 voluntarios y transporte propio para recoger donaciones [F] ([La Patria, 23 ago 2026](https://www.lapatria.com/educacion/universidad-nacional-en-manizales-240-voluntarios-y-un-mundo-de-solidaridad-por-sus)).
 
 **Qué ganaría [I].** Un uso logístico del A25 con datos de campo, por ejemplo rutas que evitan tramos en alerta durante una semana de lluvia registrada (`docs/PILOTO.md`, hito de los días 60 a 75).
 
@@ -307,6 +308,8 @@ Estas cifras salieron esta noche de fuentes oficiales y todas son del tipo F. La
 | Sismo, red ABACO: 34.953 familias atendidas, 6.136.773 kg entregados, 26 bancos y 4 organizaciones aliadas, $2.229 millones recaudados; corte al 10 de octubre de 2026 | F | ABACO, fondo para emergencias | [enlace](https://abaco.org.co/fondoparaemergencias/) | 2026-11-21 |
 | La Gobernación de Caldas sumaba 18.847 unidades de ayuda entregadas al 2 de septiembre de 2026 | F | Gobernación de Caldas | [enlace](https://escaldas.com/gobierno-de-caldas-ha-movilizado-esta-semana-al-menos-6-800-ayudas-humanitarias-ya-completa-mas-de-18-000-entregas-tras-el-sismo/) | 2026-11-21 |
 | La Gobernación invirtió $748.265.975 en vehículos y herramientas para organismos de socorro | F | Gobernación de Caldas, 19 nov 2026 | [enlace](https://caldas.gov.co/noticias-gobernacion/181-general/17139-caldas-fortalece-la-atencion-de-emergencias-con-una-inversion-superior-a-los-748-millones-adquirio-vehiculos-y-herramientas-para-organismos-de-socorro) | 2026-11-21 |
+| Al 16 de agosto de 2026 los bancos de alimentos reportaban 404.587 kg en acopio, 157.164 kg en tránsito y 41.163 kg entregados. Ya era candidata al pitch; esta noche se abrió la nota | F | Portafolio, 16 ago 2026 | [enlace](https://www.portafolio.co/economia/regiones/flypass-paga-peajes-de-57-camiones-para-acelerar-la-entrega-de-ayudas-tras-el-terremoto-en-colombia-500521) | 2026-11-21 |
+| La operación DREF de la IFRC prevé 700 kits de alimentos para Caldas. Es una meta del plan publicado el 14 de agosto, no una entrega | F | IFRC, DREF MDRCO036 | [enlace](https://go-api.ifrc.org/api/DownloadFile/96426/MDRCO036do) | 2026-11-21 |
 | La calamidad pública de Manizales rige hasta el 9 de agosto de 2027, con plan de acción específico | F | Alcaldía de Manizales, 16 oct 2026 | [enlace](https://centrodeinformacion.manizales.gov.co/manizales-presento-informe-al-concejo-de-las-acciones-adelantadas-tras-sismo-del-10-de-agosto/) | 2026-11-21 |
 | El 17 de noviembre de 2026 ninguna estación de Manizales estaba en alerta amarilla por deslizamientos | F | Alcaldía de Manizales, 17 nov 2026 | [enlace](https://centrodeinformacion.manizales.gov.co/manizales-entra-en-estado-de-normalidad-hidrometeorologica-cero-estaciones-en-alerta-por-deslizamientos/) | 2026-11-21 |
 
@@ -319,11 +322,11 @@ Estas cifras salieron esta noche de fuentes oficiales y todas son del tipo F. La
 - **Si el 310 418 4472 tiene WhatsApp.** El sitio del Banco solo lo publica como teléfono.
 - **Qué página de Facebook del Banco está activa.** El sitio y ABACO enlazan páginas distintas.
 - **Canales propios de la UGR.** No se encontraron su sede, un correo institucional que no sea personal ni redes propias.
-- **El CLH de San Rafael.** No se encontraron su dirección exacta, su teléfono, su horario ni quién lo opera hoy.
+- **El CLH de San Rafael.** No se encontraron su dirección exacta, su teléfono ni su horario. Una nota lo ubica en la Cruz Roja y otra en San Rafael, sin aclarar si es el mismo sitio.
 - **Horario de la Cruz Roja**, que su sitio deja pendiente, y la razón de que publique dos juegos de teléfonos.
 - **Bomberos de Manizales.** No se encontraron un canal administrativo, la dirección de sus estaciones ni el nombre del comandante en 2026.
 - **Horarios del IDEA y del chat de la Gobernación.**
 - **Si el profesor Néstor del P5 es Néstor Darío Duque Méndez.**
-- **Fuentes de las investigaciones 10 y 11 citadas «vía».** Esta noche no se volvieron a abrir.
+- **Minuto60, citado «vía investigación 10» para la dirección del Banco.** Esta noche no se volvió a abrir, aunque el sitio del Banco da la misma dirección. Las demás notas de prensa de este directorio sí se abrieron.
 - **La forma de marcar el PBX del IDEA desde un celular**, que es una conversión nuestra al plan de numeración vigente [I].
 - **La página de la Defensa Civil muestra texto de un conflicto de versiones** en el bloque nacional. El bloque de la Seccional Caldas se lee completo.
