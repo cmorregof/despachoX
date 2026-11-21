@@ -299,84 +299,126 @@ Las secciones 1 a 8 no se modifican. Esta sección repite la confirmación de la
 
 **Semillas.** 20261150 a 20261179, 30 por carga. Son las semillas de confirmación de la sección 8.3, que no intervinieron en la elección del factor 3: esa elección se hizo con las semillas 20261120 a 20261149. Se usan las mismas tres cargas, las mismas cuatro políticas y las mismas líneas base de la sección 8.3, con `FACTOR_CRITICO` = 3 y 1 s de búsqueda por llamada. Con la misma semilla y la misma red, las dos versiones de velocidad tienen los mismos puntos, pedidos, lotes y flota. Los cierres se sortean con la misma regla sobre los caminos más cortos de cada versión, así que pueden caer en otros tramos.
 
-**Tiempo.** Antes de la corrida principal, 3 semillas tardaron 9,5 minutos en las tres cargas. Con eso, 30 semillas cabían antes de las 5:00 a. m., y no se bajó a 20. La corrida principal duró de las 11:11 p. m. a las 12:33 a. m., con 2 procesos en una máquina de 2 núcleos. La corrida sin cierres empezó a las 12:33 a. m. y se detuvo hacia la 1:00 a. m., cuando se apagó el servidor de la sesión. A las 6:03 a. m., Fable relanzó solo la corrida de la misma red con las velocidades del modelo.
+**Tiempo.** Antes de la corrida principal, 3 semillas tardaron 9,5 minutos en las tres cargas. Con eso, 30 semillas cabían antes de las 5:00 a. m., y no se bajó a 20. La corrida principal duró de las 11:11 p. m. a las 12:33 a. m., con 2 procesos en una máquina de 2 núcleos. La corrida sin cierres empezó a las 12:33 a. m. y se detuvo hacia la 1:00 a. m., cuando se apagó el servidor de la sesión. A las 6:03 a. m., Fable relanzó solo la corrida de la misma red con las velocidades del modelo. Terminó a las 7:23 a. m.
 
 | Corrida | Qué cambia | Jornadas | Estado | Carpeta en `despacho/sim/resultados_velocidades/` |
 |---|---|---:|---|---|
 | Principal (9.2) | Velocidades de la tesis, 3 a 8 cierres, las tres cargas | 360 | Terminada. Ninguna llamada al optimizador terminó en error | `confirmacion_factor_3` |
-| Misma red (9.3) | Velocidades del modelo | 360 | En curso desde las 6:03 a. m. | `modelo_misma_red` |
+| Misma red (9.3) | Velocidades del modelo | 360 | Terminada a las 7:23 a. m. Ninguna llamada al optimizador terminó en error | `modelo_misma_red` |
 | Sin cierres (9.4) | 0 cierres por jornada | 0 | No se hizo | ninguna |
 | Vida útil por producto (9.5) | Vencimientos de `datos_publicos/vida_util.csv` | 0 | No se hizo | ninguna |
 
-Las tablas completas, con todas las métricas, están en el `resumen.md` de cada carpeta, y los datos por semilla en su `resultados.csv`. Las tablas de esta sección salen de `tablas.md`, que escribe `python -m despacho.sim.comparar despacho/sim/resultados_velocidades`, y se copiaron sin cambios. El código de la simulación es el del commit `1489760`.
+Las tablas completas, con todas las métricas, están en el `resumen.md` de cada carpeta, y los datos por semilla en su `resultados.csv`. Las tablas de esta sección salen de `tablas.md`, que escribe `python -m despacho.sim.comparar despacho/sim/resultados_velocidades`, y se copiaron sin cambios. El código de la simulación es el del commit `1489760`. La corrida de la misma red registra en su `resumen.md` el commit `513b88a`, posterior, con el mismo código de simulación.
 
 ### 9.2 Resultados con las velocidades de la tesis
 
 Corrida principal: 30 escenarios por carga, 90 en total, cuatro políticas y 360 jornadas. Los escenarios tienen en promedio 49 puntos, 7,5 vehículos y 5,6 cierres. La carga holgada son 100 pedidos, la media 125 y la alta 149.
 
-En cada tabla, las tres primeras columnas de cifras son medias por política. Las líneas base son `ingenua`, que atiende por orden de llegada, y `experta`, que atiende primero lo más urgente y saca primero lo que vence primero. Las diferencias son la media pareada por semilla con su IC del 95 % (t de Student, 29 grados de libertad). Las dos últimas columnas dan la misma diferencia `despachox` − `experta` con las velocidades del modelo: sobre la misma red y las mismas semillas (9.3), y la que se reportó en la sección 8.3, sobre la red urbana. Mientras la corrida de la misma red no termine, esa columna dice «s. d.». Los supuestos están en la sección 9.6.
+En cada tabla, las tres primeras columnas de cifras son medias por política. Las líneas base son `ingenua`, que atiende por orden de llegada, y `experta`, que atiende primero lo más urgente y saca primero lo que vence primero. Las diferencias son la media pareada por semilla con su IC del 95 % (t de Student, 29 grados de libertad). Las dos últimas columnas dan la misma diferencia `despachox` − `experta` con las velocidades del modelo: sobre la misma red y las mismas semillas (9.3), y la que se reportó en la sección 8.3, sobre la red urbana. Los supuestos están en la sección 9.6.
 
 **Críticos a tiempo (%).** Pedidos de puntos críticos entregados antes de su hora límite. 30 escenarios por carga.
 
 | Carga | `ingenua` | `experta` | `despachox` | `despachox` − `ingenua` | `despachox` − `experta` | Semillas mejor / igual / peor frente a `experta` | `despachox` − `experta`, velocidades del modelo, misma red (9.3) | `despachox` − `experta` en la sección 8.3 (red urbana) |
 |---|---:|---:|---:|---|---|---|---|---|
-| Holgada | 75,9 | 97,7 | 99,2 | 23,3 [17,4; 29,1] | 1,5 [0,2; 2,8] | 8 / 20 / 2 | s. d. | 0,3 [−0,6; 1,2] |
-| Media | 53,6 | 94,6 | 98,3 | 44,7 [37,7; 51,6] | 3,7 [1,7; 5,7] | 15 / 13 / 2 | s. d. | 1,7 [−0,7; 4,0] |
-| Alta | 40,5 | 91,9 | 98,4 | 57,9 [52,7; 63,1] | 6,5 [4,4; 8,7] | 23 / 6 / 1 | s. d. | 0,8 [−0,6; 2,2] |
+| Holgada | 75,9 | 97,7 | 99,2 | 23,3 [17,4; 29,1] | 1,5 [0,2; 2,8] | 8 / 20 / 2 | 0,3 [−0,9; 1,4] | 0,3 [−0,6; 1,2] |
+| Media | 53,6 | 94,6 | 98,3 | 44,7 [37,7; 51,6] | 3,7 [1,7; 5,7] | 15 / 13 / 2 | 0,9 [−0,2; 2,1] | 1,7 [−0,7; 4,0] |
+| Alta | 40,5 | 91,9 | 98,4 | 57,9 [52,7; 63,1] | 6,5 [4,4; 8,7] | 23 / 6 / 1 | 2,8 [0,8; 4,7] | 0,8 [−0,6; 2,2] |
 
 **A tiempo, todos los puntos (%).** 30 escenarios por carga.
 
 | Carga | `ingenua` | `experta` | `despachox` | `despachox` − `ingenua` | `despachox` − `experta` | Semillas mejor / igual / peor frente a `experta` | `despachox` − `experta`, velocidades del modelo, misma red (9.3) | `despachox` − `experta` en la sección 8.3 (red urbana) |
 |---|---:|---:|---:|---|---|---|---|---|
-| Holgada | 90,4 | 95,2 | 94,8 | 4,3 [2,4; 6,3] | −0,5 [−1,9; 0,9] | 9 / 6 / 15 | s. d. | −0,2 [−0,7; 0,4] |
-| Media | 76,4 | 84,8 | 84,0 | 7,6 [5,2; 9,9] | −0,8 [−3,1; 1,4] | 10 / 3 / 17 | s. d. | −1,9 [−3,5; −0,3] |
-| Alta | 62,4 | 70,3 | 73,2 | 10,8 [8,4; 13,3] | 3,0 [0,7; 5,3] | 23 / 0 / 7 | s. d. | −1,7 [−3,2; −0,2] |
+| Holgada | 90,4 | 95,2 | 94,8 | 4,3 [2,4; 6,3] | −0,5 [−1,9; 0,9] | 9 / 6 / 15 | −0,8 [−1,8; 0,2] | −0,2 [−0,7; 0,4] |
+| Media | 76,4 | 84,8 | 84,0 | 7,6 [5,2; 9,9] | −0,8 [−3,1; 1,4] | 10 / 3 / 17 | −2,6 [−4,1; −1,0] | −1,9 [−3,5; −0,3] |
+| Alta | 62,4 | 70,3 | 73,2 | 10,8 [8,4; 13,3] | 3,0 [0,7; 5,3] | 23 / 0 / 7 | −2,7 [−4,2; −1,1] | −1,7 [−3,2; −0,2] |
 
 **Perecederos vencidos (%).** Kilos de lotes que vencen en la jornada y no se entregaron antes de vencer. 30 escenarios por carga.
 
 | Carga | `ingenua` | `experta` | `despachox` | `despachox` − `ingenua` | `despachox` − `experta` | Semillas mejor / igual / peor frente a `experta` | `despachox` − `experta`, velocidades del modelo, misma red (9.3) | `despachox` − `experta` en la sección 8.3 (red urbana) |
 |---|---:|---:|---:|---|---|---|---|---|
-| Holgada | 1,4 | 0,0 | 0,0 | −1,4 [−2,1; −0,8] | 0,0 [0,0; 0,0] | 0 / 30 / 0 | s. d. | 0,0 [0,0; 0,0] |
-| Media | 3,4 | 0,0 | 0,0 | −3,4 [−4,4; −2,4] | 0,0 [0,0; 0,0] | 0 / 30 / 0 | s. d. | 0,0 [0,0; 0,0] |
-| Alta | 5,6 | 0,0 | 0,0 | −5,6 [−6,8; −4,3] | 0,0 [0,0; 0,0] | 0 / 30 / 0 | s. d. | 0,0 [0,0; 0,0] |
+| Holgada | 1,4 | 0,0 | 0,0 | −1,4 [−2,1; −0,8] | 0,0 [0,0; 0,0] | 0 / 30 / 0 | 0,0 [0,0; 0,0] | 0,0 [0,0; 0,0] |
+| Media | 3,4 | 0,0 | 0,0 | −3,4 [−4,4; −2,4] | 0,0 [0,0; 0,0] | 0 / 30 / 0 | 0,0 [0,0; 0,0] | 0,0 [0,0; 0,0] |
+| Alta | 5,6 | 0,0 | 0,0 | −5,6 [−6,8; −4,3] | 0,0 [0,0; 0,0] | 0 / 30 / 0 | 0,0 [0,0; 0,0] | 0,0 [0,0; 0,0] |
 
 **Kilómetros de la flota por jornada.** 30 escenarios por carga.
 
 | Carga | `ingenua` | `experta` | `despachox` | `despachox` − `ingenua` | `despachox` − `experta` | Semillas mejor / igual / peor frente a `experta` | `despachox` − `experta`, velocidades del modelo, misma red (9.3) | `despachox` − `experta` en la sección 8.3 (red urbana) |
 |---|---:|---:|---:|---|---|---|---|---|
-| Holgada | 623,0 | 615,9 | 569,9 | −53,1 [−71,2; −34,9] | −46,0 [−63,3; −28,7] | 27 / 0 / 3 | s. d. | −51,1 [−62,6; −39,5] |
-| Media | 760,5 | 755,8 | 699,8 | −60,6 [−82,4; −38,9] | −56,0 [−77,9; −34,0] | 26 / 0 / 4 | s. d. | −59,5 [−73,0; −46,0] |
-| Alta | 842,3 | 840,5 | 798,3 | −44,0 [−59,4; −28,7] | −42,2 [−56,8; −27,6] | 26 / 0 / 4 | s. d. | −46,9 [−65,0; −28,7] |
+| Holgada | 623,0 | 615,9 | 569,9 | −53,1 [−71,2; −34,9] | −46,0 [−63,3; −28,7] | 27 / 0 / 3 | −62,6 [−82,0; −43,2] | −51,1 [−62,6; −39,5] |
+| Media | 760,5 | 755,8 | 699,8 | −60,6 [−82,4; −38,9] | −56,0 [−77,9; −34,0] | 26 / 0 / 4 | −51,5 [−70,6; −32,3] | −59,5 [−73,0; −46,0] |
+| Alta | 842,3 | 840,5 | 798,3 | −44,0 [−59,4; −28,7] | −42,2 [−56,8; −27,6] | 26 / 0 / 4 | −44,6 [−66,2; −23,0] | −46,9 [−65,0; −28,7] |
 
 **Espera en el punto peor atendido (h).** 30 escenarios por carga.
 
 | Carga | `ingenua` | `experta` | `despachox` | `despachox` − `ingenua` | `despachox` − `experta` | Semillas mejor / igual / peor frente a `experta` | `despachox` − `experta`, velocidades del modelo, misma red (9.3) | `despachox` − `experta` en la sección 8.3 (red urbana) |
 |---|---:|---:|---:|---|---|---|---|---|
-| Holgada | 5,14 | 6,96 | 7,09 | 1,95 [1,36; 2,53] | 0,13 [−0,36; 0,63] | 13 / 0 / 17 | s. d. | 0,23 [−0,21; 0,67] |
-| Media | 6,46 | 9,00 | 9,53 | 3,07 [2,46; 3,68] | 0,53 [0,04; 1,02] | 9 / 0 / 21 | s. d. | 0,81 [0,37; 1,25] |
-| Alta | 7,56 | 10,77 | 11,37 | 3,82 [3,21; 4,43] | 0,61 [0,17; 1,04] | 10 / 2 / 18 | s. d. | 0,89 [0,33; 1,45] |
+| Holgada | 5,14 | 6,96 | 7,09 | 1,95 [1,36; 2,53] | 0,13 [−0,36; 0,63] | 13 / 0 / 17 | 0,28 [−0,17; 0,73] | 0,23 [−0,21; 0,67] |
+| Media | 6,46 | 9,00 | 9,53 | 3,07 [2,46; 3,68] | 0,53 [0,04; 1,02] | 9 / 0 / 21 | 0,62 [0,21; 1,03] | 0,81 [0,37; 1,25] |
+| Alta | 7,56 | 10,77 | 11,37 | 3,82 [3,21; 4,43] | 0,61 [0,17; 1,04] | 10 / 2 / 18 | 0,75 [0,38; 1,12] | 0,89 [0,33; 1,45] |
 
-**Frente al despacho por orden de llegada, DespachoX gana con claridad en puntos críticos.** Entrega a tiempo 23,3, 44,7 y 57,9 puntos más de pedidos críticos que la política ingenua, según la carga, y el intervalo nunca toca el cero. En la sección 8.3 eran 10,1, 28,6 y 47,5. La ingenua cae a 75,9 %, 53,6 % y 40,5 % de críticos a tiempo.
+**Frente al despacho por orden de llegada, DespachoX gana con claridad en puntos críticos.** Entrega a tiempo 23,3, 44,7 y 57,9 puntos más de pedidos críticos que la política ingenua, según la carga, y el intervalo nunca toca el cero. Con las velocidades del modelo en la misma red eran 13,3, 32,5 y 48,9 puntos, y en la sección 8.3, 10,1, 28,6 y 47,5. La ingenua cae a 75,9 %, 53,6 % y 40,5 % de críticos a tiempo.
 
-**Frente al despachador con oficio, DespachoX gana en puntos críticos en las tres cargas.** La diferencia es de 1,5, 3,7 y 6,5 puntos, y los tres intervalos excluyen el cero. DespachoX fue mejor en 8, 15 y 23 de los 30 escenarios, y peor en 2, 2 y 1. En la sección 8.3 los tres intervalos incluían el cero.
+**Frente al despachador con oficio, DespachoX gana en puntos críticos en las tres cargas.** La diferencia es de 1,5, 3,7 y 6,5 puntos, y los tres intervalos excluyen el cero. DespachoX fue mejor en 8, 15 y 23 de los 30 escenarios, y peor en 2, 2 y 1. Con las velocidades del modelo en la misma red, la diferencia era de 0,3, 0,9 y 2,8 puntos, y solo en carga alta el intervalo excluía el cero. En la sección 8.3 los tres intervalos incluían el cero.
 
-**En el total de entregas a tiempo, empata en carga holgada y media y gana en carga alta.** Las diferencias son de −0,5 y −0,8 puntos, con intervalos que incluyen el cero, aunque DespachoX fue peor en más escenarios que mejor: 15 y 17 de 30. En carga alta gana 3,0 puntos, con IC de [0,7; 5,3]. En la sección 8.3 quedaba 1,9 y 1,7 puntos debajo en carga media y alta, con intervalos que excluían el cero.
+**En el total de entregas a tiempo, empata en carga holgada y media y gana en carga alta.** Las diferencias son de −0,5 y −0,8 puntos, con intervalos que incluyen el cero, aunque DespachoX fue peor en más escenarios que mejor: 15 y 17 de 30. En carga alta gana 3,0 puntos, con IC de [0,7; 5,3]. Con las velocidades del modelo en la misma red, DespachoX quedaba 0,8, 2,6 y 2,7 puntos debajo, y en carga media y alta el intervalo excluía el cero. En la sección 8.3 quedaba 1,9 y 1,7 puntos debajo en carga media y alta.
 
-**Los kilómetros se mantienen.** DespachoX recorre 46,0, 56,0 y 42,2 km menos que `experta` por jornada, del 5,0 % al 7,5 % de su recorrido. En la sección 8.3 eran 51,1, 59,5 y 46,9 km.
+**Los kilómetros se mantienen.** DespachoX recorre 46,0, 56,0 y 42,2 km menos que `experta` por jornada, del 5,0 % al 7,5 % de su recorrido. Con las velocidades del modelo en la misma red eran 62,6, 51,5 y 44,6 km, y en la sección 8.3, 51,1, 59,5 y 46,9 km.
 
-**El desperdicio sigue resuelto por la regla de bodega.** `experta` y DespachoX dejan vencer 0,0 % de los perecederos en los 90 escenarios. La ingenua pierde 1,4 %, 3,4 % y 5,6 %. En carga alta pasa en promedio la meta del 5 % del reto, y 17 de sus 30 escenarios quedan por encima. En carga holgada y media son 2 y 9 de 30. En la sección 8.3 la ingenua perdía 1,0 %, 1,8 % y 3,2 %.
+**El desperdicio sigue resuelto por la regla de bodega.** `experta` y DespachoX dejan vencer 0,0 % de los perecederos en los 90 escenarios. La ingenua pierde 1,4 %, 3,4 % y 5,6 %. En carga alta pasa en promedio la meta del 5 % del reto, y 17 de sus 30 escenarios quedan por encima. En carga holgada y media son 2 y 9 de 30. Con las velocidades del modelo en la misma red perdía 1,1 %, 2,2 % y 3,9 %, y pasaba el 5 % en 1, 3 y 11 escenarios.
 
-**La prioridad sigue costando en equidad.** DespachoX hace esperar al punto peor atendido 0,13, 0,53 y 0,61 horas más que `experta`, y en carga media y alta el intervalo excluye el cero. Frente a la ingenua son 1,95, 3,07 y 3,82 horas más.
+**La prioridad sigue costando en equidad.** DespachoX hace esperar al punto peor atendido 0,13, 0,53 y 0,61 horas más que `experta`, y en carga media y alta el intervalo excluye el cero. Con las velocidades del modelo eran 0,28, 0,62 y 0,75 horas. Frente a la ingenua son 1,95, 3,07 y 3,82 horas más.
 
-El optimizador se llamó entre 56 y 78 veces por jornada en promedio, según la carga. Tardó entre 1,37 y 1,64 segundos por llamada en promedio, con 1 s de búsqueda. En la sección 8.3 tardaba 1,28 segundos.
+El optimizador se llamó entre 56 y 78 veces por jornada en promedio, según la carga. Tardó entre 1,37 y 1,64 segundos por llamada en promedio, con 1 s de búsqueda. Con las velocidades del modelo en la misma red tardó entre 1,48 y 1,55 segundos, y en la sección 8.3, 1,28.
 
 ### 9.3 Comparación con la sección 8: el efecto de la velocidad
 
-La corrida con las velocidades del modelo sobre la misma red y las mismas semillas está en curso desde las 6:03 a. m. y debe terminar hacia las 7:25 a. m. Hasta entonces, la columna «`despachox` − `experta`, velocidades del modelo, misma red (9.3)» de las tablas dice «s. d.».
+La corrida con las velocidades del modelo sobre la misma red y las mismas semillas terminó a las 7:23 a. m.: 360 jornadas, sin errores del optimizador. Entre las dos corridas solo cambia la velocidad, así que la comparación es pareada por semilla. Los puntos, pedidos, lotes y flota son los mismos; los cierres pueden caer en otros tramos (9.1).
 
-Mientras tanto, la comparación con la sección 8.3 mezcla la velocidad con la red y no es pareada. Con esa salvedad, `experta` pierde más que DespachoX en críticos a tiempo. Con carga alta, `experta` baja de 98,1 % a 91,9 % y DespachoX de 98,9 % a 98,4 %. En el total de entregas a tiempo con carga alta, `experta` baja de 85,2 % a 70,3 % y DespachoX de 83,5 % a 73,2 %.
+**Con las velocidades del modelo, la red ampliada repite la sección 8.** DespachoX empata con `experta` en críticos a tiempo en carga holgada y media, con 0,3 y 0,9 puntos, y le gana 2,8 [0,8; 4,7] en carga alta. En el total de entregas a tiempo queda 0,8, 2,6 y 2,7 puntos debajo, y en carga media y alta el intervalo excluye el cero. Le ahorra de 45 a 63 km por jornada. Es casi lo mismo que la sección 8.3 sobre la red urbana, así que el cambio de red no explica lo que cambió en la sección 9.2.
 
-Hay dos pistas, a falta de la corrida de la misma red. En la sección 8.8, con las velocidades del modelo, pasar de la red urbana a la ampliada no cambió las conclusiones (carga media, factor 1, otras semillas). Y una lectura posible, por confirmar: con viajes más largos, los mismos plazos quedan más apretados, y planear con prioridad pesa más.
+**Con las velocidades de la tesis, la ventaja de DespachoX sobre `experta` crece.** En críticos a tiempo crece 1,2 [−0,2; 2,7], 2,8 [0,9; 4,6] y 3,7 [2,0; 5,5] puntos, según la carga. En el total de entregas a tiempo crece 0,3 [−1,1; 1,7], 1,7 [−0,8; 4,3] y 5,7 [3,6; 7,7] puntos. Solo excluyen el cero el cambio en críticos con carga media y alta, y el del total con carga alta. En los kilómetros no hay cambio medible.
+
+**Con viajes más largos, `experta` pierde más que DespachoX.** En críticos a tiempo baja 1,4, 3,3 y 3,8 puntos, y DespachoX entre 0,0 y 0,5, con intervalos que incluyen el cero. En el total de entregas a tiempo, `experta` baja 3,4, 8,5 y 12,2 puntos, y DespachoX 3,1, 6,7 y 6,6. Una lectura posible, que la simulación no prueba: con los mismos plazos y viajes más largos, atender por urgencia sin planear las rutas deja llegar tarde a más pedidos, y planear pesa más.
+
+**Efecto de las velocidades de la tesis en la misma red.** Diferencia pareada por semilla, velocidades de la tesis menos velocidades del modelo, con IC del 95 %. 30 escenarios por carga. La última columna es el cambio de la diferencia `despachox` − `experta`.
+
+| Carga | Indicador | `ingenua` | `experta` | `despachox` | Cambio de la brecha `despachox` − `experta` |
+|---|---|---|---|---|---|
+| Holgada | Críticos a tiempo (%) | −10,1 [−13,6; −6,6] | −1,4 [−3,0; 0,2] | −0,2 [−0,8; 0,4] | 1,2 [−0,2; 2,7] |
+| Holgada | A tiempo, todos los puntos (%) | −4,5 [−6,8; −2,3] | −3,4 [−5,9; −0,9] | −3,1 [−4,9; −1,2] | 0,3 [−1,1; 1,7] |
+| Holgada | Perecederos vencidos (%) | 0,4 [0,1; 0,7] | 0,0 [0,0; 0,0] | 0,0 [0,0; 0,0] | 0,0 [0,0; 0,0] |
+| Holgada | Kilómetros de la flota | −54,6 [−85,9; −23,4] | −50,0 [−76,9; −23,0] | −33,3 [−61,0; −5,7] | 16,6 [−2,7; 35,9] |
+| Holgada | Espera en el punto peor atendido (h) | 0,71 [0,25; 1,18] | 1,83 [1,37; 2,29] | 1,68 [1,04; 2,32] | −0,15 [−0,80; 0,51] |
+| Media | Críticos a tiempo (%) | −12,6 [−16,1; −9,2] | −3,3 [−4,8; −1,7] | −0,5 [−1,5; 0,5] | 2,8 [0,9; 4,6] |
+| Media | A tiempo, todos los puntos (%) | −9,4 [−12,2; −6,6] | −8,5 [−11,2; −5,7] | −6,7 [−9,0; −4,4] | 1,7 [−0,8; 4,3] |
+| Media | Perecederos vencidos (%) | 1,3 [0,6; 1,9] | 0,0 [0,0; 0,0] | 0,0 [0,0; 0,0] | 0,0 [0,0; 0,0] |
+| Media | Kilómetros de la flota | −45,5 [−75,5; −15,4] | −45,7 [−70,8; −20,5] | −50,2 [−81,6; −18,8] | −4,5 [−24,8; 15,8] |
+| Media | Espera en el punto peor atendido (h) | 1,13 [0,57; 1,68] | 1,62 [1,21; 2,03] | 1,53 [1,02; 2,04] | −0,09 [−0,67; 0,49] |
+| Alta | Críticos a tiempo (%) | −9,0 [−11,8; −6,1] | −3,8 [−5,2; −2,4] | 0,0 [−1,3; 1,2] | 3,7 [2,0; 5,5] |
+| Alta | A tiempo, todos los puntos (%) | −11,5 [−14,2; −8,8] | −12,2 [−14,6; −9,9] | −6,6 [−8,2; −4,9] | 5,7 [3,6; 7,7] |
+| Alta | Perecederos vencidos (%) | 1,6 [1,0; 2,3] | 0,0 [0,0; 0,0] | 0,0 [0,0; 0,0] | 0,0 [0,0; 0,0] |
+| Alta | Kilómetros de la flota | −94,5 [−130,4; −58,6] | −89,2 [−118,5; −60,0] | −86,9 [−122,2; −51,6] | 2,4 [−16,4; 21,2] |
+| Alta | Espera en el punto peor atendido (h) | 1,20 [0,88; 1,52] | 1,46 [1,07; 1,86] | 1,32 [0,96; 1,68] | −0,14 [−0,67; 0,38] |
+
+**Medias con las velocidades del modelo en la misma red.** 30 escenarios por carga, semillas 20261150 a 20261179, factor 3.
+
+| Carga | Indicador | `ingenua` | `experta` | `despachox` |
+|---|---|---:|---:|---:|
+| Holgada | Críticos a tiempo (%) | 86,0 | 99,1 | 99,3 |
+| Holgada | A tiempo, todos los puntos (%) | 95,0 | 98,6 | 97,8 |
+| Holgada | Perecederos vencidos (%) | 1,1 | 0,0 | 0,0 |
+| Holgada | Kilómetros de la flota | 677,6 | 665,9 | 603,3 |
+| Holgada | Espera en el punto peor atendido (h) | 4,43 | 5,13 | 5,41 |
+| Media | Críticos a tiempo (%) | 66,2 | 97,9 | 98,8 |
+| Media | A tiempo, todos los puntos (%) | 85,9 | 93,3 | 90,7 |
+| Media | Perecederos vencidos (%) | 2,2 | 0,0 | 0,0 |
+| Media | Kilómetros de la flota | 805,9 | 801,5 | 750,0 |
+| Media | Espera en el punto peor atendido (h) | 5,33 | 7,38 | 8,00 |
+| Alta | Críticos a tiempo (%) | 49,5 | 95,6 | 98,4 |
+| Alta | A tiempo, todos los puntos (%) | 73,9 | 82,5 | 79,8 |
+| Alta | Perecederos vencidos (%) | 3,9 | 0,0 | 0,0 |
+| Alta | Kilómetros de la flota | 936,8 | 929,8 | 885,2 |
+| Alta | Espera en el punto peor atendido (h) | 6,36 | 9,30 | 10,05 |
 
 **Medias de la sección 8.3 (red urbana, velocidades del modelo).** 30 escenarios por carga, semillas 20261150 a 20261179, factor 3.
 
@@ -425,7 +467,9 @@ Todo lo demás es igual que en las secciones 2 y 6.
 ### 9.7 Qué decir en el pitch (por aprobar)
 
 1. Con velocidades derivadas de mediciones GPS de un bus en Manizales y asignadas por tipo de vía y pendiente (tesis UNAL de 2019, tabla 14, pp. 46 a 48), DespachoX entrega a tiempo entre 23 y 58 puntos porcentuales más de pedidos críticos que el despacho por orden de llegada, en 90 escenarios simulados con cierres de vías.
-2. Frente a un despachador con oficio que ya prioriza lo urgente, gana entre 1,5 y 6,5 puntos en críticos a tiempo y recorre entre 42 y 56 km menos por jornada; en el total de entregas empata, salvo con carga alta, donde gana 3 puntos.
+2. Frente a un despachador con oficio que ya prioriza lo urgente, gana entre 1,5 y 6,5 puntos en críticos a tiempo y recorre entre 42 y 56 km menos por jornada; con las velocidades que suponíamos antes, más rápidas, la ventaja en críticos era de solo 0,3 a 2,8 puntos.
 3. Con DespachoX y con el despachador con oficio, los perecederos vencidos quedan en 0,0 %, y el despacho por orden de llegada pasa la meta del 5 % con carga alta.
 
-Marcas: por aprobar. Fuente de las velocidades: revisado por máquina; falta que una persona abra la tesis. Son cifras de simulación medidas por nosotros: 30 escenarios por carga, 90 en total, semillas 20261150 a 20261179, factor crítico 3, IC del 95 %. Falta la corrida de la misma red con las velocidades del modelo (9.3) para saber cuánto de la mejora frente al despachador con oficio viene de la velocidad y cuánto de la red.
+Si preguntan por el total de entregas a tiempo: con las velocidades de la tesis, DespachoX empata con el despachador con oficio en carga holgada y media y le gana 3,0 puntos en carga alta. Con las velocidades de antes quedaba 2,6 y 2,7 puntos debajo en carga media y alta.
+
+Marcas: por aprobar. Fuente de las velocidades: revisado por máquina; falta que una persona abra la tesis. Son cifras de simulación medidas por nosotros: 30 escenarios por carga, 90 en total, semillas 20261150 a 20261179, factor crítico 3, IC del 95 %. La comparación con las velocidades de antes es pareada, sobre la misma red y las mismas semillas (9.3).
