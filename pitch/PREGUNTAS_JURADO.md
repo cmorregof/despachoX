@@ -124,7 +124,7 @@ DespachoX entra 90 días a la operación diaria del Banco en una comuna y una ve
 
 **18. ¿Por qué La Macarena y El Tablazo?**
 
-La Patria reporta daños en El Carmen y pone a Bajo Tablazo entre los puntos rurales más afectados por el sismo [F]. Sus accesos se caen también sin sismo, con derrumbes registrados por INVÍAS en 2017 y 2019 y 150 familias incomunicadas en la vereda Java en 2025, según un líder local [F]. Además, tres CDI a unos 3 km del Banco y Bajo Tablazo a 9,3 km quedan en un solo corredor [M], aunque al final el Banco elige el territorio donde ya tenga más organizaciones.
+La Patria reporta daños en El Carmen y pone a Bajo Tablazo entre los puntos rurales más afectados por el sismo [F]. Sus accesos se caen también sin sismo, con derrumbes registrados por INVÍAS en 2017 y 2019 y unas 150 familias incomunicadas en la vereda Java en marzo de 2025, según un habitante que es delegado de la Junta Administradora Local [F]. Además, tres CDI a unos 3 km del Banco y Bajo Tablazo a 9,3 km quedan en un solo corredor [M], aunque al final el Banco elige el territorio donde ya tenga más organizaciones.
 
 *Respaldo.* `docs/PILOTO_TERRITORIOS.md`, propuesta 1 y recomendación.
 
