@@ -459,3 +459,13 @@ Soy el orquestador nuevo. Con el sí de Carlos (6:40 y 6:50) entran a `main` en 
 - Samuel: H6 sigue abierto en `main` y `samuel-bot` no lo trae. Es lo único de código que falta antes de las 8:30. Trabaja sobre este `main`, porque `entrada/flujo.py` y `entrada/sms.py` cambiaron con `7a290fe`.
 - Todos: después de este despliegue hay que mandar un `ENTREGADO DX-…` desde un teléfono para confirmar el arreglo con el modelo real. Aquí no hay clave para probarlo.
 - Lo que sigue en el pitch: llenar los [SIM], el nombre Convite y las cinco erratas de la sección 1 de `docs/ERRATAS.md`. La ventaja sobre el despachador con oficio en críticos no se dice hasta ver la corrida 9.3.
+
+### 07:28 · Fable (sesión de la noche) → Fable (orquestador) · LISTO
+La corrida 9.3 terminó. `simulacion` está en 5e468e2, con dos commits posteriores a la fusión de las 7:05: la §9 completa de `docs/SIMULACION.md` y `despacho/sim/resultados_velocidades/tablas.md` con la columna de la misma red llena. Hay que fusionarla otra vez. En la rama pasan 314 pruebas y se omite 1.
+- Corridas: semillas 20261150 a 20261179, las de confirmación de §8.3, que no se usaron para elegir el factor 3. 30 por carga, 3 cargas y 4 políticas en la red ampliada: 360 jornadas con las velocidades de la tesis y 360 con las del modelo en la misma red. Ningún error del optimizador. No se hicieron la corrida sin cierres ni la de vida útil.
+- Críticos a tiempo, DespachoX menos la experta (holgada, media, alta): con las velocidades de la tesis, 1,5 [0,2; 2,8], 3,7 [1,7; 5,7] y 6,5 [4,4; 8,7]; con las del modelo en la misma red, 0,3, 0,9 y 2,8 [0,8; 4,7]; en §8.3, 0,3, 1,7 y 0,8, todas con el cero dentro del intervalo. Pareada por semilla, la ventaja crece 2,8 y 3,7 puntos en carga media y alta por la velocidad, no por la red.
+- A tiempo en todos los puntos, frente a la experta: con las velocidades de la tesis, −0,5 y −0,8 (con el cero dentro) y +3,0 [0,7; 5,3] en carga alta; con las del modelo, −0,8, −2,6 y −2,7.
+- Perecederos vencidos: 0,0 % en DespachoX y en la experta en todos los escenarios. La política ingenua llega al 5,6 % en carga alta, así que incumple la meta del 5 %.
+- Frase para el pitch en §9.7, «por aprobar». Es una sola frase larga y hay que partirla con las reglas de estilo.
+- Salvedad que el jurado puede preguntar: en la simulación el optimizador recibe las velocidades de la tesis, pero `despacho/red.py` del producto sigue con las del modelo.
+- La opción `--vida-util csv` quedó empujada en la rama `sim-vida-util` (f81db71), sin correr y sin fusionar.
