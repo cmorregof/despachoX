@@ -35,11 +35,21 @@ La sal del hash sale de `DESPACHOX_SAL` o de un archivo `.sal` junto a la base (
 | Clústeres y topes | `eps_s_m` 250 · `eps_t_h` 6 · `min_samples` 3 · `delta` 0.20 · `T_min` 5 · `ciclo_h` 72 · `f_bar` 10 · `m` 2 · `S_min` 3 · `phi` 0.25 · `ventana_S_h` 24 · `factor_absurdo` 10 |
 | Antibots | `B_ciudadano` 3 · `B_registrado` 20 · `recarga_h` 2 · `q` 0.05 · `lambda_min` 0.1 · `alpha_rafaga` 0.001 · `rafaga_dur_h` 2 · `eta` 0.2 · `w_rafaga_h` 1 · `nuevo_h` 72 · `umbral_global` 0.40 · `k_evento` 3 · `evento_dur_h` 6 · `jaccard_texto` 0.85 · `k_coordinado` 3 · `ventana_coord_h` 1 · `min_nuevos_coord` 2 · `teja` 5 · `min_largo_coord` 30 · `cv_min` 0.1 · `n_min_cadencia` 4 · `salto_km` 3 · `ventana_salto_h` 1 |
 | Puntaje | `pi_0` 0.90 · `r_costo` 4 · `tau_piso` 0.70 · `K_revision_h` 60 · `epsilon` 0.05 · `max_cambio_w` 0.5 · razones de verosimilitud por señal (`LR_DEFECTO`, Beta con `n_0` 10) |
-| Zonas débiles | `alpha_sil` 0.01 · `T_min_sil_h` 3 · `t_escala_h` 6 · `auditoria_agente` 0.10 · `agente_r_poligono_m` 500 · `agente_r_centroide_m` 1500 |
+| Zonas débiles | `silencio_h` 6 y `jornada_inicio` 06:00 (importados de `entrada/silencio.py`) · `t_escala_h` 6 · `auditoria_agente` 0.10 · `agente_r_poligono_m` 500 · `agente_r_centroide_m` 1500 |
 | Decisión y cola | `jaccard_productos` 0.5 · `bloqueantes` · `u_albergue` 3 · `u_critico` 3 · `u_otro` 1 · `beta_ais` 1.0 · `gamma` 0.5 · `muestra_lote` 3 · `kg_por_familia` 12 |
 
 Solo `semilla` (2026) no es supuesto. La población de la semilla es sintética (`calidad_dato =
 'estimado'`); cargar censo real y citarlo en `docs/FUENTES.md` es un paso aparte.
+
+## Silencio (definición única, aviso del canal del 20/11 a las 23:30)
+
+Una zona afectada está en silencio cuando lleva 6 h o más sin contacto, contadas desde la hora más
+tardía entre las 06:00 de la jornada (Bogotá) y la hora del evento. Contacto = solicitud por chat
+con lugar confirmado o cualquier solicitud de un agente, que no esté en cuarentena ni descartada
+(un ataque de bots no apaga la alerta). Umbral y jornada se importan de `entrada/silencio.py`.
+Sin `--hora-evento` el triage no evalúa silencio. Poisson ya no decide: solo ordena las tareas,
+`prioridad = H_af × (1 + aislada) × (1 − exp(−lambda × horas de silencio))`. `alpha_sil` y
+`T_min_sil_h` quedan en `config.py`, obsoletos, para leer versiones guardadas.
 
 ## Decisiones propias (no estaban en la especificación)
 

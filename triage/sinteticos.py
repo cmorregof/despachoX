@@ -182,41 +182,53 @@ def escenario_3(con, params):
 
 
 # ---------- 4, 5 y 6. Zona silenciosa ----------
+EVENTO = T0 - timedelta(hours=2)                 # 06:00: coincide con el inicio de la jornada
+
+
 def _zona_silenciosa(con, params):
-    """La zona de más hogares con afectación 0.5 (lambda ≈ 3/h); las demás sin afectación."""
+    """La zona de más hogares con afectación 0.5; las demás sin afectación. Evento a las 06:00."""
     def ajustar(zonas):
         mayor = max(zonas, key=lambda z: z["hogares"])
         for z in zonas:
             z["afectacion"] = 0.5 if z is mayor else 0.0
     zonas = preparar_zonas(con, params, ajustar)
-    p = dict(params, hora_evento=a_iso(T0 - timedelta(hours=3)))
+    p = dict(params, hora_evento=a_iso(EVENTO))
     return next(z for z in zonas if z.afectacion > 0), p
+
+
+def _hora_debil(p):
+    return EVENTO + timedelta(hours=p["silencio_h"])
 
 
 def escenario_4(con, params):
     zona, p = _zona_silenciosa(con, params)
-    embudo.procesar_lote(con, [], p, T0)
+    debil_h = _hora_debil(p)
+    embudo.procesar_lote(con, [], p, debil_h - timedelta(minutes=1))
+    debil_antes = censo.zona_por_id(con, zona.id).es_debil
+    embudo.procesar_lote(con, [], p, debil_h)
     debil = censo.zona_por_id(con, zona.id).es_debil
     tarea = con.execute("SELECT id, estado FROM tareas_campo WHERE zona_id=?", (zona.id,)).fetchone()
-    estado_3h = tarea["estado"] if tarea else None
-    embudo.procesar_lote(con, [], p, T0 + timedelta(hours=5))
-    estado_8h = con.execute("SELECT estado FROM tareas_campo WHERE id=?", (tarea["id"],)).fetchone()[0] \
-        if tarea else None
-    ahora = T0 + timedelta(hours=6)
+    estado_0 = tarea["estado"] if tarea else None
+
+    def estado_tarea():
+        return con.execute("SELECT estado FROM tareas_campo WHERE id=?", (tarea["id"],)).fetchone()[0]             if tarea else None
+    embudo.procesar_lote(con, [], p, debil_h + timedelta(hours=p["t_escala_h"] - 1))
+    estado_5h = estado_tarea()
+    ahora = debil_h + timedelta(hours=p["t_escala_h"])
     r = embudo.procesar_lote(con, [], p, ahora)
-    estado_9h = con.execute("SELECT estado FROM tareas_campo WHERE id=?", (tarea["id"],)).fetchone()[0] \
-        if tarea else None
-    return _resultado(debil == 1 and estado_3h == "abierta" and estado_8h == "abierta"
-                      and estado_9h == "escalada",
-                      {"zona": zona.nombre, "es_debil_a_las_3h": debil, "tarea_a_las_3h": estado_3h,
-                       "tarea_5h_despues": estado_8h, "tarea_6h_despues": estado_9h}, ahora, r)
+    estado_6h = estado_tarea()
+    return _resultado(debil_antes == 0 and debil == 1 and estado_0 == "abierta" and estado_5h == "abierta"
+                      and estado_6h == "escalada",
+                      {"zona": zona.nombre, "es_debil_5h59": debil_antes, "es_debil_a_las_6h": debil,
+                       "tarea_al_crearse": estado_0, "tarea_5h_despues": estado_5h,
+                       "tarea_6h_despues": estado_6h}, ahora, r)
 
 
 def escenario_5(con, params):
     rng = np.random.default_rng(params["semilla"])
     zona, p = _zona_silenciosa(con, params)
-    embudo.procesar_lote(con, [], p, T0)
-    ahora = T0 + timedelta(minutes=30)
+    embudo.procesar_lote(con, [], p, _hora_debil(p))
+    ahora = _hora_debil(p) + timedelta(minutes=30)
     r = embudo.procesar_lote(con, [solicitud(ahora, "vecina-debil", zona, rng, familias=5)], p, ahora)
     f = con.execute("SELECT estado, tarea_id FROM solicitudes").fetchone()
     return _resultado(f is not None and f["estado"] == "espera_agente" and f["tarea_id"] is not None,
@@ -226,12 +238,12 @@ def escenario_5(con, params):
 
 def escenario_6(con, params):
     zona, p = _zona_silenciosa(con, params)
-    embudo.procesar_lote(con, [], p, T0)
+    embudo.procesar_lote(con, [], p, _hora_debil(p))
     tarea = con.execute("SELECT id FROM tareas_campo WHERE zona_id=?", (zona.id,)).fetchone()
     ag = remitente("agente-defensa-civil")
     agentes.enrolar(con, ag, "Defensa Civil (sintetico)", [zona.id], "coordinador:escenario", T0)
     lat = zona.lat + 2000 / GRADO_LAT_M
-    ahora = T0 + timedelta(hours=1)
+    ahora = _hora_debil(p) + timedelta(hours=1)
     r = agentes.validar(con, ag, tarea["id"] if tarea else -1, lat, zona.lon,
                         [{"familias": 20, "productos": ["arroz"]}], ahora, p)
     return _resultado(r["ok"] is False and r["motivo"] == "ubicacion_agente",
@@ -354,8 +366,9 @@ ESCENARIOS = {
         "< 5 % en cuarentena y una entrada posible_nuevo_evento", escenario_2),
     3: ("vereda", "Vereda con un solo mensaje real, remitente nuevo y lugar confirmado",
         "No queda en cuarentena; prioridad igual a la urbana equivalente", escenario_3),
-    4: ("silencio", "Zona afectada sin mensajes durante 3 h",
-        "es_debil = 1 y tarea abierta; a las 6 h sin validación, escalada", escenario_4),
+    4: ("silencio", "Zona afectada sin contacto durante 6 h (definición única de silencio)",
+        "Débil a las 6 h sin contacto (no antes) con tarea abierta; escalada 6 h después de creada",
+        escenario_4),
     5: ("chat_debil", "Mensaje por chat desde una zona débil",
         "espera_agente, nunca confirmada_regla", escenario_5),
     6: ("agente_lejos", "Agente que valida desde 2 km fuera de su zona",

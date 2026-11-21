@@ -7,7 +7,7 @@ Escenarios corridos: **10**; cumplen: **10**. Semilla 2026, datos sintéticos so
 | 1 | Ataque: 200 solicitudes en 10 min de 50 remitentes nuevos con texto casi igual | ≥ 95 % en cuarentena y cupo consumido 0 | zona=Baja Suiza; solicitudes=200; fraccion_cuarentena=1.0; cupo_consumido=0 | sí |
 | 2 | Réplica: las zonas afectadas triplican su tasa normal en la misma hora | < 5 % en cuarentena y una entrada posible_nuevo_evento | zonas_afectadas=20; solicitudes=400; fraccion_cuarentena=0.0325; posible_nuevo_evento=1 | sí |
 | 3 | Vereda con un solo mensaje real, remitente nuevo y lugar confirmado | No queda en cuarentena; prioridad igual a la urbana equivalente | estado_vereda=en_cola; estado_urbana=confirmada_regla; prioridad_vereda=6.5; prioridad_urbana=6.5 | sí |
-| 4 | Zona afectada sin mensajes durante 3 h | es_debil = 1 y tarea abierta; a las 6 h sin validación, escalada | zona=Estambul; es_debil_a_las_3h=1; tarea_a_las_3h=abierta; tarea_5h_despues=abierta; tarea_6h_despues=escalada | sí |
+| 4 | Zona afectada sin contacto durante 6 h (definición única de silencio) | Débil a las 6 h sin contacto (no antes) con tarea abierta; escalada 6 h después de creada | zona=Estambul; es_debil_5h59=0; es_debil_a_las_6h=1; tarea_al_crearse=abierta; tarea_5h_despues=abierta; tarea_6h_despues=escalada | sí |
 | 5 | Mensaje por chat desde una zona débil | espera_agente, nunca confirmada_regla | zona=Estambul; estado=espera_agente; tarea_id=1 | sí |
 | 6 | Agente que valida desde 2 km fuera de su zona | Rechazo con motivo ubicacion_agente | zona=Estambul; distancia_m=2000; ok=False; motivo=ubicacion_agente | sí |
 | 7 | Extractor que siempre lanza una excepción | El lote termina, nada se pierde, las sin campos en_cola con extraccion_fallida | entradas=30; guardadas=30; errores_internos=0; sin_campos_en_cola_con_marca=10 | sí |
@@ -168,12 +168,12 @@ _(ninguno)_
 |---|---|---|---|---|---|
 | Vereda La Esperanza (sintetica) | 1 | 6 | 6.5 | asignacion_aproximada:1, concentracion_remitente:1 | 1 |
 
-## 4. Zona afectada sin mensajes durante 3 h
+## 4. Zona afectada sin contacto durante 6 h (definición única de silencio)
 
-- Criterio: es_debil = 1 y tarea abierta; a las 6 h sin validación, escalada
+- Criterio: Débil a las 6 h sin contacto (no antes) con tarea abierta; escalada 6 h después de creada
 - Cumple: **sí**
-- Hora simulada: 2026-11-20T14:00:00-05:00
-- Medido: `{"zona": "Estambul", "es_debil_a_las_3h": 1, "tarea_a_las_3h": "abierta", "tarea_5h_despues": "abierta", "tarea_6h_despues": "escalada"}`
+- Hora simulada: 2026-11-20T18:00:00-05:00
+- Medido: `{"zona": "Estambul", "es_debil_5h59": 0, "es_debil_a_las_6h": 1, "tarea_al_crearse": "abierta", "tarea_5h_despues": "abierta", "tarea_6h_despues": "escalada"}`
 
 Total de solicitudes en la base: **0**
 
@@ -213,7 +213,7 @@ _(ninguno)_
 
 - Criterio: espera_agente, nunca confirmada_regla
 - Cumple: **sí**
-- Hora simulada: 2026-11-20T08:30:00-05:00
+- Hora simulada: 2026-11-20T12:30:00-05:00
 - Medido: `{"zona": "Estambul", "estado": "espera_agente", "tarea_id": 1}`
 
 Total de solicitudes en la base: **1**
@@ -254,7 +254,7 @@ _(ninguno)_
 
 - Criterio: Rechazo con motivo ubicacion_agente
 - Cumple: **sí**
-- Hora simulada: 2026-11-20T09:00:00-05:00
+- Hora simulada: 2026-11-20T13:00:00-05:00
 - Medido: `{"zona": "Estambul", "distancia_m": 2000, "ok": false, "motivo": "ubicacion_agente"}`
 
 Total de solicitudes en la base: **0**

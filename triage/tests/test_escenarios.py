@@ -37,8 +37,9 @@ def test_3_vereda(base):
 
 def test_4_silencio(base):
     m = _correr(base, 4)
-    assert m["es_debil_a_las_3h"] == 1 and m["tarea_a_las_3h"] == "abierta"
-    assert m["tarea_6h_despues"] == "escalada"
+    assert m["es_debil_5h59"] == 0                      # antes de 6 h sin contacto no es débil
+    assert m["es_debil_a_las_6h"] == 1 and m["tarea_al_crearse"] == "abierta"
+    assert m["tarea_5h_despues"] == "abierta" and m["tarea_6h_despues"] == "escalada"
 
 
 def test_5_chat_desde_zona_debil(base):

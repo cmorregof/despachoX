@@ -13,6 +13,8 @@ import sqlite3
 from datetime import datetime
 
 from datos import db as datos_db
+# Fuente única del silencio (aviso del canal, 20/11 23:30): los mismos valores que entrada/.
+from entrada.silencio import JORNADA_INICIO, UMBRAL_H
 
 # Recuadro de Manizales (B.2.4). No es un SUPUESTO: es el límite del área de trabajo.
 RECUADRO_MANIZALES = {"lat_min": 4.90, "lat_max": 5.20, "lon_min": -75.70, "lon_max": -75.30}
@@ -65,7 +67,10 @@ PARAMETROS_DEFECTO: dict = {
     "pi_0": 0.90, "r_costo": 4, "tau_piso": 0.70, "K_revision_h": 60, "ventana_umbral_h": 1,
     "epsilon": 0.05, "max_cambio_w": 0.5,
     # B.6 zonas débiles y agentes
-    "alpha_sil": 0.01, "T_min_sil_h": 3, "t_escala_h": 6, "auditoria_agente": 0.10,
+    "silencio_h": UMBRAL_H, "jornada_inicio": JORNADA_INICIO,   # de entrada/silencio.py
+    # OBSOLETOS para la decisión de silencio (se conservan para leer versiones guardadas):
+    "alpha_sil": 0.01, "T_min_sil_h": 3,
+    "t_escala_h": 6, "auditoria_agente": 0.10,
     "agente_r_poligono_m": 500, "agente_r_centroide_m": 1500,
     # B.7 consolidación, decisión y cola
     "jaccard_productos": 0.5,
