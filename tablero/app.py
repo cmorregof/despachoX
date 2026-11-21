@@ -30,32 +30,54 @@ NOMBRE = "Convite"          # nombre visible (canal, 20/11 23:30); módulos y ar
 CENTRO = (5.07, -75.52)
 SEGUNDOS_REFRESCO = 5
 ALTERNATIVAS = 3          # cuántas alternativas de ubicación se ofrecen por propuesta
-COLOR_PEDIDO = {"nuevo": "#f59e0b", "confirmado": "#2563eb", "asignado": "#7c3aed", "entregado": "#16a34a"}
-COLORES_RUTA = ["#1f77b4", "#ff7f0e", "#2ca02c", "#9467bd", "#8c564b", "#e377c2", "#17becf", "#7f7f7f"]
-ROJO = "#dc2626"
-MORADO = "#a21caf"
+# Paleta del informe: tinta, ámbar, crema y ceniza. El verde de «entregado» y el rojo de alerta
+# (cierres, puntos críticos) se conservan porque su significado tiene que leerse de un vistazo.
+TINTA, AMBAR, CREMA, CENIZA = "#4F4086", "#A36752", "#EBD3A2", "#6E6878"
+VERDE = "#4E7D5B"
+# Colores de estado: pendiente (nuevo y confirmado), en ruta (asignado), entregado y silencio.
+COLOR_PEDIDO = {"nuevo": AMBAR, "confirmado": "#C9935A", "asignado": TINTA, "entregado": VERDE}
+COLOR_SILENCIO = CENIZA
+FONDO_ESTADO = {"pendiente": "#F6E9E2", "en ruta": "#ECE8F6", "entregado": "#E7F0E8", "silencio": "#ECEAEE"}
+COLORES_RUTA = [TINTA, AMBAR, "#2F7F86", "#8A5A9E", "#5F7A3B", "#B4566E", "#3E6FA3", CENIZA]
+ROJO = "#C0392B"
+MORADO = "#8A5A9E"
+FILA_ALTERNA = "#FAF4E6"
 
 ESTILO = """
 <style>
-.block-container {padding-top: 3.4rem; padding-bottom: 1rem; max-width: 100%;}
+.block-container {padding-top: 3.2rem; padding-bottom: 1.5rem; max-width: 100%;}
 html, body, [data-testid="stMarkdownContainer"] p, .stButton button {font-size: 1.05rem;}
-h1 {font-size: 1.7rem !important; padding: 0 !important;}
-.tarjeta {border: 1px solid rgba(128,128,128,.35); border-radius: 12px; padding: .7rem 1rem; height: 100%;}
-.tarjeta .rotulo {font-size: 1.05rem; opacity: .8; line-height: 1.2;}
-.tarjeta .valor {font-size: 3rem; font-weight: 700; line-height: 1.1;}
-.tarjeta .nota {font-size: 1.05rem; line-height: 1.25;}
-.tarjeta.alerta {border-color: #dc2626; border-width: 2px;}
-.tarjeta.alerta .valor {color: #dc2626;}
-.ficha {display: inline-block; margin: .15rem .9rem .15rem 0; font-size: 1.05rem; white-space: nowrap;}
+h1 {font-size: 1.75rem !important; padding: 0 !important; color: #4F4086; letter-spacing: .01em;}
+h3 {color: #4F4086;}
+[data-testid="stVerticalBlock"] {gap: 1.05rem;}
+/* Tarjetas: bordes redondeados, sombra suave y aire; el borde por defecto casi desaparece. */
+[data-testid="stVerticalBlockBorderWrapper"]:has(> div > [data-testid="stVerticalBlock"]) {
+  border-radius: 14px; border-color: rgba(110,104,120,.14) !important; background: #FFFDF8;
+  box-shadow: 0 1px 2px rgba(46,42,54,.05), 0 6px 18px rgba(46,42,54,.07); padding: .35rem .25rem;}
+.tarjeta {border-radius: 16px; padding: 1rem 1.2rem 1.05rem; height: 100%; background: #FFFDF8;
+          box-shadow: 0 1px 2px rgba(46,42,54,.05), 0 8px 22px rgba(46,42,54,.08);
+          border-top: 5px solid #4F4086;}
+.tarjeta .rotulo {font-size: 1rem; color: #6E6878; line-height: 1.25; font-weight: 600;}
+.tarjeta .valor {font-size: 3.1rem; font-weight: 750; line-height: 1.05; color: #2E2A36; margin: .35rem 0 .2rem;}
+.tarjeta .meta {font-size: .95rem; color: #6E6878; font-weight: 600;}
+.tarjeta .nota {font-size: 1rem; line-height: 1.3; color: #2E2A36;}
+.tarjeta .contexto {display: inline-block; font-size: .85rem; font-weight: 700; letter-spacing: .04em;
+                    text-transform: uppercase; border-radius: 999px; padding: .12rem .6rem; margin-bottom: .2rem;
+                    background: #ECE8F6; color: #4F4086;}
+.tarjeta.alerta {border-top-color: #A36752;}
+.tarjeta.alerta .valor {color: #A36752;}
+.tarjeta.alerta .contexto {background: #F6E9E2; color: #A36752;}
+.ficha {display: inline-block; margin: .2rem .9rem .2rem 0; font-size: 1rem; white-space: nowrap; color: #2E2A36;}
 .ficha i {display: inline-block; width: 1.6rem; height: .5rem; border-radius: 3px; margin-right: .4rem;
           vertical-align: middle;}
 .ficha b.punto {display: inline-block; width: .9rem; height: .9rem; border-radius: 50%; margin-right: .35rem;
                 vertical-align: middle;}
-.sin-ubicar {background: #dc2626; color: white; border-radius: 6px; padding: .1rem .5rem; font-weight: 700;}
-.critico {color: #dc2626; font-weight: 700;}
-.silencio {background: #6E6878; color: white; border-radius: 6px; padding: .1rem .5rem; font-weight: 700;}
-.grande {font-size: 1.25rem; font-weight: 700;}
-.cita {font-size: 1.1rem; font-style: italic;}
+.sin-ubicar {background: #C0392B; color: white; border-radius: 8px; padding: .1rem .55rem; font-weight: 700;}
+.critico {color: #C0392B; font-weight: 700;}
+.silencio {background: #6E6878; color: white; border-radius: 8px; padding: .1rem .55rem; font-weight: 700;}
+.grande {font-size: 1.25rem; font-weight: 700; color: #4F4086;}
+.cita {font-size: 1.1rem; font-style: italic; color: #4A4453;}
+[data-testid="stTabs"] button[role="tab"] p {font-size: 1.05rem; font-weight: 600;}
 </style>
 """
 
@@ -96,10 +118,31 @@ def color_de(rutas: list[dict]) -> dict[int, str]:
     return {r["vehiculo_id"]: COLORES_RUTA[(r["vehiculo_id"] - 1) % len(COLORES_RUTA)] for r in rutas}
 
 
-def tarjeta(col, rotulo: str, valor: str, nota: str = "", alerta: bool = False) -> None:
-    col.markdown(f'<div class="tarjeta{" alerta" if alerta else ""}"><div class="rotulo">{rotulo}</div>'
-                 f'<div class="valor">{valor}</div><div class="nota">{nota or "&nbsp;"}</div></div>',
+def tarjeta(col, rotulo: str, valor: str, nota: str = "", alerta: bool = False, contexto: str = "",
+            meta: str = "") -> None:
+    """Ficha grande: palabra de contexto, rótulo, número, meta (si existe) y una nota."""
+    col.markdown(f'<div class="tarjeta{" alerta" if alerta else ""}">'
+                 f'<span class="contexto">{contexto or ("atención" if alerta else "al día")}</span>'
+                 f'<div class="rotulo">{rotulo}</div><div class="valor">{valor}</div>'
+                 f'<div class="meta">{meta or "&nbsp;"}</div><div class="nota">{nota or "&nbsp;"}</div></div>',
                  unsafe_allow_html=True)
+
+
+def tabla(filas: list[dict], columna_estado: str | None = None, estado_de=None, fondo_fila=None):
+    """Tabla con filas alternadas suaves y, si se da, el color de estado de cada fila."""
+    import pandas as pd
+    df = pd.DataFrame(filas)
+    if df.empty:
+        return df
+
+    def pintar(fila):
+        fondo = fondo_fila(fila.name) if fondo_fila else None
+        if not fondo and columna_estado and estado_de:
+            fondo = FONDO_ESTADO.get(estado_de(fila[columna_estado]))
+        if not fondo and fila.name % 2:
+            fondo = FILA_ALTERNA
+        return [f"background-color: {fondo}" if fondo else ""] * len(fila)
+    return df.style.apply(pintar, axis=1)
 
 
 # ---------- indicadores ----------
@@ -107,19 +150,23 @@ def tarjeta(col, rotulo: str, valor: str, nota: str = "", alerta: bool = False) 
 def indicadores(ind: dict, plan: dict | None) -> None:
     c1, c2, c3, c4 = st.columns(4)
     tarjeta(c1, "Pedidos pendientes", str(ind["pedidos_pendientes"]),
-            f"{ind['pedidos_por_confirmar']} por confirmar")
+            f"{ind['pedidos_por_confirmar']} por confirmar", contexto="en espera")
     tarjeta(c2, "Perecederos que vencen en menos de 12 h", f"{ind['kg_vencen_pronto']:,.0f} kg".replace(",", "."),
-            alerta=ind["kg_vencen_pronto"] > 0)
+            alerta=ind["kg_vencen_pronto"] > 0,
+            contexto="vencen pronto" if ind["kg_vencen_pronto"] > 0 else "sin riesgo")
     tarjeta(c3, "Cierres activos", str(ind["cierres_activos"]),
-            f"{ind['cierres_reportados']} por confirmar", alerta=ind["cierres_activos"] > 0)
+            f"{ind['cierres_reportados']} por confirmar", alerta=ind["cierres_activos"] > 0,
+            contexto="vías cerradas" if ind["cierres_activos"] > 0 else "vías abiertas")
     p = ind["puntualidad"]
     if p["pct"] is None:
-        tarjeta(c4, "Pedidos del plan a tiempo", "–", "Sin plan" if not plan else "El plan no tiene paradas")
+        tarjeta(c4, "Pedidos del plan a tiempo", "–", "Sin plan" if not plan else "El plan no tiene paradas",
+                contexto="sin plan", meta=f"meta {T.META_CRITICOS_PCT} %")
     else:
         crit = (f"Puntos críticos: <b>{p['pct_criticos']:.0f} %</b> ({p['criticos_a_tiempo']} de "
                 f"{p['criticos_total']})" if p["pct_criticos"] is not None else "Sin puntos críticos en el plan")
         tarjeta(c4, f"Pedidos del plan a tiempo ({p['a_tiempo']} de {p['total']})", f"{p['pct']:.0f} %", crit,
-                alerta=p["pct"] < 100)
+                alerta=p["pct"] < T.META_CRITICOS_PCT, contexto="a tiempo",
+                meta=f"meta {T.META_CRITICOS_PCT} %")
 
 
 # ---------- mapa ----------
@@ -136,7 +183,7 @@ def capa(con, plan: dict | None, rutas: list[dict], revisar: dict, pin: dict | N
     la actualización automática no redibuje ni mueva el mapa."""
     acopios = T.filas(con, "SELECT * FROM acopios")
     puntos = {p["id"]: p for p in T.filas(con, "SELECT * FROM puntos")}
-    pedidos = T.filas(con, "SELECT id, punto_id, estado, urgencia, kg_estimado, familias FROM pedidos "
+    pedidos = T.filas(con, "SELECT id, punto_id, estado, urgencia, kg_estimado, familias, origen FROM pedidos "
                            "WHERE estado IN ('nuevo','confirmado','asignado') AND duplicado_de IS NULL")
     cierres = T.filas(con, "SELECT * FROM cierres WHERE estado != 'levantado' AND lat IS NOT NULL")
     firma = hashlib.sha1(json.dumps(
@@ -167,7 +214,9 @@ def capa(con, plan: dict | None, rutas: list[dict], revisar: dict, pin: dict | N
         p = puntos.get(d["punto_id"])
         if p:
             folium.CircleMarker([p["lat"], p["lon"]], radius=3 + 2.5 * (d["urgencia"] or 2), weight=1,
-                                color="white", fill=True, fill_color=COLOR_PEDIDO[d["estado"]], fill_opacity=0.9,
+                                color="white", fill=True, fill_opacity=0.9,
+                                fill_color=COLOR_SILENCIO if d.get("origen") == T.ORIGEN_SILENCIO
+                                else COLOR_PEDIDO[d["estado"]],
                                 tooltip=f"Pedido {d['id']} · {d['estado']} · urgencia {d['urgencia']} · "
                                         f"{d['kg_estimado'] or '?'} kg · {p['nombre']}").add_to(fg)
     for r in rutas:
@@ -207,7 +256,7 @@ def capa(con, plan: dict | None, rutas: list[dict], revisar: dict, pin: dict | N
 
 def mapa(con, plan: dict | None, rutas: list[dict], revisar: dict) -> None:
     pin = st.session_state.get("pin")
-    base = folium.Map(location=CENTRO, zoom_start=13, tiles="OpenStreetMap", control_scale=True)
+    base = folium.Map(location=CENTRO, zoom_start=13, tiles="CartoDB positron", control_scale=True)
     salida = st_folium(base, key="mapa", feature_group_to_add=capa(con, plan, rutas, revisar, pin),
                        height=640, use_container_width=True, returned_objects=["last_clicked"])
     clic = (salida or {}).get("last_clicked")
@@ -217,13 +266,14 @@ def mapa(con, plan: dict | None, rutas: list[dict], revisar: dict) -> None:
         refrescar()
     st.session_state["ultimo_clic"] = clic
 
-    st.caption("© colaboradores de OpenStreetMap")
+    st.caption("© colaboradores de OpenStreetMap · © CARTO")
     colores = color_de(rutas)
     fichas = "".join(
         f'<span class="ficha"><i style="background:{colores[r["vehiculo_id"]]}"></i><b>{html.escape(r["nombre"])}</b>'
         f' · {len(r["paradas"])} paradas · {r["kg"]:.0f} kg</span>' for r in rutas)
     fichas += "".join(f'<span class="ficha"><b class="punto" style="background:{c}"></b>pedido {e}</span>'
                       for e, c in COLOR_PEDIDO.items() if e != "entregado")
+    fichas += f'<span class="ficha"><b class="punto" style="background:{COLOR_SILENCIO}"></b>sin contacto</span>'
     fichas += (f'<span class="ficha"><b class="punto" style="border:3px solid {ROJO}"></b>punto crítico</span>'
                f'<span class="ficha"><b class="punto" style="background:{ROJO}"></b>cierre</span>')
     st.markdown(fichas, unsafe_allow_html=True)
@@ -458,15 +508,18 @@ def detalle_plan(con, plan: dict | None, rutas: list[dict]) -> None:
         cap = f" de {r['capacidad_kg']:.0f}" if r["capacidad_kg"] else ""
         st.markdown(f'<span class="ficha"><i style="background:{colores[r["vehiculo_id"]]}"></i>'
                     f'<b>{html.escape(r["nombre"])}</b> · {r["kg"]:.0f}{cap} kg</span>', unsafe_allow_html=True)
-        st.dataframe([{"Orden": s["orden"], "Punto": s["punto"], "Crítico": "sí" if s["critico"] else "",
-                       "Pedido": s["pedido_id"], "Llega": hora(s["llegada_estimada"]),
-                       "Límite": limite(s["limite_en"]), "A tiempo": "sí" if s["a_tiempo"] else "TARDE",
-                       "kg": s["kg"]} for s in r["paradas"]], hide_index=True, width="stretch")
+        st.dataframe(tabla([{"Orden": s["orden"], "Punto": s["punto"], "Crítico": "sí" if s["critico"] else "",
+                             "Pedido": s["pedido_id"], "Llega": hora(s["llegada_estimada"]),
+                             "Límite": limite(s["limite_en"]), "A tiempo": "sí" if s["a_tiempo"] else "TARDE",
+                             "kg": s["kg"]} for s in r["paradas"]],
+                           columna_estado="A tiempo",
+                           estado_de=lambda v: "pendiente" if v == "TARDE" else None),
+                     hide_index=True, width="stretch")
     fuera = T.sin_atender(con, plan)
     if fuera:
         st.markdown("**Sin atender**")
-        st.dataframe([{"Pedido": x["pedido_id"], "Punto": x["punto"], "Crítico": "sí" if x["critico"] else "",
-                       "Motivo": x["motivo"]} for x in fuera], hide_index=True, width="stretch")
+        st.dataframe(tabla([{"Pedido": x["pedido_id"], "Punto": x["punto"], "Crítico": "sí" if x["critico"] else "",
+                             "Motivo": x["motivo"]} for x in fuera]), hide_index=True, width="stretch")
     faltantes = plan["resumen"].get("faltantes") or []
     if faltantes:
         st.markdown("**Faltantes de inventario:** " + "; ".join(
@@ -491,15 +544,13 @@ def detalle_territorio(con) -> None:
     if not d["disponible"]:
         st.info("Pendiente: despacho.territorio")
         return
-    import pandas as pd
     st.markdown(f"**Atención por territorio** · los peor atendidos arriba · en color, los que están por "
                 f"debajo de la meta de {d['meta']} % de críticos a tiempo")
-    tabla = pd.DataFrame([{TITULOS_TERRITORIO.get(c, c): f.get(c) for c in d["columnas"]} for f in d["tabla"]])
     bajo = [f["bajo_meta"] for f in d["tabla"]]
-    if not tabla.empty:
-        estilo = tabla.style.apply(
-            lambda fila: [f"background-color: {FONDO_BAJO_META}" if bajo[fila.name] else ""] * len(fila), axis=1)
-        st.dataframe(estilo, hide_index=True, width="stretch")
+    if d["tabla"]:
+        st.dataframe(tabla([{TITULOS_TERRITORIO.get(c, c): f.get(c) for c in d["columnas"]} for f in d["tabla"]],
+                           fondo_fila=lambda i: FONDO_BAJO_META if bajo[i] else None),
+                     hide_index=True, width="stretch")
     else:
         st.markdown("Todavía no hay territorios con datos.")
     st.download_button("Descargar CSV", T.territorio_csv(d), file_name="territorio.csv", mime="text/csv",
@@ -509,10 +560,25 @@ def detalle_territorio(con) -> None:
     st.markdown(f"**Barrios y veredas sin pedidos registrados ({len(d['sin_pedidos'])})**")
     st.caption("Que un lugar no haya pedido no quiere decir que esté bien: puede no tener señal ni líder.")
     if d["sin_pedidos"]:
-        st.dataframe([{TITULOS_SIN_PEDIDOS.get(c, c): s.get(c) or "" for c in d["columnas_sin_pedidos"]}
-                      for s in d["sin_pedidos"]], hide_index=True, width="stretch", height=360)
+        st.dataframe(tabla([{TITULOS_SIN_PEDIDOS.get(c, c): s.get(c) or "" for c in d["columnas_sin_pedidos"]}
+                            for s in d["sin_pedidos"]], columna_estado="Estado", estado_de=lambda v: "silencio"),
+                     hide_index=True, width="stretch", height=360)
     else:
         st.markdown("Todos los barrios y veredas del nomenclátor tienen pedidos registrados.")
+
+
+def estado_de_accion(accion: str | None) -> str | None:
+    """Color de estado de una fila de la bitácora según la acción registrada."""
+    a = (accion or "").lower()
+    if "silencio" in a or "verificar" in a:
+        return "silencio"
+    if "entreg" in a:
+        return "entregado"
+    if "aprob" in a or "asign" in a:
+        return "en ruta"
+    if "confirm" in a:
+        return "pendiente"
+    return None
 
 
 def detalle_bitacora(con) -> None:
@@ -520,9 +586,10 @@ def detalle_bitacora(con) -> None:
     if not filas:
         st.markdown("Todavía no hay decisiones registradas.")
         return
-    st.dataframe([{"Hora": hora(f["cuando"]), "Quién": f["quien"], "Acción": f["accion"],
-                   "Detalle": f["detalle"]} for f in filas], hide_index=True, width="stretch",
-                 height=600)
+    st.dataframe(tabla([{"Hora": hora(f["cuando"]), "Quién": f["quien"], "Acción": f["accion"],
+                         "Detalle": f["detalle"]} for f in filas],
+                       columna_estado="Acción", estado_de=estado_de_accion),
+                 hide_index=True, width="stretch", height=600)
 
 
 # ---------- página ----------

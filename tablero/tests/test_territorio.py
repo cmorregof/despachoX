@@ -103,3 +103,14 @@ def test_nombre_visible_convite():
     fuente = (CARPETA / "app.py").read_text(encoding="utf-8")
     assert 'NOMBRE = "Convite"' in fuente
     assert 'page_title=f"{NOMBRE} · Mesa de despacho"' in fuente and 'title(f"{NOMBRE} · Mesa de despacho")' in fuente
+
+
+def test_tema_con_la_paleta_del_informe():
+    import tomllib
+    tema = tomllib.loads((CARPETA.parent / ".streamlit" / "config.toml").read_text(encoding="utf-8"))["theme"]
+    assert tema["base"] == "light" and tema["primaryColor"] == "#4F4086"
+    assert tema["font"] == tema["headingFont"]                     # una sola tipografía
+    fuente = (CARPETA / "app.py").read_text(encoding="utf-8")
+    for color in ("#4F4086", "#A36752", "#EBD3A2", "#6E6878"):
+        assert color in fuente
+    assert 'tiles="CartoDB positron"' in fuente                    # mapa de fondo claro
