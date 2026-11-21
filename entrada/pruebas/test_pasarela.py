@@ -69,6 +69,31 @@ def test_errores_no_tumban_el_receptor(url, monkeypatch):
         assert json.loads(r.read()) == {"ok": True}
 
 
+def test_registrar_el_aviso_en_el_celular(monkeypatch):
+    pedidos = []
+
+    class Respuesta:
+        status = 201
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+        def read(self):
+            return b'{"id": "despachox"}'
+
+    def falso_urlopen(req, timeout=0):
+        pedidos.append((req.full_url, json.loads(req.data)))
+        return Respuesta()
+    monkeypatch.setattr(pasarela_sms, "urlopen", falso_urlopen)
+    codigo, _ = pasarela_sms.registrar("http://celular.local:8080/", "sms", "c", 8081, ip="192.168.1.10")
+    assert codigo == 201
+    assert pedidos == [("http://celular.local:8080/webhooks",
+                        {"id": "despachox", "url": "http://192.168.1.10:8081/sms", "event": "sms:received"})]
+
+
 def test_envio_por_el_celular_cuando_esta_configurado(url, monkeypatch):
     enviados = []
 

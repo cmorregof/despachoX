@@ -144,10 +144,37 @@ def _ip_local() -> str:
         s.close()
 
 
+def registrar(celular: str, usuario: str, clave: str, puerto: int, ip: str | None = None) -> tuple[int, str]:
+    """Le pide a SMS Gateway for Android (modo servidor local) que reenvíe cada SMS recibido a este
+    portátil. Devuelve el código HTTP y lo que contestó el celular, para leer un error si lo hay."""
+    destino = f"http://{ip or _ip_local()}:{puerto}/sms"
+    cuerpo = json.dumps({"id": "despachox", "url": destino, "event": "sms:received"}).encode()
+    credencial = base64.b64encode(f"{usuario}:{clave}".encode()).decode()
+    req = Request(celular.rstrip("/") + "/webhooks", data=cuerpo, method="POST",
+                  headers={"Content-Type": "application/json", "Authorization": f"Basic {credencial}"})
+    try:
+        with urlopen(req, timeout=10) as r:
+            return r.status, r.read().decode("utf-8", "replace")
+    except Exception as e:
+        codigo = getattr(e, "code", 0)
+        detalle = e.read().decode("utf-8", "replace") if hasattr(e, "read") else f"{type(e).__name__}: {e}"
+        return codigo, detalle
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="Receptor de SMS de DespachoX en la red local.")
     ap.add_argument("--puerto", type=int, default=PUERTO)
+    ap.add_argument("--registrar", metavar="URL_CELULAR",
+                    help="registra el aviso sms:received en el celular, por ejemplo http://192.168.1.20:8080, y sale")
+    ap.add_argument("--usuario", default="sms")
+    ap.add_argument("--clave", default="")
     a = ap.parse_args(argv)
+    if a.registrar:
+        codigo, respuesta = registrar(a.registrar, a.usuario, a.clave, a.puerto)
+        print(f"El celular respondió {codigo}: {respuesta[:500]}")
+        print(f"Reenviará los SMS a http://{_ip_local()}:{a.puerto}/sms" if 200 <= codigo < 300
+              else "No quedó registrado. Revise la IP, el usuario y la clave que muestra la aplicación.")
+        return 0 if 200 <= codigo < 300 else 1
     from dotenv import load_dotenv
     load_dotenv(db.RAIZ.parent / ".env")
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(message)s")
