@@ -13,7 +13,7 @@ Versión 2, noche del viernes 20 al sábado 21 de noviembre, rama `pitch-noche`.
 | Papel | Rol | Qué hace |
 |---|---|---|
 | Voz 1 | D, ficha y pitch | Bloques 1 a 4, la narración de la demo y la última frase |
-| Voz 2 | B, optimización y medición. Sugerido: el integrante de Ingeniería Industrial, porque lidera la visita al Banco [DECIDE CARLOS] | Bloques 6, 7 y la regla de cambio del 8 |
+| Voz 2 | B, optimización y medición. Sugerido: José Manuel Aristizábal (Ingeniería Industrial), porque lidera la visita al Banco [DECIDE CARLOS] | Bloques 6, 7 y la regla de cambio del 8 |
 | Operador | C, tablero | Todos los clics. Cambia entre las diapositivas y el tablero. No habla |
 | Teléfono | A, entrada | Le entrega al jurado el teléfono y la tarjeta impresa. Si a los 15 segundos no hay mensaje, lo envía desde el teléfono del equipo. No habla |
 

@@ -532,3 +532,6 @@ Por decisión de Carlos de las 9:00 entran a `main` `jacobo-informe` (pestaña I
 
 ### 09:27 · Fable → todos · AVISO
 Corrección de horas: mi aviso rotulado 09:40 se empujó a las 9:17. Arreglo pequeño en `entrada/sms.py`: «café» dentro de un nombre de lugar ya no se lee como producto. «Somos 30 familias en villa cafe no hay arroz» da el lugar «villa cafe» y un solo producto, arroz, y lo mismo con «la autopista del cafe». Si se pide café, se sigue leyendo. Probar: `python -m pytest entrada/pruebas/test_sms_cafe.py -q` (5 pasan). Vale para el lector por reglas (SMS y sin red); con el modelo activo no lo pude probar.
+
+### 09:36 · Fable → todos · AVISO
+El integrante de Ingeniería Industrial ya tiene nombre en el plan, los riesgos, el guion, las diapositivas y las preguntas: José Manuel Aristizábal. Revisé el tablero de la nube en un navegador: carga Ancízar Sans, muestra el logo y la paleta verde, y no pidió clave, así que `DESPACHOX_CLAVE_TABLERO` todavía no está definida en Railway.

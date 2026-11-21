@@ -2,11 +2,11 @@
 
 Son 31 preguntas para ensayar la defensa del sábado, agrupadas por criterio de la rúbrica. Esta versión es del sábado 21 de noviembre de 2026, de madrugada, en la rama `defensa-noche`. Cada respuesta cabe en dos o tres frases, y debajo va el archivo que la respalda. Las cinco preguntas que dejó la mentoría 1 llevan la marca «mentoría 1».
 
-**Marcas.** [F] dato de una fuente, que alguien del equipo debe abrir en `docs/FUENTES.md` antes de decirlo en voz alta. [M] medido por el equipo. [E] estimado. [I] inferencia nuestra. [H] hipótesis por validar. Las cifras de simulación salen de `docs/SIMULACION.md`, sección 9, y de `despacho/sim/resultados_velocidades/tablas.md`. [P5] se actualiza con el resultado de la visita al Banco, que el integrante de Ingeniería Industrial reporta a las 12:30 p. m.
+**Marcas.** [F] dato de una fuente, que alguien del equipo debe abrir en `docs/FUENTES.md` antes de decirlo en voz alta. [M] medido por el equipo. [E] estimado. [I] inferencia nuestra. [H] hipótesis por validar. Las cifras de simulación salen de `docs/SIMULACION.md`, sección 9, y de `despacho/sim/resultados_velocidades/tablas.md`. [P5] se actualiza con el resultado de la visita al Banco, que José Manuel Aristizábal (Ingeniería Industrial) reporta a las 12:30 p. m.
 
 **Regla para responder.** Si no sabemos algo, lo decimos y nombramos el hito del piloto que lo va a medir. Toda cifra de simulación se dice con su línea base y con la palabra simulación.
 
-**Propuesta de reparto, por confirmar con Carlos.** Samuel responde los criterios 1 y 5, Jacobo el 2, Carlos el 3 y el 6, y el integrante de Ingeniería Industrial el 4.
+**Propuesta de reparto, por confirmar con Carlos.** Samuel responde los criterios 1 y 5, Jacobo el 2, Carlos el 3 y el 6, y José Manuel el 4.
 
 ## Criterio 1 · Problema y vertical (20 puntos)
 
@@ -144,7 +144,7 @@ Cambia según una regla que ya está escrita. Si el Banco no responde o confirma
 
 **20. ¿Cuándo dirían que el piloto falló, y quién responde por cada hito?**
 
-Cada hito tiene escrito un criterio para seguir, ajustar o parar. El más duro es el del día 30. Si Convite no ahorra kilómetros ni reduce el desperdicio frente a lo que ya hace el Banco, el día en paralelo se rediseña. El integrante de Ingeniería Industrial lleva la relación con el Banco y la medición, Samuel las juntas y la UGR, Jacobo el tablero y la bitácora, y Carlos el optimizador y la simulación.
+Cada hito tiene escrito un criterio para seguir, ajustar o parar. El más duro es el del día 30. Si Convite no ahorra kilómetros ni reduce el desperdicio frente a lo que ya hace el Banco, el día en paralelo se rediseña. José Manuel lleva la relación con el Banco y la medición, Samuel las juntas y la UGR, Jacobo el tablero y la bitácora, y Carlos el optimizador y la simulación.
 
 *Respaldo.* `docs/PLAN_30_90.md`, sección 6.
 
@@ -166,7 +166,7 @@ Porque cada pieza sirve a su dueño y a otro fin. El RUD sirve para subsidios y 
 
 **23. ¿Tienen un aliado confirmado?**
 
-Todavía no, y ningún aliado ha visto la propuesta completa. Esta mañana el integrante de Ingeniería Industrial llamó al Banco Arquidiocesano para pedir una visita con demostración, y su respuesta se dice tal cual [P5]. Si el Banco no responde, la regla de cambio lleva el piloto a la UGR o a la Gobernación.
+Todavía no, y ningún aliado ha visto la propuesta completa. Esta mañana José Manuel llamó al Banco Arquidiocesano para pedir una visita con demostración, y su respuesta se dice tal cual [P5]. Si el Banco no responde, la regla de cambio lleva el piloto a la UGR o a la Gobernación.
 
 *Respaldo.* `encargos/P5_ALIADO_PILOTO.pdf`; `docs/FICHA.md`, componente 5, tabla de aliados.
 

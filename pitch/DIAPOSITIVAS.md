@@ -154,8 +154,8 @@ Sale uno o dos segundos mientras el operador cambia al tablero. Si el cambio es 
 
 | Día | Hito | Zonas | Decisión | Responsable principal |
 |---|---|---|---|---|
-| 0 | Acuerdo y arranque | Ciudadela del Norte y El Manantial | ¿Hay aliado, y reparte? | Integrante de Ingeniería Industrial |
-| 15 | Línea base | Ciudadela del Norte y El Manantial | ¿Hay contra qué comparar? | Integrante de Ingeniería Industrial y Jacobo |
+| 0 | Acuerdo y arranque | Ciudadela del Norte y El Manantial | ¿Hay aliado, y reparte? | José Manuel Aristizábal (Ingeniería Industrial) |
+| 15 | Línea base | Ciudadela del Norte y El Manantial | ¿Hay contra qué comparar? | José Manuel y Jacobo |
 | 30 | Reconstrucción en frío de un mes | Ciudadela del Norte y El Manantial | ¿Mejora lo que el Banco ya hace? ¿Entra la segunda zona? | Carlos |
 | 60 | Uso en paralelo en el territorio | Se suma La Macarena y El Tablazo | ¿Funciona con pedidos reales? ¿Entra la tercera zona? | Samuel y Jacobo |
 | 90 | Simulacro con la UGR, A25 por tramo y decisión | Se suma Atardeceres y Kilómetro 41 | ¿El Banco lo adopta? | Todo el equipo; decide el Banco |
