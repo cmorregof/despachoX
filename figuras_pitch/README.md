@@ -1,6 +1,6 @@
 # Figuras del pitch
 
-Esta carpeta trae seis figuras listas para proyectar, en PNG de 1920 × 1080 px (`png/`) y en SVG (`svg/`). Son las cinco del encargo y una variante del mapa con solo la propuesta recomendada. Usan la paleta del informe: tinta `#4F4086`, ámbar `#A36752`, crema `#EBD3A2` y ceniza `#6E6878`. Ningún texto mide menos de 24 px en el PNG, y cada figura lleva su fuente al pie.
+Esta carpeta trae seis figuras para proyectar, en PNG de 1920 × 1080 px (`png/`) y en SVG (`svg/`). Son las cinco del encargo y una variante del mapa con solo la propuesta recomendada. Los dos mapas (a) llevan hoy el sello «por confirmar» y no se proyectan hasta que Fable decida la distancia a Bajo Tablazo (sección «Bajo Tablazo está a 8,4 km»). Usan la paleta del informe: tinta `#4F4086`, ámbar `#A36752`, crema `#EBD3A2` y ceniza `#6E6878`. Ningún texto mide menos de 24 px en el PNG, y cada figura lleva su fuente al pie.
 
 Cada figura tiene su script en `scripts/`. Los datos propios quedan en `datos/`, y el resto se lee del repositorio sin cambiarlo.
 
@@ -25,7 +25,7 @@ El mapa necesita el grafo vial en `despacho/cache/manizales_region.graphml`, que
 
 Cada script revisa sus textos antes de guardar. Si uno queda por debajo de 24 px, se sale del lienzo o se encima con otro, imprime una línea `AVISO` que dice cuál. Los archivos se escriben igual, para poder mirarlos, pero el script termina con código 1. `todas.py` cierra con un resumen por figura («bien», «N AVISO» o «falló») y también sale con código 1 si alguna figura no quedó bien. Así nadie regenera en otro computador y proyecta una figura con textos encimados sin enterarse.
 
-Para que una letra más ancha no produzca avisos, el pie se dibuja primero y los ejes y la leyenda se acomodan encima de él. Las seis figuras salen sin ningún AVISO con Ancízar Serif, con PT Serif y con DejaVu Serif.
+Para que una letra más ancha no produzca avisos, el pie se dibuja primero y los ejes y la leyenda se acomodan encima de él. Las figuras (b), (c), (d) y (e) salen sin ningún AVISO con Ancízar Serif, con PT Serif y con DejaVu Serif. Los dos mapas (a) dan hoy un AVISO por cada distancia que `docs/PILOTO_TERRITORIOS.md` no tiene, y no por sus textos.
 
 La revisión solo compara textos entre sí. No ve un texto que tape una barra, un punto del mapa o un recuadro, así que conviene mirar cada PNG antes de proyectarlo.
 
@@ -39,7 +39,7 @@ El encargo pedía el orden de la decisión 4 de `docs/DECISIONES_9PM.md`: (b) en
 | 2 · Las vías se cierran sin sismo | `d_cierres_sin_sismo` | El plan usa `mapa_manizales.pdf` con dos etiquetas y descarta una gráfica por año. (d) ya no compara años, así que sirve de respaldo o de reemplazo del mapa. Su total de 152 registros sin sismo no tiene fila en `CIFRAS_PITCH.md`; los 83 de la salida a Letras salen de la fila C05. |
 | 4 · Lo que existe | `c_regla_arquitectura` | El plan usa `piezas_sueltas.tex`. (c) queda de respaldo, para una pregunta por la arquitectura o para la versión de cinco minutos. |
 | 6 · Qué medimos | `sim_resultados.py --panel criticos` | El plan pide un solo panel de críticos a tiempo, para la carga que se cite, con la etiqueta «Simulación: [SIM] jornadas». El comando está en la sección (e). `e_simulacion_ejemplo` no se cita. |
-| 7 · El piloto | `a_territorio_propuesta1` | Es la «opción con más tiempo» del plan: el Banco, los tres CDI de La Macarena a entre 2,9 y 3,3 km y Bajo Tablazo a 9,3 km (fila P10). `a_territorios_piloto`, con las tres propuestas, queda de respaldo. |
+| 7 · El piloto | `a_territorio_propuesta1` | Es la «opción con más tiempo» del plan: el Banco, los tres CDI de La Macarena y Bajo Tablazo. Hoy no se proyecta, porque sus distancias, 2,9 a 3,2 km y 8,4 km, no son las de la fila P10 (2,9 a 3,3 km y 9,3 km) y lo decide Fable. La sección «Bajo Tablazo está a 8,4 km» lo explica. `a_territorios_piloto`, con las tres propuestas, queda de respaldo. |
 
 ## Las figuras
 
@@ -113,10 +113,10 @@ El encargo pedía el orden de la decisión 4 de `docs/DECISIONES_9PM.md`: (b) en
 
 ### (a) Tres territorios para el piloto
 
-- **Mensaje.** Cada propuesta une una comuna y un corregimiento. La recomendada, La Macarena con El Tablazo, pone tres CDI a unos 3 km del Banco y Bajo Tablazo a 9,3 km sobre un mismo corredor. Decide el Banco.
+- **Mensaje.** Cada propuesta une una comuna y un corregimiento. La recomendada, La Macarena con El Tablazo, pone tres CDI a unos 3 km del Banco y Bajo Tablazo a 8,4 km sobre un mismo corredor. Decide el Banco.
 - **Datos.** Las propuestas y sus razones son de `docs/PILOTO_TERRITORIOS.md`. Los puntos críticos y los acopios salen de `datos_publicos/puntos.csv` y `datos_publicos/acopios.csv`. La coordenada de Bajo Tablazo es de `datos/semilla/lugares_extra.csv`, geocodificada con Nominatim. Los límites de comunas y corregimientos están en `datos/limites_osm.geojson`, y la red vial es el grafo del equipo.
 - **Lectura.** Los territorios van con relleno suave y borde punteado y delgado, y las rutas van gruesas y continuas, para que no se confundan. La convención separa el punto crítico de una propuesta, del color de su número, de los otros puntos críticos, en gris.
-- **Rutas.** Son el camino más corto por longitud en el grafo dirigido, desde el nodo del Banco hasta el nodo más cercano a cada lugar. Dan 9,28 km a Bajo Tablazo, 8,76 km a Alto Bonito y 7,39 km a La Aurora, iguales a los del documento. El grafo no llega a Bajo Tablazo, cuyo nodo más cercano queda a 701 m, y ese tramo va punteado. Las distancias quedan en `datos/a_territorios_rutas.csv`.
+- **Rutas.** Son el camino más corto por longitud en el grafo dirigido, desde el nodo del Banco hasta el punto de la vía más cercano a cada lugar. El script proyecta el lugar sobre la arista más cercana y suma el camino hasta el nodo de entrada de esa arista más el tramo parcial. Prueba la arista y su gemela en sentido contrario, y se queda con la más corta. Si la vía más cercana pasa a más de 100 m, el tramo final hasta el lugar va punteado. Hoy ninguna ruta lo necesita. Las rutas dan 8,36 km a Bajo Tablazo, 8,77 km a Alto Bonito y 7,36 km a La Aurora. Quedan en `datos/a_territorios_rutas.csv`, junto con los metros del lugar a la vía y, para comparar, la distancia hasta el nodo más cercano, que era el método anterior.
 - **Kilómetro 41.** No tiene coordenada con fuente en el repositorio (`lugares/README.md`), así que va como flecha desde La Aurora hacia el occidente. En el grafo, todos los nodos a unos 36 km del Banco por esa rama quedan al occidente de La Aurora. Los 36,4 km son los del documento, porque no pudimos recalcularlos.
 - **Nombres.** OpenStreetMap llama «Corredor Agroturístico» al corregimiento El Tablazo, y Nominatim ubica Bajo Tablazo dentro de él. El corregimiento Colombia no está en los límites de OpenStreetMap que tenemos. La propuesta 3 dice «alertas de lluvia A25 del IDEA (UNAL)» para que el jurado no necesite la sigla.
 - **Fuente al pie.** `docs/PILOTO_TERRITORIOS.md`, con sus razones por verificar. El mapa base es © colaboradores de OpenStreetMap (ODbL), sin teselas de internet.
@@ -124,9 +124,19 @@ El encargo pedía el orden de la decisión 4 de `docs/DECISIONES_9PM.md`: (b) en
 
 ### (a) Variante: la propuesta 1
 
-- **Mensaje.** Desde el Banco, un solo corredor llega a los tres CDI de La Macarena, a entre 2,9 y 3,3 km, y sigue a Bajo Tablazo, a 9,3 km.
-- **Datos.** Los mismos de (a). Los CDI son los tres puntos críticos de la comuna en `datos_publicos/puntos.csv` (ids 16, 17 y 25). Las distancias por la red dan 2,90, 3,24 y 3,26 km a los CDI y 9,28 km a Bajo Tablazo, y quedan en `datos/a_territorio_propuesta1_rutas.csv`. Coinciden con la propuesta 1 de `docs/PILOTO_TERRITORIOS.md` y con la fila P10 de `pitch/CIFRAS_PITCH.md`.
+- **Mensaje.** Desde el Banco, un solo corredor llega a los tres CDI de La Macarena, a entre 2,9 y 3,2 km, y sigue a Bajo Tablazo, a 8,4 km.
+- **Datos.** Los mismos de (a). Los CDI son los tres puntos críticos de la comuna en `datos_publicos/puntos.csv` (ids 16, 17 y 25). Las distancias por la red dan 2,899, 3,246 y 3,247 km a los CDI y 8,355 km a Bajo Tablazo, y quedan en `datos/a_territorio_propuesta1_rutas.csv`.
 - **Regenerar.** `python figuras_pitch/scripts/mapa_territorios.py --solo 1`
+
+### Bajo Tablazo está a 8,4 km, no a 9,3 (por confirmar)
+
+`docs/PILOTO_TERRITORIOS.md`, la fila P10 de `pitch/CIFRAS_PITCH.md` y la diapositiva 7 dicen que Bajo Tablazo queda a 9,3 km del Banco. Esa cifra salió de medir la ruta hasta el nodo del grafo más cercano al lugar, que está a 701 m. Sin embargo, la vía a Chinchiná pasa a 34 m de Bajo Tablazo. Es una arista primaria de 3.164 m sin nodos intermedios, así que el nodo más cercano quedaba lejos aunque la vía pasara al lado. La ruta pasaba junto al lugar a los 8.355 m y seguía 928 m por la misma vía hasta ese nodo, de modo que sumaba 9.283 m. Medida hasta el punto de la vía más cercano, la distancia es de 8,36 km. El documento también dice que «el grafo no llega a la vereda (nodo más cercano a 701 m)», y eso tampoco es así.
+
+El método nuevo cambia un poco otra cifra de la figura. El CDI Jesús de la Buena Esperanza está a 12 m de su nodo y a 1 m de la vía, así que su distancia pasa de 3,260 a 3,247 km. Por eso el rango de los CDI queda en 2,9 a 3,2 km, y no en 2,9 a 3,3. Alto Bonito (8,8 km) y La Aurora (7,4 km) no cambian con un decimal.
+
+Mientras Fable decide, las dos figuras (a) no se proyectan. El script compara cada distancia que muestra, con un decimal, con las cifras en km de la sección de esa propuesta en `docs/PILOTO_TERRITORIOS.md`. Si el documento no tiene la cifra, la figura lleva el sello «Distancia a Bajo Tablazo por confirmar» o «Distancias por confirmar». Además, el script imprime un AVISO por cifra y sale con código 1. Cuando el documento tenga las cifras nuevas, `todas.py` regenera los mapas sin sello.
+
+El mismo error de método puede tocar otras cifras del documento que estas figuras no muestran. Por ejemplo, el punto crítico más lejano de Atardeceres da 6,95 km hasta la vía y 7,23 km hasta su nodo más cercano, y el documento dice «entre 4,2 y 7,2 km».
 
 ## Fuente tipográfica
 
@@ -137,7 +147,10 @@ La familia se busca también en las carpetas de fuentes del sistema, porque la c
 ```bash
 DESPACHOX_SIN_RED=1 python figuras_pitch/scripts/todas.py --fuente "PT Serif"
 DESPACHOX_SIN_RED=1 python figuras_pitch/scripts/todas.py --fuente /ruta/a/AncizarSerif-Regular.ttf
+DESPACHOX_SIN_RED=1 python figuras_pitch/scripts/todas.py --fuente /ruta/a/carpeta_de_Ancizar
 ```
+
+Con un archivo, el script registra también los demás pesos de la misma familia que estén en su carpeta. Sin eso, matplotlib no tendría la negrita y pondría los títulos y las cifras en peso normal. Con `~/Library/Fonts/AncizarSerif-Regular.ttf`, el PNG sale idéntico al de la familia instalada. Con una carpeta, registra todos sus archivos y usa la familia que más archivos tenga.
 
 Si la familia pedida no existe, el script lo avisa y usa la de siempre. Para probarlo, `--fuente "Familia Que No Existe"` imprime «aviso: la fuente «Familia Que No Existe» no está instalada; uso Ancizar Serif», o la que haya.
 

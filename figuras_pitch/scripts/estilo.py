@@ -5,13 +5,15 @@ igual en cualquier computador aunque no tenga la fuente.
 
 Fuente. La del informe es Ancízar Serif, que no está en el repositorio. Si está instalada en el computador, las
 figuras la usan. Si no, usan PT Serif (licencia OFL), que viene con macOS, y si tampoco está, DejaVu Serif, que trae
-matplotlib. Con --fuente se elige otra familia instalada o un archivo .ttf, .otf o .ttc del disco. La familia se
-busca también en las carpetas de fuentes del sistema, porque la caché de matplotlib puede ser anterior a la
-instalación. Ningún archivo de fuente se copia al repositorio.
+matplotlib. Con --fuente se elige otra familia instalada, un archivo .ttf, .otf o .ttc del disco o una carpeta con
+los archivos de una familia. Con un archivo se registran también los demás pesos de su familia que estén en la misma
+carpeta, para que la negrita no salga en peso normal. La familia se busca también en las carpetas de fuentes del
+sistema, porque la caché de matplotlib puede ser anterior a la instalación. Ningún archivo de fuente se copia al
+repositorio.
 
-Revisión. `guardar` busca textos por debajo de 24 px, cortados por el borde o encimados, imprime una línea AVISO por
-cada uno y los devuelve. `terminar` sale con código 1 si hubo alguno, para que nadie proyecte una figura dañada sin
-enterarse.
+Revisión. `guardar` busca textos por debajo de 24 px, cortados por el borde o encimados entre sí o con los
+obstáculos que le pase cada figura (barras y líneas), imprime una línea AVISO por cada uno y los devuelve. `terminar`
+sale con código 1 si hubo alguno, para que nadie proyecte una figura dañada sin enterarse.
 """
 from __future__ import annotations
 
@@ -75,31 +77,64 @@ def _instalada(familia: str) -> str | None:
     return next((f for f in sorted(_familias_instaladas()) if _clave(f) == clave), None)
 
 
-def _registrar_familia(familia: str, a_fondo: bool = False) -> str | None:
-    """Registra en matplotlib los archivos de `familia` que haya en las carpetas de fuentes del sistema.
+def _nombre_de_familia(archivo: str) -> str | None:
+    try:
+        return font_manager.FontProperties(fname=archivo).get_name()
+    except Exception:  # noqa: BLE001  (archivo que FreeType no abre)
+        return None
+
+
+def _archivos_de_familia(familia: str, carpetas: list[str], a_fondo: bool = False) -> list[str]:
+    """Archivos de `familia` en `carpetas`: todos sus pesos y estilos.
 
     Primero mira los archivos cuyo nombre contiene el de la familia. Con `a_fondo`, si no halla ninguno, abre cada
-    archivo y lee su nombre de familia, que es más lento. Devuelve el nombre de la familia ya disponible, o None.
+    archivo y lee su nombre de familia, que es más lento.
     """
-    if _instalada(familia):
-        return _instalada(familia)
-    carpetas = [c for c in CARPETAS_FUENTES if os.path.isdir(c)]
     archivos = font_manager.findSystemFonts(fontpaths=carpetas)
     clave = _clave(familia)
     candidatos = [a for a in archivos if clave in _clave(Path(a).stem)]
     if not candidatos and a_fondo:
-        for a in archivos:
-            try:
-                if _clave(font_manager.FontProperties(fname=a).get_name()) == clave:
-                    candidatos.append(a)
-            except Exception:  # noqa: BLE001  (archivo que FreeType no abre)
-                continue
-    for a in candidatos:
+        candidatos = [a for a in archivos if _clave(_nombre_de_familia(a) or "") == clave]
+    return candidatos
+
+
+def _agregar(archivos: list[str]) -> None:
+    for a in archivos:
         try:
             font_manager.fontManager.addfont(a)
         except Exception:  # noqa: BLE001
             continue
+
+
+def _registrar_familia(familia: str, a_fondo: bool = False) -> str | None:
+    """Registra en matplotlib los archivos de `familia` que haya en las carpetas de fuentes del sistema.
+
+    Devuelve el nombre de la familia ya disponible, o None.
+    """
+    if _instalada(familia):
+        return _instalada(familia)
+    _agregar(_archivos_de_familia(familia, [c for c in CARPETAS_FUENTES if os.path.isdir(c)], a_fondo))
     return _instalada(familia)
+
+
+def _registrar_archivo_o_carpeta(pedida: str) -> str | None:
+    """Registra un archivo de fuente con los demás pesos de su familia que estén en su carpeta, o una carpeta.
+
+    Con un solo archivo, matplotlib no tendría la negrita y pondría los títulos en peso normal. Por eso se
+    registran también los archivos hermanos de la misma familia. Con una carpeta se registran todos sus archivos, y
+    la familia es la que más archivos tiene.
+    """
+    if os.path.isdir(pedida):
+        archivos = font_manager.findSystemFonts(fontpaths=[pedida])
+        _agregar(archivos)
+        nombres = [n for n in map(_nombre_de_familia, archivos) if n]
+        return max(set(nombres), key=nombres.count) if nombres else None
+    familia = _nombre_de_familia(pedida)
+    if familia is None:
+        return None
+    carpeta = os.path.dirname(os.path.abspath(pedida))
+    _agregar([pedida] + _archivos_de_familia(familia, [carpeta], a_fondo=True))
+    return familia
 
 
 def configurar_fuente(pedida: str | None = None) -> str:
@@ -111,9 +146,8 @@ def configurar_fuente(pedida: str | None = None) -> str:
             pass
     familia = None
     if pedida:
-        if os.path.isfile(pedida):
-            font_manager.fontManager.addfont(pedida)
-            familia = font_manager.FontProperties(fname=pedida).get_name()
+        if os.path.exists(pedida):
+            familia = _registrar_archivo_o_carpeta(pedida)
         else:
             familia = _registrar_familia(pedida, a_fondo=True)
     if familia is None:
@@ -140,8 +174,8 @@ def configurar_fuente(pedida: str | None = None) -> str:
 def argumentos(descripcion: str) -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description=descripcion)
     p.add_argument("--fuente", default=None,
-                   help="familia instalada o archivo de fuente (por defecto Ancizar Serif si está instalada, "
-                        "si no PT Serif, y si no DejaVu Serif)")
+                   help="familia instalada, archivo de fuente o carpeta con los archivos de una familia (por defecto "
+                        "Ancizar Serif si está instalada, si no PT Serif, y si no DejaVu Serif)")
     p.add_argument("--salida", default=str(CARPETA),
                    help="carpeta base; las figuras quedan en <salida>/png y <salida>/svg (por defecto figuras_pitch/)")
     return p
@@ -223,8 +257,12 @@ def miles(n: float, decimales: int = 0) -> str:
     return texto.replace(",", "§").replace(".", ",").replace("§", ".")
 
 
-def revisar_textos(fig, nombre: str, ignorar: tuple[str, ...] = ()) -> list[str]:
-    """Busca textos por debajo de MIN_PX, cortados por el borde o encimados. Devuelve los avisos."""
+def revisar_textos(fig, nombre: str, ignorar: tuple[str, ...] = (), obstaculos=()) -> list[str]:
+    """Busca textos por debajo de MIN_PX, cortados por el borde, encimados o encima de un obstáculo.
+
+    `obstaculos` es una lista de pares (artista, qué es), por ejemplo (barra, "una barra"). La caja de una línea
+    se ensancha con la mitad de su grosor. Devuelve los avisos.
+    """
     fig.canvas.draw()
     render = fig.canvas.get_renderer()
     textos = []
@@ -248,18 +286,27 @@ def revisar_textos(fig, nombre: str, ignorar: tuple[str, ...] = ()) -> list[str]
             a = t1.get_text().replace("\n", " ")[:30]
             b = t2.get_text().replace("\n", " ")[:30]
             avisos.append(f"{nombre}: «{a}» se encima con «{b}»")
+    for artista, que in obstaculos:
+        caja = artista.get_window_extent(render)
+        if isinstance(artista, matplotlib.lines.Line2D):
+            caja = caja.padded(artista.get_linewidth() * DPI / 72.0 / 2)
+        for t, c in textos:
+            if c.overlaps(caja):
+                avisos.append(f"{nombre}: «{t.get_text().replace(chr(10), ' ')[:30]}» tapa {que}")
     return avisos
 
 
-def guardar(fig, nombre: str, salida: str | Path, ignorar: tuple[str, ...] = ()) -> list[str]:
-    """Guarda <salida>/png/<nombre>.png (1920 × 1080) y <salida>/svg/<nombre>.svg. Devuelve los avisos de texto.
+def guardar(fig, nombre: str, salida: str | Path, ignorar: tuple[str, ...] = (), obstaculos=(),
+            avisos_extra=()) -> list[str]:
+    """Guarda <salida>/png/<nombre>.png (1920 × 1080) y <salida>/svg/<nombre>.svg. Devuelve los avisos.
 
     Los archivos se escriben aunque haya avisos, para poder mirarlos, pero cada aviso sale en una línea AVISO.
+    `avisos_extra` son avisos de la figura que no son de texto, como una cifra por confirmar.
     """
     salida = Path(salida)
     (salida / "png").mkdir(parents=True, exist_ok=True)
     (salida / "svg").mkdir(parents=True, exist_ok=True)
-    avisos = revisar_textos(fig, nombre, ignorar)
+    avisos = revisar_textos(fig, nombre, ignorar, obstaculos) + list(avisos_extra)
     for aviso in avisos:
         print("AVISO", aviso, file=sys.stderr)
     rutas = [salida / "png" / f"{nombre}.png", salida / "svg" / f"{nombre}.svg"]
@@ -272,8 +319,8 @@ def guardar(fig, nombre: str, salida: str | Path, ignorar: tuple[str, ...] = ())
 
 
 def terminar(avisos: list[str]) -> None:
-    """Sale con código 1 si hubo avisos de texto. Las figuras quedan escritas, pero no están listas para proyectar."""
+    """Sale con código 1 si hubo avisos. Las figuras quedan escritas, pero no están listas para proyectar."""
     if avisos:
-        print(f"{len(avisos)} AVISO: hay textos pequeños, cortados o encimados. Revise la figura antes de "
-              "proyectarla.", file=sys.stderr)
+        print(f"{len(avisos)} AVISO: textos pequeños, cortados o encimados, o una cifra por confirmar. Revise la "
+              "figura antes de proyectarla.", file=sys.stderr)
         sys.exit(1)

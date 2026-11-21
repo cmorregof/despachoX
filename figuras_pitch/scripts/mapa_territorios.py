@@ -15,10 +15,19 @@ Adaptada de docs/informe/figuras/scripts/mapa_manizales.py, sin editar ese archi
 fondo es la red vial del equipo y los límites de OpenStreetMap.
 
 Las propuestas, sus territorios y sus razones vienen de docs/PILOTO_TERRITORIOS.md. Las rutas son el camino más
-corto por longitud en el grafo dirigido, desde el nodo del Banco hasta el nodo más cercano a cada lugar.
-El Kilómetro 41 no tiene coordenada con fuente en el repositorio (lugares/README.md), así que va como flecha.
+corto por longitud en el grafo dirigido, desde el nodo del Banco hasta el punto de la vía más cercano a cada lugar.
+Cada lugar se proyecta sobre la arista más cercana, y la ruta suma el camino hasta el nodo de entrada de esa arista
+más el tramo parcial. Si la vía más cercana pasa a más de 100 m, el último tramo, del punto de la vía al lugar, va
+punteado. El Kilómetro 41 no tiene coordenada con fuente en el repositorio (lugares/README.md), así que va como
+flecha.
+
+Si una distancia redondeada a un decimal no es la que escribe docs/PILOTO_TERRITORIOS.md para ese lugar, la figura
+lleva el sello «Distancia a <lugar> por confirmar» y el script imprime un AVISO y sale con código 1. El sello se va
+solo cuando el documento y el cálculo coinciden.
 """
 import csv
+import math
+import re
 import sys
 from pathlib import Path
 
@@ -27,10 +36,11 @@ import matplotlib.patheffects as pe
 import networkx as nx
 import numpy as np
 import osmnx as ox
+import shapely
 from matplotlib.legend_handler import HandlerTuple
 from matplotlib.lines import Line2D
 from shapely.geometry import LineString, Point, box
-from shapely.ops import unary_union
+from shapely.ops import substring, unary_union
 
 import estilo as e
 
@@ -46,7 +56,13 @@ GRIS_PUNTO = "#B9B4C0"
 # Posición a mano de algunos números, si la automática no sirve (vacío: todas son automáticas).
 AJUSTE_INSIGNIA = {}
 RADIO_INSIGNIA = 0.0037   # grados; el círculo del número mide unos 60 px
+# Distancia mínima del centro de un número a un punto, un rombo o un acopio: el círculo del número (unos 32 px de
+# radio con su borde blanco) más el radio de un punto (unos 10 px), en grados.
+DISTANCIA_A_PUNTOS = 0.0055
 ANCHO_RUTA, ANCHO_LIMITE = 7.5, 2.2
+METROS_SIN_VIA = 100      # si la vía más cercana pasa más lejos, el tramo final hasta el lugar va punteado
+LAT_REF, RADIO_TIERRA = 5.05, 6371000.0   # plano local en metros para proyectar los lugares sobre las vías
+DOC_PILOTO = e.RAIZ / "docs" / "PILOTO_TERRITORIOS.md"
 
 PROPUESTAS = [
     {"n": 1, "color": e.TINTA, "comuna": "La Macarena", "corregimiento": "El Tablazo (Corredor Agroturístico)",
@@ -87,30 +103,50 @@ def nodo_cercano(G, ids, lat, lon, la, lo):
     return ids[i], float(d[i])
 
 
-def linea_de_ruta(G, camino) -> LineString:
-    """Une la geometría de las aristas del camino en una sola línea, en el sentido del recorrido."""
+def a_metros(coords):
+    """(lon, lat) en grados a un plano local en metros, equirrectangular alrededor de LAT_REF."""
+    k = RADIO_TIERRA * math.cos(math.radians(LAT_REF))
+    return [(math.radians(x) * k, math.radians(y) * RADIO_TIERRA) for x, y in coords]
+
+
+def a_grados(coords):
+    k = RADIO_TIERRA * math.cos(math.radians(LAT_REF))
+    return [(math.degrees(x / k), math.degrees(y / RADIO_TIERRA)) for x, y in coords]
+
+
+def coords_arista(G, u, v, datos) -> list:
+    """Coordenadas (lon, lat) de una arista, desde u hasta v."""
+    if "geometry" not in datos:
+        return [(G.nodes[u]["x"], G.nodes[u]["y"]), (G.nodes[v]["x"], G.nodes[v]["y"])]
+    coords = list(datos["geometry"].coords)
+    xu, yu = G.nodes[u]["x"], G.nodes[u]["y"]
+    if (coords[0][0] - xu) ** 2 + (coords[0][1] - yu) ** 2 > (coords[-1][0] - xu) ** 2 + (coords[-1][1] - yu) ** 2:
+        coords = coords[::-1]
+    return coords
+
+
+def coords_de_camino(G, camino) -> list:
+    """Une la geometría de las aristas del camino en una sola lista de puntos, en el sentido del recorrido."""
+    if len(camino) == 1:
+        return [(G.nodes[camino[0]]["x"], G.nodes[camino[0]]["y"])]
     puntos = []
     for u, v in zip(camino[:-1], camino[1:]):
-        datos = min(G[u][v].values(), key=lambda d: d.get("length", 0))
-        if "geometry" in datos:
-            coords = list(datos["geometry"].coords)
-            xu, yu = G.nodes[u]["x"], G.nodes[u]["y"]
-            if (coords[0][0] - xu) ** 2 + (coords[0][1] - yu) ** 2 > (coords[-1][0] - xu) ** 2 + (coords[-1][1] - yu) ** 2:
-                coords = coords[::-1]
-        else:
-            coords = [(G.nodes[u]["x"], G.nodes[u]["y"]), (G.nodes[v]["x"], G.nodes[v]["y"])]
+        coords = coords_arista(G, u, v, min(G[u][v].values(), key=lambda d: d.get("length", 0)))
         puntos.extend(coords if not puntos else coords[1:])
-    return LineString(puntos)
+    return puntos
 
 
-def sitio_libre(forma, obstaculos, paso=0.0008):
-    """Punto de `forma` más lejos a la vez de su borde y de los obstáculos (rutas, puntos y rótulos)."""
+def sitio_libre(forma, obstaculos, paso=0.0008, intocables=None, radio=0.0):
+    """Punto de `forma` más lejos a la vez de su borde y de los obstáculos (rutas, puntos y rótulos).
+
+    Con `intocables`, descarta los puntos que queden a menos de `radio` de ellos.
+    """
     x0, y0, x1, y1 = forma.bounds
     mejor, puntaje = forma.representative_point(), -1.0
     for x in np.arange(x0, x1, paso):
         for y in np.arange(y0, y1, paso):
             q = Point(x, y)
-            if not forma.contains(q):
+            if not forma.contains(q) or (intocables is not None and intocables.distance(q) < radio):
                 continue
             d = min(forma.boundary.distance(q), obstaculos.distance(q))
             if d > puntaje:
@@ -143,23 +179,55 @@ def halo(ancho=6):
 
 
 class Red:
-    """Grafo vial, sus nodos en arreglos y las rutas más cortas desde el Banco."""
+    """Grafo vial, las rutas más cortas desde el Banco y el ajuste de cada lugar a la vía más cercana."""
 
     def __init__(self, ruta_grafo, banco):
         self.G = ox.load_graphml(ruta_grafo)
         self.ids = np.array(list(self.G.nodes))
         self.lat = np.array([self.G.nodes[n]["y"] for n in self.ids])
         self.lon = np.array([self.G.nodes[n]["x"] for n in self.ids])
-        self.origen, _ = self.cercano(float(banco["lat"]), float(banco["lon"]))
+        self.origen, self.banco_m = self.cercano(float(banco["lat"]), float(banco["lon"]))
+        self.dist, self.caminos = nx.single_source_dijkstra(self.G, self.origen, weight="length")
+        self.aristas = [(u, v, d["length"], coords_arista(self.G, u, v, d))
+                        for u, v, d in self.G.edges(data=True)]
+        self.lineas_m = np.array([LineString(a_metros(c)) for *_, c in self.aristas], dtype=object)
 
     def cercano(self, la, lo):
         return nodo_cercano(self.G, self.ids, self.lat, self.lon, la, lo)
 
-    def ruta(self, la, lo):
-        """(camino, km por la red, metros del lugar a su nodo más cercano)."""
+    def ruta(self, la, lo) -> dict:
+        """Ruta más corta del Banco al punto de la vía más cercano al lugar.
+
+        El lugar se proyecta sobre la arista más cercana. Se prueban esa arista y su gemela en sentido contrario, y
+        la ruta es el camino hasta el nodo de entrada más el tramo parcial hasta la proyección. Devuelve la línea
+        de la ruta en grados, los km por la red y los metros del lugar a la vía. Para comparar, también los metros
+        al nodo más cercano y los km hasta ese nodo, que era el método anterior.
+        """
+        p = Point(a_metros([(lo, la)])[0])
+        lejos = shapely.distance(self.lineas_m, p)
         nodo, d_nodo = self.cercano(la, lo)
-        camino = nx.shortest_path(self.G, self.origen, nodo, weight="length")
-        return camino, nx.path_weight(self.G, camino, weight="length") / 1000, d_nodo
+        resultado = {"m_nodo": d_nodo, "km_nodo": self.dist.get(nodo, math.inf) / 1000}
+        mejor = None
+        for i in np.flatnonzero(lejos <= lejos.min() + 1.0):
+            u, _, largo, _ = self.aristas[i]
+            if u not in self.dist:
+                continue
+            fraccion = self.lineas_m[i].project(p, normalized=True)
+            total = self.dist[u] + fraccion * largo
+            if mejor is None or total < mejor[0]:
+                mejor = (total, i, fraccion)
+        if mejor is None:        # ninguna de las aristas más cercanas se alcanza desde el Banco: nodo más cercano
+            coords = coords_de_camino(self.G, self.caminos[nodo])
+            return {**resultado, "linea": LineString(coords * (2 if len(coords) == 1 else 1)),
+                    "km": resultado["km_nodo"], "m_via": d_nodo}
+        total, i, fraccion = mejor
+        coords = coords_de_camino(self.G, self.caminos[self.aristas[i][0]])
+        tramo = substring(self.lineas_m[i], 0, fraccion, normalized=True)
+        if fraccion > 0 and tramo.length > 0:
+            coords += a_grados(list(tramo.coords))[1:]
+        if len(coords) == 1:
+            coords = coords * 2
+        return {**resultado, "linea": LineString(coords), "km": total / 1000, "m_via": float(lejos.min())}
 
 
 def escribir_rutas(ruta_csv, filas):
@@ -190,17 +258,84 @@ def territorio(ax, limites, nombre, color):
     poli.boundary.plot(ax=ax, color=color, linewidth=ANCHO_LIMITE, linestyle=(0, (5, 3)), zorder=3)
 
 
-def ruta_en_mapa(ax, red, camino, d_nodo, la, lo, color, rombo=True):
-    linea = linea_de_ruta(red.G, camino)
+def ruta_en_mapa(ax, ruta, la, lo, color, rombo=True):
+    linea = ruta["linea"]
     xs, ys = linea.xy
     ax.plot(xs, ys, color=color, linewidth=ANCHO_RUTA, zorder=5, solid_capstyle="round", solid_joinstyle="round",
             path_effects=halo(13))
-    if d_nodo > 100:      # el grafo no llega: tramo final punteado hasta el lugar
-        fin_x, fin_y = red.G.nodes[camino[-1]]["x"], red.G.nodes[camino[-1]]["y"]
+    if ruta["m_via"] > METROS_SIN_VIA:      # la vía no llega: tramo final punteado hasta el lugar
+        fin_x, fin_y = linea.coords[-1]
         ax.plot([fin_x, lo], [fin_y, la], color=color, linewidth=4.5, linestyle=(0, (1.5, 1.5)), zorder=5)
     if rombo:
         ax.scatter([lo], [la], s=440, marker="D", color=color, edgecolor="white", linewidth=2.5, zorder=7)
     return linea
+
+
+def fila_de_ruta(lugar, la, lo, origen, ruta) -> dict:
+    """Fila del CSV de distancias. Las dos últimas columnas son del método anterior, para comparar."""
+    return {"lugar": lugar, "lat": la, "lon": lo, "origen_coordenada": origen, "km_por_la_red": round(ruta["km"], 3),
+            "metros_a_la_via": round(ruta["m_via"]), "metros_al_nodo_mas_cercano": round(ruta["m_nodo"]),
+            "km_hasta_el_nodo_mas_cercano": round(ruta["km_nodo"], 3)}
+
+
+def frase_sin_via(rutas: dict) -> str:
+    """Frase del pie para los lugares a los que la vía no llega, con su tramo punteado. Vacía si no hay."""
+    lejos = [(lugar, r["m_via"]) for lugar, r in rutas.items() if r["m_via"] > METROS_SIN_VIA]
+    if not lejos:
+        return ""
+    if len(lejos) == 1:
+        lugar, m = lejos[0]
+        return f" La vía no llega a {lugar}, y el último tramo, de {e.miles(m)} m, va punteado."
+    nombres = ", ".join(lugar for lugar, _ in lejos[:-1]) + f" ni a {lejos[-1][0]}"
+    return f" La vía no llega a {nombres}, y el último tramo de esas rutas va punteado."
+
+
+def informar(lugar, ruta):
+    print(f"ruta Banco -> {lugar}: {ruta['km']:.2f} km; vía a {ruta['m_via']:.0f} m del lugar "
+          f"(hasta el nodo más cercano, a {ruta['m_nodo']:.0f} m: {ruta['km_nodo']:.2f} km)")
+
+
+def cifras_del_documento(propuesta: int) -> set[str] | None:
+    """Cifras en km de la sección de una propuesta en docs/PILOTO_TERRITORIOS.md.
+
+    «9,3 km» da «9,3», y «entre 2,9 y 3,3 km» da «2,9» y «3,3». Devuelve None si el documento no está.
+    """
+    try:
+        texto = DOC_PILOTO.read_text(encoding="utf-8")
+    except OSError:
+        return None
+    seccion = re.search(rf"^## {propuesta}\..*?(?=^## |\Z)", texto, flags=re.S | re.M)
+    pares = re.findall(r"(?<![\d.,])(\d+(?:,\d+)?)(?: (?:y|a) (\d+(?:,\d+)?))? km\b",
+                       seccion.group(0) if seccion else texto)
+    return {c for par in pares for c in par if c}
+
+
+def por_confirmar(cifras) -> list:
+    """De las cifras que muestra la figura, como (propuesta, a qué, km con un decimal), las que el documento no
+    tiene en la sección de esa propuesta."""
+    faltan = []
+    for n, que, km in cifras:
+        doc = cifras_del_documento(n)
+        if doc is None:
+            print(f"aviso: no encontré {DOC_PILOTO}; no comparo las distancias", file=sys.stderr)
+            return []
+        if km not in doc:
+            faltan.append((n, que, km, ", ".join(sorted(doc)) or "ninguna"))
+    return faltan
+
+
+def sello_y_avisos(fig, nombre, faltan, x0, y_px):
+    """Sello «Distancia a <lugar> por confirmar» en el panel derecho y los AVISO que lo explican."""
+    if not faltan:
+        return [], None
+    lugares = list(dict.fromkeys(que for _, que, _, _ in faltan))
+    texto = f"Distancia a {lugares[0]} por confirmar" if len(lugares) == 1 else "Distancias por confirmar"
+    s = fig.text(x0 + 0.004, arriba(y_px), texto, fontsize=e.pt(30), fontweight="bold", color=e.AMBAR, ha="left",
+                 va="top", bbox=dict(boxstyle="round,pad=0.45", facecolor=e.FONDO, edgecolor=e.AMBAR, linewidth=3))
+    avisos = [f"{nombre}: la figura da {km} km a {que}, y la propuesta {n} de docs/PILOTO_TERRITORIOS.md no tiene "
+              f"esa cifra (tiene {doc} km). Lleva el sello «{texto}» hasta que el documento la tenga"
+              for n, que, km, doc in faltan]
+    return avisos, s
 
 
 def cerrar_mapa(ax, recuadro, convenciones):
@@ -239,11 +374,9 @@ def mapa_tres(fig, args, red, aristas, limites, puntos, acopios, banco, rurales)
     """Las tres propuestas, con la ruta del Banco al lugar rural de cada una."""
     rutas, filas = {}, []
     for nombre, (la, lo, origen) in rurales.items():
-        camino, km, d_nodo = red.ruta(la, lo)
-        rutas[nombre] = (camino, km, d_nodo)
-        filas.append({"lugar": nombre, "lat": la, "lon": lo, "origen_coordenada": origen,
-                      "km_por_la_red": round(km, 2), "metros_al_nodo_mas_cercano": round(d_nodo)})
-        print(f"ruta Banco -> {nombre}: {km:.2f} km; nodo a {d_nodo:.0f} m del lugar")
+        rutas[nombre] = red.ruta(la, lo)
+        filas.append(fila_de_ruta(nombre, la, lo, origen, rutas[nombre]))
+        informar(nombre, rutas[nombre])
     escribir_rutas(Path(args.salida) / "datos" / "a_territorios_rutas.csv", filas)
 
     ax = base_del_mapa(fig, aristas, limites, RECUADRO)
@@ -258,9 +391,8 @@ def mapa_tres(fig, args, red, aristas, limites, puntos, acopios, banco, rurales)
     # Rutas de la 3 a la 1, para que la recomendada quede encima donde comparten calles.
     lineas_ruta = []
     for p in reversed(PROPUESTAS):
-        camino, km, d_nodo = rutas[p["rural"]]
         la, lo, _ = rurales[p["rural"]]
-        lineas_ruta.append(ruta_en_mapa(ax, red, camino, d_nodo, la, lo, p["color"]))
+        lineas_ruta.append(ruta_en_mapa(ax, rutas[p["rural"]], la, lo, p["color"]))
 
     criticos = [q for q in puntos if q["critico"].strip() == "1"]
     for q in criticos:
@@ -279,7 +411,7 @@ def mapa_tres(fig, args, red, aristas, limites, puntos, acopios, banco, rurales)
                        "Alto Bonito": (0.0045, 0.0, "left", "center"),
                        "La Aurora": (0.0, 0.0050, "center", "bottom")}
     for p in PROPUESTAS:
-        camino, km, _ = rutas[p["rural"]]
+        km = rutas[p["rural"]]["km"]
         la, lo, _ = rurales[p["rural"]]
         dx, dy, ha, va = desplazamientos[p["rural"]]
         ax.text(lo + dx, la + dy, f"{p['rural']}\n{e.miles(km, 1)} km", fontsize=e.pt(28), color=p["color"],
@@ -295,16 +427,20 @@ def mapa_tres(fig, args, red, aristas, limites, puntos, acopios, banco, rurales)
     # Números de cada propuesta sobre su comuna y su corregimiento (parte visible del polígono).
     marco = box(o, s, este, n).buffer(-0.006)
     solo_puntos = unary_union([Point(float(q["lon"]), float(q["lat"])) for q in criticos] +
-                              [Point(lo, la) for la, lo, _ in rurales.values()] + [Point(bx, by)])
+                              [Point(lo, la) for la, lo, _ in rurales.values()] +
+                              [Point(float(a["lon"]), float(a["lat"])) for a in acopios])
     obstaculos = unary_union(lineas_ruta + [solo_puntos])
     for p in PROPUESTAS:
         for nombre in (p["comuna"], p["corregimiento"]):
             if not nombre:
                 continue
             forma = limites[limites["nombre"] == nombre].geometry.iloc[0].intersection(marco)
-            x, y, holgura = sitio_libre(forma, obstaculos)
-            if holgura < RADIO_INSIGNIA:          # sin sitio libre: se permite tapar la ruta, no los puntos
-                x, y, holgura = sitio_libre(forma, solo_puntos)
+            x, y, holgura = sitio_libre(forma, obstaculos, intocables=solo_puntos, radio=DISTANCIA_A_PUNTOS)
+            if holgura < RADIO_INSIGNIA:          # sin sitio libre: se permite tapar la ruta, nunca un punto
+                x, y, holgura = sitio_libre(forma, solo_puntos, intocables=solo_puntos, radio=DISTANCIA_A_PUNTOS)
+                if holgura < 0:                   # ni así cabe: el sitio más libre de puntos que haya
+                    x, y, holgura = sitio_libre(forma, solo_puntos)
+                    print(f"aviso: el número de {nombre} queda a menos de su radio de un punto", file=sys.stderr)
             x, y = AJUSTE_INSIGNIA.get(nombre, (x, y))
             ax.text(x, y, str(p["n"]), fontsize=e.pt(34), fontweight="bold", color="white", ha="center",
                     va="center", zorder=11,
@@ -334,10 +470,13 @@ def mapa_tres(fig, args, red, aristas, limites, puntos, acopios, banco, rurales)
         e.encajar(fig, fig.text(x0 + 0.036, arriba(y + 52), p["nota"], fontsize=e.pt(28), color=e.TEXTO, va="top"),
                   ancho_nota)
         y += 140
+    cifras = [(p["n"], p["rural"], e.miles(rutas[p["rural"]]["km"], 1)) for p in PROPUESTAS]
+    avisos, _ = sello_y_avisos(fig, NOMBRE, por_confirmar(cifras), x0, 745)
     e.pie(fig, "Fuente: docs/PILOTO_TERRITORIOS.md (20 nov 2026), con razones por verificar. Rutas y distancias: "
-               "cálculo nuestro sobre la red vial del equipo. El km 41 no tiene coordenada con fuente; su distancia "
-               "es la del documento. Mapa base © colaboradores de OpenStreetMap (ODbL).", x=x0, y=0.02, ancho=60)
-    return e.guardar(fig, NOMBRE, args.salida)
+               f"cálculo nuestro sobre la red vial del equipo.{frase_sin_via(rutas)} El km 41 no tiene coordenada "
+               "con fuente; su distancia es la del documento. Mapa base © colaboradores de OpenStreetMap (ODbL).",
+          x=x0, y=0.02, ancho=60)
+    return e.guardar(fig, NOMBRE, args.salida, avisos_extra=avisos)
 
 
 def mapa_propuesta1(fig, args, red, aristas, limites, puntos, acopios, banco, rurales):
@@ -351,18 +490,17 @@ def mapa_propuesta1(fig, args, red, aristas, limites, puntos, acopios, banco, ru
         territorio(ax, limites, nombre, p["color"])
     for q in cdi:
         la, lo = float(q["lat"]), float(q["lon"])
-        camino, km, d_nodo = red.ruta(la, lo)
-        km_cdi.append(km)
-        lineas.append(ruta_en_mapa(ax, red, camino, d_nodo, la, lo, p["color"], rombo=False))
-        filas.append({"lugar": q["nombre"], "lat": la, "lon": lo, "origen_coordenada": f"datos_publicos/puntos.csv, "
-                      f"id {q['id']}", "km_por_la_red": round(km, 2), "metros_al_nodo_mas_cercano": round(d_nodo)})
-        print(f"ruta Banco -> {q['nombre']}: {km:.2f} km; nodo a {d_nodo:.0f} m del lugar")
+        ruta = red.ruta(la, lo)
+        km_cdi.append(ruta["km"])
+        lineas.append(ruta_en_mapa(ax, ruta, la, lo, p["color"], rombo=False))
+        filas.append(fila_de_ruta(q["nombre"], la, lo, f"datos_publicos/puntos.csv, id {q['id']}", ruta))
+        informar(q["nombre"], ruta)
     la, lo, origen = rurales[p["rural"]]
-    camino, km_rural, d_nodo = red.ruta(la, lo)
-    lineas.append(ruta_en_mapa(ax, red, camino, d_nodo, la, lo, p["color"]))
-    filas.append({"lugar": p["rural"], "lat": la, "lon": lo, "origen_coordenada": origen,
-                  "km_por_la_red": round(km_rural, 2), "metros_al_nodo_mas_cercano": round(d_nodo)})
-    print(f"ruta Banco -> {p['rural']}: {km_rural:.2f} km; nodo a {d_nodo:.0f} m del lugar")
+    ruta = red.ruta(la, lo)
+    km_rural = ruta["km"]
+    lineas.append(ruta_en_mapa(ax, ruta, la, lo, p["color"]))
+    filas.append(fila_de_ruta(p["rural"], la, lo, origen, ruta))
+    informar(p["rural"], ruta)
     escribir_rutas(Path(args.salida) / "datos" / f"{NOMBRE_SOLO}_rutas.csv", filas)
 
     otros = [q for q in puntos if q["critico"].strip() == "1" and q not in cdi]
@@ -428,11 +566,14 @@ def mapa_propuesta1(fig, args, red, aristas, limites, puntos, acopios, banco, ru
                             (500, f"{e.miles(km_rural, 1)} km", f"del Banco a {p['rural']},\npor el mismo corredor")):
         fig.text(x0, arriba(y), cifra, fontsize=e.pt(56), fontweight="bold", color=p["color"], va="top")
         fig.text(x0, arriba(y + 78), texto, fontsize=e.pt(30), color=e.TEXTO, va="top", linespacing=1.2)
+    cifras = [(p["n"], "los CDI", e.miles(min(km_cdi), 1)), (p["n"], "los CDI", e.miles(max(km_cdi), 1)),
+              (p["n"], p["rural"], e.miles(km_rural, 1))]
+    avisos, _ = sello_y_avisos(fig, NOMBRE_SOLO, por_confirmar(cifras), x0, 700)
     e.pie(fig, "Fuente: docs/PILOTO_TERRITORIOS.md, propuesta 1 (20 nov 2026). Rutas y distancias: cálculo "
-               f"nuestro sobre la red vial del equipo. El grafo no llega a {p['rural']}, y el último tramo, de "
-               f"{e.miles(d_nodo)} m, va punteado. Mapa base © colaboradores de OpenStreetMap (ODbL).",
+               "nuestro sobre la red vial del equipo, hasta el punto de la vía más cercano a cada lugar."
+               f"{frase_sin_via({p['rural']: ruta})} Mapa base © colaboradores de OpenStreetMap (ODbL).",
           x=x0, y=0.02, ancho=60)
-    return e.guardar(fig, NOMBRE_SOLO, args.salida)
+    return e.guardar(fig, NOMBRE_SOLO, args.salida, avisos_extra=avisos)
 
 
 def main():
