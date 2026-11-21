@@ -59,7 +59,7 @@ PARAMETROS_DEFECTO: dict = {
     "w_rafaga_h": 1, "nuevo_h": 72,
     "umbral_global": 0.40, "k_evento": 3, "evento_dur_h": 6, "ventana_global_h": 1,
     "jaccard_texto": 0.85, "k_coordinado": 3, "ventana_coord_h": 1, "min_nuevos_coord": 2,
-    "teja": 5,
+    "teja": 5, "min_largo_coord": 30,
     "cv_min": 0.1, "n_min_cadencia": 4, "salto_km": 3, "ventana_salto_h": 1,
     # B.5 puntaje y umbral
     "pi_0": 0.90, "r_costo": 4, "tau_piso": 0.70, "K_revision_h": 60, "ventana_umbral_h": 1,

@@ -205,9 +205,11 @@ def grupo_coordinado(con: sqlite3.Connection, sid: int, remitente_hash: str, tex
     """Solicitudes de OTROS remitentes en la ventana con texto casi igual (Jaccard ≥ umbral)."""
     cache = {} if cache is None else cache
     k = params["teja"]
-    a = tejas(normalizar_texto(texto), k)
-    if not a:
+    norm = normalizar_texto(texto)
+    # Textos muy cortos («necesitamos ayuda») coinciden por azar: no prueban coordinación.
+    if len(norm) < params["min_largo_coord"]:
         return []
+    a = tejas(norm, k)
     filas = con.execute(
         "SELECT id, remitente_hash, texto, recibida_en, estado, pedido_id FROM solicitudes "
         "WHERE recibida_en >= ? AND recibida_en <= ? AND id != ? AND remitente_hash != ?",
@@ -263,7 +265,7 @@ def liberar(con: sqlite3.Connection, ids, quien: str, ahora: datetime | None = N
             continue
         con.execute("UPDATE solicitudes SET estado='recibida', motivo_cuarentena=NULL WHERE id=?", (sid,))
         embudo.reprocesar(con, sid, desde=3, params=params, ahora=ahora, extractor=extractor,
-                          commit=False)
+                          commit=False, liberada=True)
         liberadas.append(sid)
     con.commit()
     datos_db.anotar(con, quien, "liberar_cuarentena", json.dumps({"ids": liberadas}))
