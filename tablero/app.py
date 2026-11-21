@@ -602,7 +602,7 @@ def reinicio_datos(con) -> None:
 
 
 SIN_DATOS = "Sin datos todavía"
-FONDO_VENCE = "#F6E9E2"            # ámbar suave: perecedero que vence en menos de 12 h
+FONDO_VENCE = "#F7EAD0"            # maíz muy suave (antes #F6E9E2, paleta vieja): perecedero que vence en menos de 12 h
 
 
 def _kg(v) -> str:
