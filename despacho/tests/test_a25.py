@@ -326,3 +326,16 @@ def test_variables_de_entorno_del_gancho(monkeypatch):
     assert a25.factores() == {"naranja": 1.5, "roja": 3.0, "amarilla": 1.0}     # nunca menor que 1
     monkeypatch.delenv("DESPACHOX_A25_FACTOR")
     assert a25.factores() == a25.FACTOR_RIESGO
+
+
+def test_comparar_muestra_lo_que_cambia_sin_guardar_nada(mundo, con, grafo, ahora, lluvia_roja):
+    mundo.punto(5, nodo(0, 4))
+    mundo.pedido(1, 5, 30)
+    mundo.listo()
+    lluvia_roja((nodo(0, 1), nodo(0, 2)))
+    r = a25.comparar(con, grafo, ahora.date(), segundos=SEG, ahora=ahora)
+    assert r["lluvia"] == "sintética"
+    assert r["apagado"]["km_en_alerta"]["roja"] > 0 and r["encendido"]["km_en_alerta"]["roja"] == 0
+    assert r["apagado"]["pedidos_atendidos"] == r["encendido"]["pedidos_atendidos"] == 1
+    assert r["encendido"]["duracion_rutas_min"] >= r["apagado"]["duracion_rutas_min"]
+    assert con.execute("SELECT COUNT(*) FROM planes").fetchone()[0] == 0

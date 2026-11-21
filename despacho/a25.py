@@ -352,12 +352,17 @@ def alertas_tramos(con: sqlite3.Connection | None, fecha: date | str, lluvia: Ll
 
 
 def resumen_a25(con: sqlite3.Connection | None, fecha: date | str, lluvia: Lluvia | None = None,
-                estaciones: list[Estacion] | None = None) -> dict:
-    """Todo lo que el tablero necesita para mostrar el A25 del día, listo para JSON."""
+                estaciones: list[Estacion] | None = None, g=None) -> dict:
+    """Todo lo que el tablero necesita para mostrar el A25 del día, listo para JSON.
+
+    Con la red vial `g` agrega `corredores`: los km de cada vía con historial de ladera en
+    alerta, arista por arista, que es lo que usa el gancho del optimizador.
+    """
     fecha = _fecha(fecha)
     estaciones = estaciones if estaciones is not None else leer_estaciones()
     lluvia = lluvia if lluvia is not None else leer_lluvia(estaciones=estaciones)
     por_tramo = alertas_tramos(con, fecha, lluvia, estaciones)
+    corredores_alerta = (riesgo_corredores(g, fecha, lluvia, estaciones).detalle if g is not None else None)
     conteo = {n: 0 for n in reversed(NIVELES)}
     for a in por_tramo:
         conteo[a["nivel"]] += 1
@@ -378,8 +383,52 @@ def resumen_a25(con: sqlite3.Connection | None, fecha: date | str, lluvia: Lluvi
         "frase": frase,
         "tramos": por_tramo,
         "estaciones": alertas_estaciones(fecha, lluvia, estaciones),
+        "corredores": corredores_alerta,
         "avisos": list(lluvia.avisos),
     }
+
+
+def _km_por_nivel(g, resultado: dict, riesgo: Riesgo) -> dict[str, float]:
+    """Km que las rutas de un plan (paradas y regresos) recorren por aristas que `riesgo` encarece."""
+    nodo_de = {(round(d["y"], 6), round(d["x"], 6)): n for n, d in g.nodes(data=True)}
+    geos = [p["geometria"] for p in resultado["paradas"]]
+    geos += [v["regreso"] for v in resultado["resumen"].get("vehiculos", [])]
+    km = {n: 0.0 for n in ("roja", "naranja")}
+    for geo in geos:
+        nodos = [nodo_de[tuple(p)] for p in geo if tuple(p) in nodo_de]
+        for u, v in zip(nodos[:-1], nodos[1:]):
+            if (u, v) in riesgo.tramo and g.has_edge(u, v):
+                n = riesgo.tramo[(u, v)][1]
+                km[n] = km.get(n, 0.0) + min(float(d.get("length", 0.0)) for d in g[u][v].values()) / 1000
+    return {n: round(x, 2) for n, x in km.items()}
+
+
+def comparar(con: sqlite3.Connection, g, fecha: date | str, segundos: int = 8, ahora: datetime | None = None) -> dict:
+    """El mismo plan con el gancho apagado y encendido, sin escribir nada en la base.
+
+    Sirve para que el despachador vea, antes de decidir, cuánto se apartan las rutas de las vías
+    en alerta y cuánto tiempo cuesta. Usa el modelo del optimizador (`optimizar._resolver`).
+    """
+    from datos import db
+    from despacho import optimizar
+    fecha = _fecha(fecha)
+    ahora = ahora or datetime.now(db.BOGOTA)
+    riesgo = riesgo_corredores(g, fecha)
+    datos = optimizar._leer(con, incluir_asignados=False)
+    salida = {"fecha": fecha.isoformat(), "lluvia": "sintética" if riesgo.sintetica else "real",
+              "segundos_por_plan": segundos, "factor_costo": riesgo.factores,
+              "vias_encarecidas": [d for d in riesgo.detalle if d["factor"] > 1]}
+    for nombre, r in (("apagado", None), ("encendido", riesgo)):
+        res = optimizar._resolver(datos, g, ahora, segundos, {}, riesgo=r)
+        s = res["resumen"]
+        salida[nombre] = {
+            "pedidos_atendidos": s.get("pedidos_atendidos", 0), "pedidos_considerados": s.get("pedidos_considerados", 0),
+            "criticos_a_tiempo": s.get("criticos", {}).get("a_tiempo", 0),
+            "criticos": s.get("criticos", {}).get("paradas", 0),
+            "duracion_rutas_min": round(sum(v["duracion_s"] for v in s.get("vehiculos", [])) / 60, 1),
+            "retraso_total_min": round(s.get("retraso_total_s", 0) / 60, 1),
+            "km_en_alerta": _km_por_nivel(g, res, riesgo)}
+    return salida
 
 
 # ------------------------------------------------------------------ gancho del optimizador
@@ -495,6 +544,40 @@ def _km(x: float | None) -> str:
     return "-" if x is None else f"{x:.2f}".replace(".", ",") + " km"
 
 
+def _imprimir_comparacion(fecha: date, segundos: int, lluvia: Lluvia) -> int:
+    from datos import db
+    from despacho import red
+    if lluvia.sintetica:
+        print(AVISO_SINTETICO, file=sys.stderr)
+    con = db.conectar()
+    try:
+        r = comparar(con, red.cargar(), fecha, segundos)
+    finally:
+        con.close()
+    a, e = r["apagado"], r["encendido"]
+    print(f"Plan de la base con el gancho del A25 apagado y encendido · A25 del {r['fecha']} · "
+          f"lluvia {r['lluvia']} · {segundos} s por plan · no se guarda nada")
+    if lluvia.sintetica:
+        print("LLUVIA SINTÉTICA · demuestra el mecanismo · no mide un impacto")
+    filas = [("pedidos atendidos", f"{a['pedidos_atendidos']}/{a['pedidos_considerados']}",
+              f"{e['pedidos_atendidos']}/{e['pedidos_considerados']}"),
+             ("críticos a tiempo", f"{a['criticos_a_tiempo']}/{a['criticos']}", f"{e['criticos_a_tiempo']}/{e['criticos']}"),
+             ("duración sumada de las rutas (min)", _mm(a["duracion_rutas_min"]), _mm(e["duracion_rutas_min"])),
+             ("retraso total (min)", _mm(a["retraso_total_min"]), _mm(e["retraso_total_min"])),
+             ("km por vías en alerta roja", _mm(a["km_en_alerta"]["roja"]), _mm(e["km_en_alerta"]["roja"])),
+             ("km por vías en alerta naranja", _mm(a["km_en_alerta"]["naranja"]), _mm(e["km_en_alerta"]["naranja"]))]
+    print(f"\n{'':36} {'apagado':>10} {'encendido':>10}")
+    for nombre, x, y in filas:
+        print(f"{nombre:36} {x:>10} {y:>10}")
+    fx = ", ".join(f"{n} ×{f:g}" for n, f in r["factor_costo"].items())
+    print(f"\nVías encarecidas ({fx} en el costo; supuesto sin fuente):")
+    for d in r["vias_encarecidas"]:
+        print(f"  {d['tramo']} · {d['estacion']} · {ETIQUETA[d['nivel']]} · {_mm(d['km'])} km")
+    if not r["vias_encarecidas"]:
+        print("  ninguna")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Alerta A25 (lluvia antecedente de 25 días) por tramo de vía.")
     ap.add_argument("--fecha", help="día del A25, AAAA-MM-DD (incluye ese día); por defecto, hoy")
@@ -502,12 +585,19 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--estaciones", action="store_true", help="A25 por estación en vez de por tramo")
     ap.add_argument("--corredores", action="store_true",
                     help="km de cada vía en alerta, arista por arista (carga la red vial)")
+    ap.add_argument("--comparar", action="store_true",
+                    help="plan de la base con el gancho apagado y encendido, sin guardar nada")
+    ap.add_argument("--segundos", type=int, default=8, help="límite del solver por plan en --comparar")
     ap.add_argument("--lluvia", help="CSV de lluvia (por defecto DESPACHOX_LLUVIA o la serie sintética)")
     args = ap.parse_args(argv)
     from datos import db
+    if args.lluvia:
+        os.environ["DESPACHOX_LLUVIA"] = str(args.lluvia)     # lo usan también el gancho y --comparar
     fecha = _fecha(args.fecha) if args.fecha else datetime.now(db.BOGOTA).date()
     estaciones = leer_estaciones()
     lluvia = leer_lluvia(args.lluvia, estaciones)
+    if args.comparar:
+        return _imprimir_comparacion(fecha, args.segundos, lluvia)
     con = None
     if db.RUTA_DB.exists() and not (args.estaciones or args.corredores):
         con = db.conectar()
