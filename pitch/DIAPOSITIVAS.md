@@ -85,7 +85,7 @@ Datos: `docs/informe/informe_corto.tex`, tabla 1 («Quién despacha, quién pide
 
 **Pie de fuente.** «Juntas: Alcaldía de Manizales, 2025*. Papeles propuestos por el equipo con la investigación 10; el Banco aún no ha visto la propuesta.» Si hubo visita al Banco, la última frase se cambia por lo que pasó.
 
-**Nota del orador.** Que el Banco sea el usuario principal es inferencia nuestra, y depende de la conversación con el Banco. Según `docs/PILOTO_TERRITORIOS.md`, los albergues de los coliseos cerraron el 29 de agosto (dato de la investigación 11, no verificado). Por eso los puntos críticos de hoy serían CDI, hogares infantiles, centros de salud y Centros Vida, que es una inferencia de ese documento.
+**Nota del orador.** Que el Banco sea el usuario principal es inferencia nuestra, y depende de la conversación con el Banco. Según `docs/PILOTO_TERRITORIOS.md`, los albergues de los coliseos cerraron el 29 de agosto (La Patria, 1 de septiembre, revisada por máquina el 21 nov en `docs/FUENTES.md`, `fuentes-noche`, sección 12). Por eso los puntos críticos de hoy serían CDI, hogares infantiles, centros de salud y Centros Vida, que es una inferencia de ese documento.
 
 **Criterio.** 1, beneficiarios, y 6, beneficiarios.
 
