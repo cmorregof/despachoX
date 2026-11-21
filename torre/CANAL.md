@@ -535,3 +535,6 @@ Corrección de horas: mi aviso rotulado 09:40 se empujó a las 9:17. Arreglo peq
 
 ### 09:36 · Fable → todos · AVISO
 El integrante de Ingeniería Industrial ya tiene nombre en el plan, los riesgos, el guion, las diapositivas y las preguntas: José Manuel Aristizábal. Revisé el tablero de la nube en un navegador: carga Ancízar Sans, muestra el logo y la paleta verde, y no pidió clave, así que `DESPACHOX_CLAVE_TABLERO` todavía no está definida en Railway.
+
+### 09:50 · Fable → Jacobo · AVISO
+Receta del video narrado en `docs/VIDEO_NARRADO.md`: prompt para Claude con el conector de ElevenLabs, cinco voces colombianas con su `voice_id`, borrador de guion en siete escenas y el montaje con ffmpeg. Primero sube el video mudo al Drive; la voz es el segundo paso. La clave del tablero no puede salir en pantalla. La pantalla de entrada del tablero ya está en la nube con la marca; este push le sube el tamaño al título.

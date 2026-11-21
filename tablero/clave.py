@@ -32,15 +32,15 @@ _MARCA = Path(__file__).resolve().parents[1] / "recursos" / "marca"
 
 _ESTILO = """
 <style>
-.inicio-ceja {font-size:0.82rem; font-weight:700; letter-spacing:0.14em; color:#5C6A62; margin:0 0 0.6rem 0;}
-.inicio-titulo {font-size:2.5rem; line-height:1.12; font-weight:800; color:#1F5C4A; margin:0 0 1rem 0;}
-.inicio-bajada {font-size:1.08rem; line-height:1.55; color:#1C2A24; margin:0 0 1.6rem 0; max-width:34rem;}
-.inicio-pasos {display:flex; flex-wrap:wrap; gap:0.6rem; margin:1.6rem 0 0 0; padding:0; list-style:none;}
-.inicio-pasos li {background:#E4EADB; border:1px solid #CBD6C4; border-radius:999px; padding:0.35rem 0.9rem;
+[data-testid="stMarkdownContainer"] .inicio-ceja {font-size:0.82rem; font-weight:700; letter-spacing:0.14em; color:#5C6A62; margin:0 0 0.6rem 0;}
+[data-testid="stMarkdownContainer"] .inicio-titulo {font-size:clamp(1.9rem, 4.2vw, 2.7rem); line-height:1.12; font-weight:800; color:#1F5C4A; margin:0 0 1rem 0;}
+[data-testid="stMarkdownContainer"] .inicio-bajada {font-size:1.08rem; line-height:1.55; color:#1C2A24; margin:0 0 1.6rem 0; max-width:34rem;}
+[data-testid="stMarkdownContainer"] .inicio-pasos {display:flex; flex-wrap:wrap; gap:0.6rem; margin:1.6rem 0 0 0; padding:0; list-style:none;}
+[data-testid="stMarkdownContainer"] .inicio-pasos li {background:#E4EADB; border:1px solid #CBD6C4; border-radius:999px; padding:0.35rem 0.9rem; margin:0;
                   font-size:0.9rem; color:#1C2A24;}
-.inicio-nota {font-size:0.92rem; line-height:1.5; color:#5C6A62; margin:1.2rem 0 0 0; max-width:34rem;}
-.inicio-nota a {color:#1F5C4A; font-weight:700;}
-.inicio-pie {font-size:0.82rem; color:#5C6A62; margin-top:2.4rem; border-top:1px solid #CBD6C4; padding-top:0.9rem;}
+[data-testid="stMarkdownContainer"] .inicio-nota {font-size:0.92rem; line-height:1.5; color:#5C6A62; margin:1.2rem 0 0 0; max-width:34rem;}
+[data-testid="stMarkdownContainer"] .inicio-nota a {color:#1F5C4A; font-weight:700;}
+[data-testid="stMarkdownContainer"] .inicio-pie {font-size:0.82rem; color:#5C6A62; margin-top:2.4rem; border-top:1px solid #CBD6C4; padding-top:0.9rem;}
 div[data-testid="stForm"] {background:#FFFFFF; border:1px solid #CBD6C4; border-radius:16px; padding:1.2rem 1.3rem 1rem;
                            max-width:34rem; box-shadow:0 6px 24px rgba(28,42,36,0.06);}
 div[data-testid="stImage"] img {border-radius:20px;}
