@@ -428,8 +428,8 @@ Todo lo demás es igual que en las secciones 2 y 6.
 
 ### 9.7 Qué decir en el pitch (por aprobar)
 
-1. Con velocidades derivadas de mediciones GPS de un bus en Manizales y asignadas por tipo de vía y pendiente (tesis UNAL de 2019, tabla 14, pp. 46 a 48), DespachoX entrega a tiempo entre 23 y 58 puntos porcentuales más de pedidos críticos que el despacho por orden de llegada, en 90 escenarios simulados con cierres de vías.
-2. Frente a un despachador con oficio que ya prioriza lo urgente, gana entre 1,5 y 6,5 puntos en críticos a tiempo y recorre entre 42 y 56 km menos por jornada; en el total de entregas empata, salvo con carga alta, donde gana 3 puntos.
+1. Con velocidades derivadas de mediciones GPS de un bus en Manizales y asignadas por tipo de vía y pendiente (tesis UNAL de 2019, tabla 14, pp. 46 a 48), DespachoX entrega a tiempo 23,3, 44,7 y 57,9 puntos porcentuales más de pedidos críticos que el despacho por orden de llegada, según la carga. Son 90 escenarios simulados con cierres de vías, 30 por carga, y cada diferencia compara 30 jornadas por política.
+2. Frente a un despachador con oficio que ya prioriza lo urgente, DespachoX recorre 46,0, 56,0 y 42,2 km menos por jornada, según la carga. En el total de entregas a tiempo empata con carga holgada y media, y con carga alta gana 3,0 puntos. Si se dice la diferencia en críticos a tiempo, que es de 1,5, 3,7 y 6,5 puntos, va con esta salvedad. Esa corrida cambia a la vez la red y la velocidad, y la corrida que los separa (9.3) está pendiente.
 3. Con DespachoX y con el despachador con oficio, los perecederos vencidos quedan en 0,0 %, y el despacho por orden de llegada pasa la meta del 5 % con carga alta.
 
 Marcas: por aprobar. Fuente de las velocidades: revisado por máquina; falta que una persona abra la tesis. Son cifras de simulación medidas por nosotros: 30 escenarios por carga, 90 en total, semillas 20261150 a 20261179, factor crítico 3, IC del 95 %. Falta la corrida de la misma red con las velocidades del modelo (9.3) para saber cuánto de la mejora frente al despachador con oficio viene de la velocidad y cuánto de la red.
