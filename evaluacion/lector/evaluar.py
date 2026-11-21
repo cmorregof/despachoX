@@ -44,7 +44,6 @@ from collections import Counter, defaultdict
 from datetime import datetime
 from pathlib import Path
 
-os.environ["DESPACHOX_SIN_RED"] = "1"        # garantía: ni el lector ni lugares/ llaman al modelo
 AQUI = Path(__file__).resolve().parent
 RAIZ = AQUI.parents[1]
 if str(RAIZ) not in sys.path:
@@ -447,12 +446,16 @@ def tablas_md(res: dict) -> str:
     partes = [f"Lector: {res['lector']}. Conjunto: {res['conjunto']['n']} mensajes, sha256 "
               f"`{res['conjunto']['sha256'][:16]}…`. Corrida: {res['fecha']}. Celdas: aciertos/n "
               "(porcentaje; intervalo de Wilson al 95 %).",
-              "## Campo por campo", tabla_campos(m, ["generados", "dificiles"], ["300 generados", "30 difíciles"])]
+              "## Campo por campo"]
+    cols = [c for c in ("generados", "dificiles") if c in m]
+    titulos = [f"{m[c]['mensajes']} {'generados' if c == 'generados' else 'difíciles'}" for c in cols]
+    partes.append(tabla_campos(m, cols, titulos))
     cl = ["acierto seguro", "por opciones", "no sé", "error seguro", "sin lugar", "se abstiene",
           "inventa sin compromiso", "inventa con seguridad"]
-    partes.append("## Lugar: de lo leído a lo resuelto\n\n| Clase | Generados | Difíciles |\n|---|---|---|\n" + "\n".join(
-        f"| {c} | {m['generados']['clases_lugar'].get(c, 0)} | {m['dificiles']['clases_lugar'].get(c, 0)} |" for c in cl))
-    t = m["generados"].get("techo_lugar")
+    partes.append("## Lugar: de lo leído a lo resuelto\n\n| Clase | " + " | ".join(titulos) + " |\n|---|"
+                  + "---|" * len(cols) + "\n" + "\n".join(
+                      f"| {c} | " + " | ".join(str(m[k]['clases_lugar'].get(c, 0)) for k in cols) + " |" for c in cl))
+    t = m.get("generados", {}).get("techo_lugar")
     if t:
         partes.append(f"Techo del nomenclátor: si el lector copiara el lugar tal como va en el mensaje, el "
                       f"resolvedor daría acierto seguro en {_celda(t)} de los mismos pedidos generados. La diferencia "
@@ -494,11 +497,14 @@ def _resumen_tiempos(xs: list[float]) -> dict:
             "max": xs[-1], "total": sum(xs)}
 
 
-def evaluar(conjunto: list[dict], leer=lectura_reglas, con=None, medir_tiempo: bool = True) -> dict:
-    """Lee y califica cada mensaje. `leer` recibe el texto y devuelve una Extraccion."""
+def evaluar(conjunto: list[dict], leer=lectura_reglas, con=None, medir_tiempo: bool = True,
+            calentar: bool = True) -> dict:
+    """Lee y califica cada mensaje. `leer` recibe el texto y devuelve una Extraccion. Ninguna llamada
+    de aquí usa la red: el lector por reglas no la usa y el lugar se resuelve con elegir=None."""
     con = con or base_de_lugares()
     L = Lugares(con)
-    leer("PEDIDO 1 SAN JOSE ARROZ")                    # calienta importaciones antes de medir
+    if calentar:
+        leer("PEDIDO 1 SAN JOSE ARROZ")                # calienta importaciones antes de medir
     lecturas, cals, t_lectura, t_lugar = [], [], [], []
     for reg in conjunto:
         t0 = time.perf_counter()
@@ -529,6 +535,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--conjunto", type=Path, default=CONJUNTO)
     ap.add_argument("--salida", type=Path, default=AQUI, help="carpeta para resultados.json, lecturas.jsonl y tablas.md")
     a = ap.parse_args(argv)
+    os.environ["DESPACHOX_SIN_RED"] = "1"        # garantía para la corrida: nada de lugares/ llama al modelo
     conjunto = cargar_conjunto(a.conjunto)
     res = evaluar(conjunto)
     bruto = a.conjunto.read_bytes()

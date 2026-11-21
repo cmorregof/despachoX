@@ -8,9 +8,11 @@ lugares_extra.csv y puntos.csv de datos/semilla/), un conteo de familias, person
 mayores o bebés, productos del catálogo de entrada/raciones.py (con kilos a veces) y una urgencia.
 El registro es la etiqueta de oro; el texto se escribe después, como escriben los comités.
 
-Semilla fija: SEMILLA = 20261121. Con la misma semilla, los mismos CSV de la semilla y Python 3.12,
-la parte generada se reproduce byte a byte. El generador no importa código de entrada/ ni de
-lugares/: lee los CSV directamente, para que la etiqueta no dependa del lector que se mide.
+Semilla fija: SEMILLA = 20261121. Con la misma semilla y Python 3.12, la parte generada se reproduce
+byte a byte. Los lugares salen de lugares_base.csv, una copia congelada de los de datos/semilla/
+(21 nov 2026), para que un barrio nuevo en la semilla no cambie el conjunto; se rehace con
+--congelar-lugares. El generador no importa código de entrada/ ni de lugares/: la etiqueta no
+depende del lector que se mide.
 
 Mezcla de variantes (variante principal, disjunta; suma 300):
 
@@ -52,6 +54,7 @@ RAIZ = AQUI.parents[1]
 SEMILLA_DATOS = RAIZ / "datos" / "semilla"
 CONJUNTO = AQUI / "conjunto.jsonl"
 DIFICILES = AQUI / "dificiles.jsonl"
+LUGARES_BASE = AQUI / "lugares_base.csv"
 SEMILLA = 20261121
 N = 300
 
@@ -197,20 +200,44 @@ def _cap(t: str) -> str:
 
 # ---------- registros ----------
 
-def lugares() -> list[dict]:
-    """Lugares de pedido del nomenclátor, en un orden fijo."""
+def lugares_de_la_semilla(carpeta: Path = SEMILLA_DATOS) -> list[dict]:
+    """Lugares de pedido del nomenclátor, en un orden fijo: barrios, veredas, y albergues, comedores
+    y salones comunales de puntos.csv."""
     def leer(nombre):
-        with open(SEMILLA_DATOS / nombre, encoding="utf-8") as f:
+        with open(carpeta / nombre, encoding="utf-8") as f:
             return list(csv.DictReader(f))
-    barrios = [{"nombre": r["nombre"], "tipo": "barrio", "nucleo": r["nombre"]} for r in leer("barrios.csv")]
-    veredas = [{"nombre": r["nombre"], "tipo": "vereda", "nucleo": r["nombre"]}
+    barrios = sorted(({"nombre": r["nombre"], "tipo": "barrio", "nucleo": r["nombre"], "clase": ""}
+                      for r in leer("barrios.csv")), key=lambda x: x["nombre"])
+    veredas = [{"nombre": r["nombre"], "tipo": "vereda", "nucleo": r["nombre"], "clase": ""}
                for r in leer("lugares_extra.csv") if r["tipo"] == "vereda"]
     puntos = []
     for r in leer("puntos.csv"):
         clase = r["nombre"].split()[0].lower()       # albergue, comedor, salón, punto
         if clase in ("albergue", "comedor", "salón"):
             puntos.append({"nombre": r["nombre"], "tipo": "punto", "nucleo": r["barrio"], "clase": clase})
-    return sorted(barrios, key=lambda x: x["nombre"]), veredas, puntos
+    return barrios + veredas + puntos
+
+
+def congelar_lugares(ruta: Path = LUGARES_BASE) -> int:
+    filas = lugares_de_la_semilla()
+    with open(ruta, "w", encoding="utf-8", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=["nombre", "tipo", "nucleo", "clase"], lineterminator="\n")
+        w.writeheader()
+        w.writerows(filas)
+    return len(filas)
+
+
+def lugares(ruta: Path = LUGARES_BASE) -> tuple[list[dict], list[dict], list[dict]]:
+    """Barrios, veredas y puntos de la copia congelada, en su orden."""
+    with open(ruta, encoding="utf-8") as f:
+        filas = list(csv.DictReader(f))
+    por_tipo = {t: [] for t in ("barrio", "vereda", "punto")}
+    for r in filas:
+        x = {"nombre": r["nombre"], "tipo": r["tipo"], "nucleo": r["nucleo"]}
+        if r["tipo"] == "punto":
+            x["clase"] = r["clase"]
+        por_tipo[r["tipo"]].append(x)
+    return por_tipo["barrio"], por_tipo["vereda"], por_tipo["punto"]
 
 
 class Generador:
@@ -603,7 +630,11 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--semilla", type=int, default=SEMILLA)
     ap.add_argument("--verificar", action="store_true", help="compara la parte generada con conjunto.jsonl")
+    ap.add_argument("--congelar-lugares", action="store_true", help="rehace lugares_base.csv desde datos/semilla/")
     a = ap.parse_args(argv)
+    if a.congelar_lugares:
+        print(f"{LUGARES_BASE.name}: {congelar_lugares()} lugares copiados de datos/semilla/")
+        return 0
     generado = texto_generado(a.semilla)
     if a.verificar:
         congelado = CONJUNTO.read_text(encoding="utf-8")

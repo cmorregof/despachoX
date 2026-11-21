@@ -1,6 +1,6 @@
 # Tablas de la corrida (generadas por evaluar.py)
 
-Lector: entrada.sms.leer_sms tras entrada.privacidad.limpiar (Mesa.leer con DESPACHOX_SIN_RED=1); lugar con lugares.resolver, elegir=None. Conjunto: 330 mensajes, sha256 `54a5b70f792b82bc…`. Corrida: 2026-11-21T00:24:02-05:00. Celdas: aciertos/n (porcentaje; intervalo de Wilson al 95 %).
+Lector: entrada.sms.leer_sms tras entrada.privacidad.limpiar (Mesa.leer con DESPACHOX_SIN_RED=1); lugar con lugares.resolver, elegir=None. Conjunto: 330 mensajes, sha256 `54a5b70f792b82bc…`. Corrida: 2026-11-21T00:30:06-05:00. Celdas: aciertos/n (porcentaje; intervalo de Wilson al 95 %).
 
 ## Campo por campo
 
@@ -38,7 +38,7 @@ Lector: entrada.sms.leer_sms tras entrada.privacidad.limpiar (Mesa.leer con DESP
 
 ## Lugar: de lo leído a lo resuelto
 
-| Clase | Generados | Difíciles |
+| Clase | 300 generados | 30 difíciles |
 |---|---|---|
 | acierto seguro | 211 | 10 |
 | por opciones | 43 | 2 |
@@ -125,4 +125,4 @@ Techo del nomenclátor: si el lector copiara el lugar tal como va en el mensaje,
 
 ## Tiempo por mensaje
 
-Medido en Darwin 25.5.0 arm64, Python 3.12.13, sin red. Lectura (limpiar y leer_sms), 330 mensajes: mediana 0,947 ms, p95 1,991 ms y máximo 5,724 ms. Resolver el lugar sin modelo, 318 lugares: mediana 30,88 ms, p95 68,14 ms y máximo 157,99 ms.
+Medido en Darwin 25.5.0 arm64, Python 3.12.13, sin red. Lectura (limpiar y leer_sms), 330 mensajes: mediana 0,941 ms, p95 1,965 ms y máximo 6,229 ms. Resolver el lugar sin modelo, 318 lugares: mediana 31,51 ms, p95 70,34 ms y máximo 164,00 ms.
