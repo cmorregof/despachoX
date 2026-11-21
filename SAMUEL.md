@@ -12,7 +12,7 @@ Marca con `[x]` lo que termines. Luego `git pull --rebase && git push`. Trabaja 
 ## Tarea 1 · Probar el bot como un vecino (30 minutos)
 
 - [ ] Escríbele a [t.me/despachox_bot](https://t.me/despachox_bot) diez mensajes como los escribiría un vecino o un conductor: con errores, sin tildes, con el lugar a medias, uno que mezcle pedido y cierre, uno que no sea nada.
-- [ ] Mira cada uno en el [tablero](https://despachox-production.up.railway.app/) y anota en la tabla qué entendió.
+- [ ] Mira cada uno en el [tablero](https://conviteman.up.railway.app/) y anota en la tabla qué entendió.
 
 | Mensaje que envié | Qué entendió | ¿Bien? | Nota |
 |---|---|---|---|

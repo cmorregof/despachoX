@@ -11,7 +11,7 @@ Marca con `[x]` lo que termines. Luego `git pull --rebase && git push`. Trabaja 
 
 ## Tarea 1 · Usar el tablero como un despachador con prisa (30 minutos)
 
-- [ ] Abre el [tablero](https://despachox-production.up.railway.app/) y recorre `docs/GUION_DEMO.md` desde «Paso a paso», dos veces. Si el mapa sale gris en Brave, desactiva los escudos para esa página.
+- [ ] Abre el [tablero](https://conviteman.up.railway.app/) y recorre `docs/GUION_DEMO.md` desde «Paso a paso», dos veces. Si el mapa sale gris en Brave, desactiva los escudos para esa página.
 - [ ] Anota en la tabla qué botón buscaste y no encontraste, qué sobra, qué no se lee a dos metros.
 
 | Qué vi | Dónde | Qué propongo |

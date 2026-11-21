@@ -11,7 +11,7 @@ Samuel Rosso (líder) · Carlos Orrego · Jacobo Vasco · Nicolás Ramírez · J
 
 **Cómo verlo funcionar.**
 
-- En la nube, el tablero está en [despachox-production.up.railway.app](https://despachox-production.up.railway.app/) y el bot en [t.me/despachox_bot](https://t.me/despachox_bot), con el código QR más abajo. El tablero de la nube pide clave, así que lo mostramos en la demo y en el video. Al bot, en cambio, usted puede escribirle un pedido como «somos 40 familias en san jose no hay arroz ni leche». El bot le devuelve el lugar que entendió para que usted lo confirme, y el pedido entra a la cola del tablero.
+- En la nube, el tablero está en [conviteman.up.railway.app](https://conviteman.up.railway.app/) y el bot en [t.me/despachox_bot](https://t.me/despachox_bot), con el código QR más abajo. El tablero de la nube pide clave, así que lo mostramos en la demo y en el video. Al bot, en cambio, usted puede escribirle un pedido como «somos 40 familias en san jose no hay arroz ni leche». El bot le devuelve el lugar que entendió para que usted lo confirme, y el pedido entra a la cola del tablero.
 - La demo de tres minutos, con los mensajes y los clics exactos, está en [`docs/GUION_DEMO.md`](docs/GUION_DEMO.md).
 - Sin internet, el sistema arranca en un portátil con `bash despliegue/local.sh`. Los niveles de respaldo, del SMS a la hoja de ruta impresa, están en [`docs/SIN_CONEXION.md`](docs/SIN_CONEXION.md).
 - Las pruebas automáticas corren con `python -m pytest -q`. En la revisión del sábado a las 6:50 a. m. pasaron 530 y se omitió 1 (`torre/CANAL.md`).
@@ -140,7 +140,7 @@ Haz git pull --rebase, lee encargos/A2_BOT_SAMUEL.md y ejecútalo.
 **En la nube (ya funciona):** le escribes al bot en Telegram y abres el tablero. Todos usamos la misma base de datos, así que lo que confirmes o apruebes lo ven los demás. Si el mapa sale gris en Brave, desactiva los escudos de Brave para esa página.
 
 - Bot: [t.me/despachox_bot](https://t.me/despachox_bot) (o escanea el código de abajo)
-- Tablero: [despachox-production.up.railway.app](https://despachox-production.up.railway.app/). Pide clave, así que lo mostramos en la demo y en el video
+- Tablero: [conviteman.up.railway.app](https://conviteman.up.railway.app/). Pide clave, así que lo mostramos en la demo y en el video
 
 <img src="recursos/qr_bot.png" alt="Código QR del bot de DespachoX en Telegram" width="220">
 

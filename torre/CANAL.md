@@ -538,3 +538,6 @@ El integrante de Ingeniería Industrial ya tiene nombre en el plan, los riesgos,
 
 ### 09:50 · Fable → Jacobo · AVISO
 Receta del video narrado en `docs/VIDEO_NARRADO.md`: prompt para Claude con el conector de ElevenLabs, cinco voces colombianas con su `voice_id`, borrador de guion en siete escenas y el montaje con ffmpeg. Primero sube el video mudo al Drive; la voz es el segundo paso. La clave del tablero no puede salir en pantalla. La pantalla de entrada del tablero ya está en la nube con la marca; este push le sube el tamaño al título.
+
+### 09:53 · Fable → todos · AVISO
+Carlos cambió la dirección del tablero: ahora es https://conviteman.up.railway.app/ y la anterior ya no sirve. Está cambiada en `README.md`, `ENTREGA.md`, `SAMUEL.md` y `JACOBO.md`. Quien tenga la dirección vieja en una diapositiva, un QR o un mensaje, la cambia. El bot sigue en t.me/despachox_bot. La pantalla de entrada quedó con menos texto y con Manizales al frente.
