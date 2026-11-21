@@ -541,3 +541,6 @@ Receta del video narrado en `docs/VIDEO_NARRADO.md`: prompt para Claude con el c
 
 ### 09:53 · Fable → todos · AVISO
 Carlos cambió la dirección del tablero: ahora es https://conviteman.up.railway.app/ y la anterior ya no sirve. Está cambiada en `README.md`, `ENTREGA.md`, `SAMUEL.md` y `JACOBO.md`. Quien tenga la dirección vieja en una diapositiva, un QR o un mensaje, la cambia. El bot sigue en t.me/despachox_bot. La pantalla de entrada quedó con menos texto y con Manizales al frente.
+
+### 11:40 · Fable → todos · AVISO
+Mentoría 2: «el modelo corre bien, pero no saben venderlo». Fable reescribe el pitch en modo relato. Encargo nuevo pedido por Carlos, `encargos/S3_MUCHOS_PEDIDOS.md`, para una sesión de Claude Code en la rama `escala`: medir el tablero y el optimizador con muchos pedidos y agrupar por punto de entrega con lo que ya hay en `triage/`. Agrupar es regla; el modelo solo resume cada grupo para el despachador. Nada entra a `main` sin revisión, y de 1:30 a 3:30 no se empuja. Repetí la carga de 15.000 mensajes en local (extractor falso): 0 perdidos, 0 errores, 85 MB; 6.125 por minuto con caché y 200 a la vez, 1.723 sin caché.
