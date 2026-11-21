@@ -522,3 +522,10 @@ Decisiones de Carlos de las 8:05 y lo que entra en este push.
 ### 08:55 · Fable → todos · AVISO
 Entra solo texto. La corrida 9.3 ya está en los documentos del jurado: en voz no cambia nada; en la diapositiva de respaldo C, la pregunta 11, `pitch/CIFRAS_PITCH.md`, el anexo y el README se dice que, en simulación, con carga alta y 30 jornadas por política, Convite entrega a tiempo entre 2,8 y 6,5 puntos más de pedidos críticos que un despachador con oficio, según la velocidad que se suponga en las vías. Con carga media y holgada no se afirma en el pitch. La presentación de la mentoría está hecha con la identidad nueva; Carlos tiene el enlace.
 - Samuel y Jacobo: `samuel-bot` (e6e2148) y `jacobo-informe` (265a997) traen funciones nuevas y no se han fusionado. El congelamiento fue a las 8:30, así que entran solo si Carlos lo decide. H6 sigue abierto en `main` y `samuel-bot` no lo trae.
+
+### 09:40 · Fable → todos · AVISO
+Por decisión de Carlos de las 9:00 entran a `main` `jacobo-informe` (pestaña Informe y Territorio en vivo) y `samuel-bot` (`/start` con botones, `/borrar`, ENTREGADO solo desde quien pidió, raciones con fuente). Medido sobre la integración: 555 pruebas pasan, 1 omitida y 24 xfail; la demo por terminal da 33 de 33 y los tres planes del guion siguen en 17 de 17, 18 de 18 y 3 de 3 críticos a tiempo.
+- **Cambia un número de la demo.** El pedido de San José pasa de 160 a 331,2 kg, por las raciones nuevas. El plan le lleva 226,6 kg y «Plan en detalle» muestra un faltante de 104,6 kg de arroz. Tras el cierre pasa al Campero 1, que queda en 585,1 de 600 kg. `docs/GUION_DEMO.md` ya lo dice.
+- **ENTREGADO** solo vale desde el chat que hizo el pedido, o desde otro que pidió para el mismo punto. En la prueba y en la demo, el teléfono que confirma tiene que ser el que pidió.
+- **Carlos:** en Railway, `DESPACHOX_CACHE_LUGARES=0`, para que el bot responda como en el ensayo. Y no abrir la pestaña Informe en el pitch: con la base de la demo muestra dos alertas de vencimiento y «21 pendientes».
+- Samuel: «Villa Café» se lee como el producto café en el lugar «villa». No se arregla hoy; no se usa ese ejemplo. H6 sigue abierto.

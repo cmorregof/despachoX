@@ -75,7 +75,7 @@ Se toca el botón **Sí, es ahí**.
 
 *«El modelo solo leyó el mensaje. No decide nada: le devuelve al remitente lo que entendió y le pregunta si el lugar es ese.»*
 
-En la base queda el pedido 21, con `punto_id` 14, 40 familias y estado `nuevo`. El bot ya aplica la tabla de raciones (`entrada/raciones.py`), así que guarda 80 kg de arroz y 80 de leche, 160 kg en total, con el supuesto de 2 kg por familia. Así salió con el lector por reglas el sábado a la 1:00 a. m., en una base temporal. El viernes se ensayaron las dos variantes, con y sin kilos, y la demo salió en ambas.
+En la base queda el pedido 21, con `punto_id` 14, 40 familias y estado `nuevo`. El bot ya aplica la tabla de raciones (`entrada/raciones.py`), así que guarda 219,2 kg de arroz y 112 de leche, 331,2 kg en total, con las raciones de 5,48 y 2,8 kg por familia. Así salió con el lector por reglas el sábado a las 9:30 a. m., en una base temporal. El plan le lleva 226,6 kg, y «Plan en detalle» muestra un faltante de 104,6 kg de arroz en ese pedido, porque la bodega de la semilla no alcanza. Tras el cierre, el pedido pasa al Campero 1, que queda en 585,1 de 600 kg. El viernes se ensayaron las dos variantes, con y sin kilos, y la demo salió en ambas.
 
 ### 0:55 a 1:30 · El despachador lo suma al plan
 
