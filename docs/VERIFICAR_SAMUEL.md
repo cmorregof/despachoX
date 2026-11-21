@@ -16,7 +16,7 @@ Si la rama `fuentes-noche` todavía no está en `main`, marque las casillas en e
 
 ### 1. 404.587 kg en acopio y 41.163 kg entregados al sexto día
 
-- **Lo que decimos.** «Al sexto día, la red tenía 404.587 kg en acopio y había entregado 41.163 kg en todo el país.» Está en la FICHA, la ficha corta, la ficha de la mentoría y el informe corto. El guion abre con ella, en toneladas truncadas (404 y 41).
+- **Lo que decimos.** «Al sexto día, la red tenía 404.587 kg en acopio y había entregado 41.163 kg en todo el país.» Está en la FICHA, la ficha corta, la ficha de la mentoría y el informe corto. El guion nuevo abre con ella así: «Seis días después, los bancos de alimentos tenían 404 toneladas en acopio y habían entregado 41».
 - **Abrir.** https://www.portafolio.co/economia/regiones/flypass-paga-peajes-de-57-camiones-para-acelerar-la-entrega-de-ayudas-tras-el-terremoto-en-colombia-500521
 - **Buscar.** «41.163 kilos», «404.587 kilos» y «157.164 kilos». La fecha de la nota. Si dice que son cifras de toda la red de bancos.
 - **Por qué es dudosa.** La comparación deja fuera los 157.164 kg en tránsito. La nota no dice «sexto día», que sale de contar los días entre el sismo y la publicación (16 de agosto). Tampoco dice de forma explícita «en todo el país».
@@ -88,10 +88,10 @@ Si la rama `fuentes-noche` todavía no está en `main`, marque las casillas en e
 
 ### 7. El registro #767 de INVÍAS, con los 87 registros, el 21 de octubre y las 9 h 46 min
 
-- **Lo que decimos.** «La salida a Letras suma 87 registros de cierre por derrumbe o deslizamiento desde 2017» (guion, bloque 2). «El 21 de octubre, la autopista del Café quedó a un carril y solo pasaban livianos» (guion, bloque 5). «El registro oficial apareció 9 horas y 46 minutos después del sismo» (guion, versión de cinco minutos).
+- **Lo que decimos.** «La salida a Letras suma 87 registros de cierre por derrumbe o deslizamiento desde 2017, y solo 4 son del sismo» (guion, bloque 2). «El 21 de octubre, un deslizamiento dejó a un carril la vía a Pereira, y solo pasaban livianos» (guion, demo). La FICHA dice «autopista del Café». «El registro oficial apareció 9 horas y 46 minutos después del sismo» (guion, versión de cinco minutos).
 - **Abrir.** La consulta del cierre del sismo: https://hermes2.invias.gov.co/server/rest/services/N_767/Consulta767/FeatureServer/0/query?where=objectid%20IN%20%285074664%2C5073065%29&outFields=*&returnGeometry=false&f=json · La del 21 de octubre: https://hermes2.invias.gov.co/server/rest/services/N_767/Consulta767/FeatureServer/0/query?where=objectid%20IN%20%285166664%2C5168264%29&outFields=*&returnGeometry=false&f=json · Para los 87, el archivo `datos_publicos/cierres_historicos.csv`, filtrado por `via_nombre` igual a «salida a Letras».
 - **Buscar.** En la primera consulta, el registro 5074664. Su `creationdate` es 1786400416000, en milisegundos desde 1970 y en UTC. En un convertidor de tiempo Unix eso da el 10 de agosto de 2026 a las 10:20 p. m. UTC, que son las 5:20 p. m. en Colombia, 9 h 46 min después de las 7:34 a. m. En la segunda consulta, «solo paso a vehículos livianos». En el CSV, abra el enlace de tres filas al azar.
-- **Por qué hay que mirar.** Cuatro de las 87 filas son del sismo, así que sin el sismo quedan 83. Son registros y no eventos, porque un derrumbe puede tener varios. El registro del 21 de octubre nombra la vía «Puente La Libertad – Tres Puertas», en Risaralda, y llamarla autopista del Café es lectura nuestra.
+- **Por qué hay que mirar.** Cuatro de las 87 filas son del sismo, así que sin el sismo quedan 83. Son registros y no eventos, porque un derrumbe puede tener varios. El registro del 21 de octubre nombra el tramo «Puente La Libertad – Tres Puertas», en Santa Rosa de Cabal (Risaralda), así que llamarlo autopista del Café o vía a Pereira es lectura nuestra.
 - **Lo que vio la máquina.** Inicio a la 1:00 p. m. y creación a las 5:20 p. m. del 10 de agosto. El 21 de octubre, paso a un carril y solo livianos, con ruta alterna por La Siria. 87 filas en el CSV, 4 de ellas del sismo.
 
 - [ ] Coincide
@@ -126,7 +126,7 @@ Si la rama `fuentes-noche` todavía no está en `main`, marque las casillas en e
 
 ### 10. En Manizales la comida se repartió por listas
 
-- **Lo que decimos.** «Para recibir un mercado había que llevar el formato azul de Bomberos, y la Cruz Roja Seccional Caldas entregó los kits por turnos» (guion de cinco minutos). La FICHA añade que el formato se entrega «después de revisar la vivienda» y que la Cruz Roja «fue el operador logístico».
+- **Lo que decimos.** «Para recibir un mercado había que llevar el formato azul de Bomberos, y los kits se entregaron por turnos en la sede de la Cruz Roja Seccional Caldas» (guion de cinco minutos). La FICHA añade que el formato se entrega «después de revisar la vivienda» y que la Cruz Roja «fue el operador logístico».
 - **Abrir.** Alcaldía, 15 de agosto: https://centrodeinformacion.manizales.gov.co/carpas-de-atencion-cable-aereo-y-linea-de-atencion/ · Alcaldía, 31 de agosto: https://centrodeinformacion.manizales.gov.co/alcaldia-ugr-y-cruz-roja-intensifican-entrega-de-auxilios-y-alimentos-a-familias-damnificadas-por-el-sismo/
 - **Buscar.** En la del 15, «formato azul entregado por Bomberos». En la del 31, «operador logístico», «turnos» y «kit de alimentos», y si nombra a la Cruz Roja como operador.
 - **Por qué hay que mirar.** La máquina no encontró «después de revisar la vivienda» en la nota del 15, porque ese detalle sale de La Patria (13 de agosto). En la del 31, el director de la UGR dice «nuestro operador logístico» sin nombrarlo, y la entrega fue en la sede de la Cruz Roja.
