@@ -1,5 +1,5 @@
 # Torre de control · Carlos · capitán
-Última actualización: viernes 20 de noviembre de 2026, 22:50
+Última actualización: viernes 20 de noviembre de 2026, 23:20 (agente B-noche)
 
 ## Estado en una frase
 El módulo B corre de punta a punta: semilla cargada, plan en 10 s y recálculo que evita la vía cerrada. Faltan las pruebas (agente en curso) y, esta noche, la simulación.
@@ -78,6 +78,16 @@ Pruebas: `despacho/tests` 25 pasan (12 nuevas en `test_ronda3.py`); simulación 
    - **Pendiente para Carlos:** la prueba con el wifi apagado de verdad, en el portátil de la demo.
 4. Pruebas: `despacho/tests/test_hoja.py`, 9. Incluye que cada QR del PDF decodifica a su código de `paquetes` y que la generación falla si toca un socket. Dependencias nuevas: `fpdf2`; para las pruebas, `pypdfium2` y `zxing-cpp`. No hay Docker en este computador: no construí la imagen. Sí comprobé con `uv pip compile` que todo `requirements.txt` resuelve con ruedas binarias para Linux y Python 3.12, que es la base del `Dockerfile`.
    - El `.venv` compartido de la carpeta principal no tiene `fpdf2`: instalarlo me fue bloqueado. Trabajé con un `.venv` propio en el worktree. Para correr la hoja desde la carpeta principal: `.venv/bin/pip install -r requirements.txt`.
+
+### Noche · agente B-noche de Fable (viernes 22:50 a 23:20, autorizado por Carlos, en `main`)
+1. **Fusión de `carlos-despacho`** (hoja de ruta con QR y arranque sin red). Conflicto solo en `torre/CANAL.md`: lo de `main` queda igual y las entradas de B de las 16:25 y 16:50 van al final. Dependencias nuevas: `fpdf2`, `pypdfium2` y `zxing-cpp` (hay que reinstalar `requirements.txt`).
+2. **`FACTOR_CRITICO` = 3 por defecto** (`DESPACHOX_FACTOR_CRITICO` lo sigue cambiando; vacía vale 3).
+3. **Empaque activo, patente 37476:** `FACTOR_EMPAQUE_ACTIVO` = 1,2 por defecto y solo para fruta perecedera con empaque en un acopio con `tiene_frio=1` (`optimizar.factor_empaque`, `es_fruta`); en lo demás, 1,0. `surtir` recibe `frios` (ids de acopios con frío). Nota en `resumen.supuestos`: «cota inferior medida en gulupa a 8 °C en la solicitud de la patente UNAL 37476; pendiente de datos del ICTA para otros productos», más `factor_empaque_activo_aplica_a`. Semilla: empaque solo en los lotes 25 y 26 (fruta del Acopio Oriente, con frío); antes estaba en las verduras 29 y 32. El generador conserva su secuencia aleatoria: `generar()` reproduce los demás CSV byte a byte.
+4. **Alertas por silencio:** un pedido con `origen='silencio'` no se surte ni se rutea, aunque esté confirmado. Queda en `resumen.verificar` (`pedido_id`, `punto_id`, motivo) y en un aviso del plan. No entra a `sin_atender` a propósito: el tablero cuenta lo sin atender como entrega tardía y una alerta bajaría los críticos a tiempo sin ser un pedido. Se eligió esto y no la parada de 0 kg porque no crea paquetes ni toca la hoja de ruta.
+5. **T1 parte B:** `despacho/territorio.py`, `resumen(con, desde, hasta, ahora)` y `silencio(con, desde, hasta)`, `python -m despacho.territorio [--desde] [--hasta] [--csv salida.csv]` (escribe además `salida_sin_pedidos.csv`). Reglas en el docstring del módulo. Decisiones mías: las alertas por silencio no cuentan como pedidos; el denominador del porcentaje a tiempo (`evaluados`, columna añadida) son los pedidos con límite ya entregados o con el límite vencido; un punto sin comuna toma la de su barrio en `barrios.csv` (los puntos que crea el bot no traen comuna); la lista incluye las 12 comunas aunque no tengan puntos. No existía `tablero/territorio.py` en ninguna rama: no hubo que unir nada.
+- Ensayo de la demo por terminal, en base temporal con el grafo regional, antes y después de los cambios: plan 1 con 17 de 17 y 3 de 3 críticos; plan 2 con 18 de 18 y San José en el Camión 1; recálculo con la avenida del Centro cerrada: punto 14 aislado para camión, el 21 pasa al Campero 1, ningún pedido de San José en camión, 18 de 18, 3 de 3, sin retrasos. Igual que el guion.
+- Pruebas: 342 pasan y 3 se omiten (eran 306). Nuevas: `despacho/tests/test_noche.py` (factores, empaque, silencio) y `test_territorio.py`.
+- Pendiente: que el tablero muestre `resumen.verificar` (Jacobo) y la pestaña «Territorio» (parte C de T1). El factor de empaque multiplica el tiempo restante y no la vida desde el empaque, como sugiere `docs/investigacion/07_patentes_a_fondo.md`; cambiarlo exige un campo nuevo (`empacado_en`) y queda para el piloto.
 
 ## En curso
 - Nada de B. Pendiente de otra sesión: encargo S2 de la simulación (barrido de `FACTOR_CRITICO`), que no se ejecutó, y el indicador A25 como riesgo de tramo.
