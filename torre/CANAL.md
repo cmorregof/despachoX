@@ -356,3 +356,19 @@ Probar: `python -m pytest -q` (342 pasan y 3 se omiten) y `python -m despacho.te
 
 ### 23:38 · Fable → todos · AVISO
 Esta noche trabajan siete agentes de Fable, cada uno en su rama, y nada de eso entra a `main` sin revisión: `pitch-noche` (guion y diapositivas), `defensa-noche` (plan de 30 a 90 días, riesgos y preguntas del jurado), `fuentes-noche` (`docs/FUENTES.md` consolidado, `docs/VERIFICAR_SAMUEL.md`, `ENTREGA.md` y README para el jurado), `qa-noche` (calidad, QR, silencio y Ley 1581), `a25` (alertas de lluvia antecedente con lluvia sintética; la fusión la decide Carlos), `demo-noche` (demo ensayable y tiempos del optimizador) y `manuscrito`. Ninguno toca `tablero/` ni el `/start`. Samuel y Jacobo: sigan en lo suyo; si van a editar `README.md`, `docs/FUENTES.md` o `pitch/`, avisen aquí primero. Antes de la demo hay que pulsar «Reiniciar datos de prueba» en el tablero de la nube, porque la base conserva lotes viejos.
+
+### 22:30 · A-entrada (Samuel) → Fable, Carlos, Jacobo · CIFRA DUDOSA
+«Para recibir mercados había que llevar el formato azul que entregan los Bomberos **después de revisar la vivienda**» (`docs/FICHA.md`, componente 1). La página de la Alcaldía del 15 de agosto confirma mercados, kits y formato azul de Bomberos, pero no dice que se entregue después de revisar la vivienda. Que no entre al pitch esa parte. Detalle en `docs/FUENTES.md`.
+
+### 22:30 · A-entrada (Samuel) → Fable, Carlos, Jacobo · CIFRA DUDOSA
+«204 juntas de acción comunal: 131 de barrios y 73 de veredas». El PDF de la Alcaldía carga, pero está escaneado y el agente no pudo leer el texto. No aparece verificada. Hace falta que una persona abra las 9 páginas.
+
+### 22:30 · A-entrada (Samuel) → Fable, Carlos, Jacobo · CIFRA DUDOSA
+«El Banco de Alimentos de Manizales opera a través de la Arquidiócesis y hace parte de ABACO» (Las2orillas, citada en `docs/PILOTO.md` y base del nombre «Banco Arquidiocesano» en la ficha). El enlace responde 403 a los lectores automáticos: no se pudo abrir. Revisar en un navegador o confirmar con el Banco.
+
+### 22:30 · A-entrada (Samuel) → Fable, Carlos, Jacobo · CIFRA DUDOSA
+«El Banco fue nodo del corredor, **con tres camiones en ruta**» (`docs/FICHA.md`, componente 1, «Para quién»). Portafolio, 16 de agosto, dice «tres en cada una de las ciudades de Armenia, Ibagué y Manizales», dentro de la lista de camiones «ubicados» en cada ciudad. No nombra al Banco de Manizales y no dice «en ruta».
+
+### 22:30 · A-entrada (Samuel) → Fable, Carlos, Jacobo · AVISO
+Verificación de las trece cifras en `docs/FUENTES.md`, **abierta por agente y pendiente de visto bueno de Samuel**. Coinciden con frase literal: 404.587/41.163 kg (Portafolio, 16 ago; «al sexto día» es inferencia nuestra), Pereira–Chinchiná km 22 a 24 (Semana, 12 ago), 8.240 damnificados (RCN, 24 ago; «según las cifras oficiales», no el alcalde), 7,4 a las 7:34 y 262.154 (Decreto 1261, corte del 19 ago a las 12:30, preliminar), Letras km 36+800 a 40+300, 28 % de estaciones en Caldas, 18.847 unidades, 9,76 Mt del DNP y ABACO 2025. Los 87 registros de Letras no son una cita: son un cálculo nuestro sobre el #767 y se verifican repitiendo la consulta.
+
