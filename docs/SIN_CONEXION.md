@@ -40,12 +40,28 @@ La primera palabra dice el tipo. El número son familias (o personas, si dice «
 
 | Pieza | Cuándo | Responsable |
 |---|---|---|
-| Hoja de ruta impresa con QR por paquete | Antes del congelamiento | Carlos (`encargos/B3_SIN_CONEXION_CARLOS.md`) |
-| Arranque completo en un portátil sin internet | Antes del congelamiento | Carlos |
+| Hoja de ruta impresa con QR por paquete | Hecha | Carlos (`encargos/B3_SIN_CONEXION_CARLOS.md`) |
+| Arranque completo en un portátil sin internet | Hecho; falta probarlo con el wifi apagado | Carlos |
 | Mapa de fondo dibujado desde la red vial, sin teselas en línea | Antes del congelamiento | Jacobo |
 | Lector de SMS por reglas y entrada por SMS | Lector antes del congelamiento; pasarela si alcanza | Samuel (`encargos/A3_SMS_SAMUEL.md`) |
 | Resincronización con la nube | Plan de 30 días | |
 | Red de radio o malla | Plan de 30 a 90 días, con un equipo de la vertical de energía y conectividad | |
+
+## Estado (viernes 20, 4:50 p. m.)
+
+**Hecho, rama `carlos-despacho`:**
+
+- Hoja de ruta impresa. `python -m despacho.hoja` escribe un PDF carta por vehículo del plan aprobado: encabezado, mapa dibujado con la red vial del disco, una fila por parada con su QR, hora estimada, qué se entrega, si es crítica y espacio para firma y hora; al final, los tramos cerrados que la ruta evita y las reglas del conductor. Se imprime en blanco y negro. Solo imprime planes aprobados, porque los códigos nacen al aprobar.
+- `despliegue/local.sh` arranca base, optimizador, red vial y tablero en un portátil. Por defecto trae `DESPACHOX_SIN_RED=1`: el bot no arranca, el ubicador no usa el modelo para desempatar y la red vial nunca intenta descargarse.
+
+**Medido con la red bloqueada** (macOS `sandbox-exec`, sin conexiones de salida salvo a localhost; no es el wifi apagado): semilla, confirmar un pedido, ubicar tres frases sin modelo, calcular (12 s), aprobar, imprimir tres hojas y registrar una entrega, 23 s en total. El tablero arrancó y respondió en localhost.
+
+**Lo que falla sin internet:**
+
+- El mapa del tablero no se dibuja. Folium carga Leaflet, jQuery y Bootstrap desde `cdn.jsdelivr.net`, `cdnjs.cloudflare.com` y `code.jquery.com`, además de las teselas. Sin internet se pierde el mapa entero, no solo el fondo. Indicadores, tablas y botones sí funcionan porque Streamlit los sirve desde el portátil. Lo arregla `DESPACHOX_MAPA=local` (Jacobo) si además sirve esas librerías desde el disco.
+- La lectura de mensajes sigue llamando al modelo. Sin red la llamada falla y el texto queda crudo para el despachador, que es el comportamiento seguro, pero el lector por reglas de Samuel todavía no existe.
+
+**Falta:** la prueba de verdad con el wifi apagado en el portátil de la demo.
 
 ## Lo que decimos con honestidad
 

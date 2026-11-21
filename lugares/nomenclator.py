@@ -122,7 +122,10 @@ def buscar(con: sqlite3.Connection, texto: str, tipos: tuple[str, ...] | None = 
 
 def elegir_con_modelo(texto: str, contexto: str, candidatos: list[Candidato]) -> int | None:
     """Pide al modelo que elija UNO de los candidatos o ninguno. Devuelve lugar_id o None.
-    Sin clave, sin red o con respuesta rara devuelve None: el flujo sigue con las opciones."""
+    Sin clave, sin red o con respuesta rara devuelve None: el flujo sigue con las opciones.
+    Con DESPACHOX_SIN_RED=1 ni lo intenta (acopio aislado, docs/SIN_CONEXION.md)."""
+    if os.environ.get("DESPACHOX_SIN_RED", "").strip().lower() in ("1", "si", "sí", "true"):
+        return None
     try:
         import anthropic
         cliente = anthropic.Anthropic()

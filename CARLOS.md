@@ -39,8 +39,8 @@ Cuando tu sesión termine la ronda 3:
 Haz git pull --rebase, lee las entradas nuevas de torre/CANAL.md y ejecuta encargos/B3_SIN_CONEXION_CARLOS.md. Sigue en la rama carlos-despacho.
 ```
 
-- [ ] Hoja de ruta impresa por vehículo, con un QR por paquete.
-- [ ] Arranque completo en un portátil con el wifi apagado.
+- [x] Hoja de ruta impresa por vehículo, con un QR por paquete.
+- [ ] Arranque completo en un portátil con el wifi apagado. (`despliegue/local.sh` listo y probado con la red bloqueada; falta apagar el wifi de verdad.)
 - [ ] Diapositiva de la escalera de degradación (`docs/SIN_CONEXION.md`) para el pitch.
 - [ ] Caminar hasta un equipo de la vertical de energía y conectividad y proponer «su red, nuestra mesa de despacho» para el plan de 30 a 90 días.
 

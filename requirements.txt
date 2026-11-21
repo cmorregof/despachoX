@@ -10,4 +10,8 @@ streamlit
 streamlit-folium
 folium
 segno
+fpdf2>=2.8
 pytest
+# Solo para las pruebas: leen el QR de la hoja de ruta impresa (despacho/tests/test_hoja.py)
+pypdfium2
+zxing-cpp

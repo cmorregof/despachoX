@@ -17,3 +17,4 @@ datos/*.db-shm
 despacho/cache/
 datos/*.sal
 datos/*.sal
+datos/hojas/

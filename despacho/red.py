@@ -68,6 +68,9 @@ def _evitar_ip_caida() -> None:
 
 def descargar() -> nx.MultiDiGraph:
     """Baja el grafo de conducción, deja el mayor componente fuertemente conexo y lo guarda."""
+    if os.environ.get("DESPACHOX_SIN_RED", "").strip().lower() in ("1", "si", "sí", "true"):
+        raise RuntimeError(f"DESPACHOX_SIN_RED=1 y no hay red vial en {RUTA_GRAFO}: copie "
+                           "despliegue/grafo/manizales_region.graphml o fije DESPACHOX_GRAFO")
     ox.settings.use_cache = True
     ox.settings.cache_folder = str(CACHE / "http")
     ox.settings.requests_timeout = 120
