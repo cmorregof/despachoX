@@ -41,7 +41,7 @@ Los tres riesgos con probabilidad e impacto altos piden atención desde el día 
 | **Media** | R15 | R5, R10, R11, R12 | R1, R2, R3, R4, R8, R16, R17 |
 | **Baja** | | R13 | |
 
-R6 ya tiene una mitigación hecha, porque la simulación se repitió con las velocidades de la tesis UNAL de 2019. Falta separar el efecto de la red (`docs/SIMULACION.md`, sección 9.3). R7 se resuelve o se ajusta el día 15, con el inventario del Banco. R9 da su señal el día 60, así que la conversación sobre quién sostiene la herramienta empieza antes.
+R6 ya tiene una mitigación hecha, porque la simulación se repitió con las velocidades de la tesis UNAL de 2019. La corrida que separa el efecto de la red del de la velocidad ya está (`docs/SIMULACION.md`, sección 9.3). R7 se resuelve o se ajusta el día 15, con el inventario del Banco. R9 da su señal el día 60, así que la conversación sobre quién sostiene la herramienta empieza antes.
 
 ## 3. Evidencia y estado de cada riesgo
 
