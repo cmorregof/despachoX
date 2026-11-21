@@ -40,6 +40,12 @@ HORAS_ATRAS = 3                         # los pedidos llegaron en las últimas 3
 LIMITE_H = {3: 4, 2: 10, 1: 20}          # mismos valores que la semilla
 FRACCION_CRITICOS = 0.10                 # puntos críticos entre los barrios añadidos (SUPUESTO)
 SEMILLA = 2026
+# Frases sintéticas que a veces acompañan al pedido, para que el resumen del modelo tenga qué leer.
+EXTRAS = ["", "", "", "", "hay bebés y no tenemos leche", "hay varios adultos mayores enfermos",
+          "no tenemos agua desde ayer", "la carne y la leche se nos dañaron porque no hay luz",
+          "una señora necesita insulina", "somos del albergue de la escuela", "ya nos llegó algo pero no alcanzó",
+          "urgente por favor", "no sé cuántos somos, llegaron más familias anoche", "mandan desde la junta",
+          "el camino está feo pero entra una moto", "???", "necesitamos pañales y leche en polvo"]
 
 
 # ---------- base sintética ----------
@@ -93,7 +99,8 @@ def base_escala(ruta: Path, n_pedidos: int, fraccion_nuevo: float = 0.5, semilla
         filas.append((i, creado.isoformat(timespec="seconds"), p["id"], familias, kg,
                       json.dumps(lineas, ensure_ascii=False), urgencia,
                       (creado + timedelta(hours=LIMITE_H[urgencia])).isoformat(timespec="seconds"), estado,
-                      f"Somos {familias} familias en {p['barrio']}, necesitamos {', '.join(productos)}.",
+                      f"Somos {familias} familias en {p['barrio']}, necesitamos {', '.join(productos)}."
+                      + (f" {extra}." if (extra := rng.choice(EXTRAS)) else ""),
                       hashlib.sha256(f"sintetico-{semilla}-{i}".encode()).hexdigest()[:16]))
     con.executemany("INSERT INTO pedidos(id,creado_en,punto_id,familias,kg_estimado,productos,urgencia,"
                     "limite_en,estado,texto_original,remitente_hash) VALUES (?,?,?,?,?,?,?,?,?,?,?)", filas)

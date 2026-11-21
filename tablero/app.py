@@ -475,6 +475,23 @@ def tarjeta_grupo(con, g: dict) -> None:
             refrescar()
 
 
+def resumen_mesa(con, rm: dict | None, n_grupos: int) -> None:
+    """Lo que el modelo leyó de toda la mesa (DESPACHOX_AGRUPAR). Es lectura: no ordena ni decide."""
+    with st.container(border=True):
+        st.markdown(f"**La mesa en pocas líneas** · {n_grupos} grupos")
+        if rm:
+            st.markdown(f'<span class="cita"><i>{html.escape(rm["resumen"])}</i></span>', unsafe_allow_html=True)
+            st.caption(f"leído por el modelo ({rm['modelo']}) a las {hora(rm['creado_en'])}. "
+                       "No decide el orden: eso es suyo.")
+        else:
+            st.caption("sin resumen todavía")
+        if st.button("Resumir con el modelo", key="resumir_mesa", width="stretch",
+                     help="Lee cada grupo y la mesa entera con el modelo; tarda un rato con muchos grupos."):
+            r = correr("Leyendo los grupos con el modelo…", T.resumir_grupos)
+            avisar("ok" if r.ok else "error", r.mensaje)
+            refrescar()
+
+
 def por_revisar(con, revisar: dict) -> None:
     grupos = revisar.get("grupos") or []
     pedidos = revisar["pedidos"]
@@ -510,6 +527,8 @@ def por_revisar(con, revisar: dict) -> None:
     for u in revisar["ubicaciones"]:
         tarjeta_ubicacion(con, u)
 
+    if grupos:
+        resumen_mesa(con, revisar.get("resumen_mesa"), len(grupos))
     for g in grupos:
         tarjeta_grupo(con, g)
 
@@ -756,6 +775,7 @@ def mesa() -> None:
         rutas = T.rutas(con, plan)
         revisar = T.por_revisar(con)
         revisar["grupos"] = T.grupos_por_revisar(con)
+        revisar["resumen_mesa"] = T.resumen_mesa(con) if revisar["grupos"] else None
         indicadores(T.indicadores(con, plan), plan)
         st.write("")
         t_mesa, t_plan, t_territorio, t_informe, t_bitacora = st.tabs(

@@ -84,3 +84,72 @@ def test_resumir_y_guardar_no_repite(tmp_path):
     assert len(llamadas) == 2
     assert R.resumir_y_guardar(con, grupos, falso, solo_faltantes=False) == 2
     assert len(llamadas) == 4
+
+
+# ---------- la mesa entera y el comando ----------
+
+def _grupos_de_prueba(con):
+    from despacho import agrupar
+    con.executemany("INSERT INTO puntos(id,nombre,barrio,lat,lon,critico) VALUES (?,?,?,?,?,?)",
+                    [(1, "Albergue A", "A", 5.07, -75.52, 1), (2, "Salón B", "B", 5.05, -75.50, 0)])
+    con.executemany("INSERT INTO pedidos(id,creado_en,punto_id,familias,kg_estimado,urgencia,estado,texto_original) "
+                    "VALUES (?,?,?,?,?,?,'nuevo',?)", [
+        (1, "2026-11-21T10:00:00-05:00", 1, 10, 100, 3, "Somos 10 familias en A, necesitamos arroz. hay bebés."),
+        (2, "2026-11-21T10:10:00-05:00", 1, 5, 50, 2, "Somos 5 familias en A, necesitamos agua."),
+        (3, "2026-11-21T10:20:00-05:00", 2, 8, 80, 1, "Somos 8 familias en B, necesitamos panela.")])
+    con.commit()
+    return agrupar.grupos_nuevos(con)
+
+
+def test_texto_mesa_trae_totales_y_una_linea_por_grupo(tmp_path):
+    from datos import db
+    from despacho import resumen_grupo as R
+    con = db.conectar(tmp_path / "m.db")
+    grupos = _grupos_de_prueba(con)
+    t = R.texto_mesa(grupos, {grupos[0].clave: "piden arroz y agua; hay bebés"}, {1: "Albergue A", 2: "Salón B"})
+    assert "2 grupos" in t and "1 en puntos críticos" in t
+    assert "Albergue A (CRÍTICO) · 2 pedidos · 15 familias" in t and "piden arroz y agua; hay bebés" in t
+    assert "Salón B · 1 pedidos" in t and "panela" in t            # sin resumen, van los textos
+    assert "No ordene los grupos" in t
+
+
+def test_resumir_mesa_guarda_y_no_repite(tmp_path):
+    from datos import db
+    from despacho import resumen_grupo as R
+    con = db.conectar(tmp_path / "m.db")
+    grupos = _grupos_de_prueba(con)
+    llamadas = []
+    extractor = lambda t: llamadas.append(t) or "resumen de la mesa"
+    assert R.resumir_mesa(con, grupos, extractor, "falso") is True
+    assert R.leer_mesa(con, grupos)["resumen"] == "resumen de la mesa"
+    assert R.resumir_mesa(con, grupos, extractor, "falso") is False      # ya existe
+    assert len(llamadas) == 1
+    con.execute("UPDATE pedidos SET estado='confirmado' WHERE id=3")
+    con.commit()
+    from despacho import agrupar
+    assert R.leer_mesa(con, agrupar.grupos_nuevos(con)) is None          # cambió la mesa: otra clave
+
+
+def test_comando_falso_resume_grupos_y_mesa(tmp_path, monkeypatch, capsys):
+    import json
+    from datos import db
+    from despacho import resumen_grupo as R
+    monkeypatch.setenv("DESPACHOX_AGRUPAR", "1")
+    con = db.conectar(tmp_path / "m.db")
+    _grupos_de_prueba(con)
+    con.close()
+    assert R.main(["--resumir", "--falso", "--db", str(tmp_path / "m.db")]) == 0
+    r = json.loads(capsys.readouterr().out.strip().splitlines()[-1])
+    assert r["grupos"] == 2 and r["resumidos"] == 2 and r["mesa"] is True and r["llamadas"] == 0
+    con = db.conectar(tmp_path / "m.db")
+    assert con.execute("SELECT COUNT(*) FROM resumenes_grupo").fetchone()[0] == 3
+    assert "resumen de ensayo" in con.execute("SELECT resumen FROM resumenes_grupo WHERE clave LIKE 'mesa:%'").fetchone()[0]
+
+
+def test_resumen_vacio_no_se_guarda(tmp_path):
+    from datos import db
+    from despacho import resumen_grupo as R
+    con = db.conectar(tmp_path / "m.db")
+    grupos = _grupos_de_prueba(con)
+    assert R.resumir_y_guardar(con, grupos, lambda t: "", "falso", a_la_vez=4) == 0
+    assert con.execute("SELECT COUNT(*) FROM resumenes_grupo").fetchone()[0] == 0

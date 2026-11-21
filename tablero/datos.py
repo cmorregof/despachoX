@@ -364,6 +364,45 @@ def grupos_por_revisar(con: sqlite3.Connection, ahora: datetime | None = None) -
     return salida
 
 
+def resumen_mesa(con: sqlite3.Connection, ahora: datetime | None = None) -> dict | None:
+    """El resumen de toda la mesa que leyó el modelo para los grupos vigentes, o None si no hay o la
+    variable está apagada. Cambia de clave cuando cambian los grupos, así no se muestra uno viejo."""
+    if _agrupar is None or _resumen_grupo is None or not _agrupar.activo():
+        return None
+    grupos = _agrupar.grupos_nuevos(con, ahora=ahora)
+    r = _resumen_grupo.leer_mesa(con, grupos)
+    if not r:
+        return None
+    return {"resumen": r["resumen"], "modelo": r["modelo"], "creado_en": r["creado_en"], "grupos": len(grupos)}
+
+
+RESUMIR = ("despacho.resumen_grupo", "--resumir")
+ESPERA_RESUMIR_S = 600
+
+
+def resumir_grupos(correr=subprocess.run, espera_s: int = ESPERA_RESUMIR_S, falso: bool = False) -> Corrida:
+    """Ejecuta `python -m despacho.resumen_grupo --resumir` (hereda DESPACHOX_DB y la clave del modelo)."""
+    args = [sys.executable, "-m", *RESUMIR] + (["--falso"] if falso else [])
+    try:
+        r = correr(args, cwd=RAIZ, capture_output=True, text=True, timeout=espera_s)
+    except subprocess.TimeoutExpired:
+        return Corrida(False, None, f"el resumen no terminó en {espera_s} s")
+    except OSError as e:
+        return Corrida(False, None, f"no se pudo ejecutar despacho.resumen_grupo: {e}")
+    ultima = ((r.stdout or "").strip().splitlines() or [""])[-1]
+    error = ((r.stderr or "").strip().splitlines() or [""])[-1]
+    try:
+        cifras = json.loads(ultima)
+    except ValueError:
+        return Corrida(False, None, error or "el resumen no devolvió cifras")
+    if r.returncode != 0:
+        return Corrida(False, None, f"{cifras.get('fallos', '?')} llamadas al modelo fallaron; {error}")
+    return Corrida(True, None, f"{cifras.get('resumidos', 0)} grupos resumidos de {cifras.get('grupos', 0)}"
+                   + (", y la mesa" if cifras.get("mesa") else "") + f" con {cifras.get('modelo')}"
+                   + (f"; {cifras.get('tokens_entrada', 0):,} tokens de entrada, "
+                      f"{cifras.get('costo_usd', 0):.4f} USD estimados" if cifras.get("modelo") != "falso" else ""))
+
+
 def _decidir_grupo(con: sqlite3.Connection, pedido_ids: list[int], estado: str, quien: str,
                    clave: str | None) -> int:
     n = sum(cambiar_estado(con, "pedidos", int(i), estado, quien) for i in pedido_ids)
