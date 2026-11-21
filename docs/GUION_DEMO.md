@@ -2,6 +2,8 @@
 
 Sesión `maestro`, viernes 20 de noviembre, 2:45 p. m. Ensayado en bases temporales con la semilla de `main` (commit `1730169`), el optimizador real y las dos redes: la urbana de las 11:20 a. m. y la ampliada de las 2:22 p. m. El resultado es el mismo en ambas. El bot entró a `main` a las 2:30 p. m. y nadie lo ha corrido con Telegram real, porque faltan las claves. El tablero entró completo a las 2:32 p. m. Ensayé el despacho y la ubicación de lugares, no los clics: los textos del bot salen de `entrada/flujo.py` y de `lugares/`, y los botones, de `tablero/README.md`. Hay que recorrerlo una vez con todo junto y corregir aquí lo que no coincida.
 
+**Actualización del sábado 21, 1:00 a. m. (rama `erratas`).** Esta versión corrige lo que había quedado viejo. El nomenclátor carga hoy 450 apodos, y el bot ya calcula los kilos con la tabla de raciones. «avenida del centro» sin filtro ya no sale «exacto», y por eso el paso 2 usa el filtro de cierres, como `demo/preparar.py` de la rama `demo-noche`. El lector por reglas pregunta con artículo, «la avenida del centro». El plan 3 avisa también `camion: punto:3 quedó aislado de la red`. El comando `entrada.procesar` no existe, así que el respaldo por terminal es otro. La base de la nube se reinicia con `DESPACHOX_REINICIAR=1` en Railway, porque el tablero de `main` no tiene botón para eso. El bot y el tablero corren en la nube desde el viernes a las 3:45 p. m. Las salidas del nomenclátor y del lector por reglas se repitieron el sábado a la 1:00 a. m. sobre una base temporal con la semilla; el optimizador no se volvió a correr esta noche.
+
 **Aporta a:** criterio 2 (funcionamiento y demostración). Muestra las cuatro cosas que pide el entregable del reto: pedido, cierre vial, recálculo y decisión humana, y de paso la flota mixta.
 
 Una persona habla y otra maneja. Quien habla no toca el computador.
@@ -33,8 +35,14 @@ Vías que **no** se usan en la demo: vía a Chinchiná, La Siria y Panamericana 
 
 Entre 30 y 10 minutos antes. Todo desde la raíz del repositorio, con el `.venv`.
 
-1. Reiniciar la base: `.venv/bin/python -m despacho.semilla --cargar --reiniciar`. Debe informar 15 puntos, 2 acopios, 5 vehículos, 34 lotes, 20 pedidos y un nomenclátor de 168 apodos. El reinicio borra también los apodos aprendidos en ensayos anteriores.
-2. Comprobar el nomenclátor: `.venv/bin/python -m lugares.nomenclator "san jose" "avenida del centro"`. Debe decir `exacto, seguro=True` para los dos.
+1. Reiniciar la base: `.venv/bin/python -m despacho.semilla --cargar --reiniciar`. Debe informar 15 puntos, 2 acopios, 5 vehículos, 34 lotes, 20 pedidos y un nomenclátor de 450 apodos. El reinicio borra también los apodos aprendidos en ensayos anteriores. Si la demo corre en la nube, este paso no sirve, porque el tablero de `main` no tiene botón de reinicio. En Railway se pone la variable `DESPACHOX_REINICIAR=1`, se espera el redespliegue y se quita la variable, porque si se queda borra la base en cada despliegue (`despliegue/arranque.sh`; `docs/DESPLIEGUE.md`). Entre el reinicio y la demo nadie le escribe al bot de la nube, para que el pedido nuevo siga siendo el 21.
+2. Comprobar el nomenclátor con los mismos filtros que usa el bot, uno para pedidos y otro para cierres (`TIPOS` en `entrada/flujo.py`):
+
+   ```
+   .venv/bin/python -c "from datos import db; from lugares import nomenclator as n; con = db.conectar(); r1 = n.resolver(con, 'san jose', tipos=('barrio', 'punto', 'sitio', 'vereda'), elegir=None); r2 = n.resolver(con, 'avenida del centro', tipos=('via', 'sitio'), elegir=None); print(r1.metodo, r1.seguro, r1.pregunta); print(r2.metodo, r2.seguro, r2.pregunta)"
+   ```
+
+   Debe decir `exacto True` para los dos, con «Ubiqué «san jose» en: San José (barrio)» y «Ubiqué «avenida del centro» en: avenida del Centro (via)». No sirve `python -m lugares.nomenclator "avenida del centro"`, porque busca sin filtro. Así empata el barrio Centro con la vía y responde con una lista de opciones, aunque el bot sí la ubica. Si `demo/` ya está en `main`, `.venv/bin/python -m demo.preparar` hace los pasos 1 y 2 de una vez y marca `[ok]` o `[FALLA]` en cada punto.
 3. Arrancar el bot y el tablero. Proyectar el tablero a pantalla completa.
 4. En el tablero, «Calcular plan» y **no aprobar todavía**. Resultado esperado: **17 de 17 pedidos, 3 de 3 críticos a tiempo, tres vehículos con ruta** (Camión 1, Camión 2 y Campero 2). Este es el plan 1 y se queda propuesto. Si se aprueba ahora, el botón «Calcular plan» del paso 0:55 planea solo el pedido nuevo y borra las demás rutas, hasta que C lo corrija.
 5. Dejar el teléfono del equipo con el chat del bot abierto y el mensaje 1 ya escrito sin enviar. Tener a mano el QR del bot para el jurado.
@@ -67,7 +75,7 @@ Se toca el botón **Sí, es ahí**.
 
 *«El modelo solo leyó el mensaje. No decide nada: le devuelve al remitente lo que entendió y le pregunta si el lugar es ese.»*
 
-En la base queda el pedido 21, con `punto_id` 14, 40 familias y estado `nuevo`. Hoy el bot lo guarda sin kilos y el optimizador le surte 400 kg de mercado genérico, sin leche. Cuando se aplique la tabla de raciones serán 80 kg de arroz y 80 de leche. Ensayé las dos variantes y la demo sale en ambas.
+En la base queda el pedido 21, con `punto_id` 14, 40 familias y estado `nuevo`. El bot ya aplica la tabla de raciones (`entrada/raciones.py`), así que guarda 80 kg de arroz y 80 de leche, 160 kg en total, con el supuesto de 2 kg por familia. Así salió con el lector por reglas el sábado a la 1:00 a. m., en una base temporal. El viernes se ensayaron las dos variantes, con y sin kilos, y la demo salió en ambas.
 
 ### 0:55 a 1:30 · El despachador lo suma al plan
 
@@ -90,6 +98,8 @@ El bot responde:
 
 > Ubiqué «avenida del centro» en: avenida del Centro (via). ¿Es correcto?
 
+Si el mensaje lo lee el lector por reglas (SMS, o el bot sin modelo), la pregunta trae el artículo: «Ubiqué «la avenida del centro» en: avenida del Centro (via). ¿Es correcto?». Es igual de correcta, y `demo/correr.py` acepta las dos. El lector por reglas, además, lee «si pasa moto» como si la moto tampoco pasara, y el bot responde «no pasa camión y moto». El resultado de la demo no cambia, porque la moto no lleva los 160 kg de San José, pero quien habla no dice que la moto sí pasa.
+
 El jurado toca **Sí, es ahí**. En el mapa aparece el cierre como reportado.
 
 *«Cualquier conductor o socorrista puede avisar. El sistema no cierra la vía por un mensaje: lo deja reportado hasta que el despachador lo confirme.»*
@@ -103,7 +113,7 @@ En el tablero:
 
 Resultado esperado, repetido en todos los ensayos:
 
-- En los avisos del plan: `camion: punto:14 quedó aislado de la red`.
+- En los avisos del plan: `camion: punto:14 quedó aislado de la red`. También sale `camion: punto:3 quedó aislado de la red`, del Comedor comunitario Belén, y no se comenta.
 - El pedido nuevo de San José (21) pasa de un camión a un campero.
 - Ninguno de los tres pedidos de San José (14, 17 y 21) va en camión.
 - Siguen 18 de 18 pedidos, 3 de 3 críticos a tiempo y ninguna parada con retraso.
@@ -118,7 +128,7 @@ Clic en **Aprobar**. Si la bitácora ya existe, se muestra: ubicación confirmad
 
 ## Versión de 75 segundos para el pitch
 
-El pitch reserva 75 segundos para la demo. Se parte de la pantalla posterior al paso 0:55 a 1:30, con el pedido de San José ya aprobado, y se hacen solo el derrumbe y el recálculo (1:30 a 3:00, apretados). El pedido por chat se menciona en una frase mientras el jurado escribe.
+El pitch reserva 75 segundos para la demo. El guion nuevo del pitch, en la rama `pitch-noche`, le da 63 segundos, de 1:06 a 2:09, y el que manda es el ensayo cronometrado. Se parte de la pantalla posterior al paso 0:55 a 1:30, con el pedido de San José ya aprobado, y se hacen solo el derrumbe y el recálculo (1:30 a 3:00, apretados). El pedido por chat se menciona en una frase mientras el jurado escribe.
 
 ## Qué hacer si falla cada paso
 
@@ -128,7 +138,7 @@ Regla general: no se depura en vivo. Se intenta un respaldo una sola vez y, si n
 |---|---|---|
 | Preparación | El bot escribe y el tablero no lo ve | Cada proceso está usando su propia base. Poner la misma ruta en `DESPACHOX_DB` y reiniciar los dos |
 | Preparación | El plan 1 no da 17 de 17 | La base se cargó hace mucho o cambió la semilla. Recargar. Si persiste, video |
-| Pedido | El bot no responde en diez segundos | En una terminal ya abierta: `.venv/bin/python -m entrada.procesar --si "somos 40 familias en san jose no hay arroz ni leche"`. Se dice «el mismo mensaje, por el canal de respaldo». Ese comando todavía no existe: está pedido en el encargo A. Sin él, video |
+| Pedido | El bot no responde en diez segundos | En una terminal ya abierta, el comando `RESPALDO` de la sección «Sin tablero» con el mensaje de San José. Lo lee el lector por reglas, sin modelo, y lo deja en la base local. Se dice «el mismo mensaje, por el canal de respaldo». Con la demo en la nube este respaldo no sirve, porque la terminal no escribe en la base de Railway: video. `entrada.procesar` no existe |
 | Pedido | El bot entiende mal (otro barrio, otra cantidad) | No se corrige en vivo. Se dice «por eso el despachador revisa antes de confirmar», se descarta en el tablero y se usa el respaldo de la fila anterior |
 | Pedido | El bot pregunta por varias opciones en vez de un «Sí, es ahí» | Se elige San José en los botones. Es el comportamiento correcto y se dice |
 | Confirmar pedido | El pedido no aparece en «Por revisar» | Botón de actualizar del tablero. Si no hay, recargar la página |
@@ -145,15 +155,18 @@ Regla general: no se depura en vivo. Se intenta un respaldo una sola vez y, si n
 
 ## Sin tablero: la misma demo por terminal
 
-Sirve para la mentoría de las 7:00 p. m. si el tablero no está listo, y para ensayar el despacho solo.
+Sirve para la mentoría si el tablero falla, y para ensayar el despacho solo. El mensaje de respaldo lo lee el lector por reglas (`entrada/sms.py`), con la misma mesa del bot, y toca «Sí, es ahí» por quien escribe. Se probó el sábado a la 1:00 a. m. sobre una base temporal con la semilla. Si `demo/` ya está en `main` (rama `demo-noche`), `.venv/bin/python -m demo.correr` hace todo este recorrido y verifica cada resultado.
 
 ```
+RESPALDO='from datos import db; from entrada.flujo import Mesa; from entrada.sms import leer_sms; import sys; m = Mesa(db.conectar(), extraer=leer_sms, elegir=None); r = m.recibir_texto("chat-respaldo", sys.argv[1]); print(r[0].texto); s = [d for _, d in r[0].botones if d.startswith("s:")]; print(m.pulsar("chat-respaldo", s[0]).texto if s else "sin botón Sí: revisar el tablero")'
 .venv/bin/python -m despacho.optimizar --segundos 3          # imprime 1; se deja propuesto
-# llega el pedido 21 por el bot, o con: .venv/bin/python -m entrada.procesar --si "somos 40 familias en san jose no hay arroz ni leche"
+# llega el pedido 21 por el bot, o con el respaldo:
+.venv/bin/python -c "$RESPALDO" "somos 40 familias en san jose no hay arroz ni leche"
 sqlite3 datos/despachox.db "UPDATE pedidos SET estado='confirmado' WHERE id=21"
 .venv/bin/python -m despacho.optimizar --segundos 3          # imprime 2
 .venv/bin/python -m despacho.optimizar --aprobar 2 --quien carlos
-# llega el cierre 1 por el bot, o con: .venv/bin/python -m entrada.procesar --si "derrumbe en la avenida del centro, no pasa camion, si pasa moto"
+# llega el cierre 1 por el bot, o con el respaldo:
+.venv/bin/python -c "$RESPALDO" "derrumbe en la avenida del centro, no pasa camion, si pasa moto"
 sqlite3 datos/despachox.db "UPDATE cierres SET estado='confirmado' WHERE id=1"
 .venv/bin/python -m despacho.recalcular --segundos 3         # imprime 3
 sqlite3 datos/despachox.db "SELECT v.nombre, pa.orden, pu.barrio, pa.pedido_id FROM paradas pa JOIN vehiculos v ON v.id=pa.vehiculo_id JOIN puntos pu ON pu.id=pa.punto_id WHERE plan_id=3 ORDER BY 1,2"
@@ -163,7 +176,7 @@ Los identificadores 21, 1, 2 y 3 valen para una base recién cargada.
 
 ## Lo que este guion supone y todavía no existe
 
-1. `entrada/`: las claves en `.env`, una corrida real desde un teléfono, la entrada por terminal `entrada.procesar` y los kilos por producto. Sin kilos, el optimizador surte un mercado genérico y el barrio no recibe leche.
+1. `entrada/`: el ensayo completo desde un teléfono contra el bot de la nube, que corre desde el viernes a las 3:45 p. m. La entrada por terminal es el comando `RESPALDO`, porque `entrada.procesar` no existe. Los kilos por producto ya salen de la tabla de raciones.
 2. `tablero/`: un recorrido completo de estos clics con el bot real. El tablero existe, pero nadie ha hecho la secuencia entera.
 3. Que nadie cambie la arista de la avenida del Centro, el punto 14 ni la flota. Cada vez que cambien `vias.csv`, `puntos.csv`, `vehiculos.csv` o el grafo, hay que repetir este ensayo antes de usar el guion.
 4. El video de respaldo, que se graba con este mismo guion apenas corra de punta a punta.
