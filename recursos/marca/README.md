@@ -12,6 +12,7 @@ Identidad «Camino abierto», elegida por Carlos el 21 de noviembre de 2026 a la
 | `convite_logo_transparente.png` | Símbolo y nombre sin fondo, 1600 × 500 px. Para fondos claros. |
 | `convite_logo_verde.png` | Símbolo y nombre sobre verde monte, 1600 × 500 px. |
 | `hero_convite.png` | Imagen principal, 2048 × 768 px. Generada con IA por Carlos. |
+| `hero_convite_caseta.jpg` | Convite en la caseta, con la catedral y el nevado al fondo, 1536 × 1024 px. Generada con IA por Carlos. Es la que muestra la entrada del tablero (`hero_convite_inicio.jpg`). |
 
 El nombre está compuesto en Ancízar Serif Bold.
 
