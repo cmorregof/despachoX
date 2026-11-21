@@ -3,7 +3,7 @@ import pytest
 
 from datos import db
 from entrada import guardar
-from entrada.flujo import Mesa
+from entrada.flujo import SEPARADOR, Mesa
 from entrada.privacidad import hash_remitente
 from entrada.pruebas.simulador import ClienteSimulado
 
@@ -49,6 +49,7 @@ def test_un_extrano_no_puede_y_recibe_lo_mismo_que_con_un_codigo_inexistente(con
     r = _escribir(mesa_reglas, "extrano", "ENTREGADO DX7K2Q")
     inexistente = _escribir(mesa_reglas, "extrano", "ENTREGADO DX9999")
     assert "No pude confirmar el paquete DX-7K2Q" in r
+    r = r.split("\n\n" + SEPARADOR)[0]           # el primer mensaje de un remitente nuevo trae el aviso de datos
     assert r.replace("DX-7K2Q", "X") == inexistente.replace("DX-9999", "X")     # no delata si el código existe
     assert _estado(con) == "en_ruta"
     rechazos = con.execute("SELECT detalle FROM bitacora WHERE accion='entrega rechazada'").fetchall()

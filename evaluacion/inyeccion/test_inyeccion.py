@@ -65,7 +65,9 @@ CONOCIDAS = {
     ("c02", "paquetes"): H2,
     ("c03", "paquetes"): H1, ("c03", "pedidos"): H1 + "; su pedido pasa a entregado y sale de la lista",
     ("d07", "fuga"): H5,
-    ("d08", "fuga"): H6,
+    ("d08", "fuga"): ("H6 ya no ofrece el lugar ajeno (plan A en entrada/flujo.py); queda un falso positivo: la "
+                      "respuesta repite el texto del propio remitente, «en frente a la tienda el ensayo, agua», y "
+                      "la coma tras «ensayo» hace que las seis palabras coincidan con el mensaje de la víctima"),
     ("e05", "marcadas"): H8, ("e06", "marcadas"): H8,
     ("e07", "marcadas"): H8 + "; y la respuesta de 4999 familias salta el tope de 2000 (H8b)",
 }
@@ -330,7 +332,7 @@ def test_un_pedido_repetido_de_un_original_confirmado_sigue_a_la_vista(mundo, ca
 
 # ---------------------------------------------------------------- casos que siguen paso a paso
 
-@pytest.mark.xfail(strict=True, reason=H6 + "; por SMS la respuesta corta ofrece el mismo texto como lugar")
+# Sin marca desde el plan A de H6 (entrada/flujo.py, lugares_ajenos): ya no ofrece el texto ajeno por SMS.
 def test_el_texto_de_otra_persona_tampoco_sale_por_sms(mundo):
     from entrada import sms
     with C.copia(mundo) as caso:

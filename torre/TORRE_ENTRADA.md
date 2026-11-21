@@ -1,5 +1,5 @@
 # Torre de control · A-entrada · rol A (entrada)
-Última actualización: 2026-11-21 01:30 (hora de Colombia)
+Última actualización: 2026-11-21 09:56 (hora de Colombia)
 
 Desde las 16:05 el módulo lo dirige Samuel con `encargos/A2_BOT_SAMUEL.md`. Se trabaja en la rama `samuel-bot`; Carlos fusiona a `main` a las 6:30 p. m., 11:00 p. m. y 8:00 a. m.
 
@@ -76,6 +76,13 @@ Etapa 1 del encargo A2 hecha en `samuel-bot` y probada con el extractor falso: �
 - No se agregó `pedidos.dudas`: no hubo confirmación.
 
 - 21 nov, 7:50 a. m. `/start` en una pantalla con cuatro botones, ejemplo copiable aparte, errores amables con botones, «¿Está bien?» en el resumen y `/borrar` con confirmación (`entrada/guardar.py: borrar_remitente`). Pruebas en `entrada/pruebas/test_start.py`; 152 pasan. Pendiente de `/borrar`: lugares nacidos de pin y alias aprendidos. El resto del flujo sigue en «tú»: pasarlo a «usted» es solo texto, pero toca muchas pruebas.
+
+- 21 nov, 9:56 a. m. **Aviso de datos y H6, plan A** (es un arreglo; el congelamiento de funciones de las 8:30 no aplica).
+  - Aviso (`flujo.AVISO_DATOS`, texto de Samuel): va al final del `/start`, en un bloque aparte después de una línea, y reemplaza «No guardo su nombre ni su teléfono». También va al final de la primera respuesta a un remitente nuevo, es decir, sin pedidos previos y que no haya visto el `/start` (`Mesa.atender_seguro`, `Mesa.marcar_avisado`). El `/start` queda en 577 caracteres. El aviso nombra `/borrar` porque ese comando existe. Cita la política como `docs/PRIVACIDAD.md` porque no hay enlace público. El SMS no lleva el aviso, porque no cabe en 160 caracteres.
+  - H6, plan A, solo en `entrada/`, sin tocar `lugares/`: `flujo.lugares_ajenos` deduce quién es el dueño de un lugar aprendido a partir de `ubicaciones` confirmadas y `pedidos.remitente_hash`, y lo da por validado si lo confirmó alguien distinto del bot. Cubre el pin, el apodo y el «Punto de entrega <texto>» que la semilla vuelve lugar al reiniciar. `_resolver` saca esos lugares de las opciones, de la pregunta y del desempate con modelo, y deja la propuesta sin ese lugar, para que un «sí» no lo confirme. `pulsar` rechaza un botón forjado. El SMS queda cubierto porque arma su respuesta con los mismos botones. Al despachador le sigue llegando la lista completa en `ubicaciones.candidatos`.
+  - Pruebas: `entrada/pruebas/test_h6.py` tiene 10, y con el filtro apagado fallan las 4 de H6. `test_flujo.py::test_lugar_desconocido...` ya no espera que el pin de otra persona se le ofrezca al siguiente: ahora exige la validación del despachador. Sin `DESPACHOX_SIN_RED` pasan 162 y se omite 1. Con la variable fallan 13, las mismas 13 de antes del cambio. En la suite de inyección pasan 70 y quedan 23 xfail. Fallan 2, y ya fallaban antes del cambio: `/borrar` es la quinta orden y la respuesta de «estado» dice «suyos».
+  - Marca quitada: `test_el_texto_de_otra_persona_tampoco_sale_por_sms`. Se conserva `d08-fuga`, porque ahora es un falso positivo del arnés: la coma tras «ensayo» hace que el texto del mismo remitente coincida con el de la víctima. En Windows, la suite de inyección necesita un parche local de `socketpair`, porque el guardia de red corta el `connect` interno de asyncio.
+  - Pendiente: plan B (`lugares/nomenclator.py`, nombre neutro «Punto de entrega cerca de <barrio>»), que espera la autorización de Carlos; el enlace público de la política; el aviso por SMS; el ajuste del arnés para `d08-fuga`.
 
 ## Bloqueos y preguntas para el capitán
 - Resuelto 14:56: `.env` creado en la carpeta principal con las dos claves.

@@ -15,7 +15,7 @@ import os
 import re
 import sqlite3
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Callable
 
 import lugares
@@ -46,6 +46,14 @@ EJEMPLOS = ("Somos 40 familias en San José, no hay arroz ni leche",
 MENU = [("Pedir comida", "m:pedir"), ("Reportar una vía cerrada", "m:via"),
         ("Confirmar una entrega", "m:entrega"), ("¿Cómo va mi pedido?", "m:estado")]
 EJEMPLO_ENTREGA = "ENTREGADO DX-7KQ3"
+# Aviso de tratamiento de datos (texto de Samuel). Va al final del /start y en la primera respuesta a un
+# remitente nuevo. No dice «no guardo su nombre»: H6 lo contradice mientras no esté arreglado del todo.
+# La política no tiene enlace público todavía: se cita el borrador del repositorio (pendiente en el canal).
+SEPARADOR = "──────────"
+AVISO_DATOS = ("CONVITE tratará los datos que compartas aquí únicamente para gestionar tu solicitud y "
+               "ubicación de acuerdo a la Ley 1581 de 2012. Al continuar usando este chat y enviar tu "
+               "solicitud, aceptas nuestra Política de Tratamiento de Datos Personales (docs/PRIVACIDAD.md). "
+               "Para borrar lo que enviaste, escribe /borrar.")
 
 
 def ayuda(con_voz: bool = False) -> str:
@@ -57,8 +65,7 @@ def ayuda(con_voz: bool = False) -> str:
             "Sirve para pedir comida, avisar que una vía está cerrada y confirmar que una entrega llegó.\n\n"
             f"{como}\n\n"
             "Una persona revisa cada mensaje antes de despachar.\n\n"
-            "No guardo su nombre ni su teléfono: solo qué necesita y dónde. Ley 1581 de 2012. "
-            "Para borrar lo que me envió, escriba /borrar.")
+            f"{SEPARADOR}\n{AVISO_DATOS}")
 
 
 def inicio(con_voz: bool = False) -> list["Respuesta"]:
@@ -115,7 +122,19 @@ class Mesa:
         self.extraer = extraer
         self.elegir = lugares.nomenclator.elegir_con_modelo if elegir is _USAR_MODELO else elegir
         self.pendientes: dict[str, list[Pendiente]] = {}
+        self.avisados: set[str] = set()     # remitentes que ya vieron AVISO_DATOS (en /start o al escribir)
         lugares.cargar_semilla(con)
+
+    def marcar_avisado(self, chat_id) -> None:
+        """El /start ya mostró el aviso de datos: la primera respuesta no lo repite."""
+        self.avisados.add(hash_remitente(chat_id))
+
+    def _es_nuevo(self, rem: str) -> bool:
+        if rem in self.avisados:
+            return False
+        self.avisados.add(rem)
+        previo = self.con.execute("SELECT 1 FROM pedidos WHERE remitente_hash=? LIMIT 1", (rem,)).fetchone()
+        return previo is None
 
     # ---------- mensajes de texto ----------
 
@@ -144,14 +163,20 @@ class Mesa:
 
     def atender_seguro(self, chat_id, x: Extraccion) -> list[Respuesta]:
         """`atender`, pero si algo falla al guardar o ubicar (base ocupada, error inesperado) el
-        mensaje no se pierde: se deshace lo a medias y se guarda como texto crudo para el despachador."""
+        mensaje no se pierde: se deshace lo a medias y se guarda como texto crudo para el despachador.
+        A un remitente nuevo le agrega el aviso de datos al final de la última respuesta, en un bloque
+        separado por una línea (el SMS lo quita: no cabe en 160 caracteres)."""
+        nuevo = self._es_nuevo(hash_remitente(chat_id))
         try:
-            return self.atender(chat_id, x)
+            respuestas = self.atender(chat_id, x)
         except Exception as e:
             log.error("falló al atender un mensaje (%s); se guarda crudo", type(e).__name__)
             self.con.rollback()
             guardar.guardar_crudo(self.con, x.texto, hash_remitente(chat_id))
-            return [Respuesta(SIN_LEER)]
+            respuestas = [Respuesta(SIN_LEER)]
+        if nuevo and respuestas:
+            respuestas[-1].texto += f"\n\n{SEPARADOR}\n{AVISO_DATOS}"
+        return respuestas
 
     def atender(self, chat_id, x: Extraccion) -> list[Respuesta]:
         rem = hash_remitente(chat_id)
@@ -210,12 +235,21 @@ class Mesa:
             que = "se necesita la ayuda" if tabla == "pedidos" else "está el cierre"
             return Respuesta(f"{cabeza}\n\nNo me dijiste dónde {que}. Escríbeme el barrio o la vía, "
                              "o envíame la ubicación.", [("Enviar mi ubicación", "p:0")])
-        r = self._resolver(p, lugar)
+        r = self._resolver(rem, p, lugar)
         return Respuesta(f"{cabeza}\n\n{r.pregunta}", _botones(r))
 
-    def _resolver(self, p: Pendiente, lugar: str, con_modelo: bool = True):
+    def _resolver(self, rem: str, p: Pendiente, lugar: str, con_modelo: bool = True):
+        """`lugares.resolver`, sin ofrecerle a `rem` lugares aprendidos de otra persona (H6). Tampoco se
+        los pasa al modelo que desempata: así el texto ajeno no sale ni en la respuesta ni hacia afuera."""
+        elegir = None
+        if con_modelo and self.elegir is not None:
+            def elegir(texto, contexto, candidatos, _e=self.elegir):
+                fuera = lugares_ajenos(self.con, rem, [c.lugar_id for c in candidatos])
+                propios = [c for c in candidatos if c.lugar_id not in fuera]
+                return _e(texto, contexto, propios) if propios else None
         r = lugares.resolver(self.con, lugar, tabla=p.tabla, fila_id=p.fila_id, contexto=p.contexto,
-                             tipos=TIPOS[p.tabla], elegir=self.elegir if con_modelo else None)
+                             tipos=TIPOS[p.tabla], elegir=elegir)
+        r = _sin_ajenos(self.con, rem, r)
         p.ubicacion_id = r.ubicacion_id
         return r
 
@@ -230,7 +264,7 @@ class Mesa:
         if exigir_candidato and not lugares.nomenclator.buscar(self.con, lugar, TIPOS[p.tabla]):
             return None         # no se pudo leer y no suena a lugar: se guarda como mensaje aparte
         self._rechazar(p.ubicacion_id)
-        r = self._resolver(p, lugar)
+        r = self._resolver(rem, p, lugar)
         return Respuesta(r.pregunta, _botones(r))
 
     def _rechazar(self, ubicacion_id: int | None) -> None:
@@ -282,6 +316,8 @@ class Mesa:
             return Respuesta("Ese lugar ya quedó resuelto. Si hay algo nuevo, escríbeme otro mensaje.")
         if accion == "c" and lugar_id not in {c["lugar_id"] for c in json.loads(u["candidatos"] or "[]")}:
             return Respuesta("Esa opción ya no está disponible. Escríbeme el lugar de nuevo.")
+        if lugares_ajenos(self.con, rem, [lugar_id or u["lugar_id"]]):     # botón forjado con un lugar ajeno (H6)
+            return Respuesta("Esa opción ya no está disponible. Escríbeme el lugar de nuevo.")
         if not lugares.confirmar(self.con, uid, quien=QUIEN, lugar_id=lugar_id):
             return Respuesta("No pude confirmar ese lugar. Envíame la ubicación o escríbeme un barrio cercano.",
                              [("Enviar mi ubicación", f"p:{uid}")])
@@ -299,7 +335,7 @@ class Mesa:
         nombre = None
         if p.ubicacion_id is None:      # el mensaje no traía lugar: se crea la propuesta para poder fijarla
             nombre = f"{_PIN} {lat:.4f}, {lon:.4f}"
-            self._resolver(p, nombre, con_modelo=False)
+            self._resolver(rem, p, nombre, con_modelo=False)
         lugares.corregir_con_pin(self.con, p.ubicacion_id, lat, lon, quien=QUIEN, nombre=nombre)
         return self._cerrar(rem, p.tabla, p.fila_id, p.ubicacion_id)
 
@@ -519,3 +555,87 @@ def _botones(r) -> list[tuple[str, str]]:
             botones.append((f"{c.nombre} ({c.tipo})"[:40], f"c:{uid}:{c.lugar_id}"))
     botones.append(("Enviar mi ubicación", f"p:{uid}"))
     return botones
+
+
+# ---------- H6: el lugar que aprendió una persona no se le ofrece a otra ----------
+# Plan A (HALLAZGOS.md, H6), sin tocar lugares/. El nomenclátor no guarda quién creó un lugar
+# aprendido, pero `ubicaciones` sí guarda qué lugar quedó confirmado para cada pedido y quién lo
+# confirmó, y `pedidos` guarda el hash de quien pidió. De ahí salen el dueño y la validación:
+#   - aprendido por pin: la ubicación confirmada apunta a ese lugar;
+#   - aprendido como apodo (`aprender`): la ubicación apunta al lugar original y su texto es el apodo;
+#   - punto creado desde un pin («Punto de entrega <texto>»), que la semilla vuelve lugar tipo punto
+#     al reiniciar: hereda el dueño del lugar aprendido que lleva su punto_id.
+# Validado = alguna de esas ubicaciones la confirmó alguien distinto del bot (el tablero, el despachador).
+# Los lugares de la semilla y los geocodificados se siguen ofreciendo a todos.
+
+def _origenes(con: sqlite3.Connection, l: sqlite3.Row) -> list[sqlite3.Row]:
+    """Los lugares aprendidos de los que nace `l`; vacío si `l` es público."""
+    if l["origen"] == "aprendido":
+        return [l]
+    if l["tipo"] != "punto" or l["punto_id"] is None:
+        return []
+    # aprendidos por pin con ese punto: los que no son copia (apodo) de un lugar público
+    return con.execute(
+        "SELECT a.* FROM lugares a WHERE a.origen='aprendido' AND a.punto_id=? AND NOT EXISTS ("
+        " SELECT 1 FROM lugares s WHERE s.origen!='aprendido' AND s.nombre=a.nombre AND s.tipo=a.tipo"
+        " AND s.lat=a.lat AND s.lon=a.lon)", (l["punto_id"],)).fetchall()
+
+
+def _abierto_a(con: sqlite3.Connection, rem: str, a: sqlite3.Row) -> bool:
+    """¿Se le puede ofrecer el aprendido `a` a `rem`? Sí, si lo validó el despachador o si `rem` lo usó."""
+    filas = con.execute(
+        "SELECT u.lugar_id, u.texto, u.confirmado_por, p.remitente_hash FROM ubicaciones u "
+        "JOIN lugares o ON o.id = u.lugar_id "
+        "LEFT JOIN pedidos p ON u.tabla='pedidos' AND p.id = u.fila_id "
+        "WHERE u.estado='confirmada' AND o.nombre=? AND o.tipo=? AND o.lat=? AND o.lon=?",
+        (a["nombre"], a["tipo"], a["lat"], a["lon"])).fetchall()
+    nucleo = lugares.nomenclator._nucleo
+    for f in filas:
+        if f["lugar_id"] != a["id"] and nucleo(f["texto"] or "") != a["alias"]:
+            continue                        # otra ubicación del lugar público, no la que dejó este apodo
+        if f["confirmado_por"] != QUIEN or f["remitente_hash"] == rem:
+            return True
+    return False
+
+
+def lugares_ajenos(con: sqlite3.Connection, rem: str, ids) -> set[int]:
+    """De los lugares `ids`, los que nacieron del texto o del pin de otra persona y nadie validó."""
+    ids = [i for i in ids if i is not None]
+    if not ids:
+        return set()
+    filas = con.execute(f"SELECT * FROM lugares WHERE id IN ({','.join('?' * len(ids))})", ids).fetchall()
+    ajenos = set()
+    for l in filas:
+        origenes = _origenes(con, l)
+        if origenes and not any(_abierto_a(con, rem, a) for a in origenes):
+            ajenos.add(l["id"])
+    return ajenos
+
+
+def _sin_ajenos(con: sqlite3.Connection, rem: str, r):
+    """Quita de un `lugares.Resultado` los candidatos ajenos, rehace la pregunta y deja la propuesta
+    guardada sin ese lugar, para que un «sí» escrito o un SMS «SI» no lo confirme. La lista completa
+    de candidatos sigue en `ubicaciones.candidatos`, a la vista del despachador."""
+    fuera = lugares_ajenos(con, rem, [c.lugar_id for c in r.candidatos])
+    if not fuera:
+        return r
+    N = lugares.nomenclator
+    quedan = [c for c in r.candidatos if c.lugar_id not in fuera]
+    elegido, seguro, metodo = r.elegido, r.seguro, r.metodo
+    if elegido is None or elegido.lugar_id in fuera or not seguro:
+        if elegido is not None and elegido.lugar_id in fuera:
+            elegido, seguro, metodo = None, False, "ninguno"
+        if elegido is None and quedan:          # el mismo criterio de lugares.resolver, sin los ajenos
+            c = quedan
+            if c[0].puntaje >= N.UMBRAL_SEGURO and (len(c) == 1 or c[0].puntaje - c[1].puntaje >= N.MARGEN):
+                elegido, seguro = c[0], True
+                metodo = "exacto" if c[0].puntaje >= 0.999 else "parecido"
+    limpio = replace(r, elegido=elegido, seguro=seguro, metodo=metodo, candidatos=quedan)
+    limpio.pregunta = N._pregunta(limpio)
+    if r.ubicacion_id is not None:
+        e = elegido
+        con.execute("UPDATE ubicaciones SET lugar_id=?, lat=?, lon=?, metodo=?, puntaje=? WHERE id=?",
+                    (e.lugar_id if e else None, e.lat if e else None, e.lon if e else None, metodo,
+                     e.puntaje if e else None, r.ubicacion_id))
+        con.commit()
+    return limpio

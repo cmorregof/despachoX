@@ -94,10 +94,15 @@ def test_lugar_desconocido_se_fija_con_la_ubicacion_del_chat(con, mesa):
     c = una(con, "SELECT lat, lon, osm_u FROM cierres")
     assert (round(c["lat"], 4), round(c["lon"], 4), c["osm_u"]) == (5.0101, -75.5802, None)
     assert una(con, "SELECT metodo, estado FROM ubicaciones")[:] == ("pin", "confirmada")
-    # lo aprendido sirve a la siguiente persona
+    # H6: lo aprendido con el pin de otra persona no se le ofrece a la siguiente...
     otro = ClienteSimulado(chat.m.mesa, chat_id=2002)
     r2, = otro.escribir(DESCONOCIDO)
-    assert r2.botones[0][0] == "Sí, es ahí"
+    assert "Sí, es ahí" not in [t for t, _ in r2.botones] and "No conozco «quebrada el zancudo»" in r2.texto
+    # ...hasta que el despachador lo valida (en el tablero, confirmar o mover el pin deja su nombre)
+    con.execute("UPDATE ubicaciones SET confirmado_por='despachador' WHERE metodo='pin'")
+    tercero = ClienteSimulado(chat.m.mesa, chat_id=2003)
+    r3, = tercero.escribir(DESCONOCIDO)
+    assert r3.botones[0][0] == "Sí, es ahí"
 
 
 def test_respuesta_en_texto_libre_vuelve_a_resolver(con, mesa):

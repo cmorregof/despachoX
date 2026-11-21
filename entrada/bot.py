@@ -51,6 +51,7 @@ class Manejadores:
         await mensaje.reply_text(r.texto, reply_markup=marca, parse_mode="HTML" if r.html else None)
 
     async def inicio(self, update: Update, context) -> None:
+        self.mesa.marcar_avisado(update.effective_chat.id)     # el /start ya trae el aviso de datos
         for r in inicio(voz.disponible()):          # el mensaje con los botones y, después, el ejemplo
             await self._enviar(update.effective_message, r)
 

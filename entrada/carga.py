@@ -122,7 +122,7 @@ async def _correr(n: int, concurrencia: int, extraer, cache_lugares: bool = Fals
             tiempos.append(fin - t0)                    # atención: desde que el bot lo toma
             esperas.append(fin - llegada)               # lo que espera la persona: desde que llegó
             respuestas += bool(enviados)
-            crudo = SIN_LEER in enviados
+            crudo = any(t.startswith(SIN_LEER) for t in enviados)   # al remitente nuevo le sigue el aviso
             crudos += crudo
             esperadas += 1 if crudo else filas_de[texto]
 

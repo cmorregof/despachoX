@@ -2,8 +2,10 @@
 import asyncio
 
 from entrada import carga, extraer as E
-from entrada.flujo import SIN_LEER
+from entrada.flujo import AVISO_DATOS, SEPARADOR, SIN_LEER
 from entrada.pruebas.simulador import ClienteSimulado
+
+CON_AVISO = f"{SIN_LEER}\n\n{SEPARADOR}\n{AVISO_DATOS}"      # primer mensaje de un remitente nuevo
 
 TEXTO = "somos 40 familias en san jose no hay arroz ni leche"
 
@@ -24,7 +26,7 @@ def test_api_caida_tras_reintentos_guarda_el_texto(con, mesa, monkeypatch):
     raro = "hola buenas como hago para ser voluntario"             # tampoco lo leen las reglas
     r, = ClienteSimulado(mesa).escribir(raro)
     assert creados["max_retries"] == E.REINTENTOS == 2            # 3 intentos con espera creciente del SDK
-    assert r.texto == SIN_LEER
+    assert r.texto == CON_AVISO
     assert con.execute("SELECT texto_original FROM pedidos").fetchone()[0] == raro
     r, = ClienteSimulado(mesa, chat_id=7).escribir(TEXTO)          # este sí lo leen las reglas
     assert "40 familias en san jose" in r.texto
@@ -48,7 +50,7 @@ def test_falla_la_base_y_el_mensaje_queda_crudo(con, mesa, monkeypatch):
         raise __import__("sqlite3").OperationalError("database is locked")
     monkeypatch.setattr(guardar, "guardar_pedido", ocupada)
     r, = ClienteSimulado(mesa).escribir(TEXTO)
-    assert r.texto == SIN_LEER
+    assert r.texto == CON_AVISO
     assert con.execute("SELECT COUNT(*) FROM pedidos WHERE texto_original=?", (TEXTO,)).fetchone()[0] == 1
 
 
