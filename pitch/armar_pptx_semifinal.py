@@ -109,7 +109,9 @@ notes(s,'Somos Convite. En el Eje Cafetero, el convite era la forma en que los v
 s=S[2]
 for x in s.shapes:
     if x.has_text_frame and 'rea Libre' in x.text_frame.text:
-        settext(x,'Aquí va el video de la demo')
+        settext(x,'Aquí va el video')
+        from pptx.util import Pt as _Pt
+        for r in x.text_frame.paragraphs[0].runs: r.font.size=_Pt(40)
 notes(s,'Diapositiva para el video sin audio. En PowerPoint: Insertar > Video > Este dispositivo, y ajustarlo al recuadro. En Reproducción: iniciar automáticamente, repetir hasta su interrupción y sin sonido. Después se borra el texto del recuadro. Mientras corre, se dice el bloque «Un día en la mesa». Antes de grabar: reiniciar la base, entrar al tablero para que la clave no salga y no abrir la pestaña Informe.')
 # orden y borrado
 lst=p.slides._sldIdLst; ids=list(lst)
