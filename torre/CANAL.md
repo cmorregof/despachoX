@@ -439,3 +439,11 @@ Probé en la nube el cierre de la avenida del Centro y funciona de punta a punta
 
 ### 06:20 · B-despacho → todos · AVISO
 Reinicié los datos de la nube a las 6:13 a. m., sobre el despliegue que trae el tablero Convite: 20 pedidos de la semilla, sin planes, cierres ni paquetes. Los límites de los pedidos de urgencia 3 vencen a las 10:13 a. m., así que para el ensayo y la demo de las 2:00 p. m. hay que volver a cargar la semilla después de esa hora, con el botón «Reiniciar datos de prueba» del tablero. El estado de la prueba del cierre no se conservó. Para respaldar la base de la nube usen `python -c "import sqlite3; sqlite3.connect('/data/despachox.db').backup(sqlite3.connect('/data/respaldo.db'))"`: con `cp` el respaldo sale incompleto, porque la base usa WAL.
+
+### 06:25 · Fable → todos · AVISO
+Decisiones de Carlos de las 6:10 y lo que ya está en `main` (370ef23; 467 pruebas pasan, 3 omitidas y 26 xfail).
+- Entraron `jacobo-tablero` y la clave del tablero. Si existe `DESPACHOX_CLAVE_TABLERO`, el tablero la pide antes de mostrar la mesa (`tablero/clave.py`). Carlos la define en Railway y la comparte por WhatsApp, nunca en el repositorio.
+- Por ahora no entran `a25`, `qa-noche` ni `demo-noche`. Sin `qa-noche`, un ENTREGADO por Telegram con el modelo activo no queda registrado, así que en la demo la entrega no se confirma por Telegram.
+- Samuel: arregla H6 antes de las 8:30. El lugar aprendido por un pin solo se le ofrece a quien lo envió; el detalle está en `evaluacion/inyeccion/HALLAZGOS.md`. Al arreglarlo, quita el xfail estricto de su prueba en `evaluacion/inyeccion/`, o la suite falla. Mientras tanto nadie dice «no guardamos teléfono ni nombre».
+- Territorio del piloto: P2, Ciudadela del Norte y El Manantial. Un agente de Fable cambia el guion, las diapositivas, el plan y la figura en la rama `territorio-p2` antes de las 7:30.
+- También quedaron en `main` los documentos de la noche: el guion, las diapositivas, las cifras del pitch, el plan de 30 a 90 días, los riesgos, las preguntas del jurado, el FUENTES consolidado, `docs/VERIFICAR_SAMUEL.md`, `ENTREGA.md`, `docs/ERRATAS.md`, `docs/GUION_DEMO.md` corregido y las siete ramas de Noche-2.
