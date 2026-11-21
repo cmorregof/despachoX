@@ -365,6 +365,24 @@ No escribimos en las ramas de Fable, Samuel ni Jacobo, ni en `despacho/`, `entra
 ### 23:50 · B-despacho → todos · AVISO
 Fusionado a `main`. Dos sesiones B hicieron en paralelo el factor 3, el empaque 1,2, las alertas por silencio y T1. Vale la versión que ya estaba en `main` (`resumen.verificar`, `territorio.resumen` y `silencio`); la otra se descartó y no cambia nada para nadie. Entra una sola cosa nueva: un producto con la clave `supuesto`, que es como marca el bot los kilos por ración, sale en `resumen.cantidad_supuesta` como «kilos por ración (leche: 2 kg por familia)». Samuel: tu pedido de las 4:30 p. m. queda hecho. Pruebas: 345 pasan.
 
+### 23:30 · Jacobo y Samuel → todos · AVISO
+Nombre elegido: **Convite**. En el Eje Cafetero, el convite era la forma en que los vecinos se juntaban para abrir un camino o levantar una casa; responde a lo que pidió la mentoría: personas y territorio. Propuesta para que lo cambie una sola persona por parte: Jacobo en el tablero (rama `jacobo-tablero`), Samuel en el bot y Fable en los documentos. Carlos: confírmalo o reasigna.
+
+### 23:30 · Jacobo y Samuel → todos · AVISO
+Una sola definición de «silencio»: un punto, barrio o vereda está en silencio cuando lleva 6 h o más sin un pedido de origen `mensaje` con lugar confirmado, contadas desde la hora más tardía entre las 06:00 de la jornada y la hora del evento. Umbral de 6 h: SUPUESTO.
+- Fuente única: `entrada/silencio.py` (`revisar`), que ya está en main y crea los pedidos con origen='silencio' para los puntos críticos.
+- `despacho.territorio.silencio()` usa la misma condición para listar todos los barrios y veredas. En pantalla se dice «sin pedidos registrados», nunca «sin necesidad».
+- `triage/debiles.py` usa esa condición como puerta. La prueba de Poisson ya no define silencio: solo ordena qué zona se verifica primero.
+
+### 04:45 · Jacobo (C-triage) → Carlos, Fable · AVISO
+El punto 3 del aviso de las 23:30 ya está hecho en la rama `jacobo-silencio`, pendiente de fusión: `triage/debiles.py` usa la definición única (6 h sin contacto con lugar confirmado; los mensajes en cuarentena no cuentan como contacto) y la prueba de Poisson solo ordena qué zona se verifica primero. Pruebas en verde; escenario 4 ajustado a 6 h. Probar: `pytest triage -q` y `python -m triage.correr --escenario todos`.
+
+### 00:12 · Fable → todos · AVISO
+Corrección a mi aviso de las 23:38: en `main` el tablero no tiene botón «Reiniciar datos de prueba». La base de la nube se reinicia poniendo `DESPACHOX_REINICIAR=1` en Railway, esperando el redespliegue y quitando la variable, porque si se queda borra la base en cada despliegue (`despliegue/arranque.sh`). Jacobo: si ese botón existe en `jacobo-tablero`, avisa aquí y lo paso al guion de la demo.
+
+### 00:20 · Fable → Jacobo, Samuel · AVISO
+La revisión de calidad de esta noche está en la rama `qa-noche` (informe en `docs/QA_NOCHE.md`). Jacobo, tres cosas del tablero. (1) Los tooltips del mapa no escapan HTML: en `main` son las líneas 162, 175, 185, 192 y 197 de `tablero/app.py`. (2) El tablero es público y no pide clave. La propuesta de diez líneas está en §2.1 del informe y queda abierta mientras no exista `DESPACHOX_CLAVE_TABLERO`, así que puedes dejarla puesta y Carlos decide en la mañana si define la variable en Railway. (3) No existe el botón «Reiniciar datos de prueba» en ninguna rama. Samuel: la rama cambia `entrada/flujo.py`, `sms.py`, `pasarela_sms.py` y `privacidad.py` (ENTREGADO por regla antes que el modelo, lector de SMS, botón `f:` forjado y pasarela), con 36 pruebas nuevas. Revísalos antes de la fusión. Nada de esto entra a `main` sin el sí de Carlos.
+
 ### 22:30 · A-entrada (Samuel) → Fable, Carlos, Jacobo · CIFRA DUDOSA
 «Para recibir mercados había que llevar el formato azul que entregan los Bomberos **después de revisar la vivienda**» (`docs/FICHA.md`, componente 1). La página de la Alcaldía del 15 de agosto confirma mercados, kits y formato azul de Bomberos, pero no dice que se entregue después de revisar la vivienda. Que no entre al pitch esa parte. Detalle en `docs/FUENTES.md`.
 
