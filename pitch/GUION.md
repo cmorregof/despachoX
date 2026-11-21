@@ -54,21 +54,21 @@ Los tiempos suponen 2,5 palabras por segundo y suman 3:00 con la demo. El ensayo
 
 Las toneladas se dicen truncadas. En pantalla van los kilos exactos, 404.587 y 41.163.
 
-### Bloque 2 · Las vías se cierran sin sismo · 0:19 a 0:30 · criterio 1
+### Bloque 2 · Las vías se cierran sin sismo · 0:19 a 0:33 · criterio 1
 
 **Habla:** Voz 1. **Pantalla:** diapositiva 2, el mapa de Manizales con la salida a Letras marcada.
 
-> En Manizales las vías se cierran también sin sismo. La salida a Letras suma 87 registros de cierre por derrumbe o deslizamiento desde 2017*.
+> En Manizales las vías se cierran también sin sismo. La salida a Letras suma 87 registros de cierre por derrumbe o deslizamiento desde 2017*, y solo 4 son del sismo*.
 
-Se dice «registros», porque un mismo derrumbe puede tener varios.
+Se dice «registros», porque un mismo derrumbe puede tener varios. Los 4 del sismo son las filas S04, S09, S10 y S11 de `datos_publicos/cierres_historicos.csv`; los otros 83 son de 2017 a enero de 2026.
 
-### Bloque 3 · Para qué y para quién · 0:30 a 0:48 · criterios 1 y 6
+### Bloque 3 · Para qué y para quién · 0:33 a 0:51 · criterios 1 y 6
 
 **Habla:** Voz 1. **Pantalla:** diapositiva 3, quién despacha, quién pide, quién reporta las vías y quién avala.
 
 > DespachoX existe para que la comida llegue a quien no puede ir a buscarla, aunque la vía esté cerrada. Es para quien despacha en el Banco Arquidiocesano de Alimentos y para quienes le piden, como comedores, hogares infantiles y juntas de barrio y de vereda.
 
-### Bloque 4 · Lo que existe y por qué no basta · 0:48 a 1:04 · criterio 1
+### Bloque 4 · Lo que existe y por qué no basta · 0:51 a 1:06 · criterio 1
 
 **Habla:** Voz 1. **Pantalla:** diapositiva 4, las piezas sueltas y la que falta.
 
@@ -76,14 +76,14 @@ Se dice «registros», porque un mismo derrumbe puede tener varios.
 
 Al terminar la frase, el operador pasa al tablero.
 
-### Bloque 5 · Demo en vivo · 1:04 a 2:09 · criterio 2
+### Bloque 5 · Demo en vivo · 1:06 a 2:09 · criterio 2
 
 **Habla:** Voz 1. **Opera:** rol C. **Teléfono:** rol A. **Pantalla:** el tablero a pantalla completa, con el plan aprobado, las rutas de colores y los tres puntos críticos resaltados.
 
 | Tiempo | Qué pasa y qué se ve | Qué dice Voz 1 |
 |---|---|---|
-| 1:04 a 1:15 | Tablero con el plan aprobado | «Esta es la mesa de despacho. El plan aprobado ya incluye un pedido de prueba que llegó por chat desde San José. Ahora necesito a alguien del jurado.» |
-| 1:15 a 1:33 | Rol A le entrega al jurado el teléfono con el chat abierto y la tarjeta. El jurado escribe el mensaje de la tarjeta. El bot responde «Ubiqué «avenida del centro» en: avenida del Centro (via). ¿Es correcto?», y el jurado toca **Sí, es ahí** | Mientras escribe: «El 21 de octubre, la autopista del Café quedó a un carril y solo pasaban livianos*. Quien lo sabe primero es el conductor.» |
+| 1:06 a 1:16 | Tablero con el plan aprobado | «Esta es la mesa de despacho. El plan aprobado ya incluye un pedido de prueba que llegó por chat desde San José. Ahora necesito a alguien del jurado.» |
+| 1:16 a 1:33 | Rol A le entrega al jurado el teléfono con el chat abierto y la tarjeta. El jurado escribe el mensaje de la tarjeta. El bot responde «Ubiqué «avenida del centro» en: avenida del Centro (via). ¿Es correcto?», y el jurado toca **Sí, es ahí** | Mientras escribe: «El 21 de octubre, la autopista del Café quedó a un carril y solo pasaban livianos*. Quien lo sabe primero es el conductor.» |
 | 1:33 a 1:41 | En el mapa aparece el cierre como reportado | «El sistema no cierra la vía por un mensaje. La deja reportada hasta que el despachador la confirme.» |
 | 1:41 a 1:51 | El operador hace clic en **Confirmar** en el cierre. Aparece «Hay un cierre nuevo: recalcular». Clic en **Recalcular**. El plan nuevo sale en menos de diez segundos | «El despachador confirma y pide recalcular.» |
 | 1:51 a 2:03 | Plan nuevo. En los avisos se lee `camion: punto:14 quedó aislado de la red`, y el pedido de San José pasa de un camión a un campero | «Con la avenida cerrada, el camión ya no llega a San José. El sistema le pasa el pedido a un campero, que sí entra, y los tres puntos críticos siguen a tiempo*.» |
@@ -137,7 +137,7 @@ Se corta en este orden hasta que el ensayo dé 3:00, o el tiempo que fije la org
 
 | Bloque | Qué queda | Tiempo |
 |---|---|---|
-| 1 y 2 | Sin cambios | 30 s |
+| 1 y 2 | Sin cambios | 33 s |
 | 3 | Solo la primera frase | 8 s |
 | 4 | «Hay piezas sueltas, pensadas para la emergencia, y ninguna une el pedido, el vehículo, la vía y la entrega.» | 8 s |
 | 5 | La demo sin la frase del 21 de octubre ni la de «El sistema no cierra la vía por un mensaje». Rol A envía el mensaje si el jurado tarda más de 10 segundos | 45 s |
@@ -145,7 +145,7 @@ Se corta en este orden hasta que el ensayo dé 3:00, o el tiempo que fije la org
 | 7 | Primera, segunda y cuarta frase | 18 s |
 | 8 | No va | 0 s |
 
-Suma 1:56.
+Suma 1:59.
 
 ## Si dan cinco minutos
 
