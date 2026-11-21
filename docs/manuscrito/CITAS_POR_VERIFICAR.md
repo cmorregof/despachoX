@@ -4,14 +4,14 @@ Rama `manuscrito`, 21 de noviembre de 2026, madrugada. Lo escribió un agente de
 
 **Cómo leer esto.** `refs.bib` solo trae referencias verificadas: los artículos, en el registro de Crossref de su DOI (`https://api.crossref.org/works/<DOI>`) o en la página del editor o del repositorio; la prensa y los documentos oficiales, abriendo la página con un lector automático. Lo que no se pudo verificar se cita en `main.tex` como `\cite{PORVERIFICAR_<clave>}` y sale como «(?)» en el PDF, a propósito. La regla del equipo sigue en pie: antes de usar en público una cifra de prensa, una persona del equipo abre el enlace y la pasa a `docs/FUENTES.md`. La lectura automática no la reemplaza.
 
-## 1. Pendientes: las cuatro citas «(?)» del PDF
+## 1. Pendientes: las dos citas «(?)» del PDF
 
 | Clave en `main.tex` | Qué respalda | Qué hay en el repositorio | Qué falta |
 |---|---|---|---|
-| `PORVERIFICAR_acnur_raciones` | 555 g de ración seca por persona y día (tabla 1) | `docs/datos/demanda.md` cita la tabla de raciones de ACNUR con dos enlaces | La página de ACNUR que se abrió (`https://emergency.unhcr.org/es/print/pdf/node/504`, «Norma aplicable a la asistencia alimentaria de emergencia», 25 jun 2025) no trae la tabla de raciones; solo las 2.100 kcal. Falta el documento con la tabla (el segundo enlace, `https://log.logcluster.org/sites/default/files/pages/199/en/main-types-of-in-kind-commodities.pdf`, no se abrió) |
 | `PORVERIFICAR_carmen` | Origen de la regla «el modelo lee, el código calcula, una persona decide» (sección 4.1) | `docs/ESTRATEGIA.md` y `docs/FICHA.md`: CARMEN, proyecto 56031 de Minciencias | Decisión de Carlos: si se nombra CARMEN y cómo se cita (informe, artículo o código del proyecto) |
-| `PORVERIFICAR_patente37476` | Factor 1,2 del empaque captador de etileno, cota inferior en gulupa a 8 °C (sección 5.2) | `docs/investigacion/06_patentes_sipi.md` y `07_patentes_a_fondo.md`: certificado 37476, solicitud CO 14-245775, folio 18, figuras 1 y 2; PCT WO2016071875A1 | Registro de la SIC con titular, fecha y estado (anualidad 2026), y el texto de la solicitud. Decidir si el manuscrito menciona la patente: hoy el empaque no actúa en la simulación (ver sección 4) |
-| `PORVERIFICAR_terlien1996` | Origen del A25: tesis doctoral de 1996 que asoció unos 200 mm en 25 días con alta probabilidad de deslizamientos | El Boletín Ambiental 145 del IDEA (verificado, ver tabla 2) la cita así: «Terlien, M. (1996). Modelling Spatial And and Temporal Variations In Rainfall-Triggered Landslides. ITC (32).» | Ficha completa de la tesis (universidad, lugar, serie ITC). El texto ya se apoya en el boletín, que sí está verificado |
+| `PORVERIFICAR_patente37476` | Factor 1,2 del empaque captador de etileno, cota inferior en gulupa a 8 °C (sección 5.2) | `docs/investigacion/06_patentes_sipi.md` y `07_patentes_a_fondo.md`: certificado 37476, solicitud CO 14-245775, folio 18, figuras 1 y 2; PCT WO2016071875A1 | Registro de la SIC con titular, fecha y estado (anualidad 2026), y el texto de la solicitud. Una búsqueda web de WO2016071875A1 no lo encontró esta noche. Decidir si el manuscrito menciona la patente: hoy el empaque no actúa en la simulación (ver sección 4) |
+
+Resueltas esta noche, después del primer borrador: la tesis de Terlien (1996) quedó verificada en el portal de la Universidad de Twente (`terlien1996modelling`), y la ración de 555 g quedó apoyada en la tabla comparativa de raciones que aloja el Logistics Cluster (`logcluster_commodities`). Sobre esa tabla: el texto extraído da para ACNUR cereal 400 g (450 g en la variante de 2.100 kcal), leguminosas 60 g y aceite 25 g; el azúcar (15 g) y la sal (5 g) aparecen sin agencia clara. Los 555 g son la suma del equipo (450 + 60 + 25 + 15 + 5), y así lo dice el manuscrito. La página de ACNUR que cita `docs/datos/demanda.md` (`https://emergency.unhcr.org/es/print/pdf/node/504`) no trae la tabla.
 
 ## 2. Verificadas (están en `refs.bib`)
 
@@ -21,6 +21,9 @@ Rama `manuscrito`, 21 de noviembre de 2026, madrugada. Lo escribió un agente de
 | `gralla2018humanitarian` | Búsqueda en Crossref y registro del DOI; resumen en RePEc (`ideas.repec.org/a/eee/ejores/v269y2018i2p436-450.html`) | El DOI correcto es 10.1016/j.ejor.2018.02.012. El 10.1016/j.ejor.2018.02.023 es otro artículo |
 | `holguinveras2014material` | Búsqueda en Crossref; resumen en la ficha de UC Davis ITS (`itspubs.ucdavis.edu/publication_detail.php?id=2380`) | Crossref titula «Material Convergence: Important and Understudied Disaster Phenomenon»; UC Davis antepone «An» |
 | `hsu2007vehicle` | Búsqueda en Crossref; resumen en el repositorio de NYCU | |
+| `balcik2008lastmile`, `huang2012relief`, `campbell2008routing` (contenido) | Resúmenes en IAOR (`iaorifors.com/paper/66066`) y RePEc | Lo que el manuscrito les atribuye coincide con el resumen |
+| `terlien1996modelling` | Portal de investigación de la Universidad de Twente | Tesis doctoral, Universidad de Utrecht, 1996, serie ITC Dissertation, ISBN 90-6164-115-2. El portal escribe «Columbia» en el título |
+| `logcluster_commodities` | PDF alojado por el Logistics Cluster | Sin editor ni fecha en el documento; ver la sección 1 |
 | `cook2017dispatching` (contenido) | Resumen en RePEc | La política simple es «óptima o cercana a la óptima en la mayoría de las situaciones» |
 | `imran2016twitter` | Página del recurso en CrisisNLP | LREC 2016, Portorož, pp. 1638–1643 |
 | `mcdaniel2024zeroshot` | Página de arXiv 2410.00182 | Preprint, no revisado por pares |
