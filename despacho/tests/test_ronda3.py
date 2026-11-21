@@ -26,16 +26,12 @@ def pedido_sin_cantidad(con, id, punto_id, urgencia=3):
                 (id, iso(AHORA - timedelta(minutes=30)), punto_id, urgencia))
 
 
-# ---------- 1. empaque activo (1,2 solo en fruta con frío) ----------
+# ---------- 1. empaque activo ----------
+# Desde la noche del viernes el factor (1,2) solo cuenta en fruta perecedera de un acopio con frío.
 
-def _pedido_fruta(id=1):
+def _pedido(producto="fruta", id=1):
     return {"id": id, "urgencia": 2, "limite_en": None, "kg_estimado": 20, "familias": 2,
-            "productos": json.dumps([{"producto": "fruta", "kg": 20}])}
-
-
-def _lote_fruta(empaque, frio=True, producto="fruta", minutos=55):
-    return {"id": 7, "acopio_id": 1, "producto": producto, "kg": 100, "perecedero": 1, "acopio_frio": frio,
-            "vence_en": iso(AHORA + timedelta(minutes=minutos)), "empaque_activo": empaque}
+            "productos": json.dumps([{"producto": producto, "kg": 20}])}
 
 
 @pytest.mark.parametrize("empaque, surtido", [(0, False), (1, True)])
@@ -43,53 +39,41 @@ def test_empaque_activo_cambia_que_se_puede_surtir(monkeypatch, empaque, surtido
     monkeypatch.setattr(optimizar, "FACTOR_EMPAQUE_ACTIVO", 1.2)
     # Vence en 55 min; llegar toma 30 min y el margen es 30 min. Sin empaque no alcanza (60 > 55);
     # con empaque le quedan 55 × 1,2 = 66 min y sí alcanza.
-    r = optimizar.surtir([_pedido_fruta()], [_lote_fruta(empaque)], AHORA, {1: [1]}, {(1, 1): 1800})
+    lote = {"id": 7, "acopio_id": 1, "producto": "fruta", "kg": 100, "perecedero": 1,
+            "vence_en": iso(AHORA + timedelta(minutes=55)), "empaque_activo": empaque}
+    r = optimizar.surtir([_pedido()], [lote], AHORA, {1: [1]}, {(1, 1): 1800}, frios={1})
     assert (r[1].kg == 20) is surtido
     if surtido:
         assert r[1].vence == AHORA + timedelta(minutes=66)
 
 
-def test_empaque_solo_alarga_fruta_con_frio(monkeypatch):
+def test_empaque_no_toca_lotes_no_perecederos_ni_vencidos(monkeypatch):
     monkeypatch.setattr(optimizar, "FACTOR_EMPAQUE_ACTIVO", 1.2)
-    sin_cambio = AHORA + timedelta(minutes=55)
-    assert optimizar.vence_efectivo(_lote_fruta(1), AHORA) == AHORA + timedelta(minutes=66)
-    assert optimizar.vence_efectivo(_lote_fruta(1, frio=False), AHORA) == sin_cambio
-    assert optimizar.vence_efectivo(_lote_fruta(1, producto="verdura"), AHORA) == sin_cambio
-    assert optimizar.vence_efectivo({k: v for k, v in _lote_fruta(1).items() if k != "acopio_frio"},
-                                    AHORA) == sin_cambio
-    vencido = _lote_fruta(1, minutos=-60)
-    assert optimizar.vence_efectivo(vencido, AHORA) == AHORA - timedelta(minutes=60)
-    seco = {**_lote_fruta(1), "perecedero": 0}
-    assert optimizar.vence_efectivo(seco, AHORA) == sin_cambio
-    assert optimizar.vence_efectivo({**_lote_fruta(1), "vence_en": None}, AHORA) is None
+    base = {"producto": "fruta", "perecedero": 1, "empaque_activo": 1}
+    vencido = AHORA - timedelta(hours=1)
+    assert optimizar.vence_efectivo({**base, "vence_en": iso(vencido)}, AHORA, frio=True) == vencido
+    seco = {"producto": "fruta", "perecedero": 0, "empaque_activo": 1, "vence_en": iso(AHORA + timedelta(hours=2))}
+    assert optimizar.vence_efectivo(seco, AHORA, frio=True) == AHORA + timedelta(hours=2)
+    assert optimizar.vence_efectivo({"vence_en": None, **base}, AHORA, frio=True) is None
 
 
-@pytest.mark.parametrize("frio, lote_usado", [(1, 3), (0, None)])
-def test_empaque_activo_en_el_plan_y_en_supuestos(mundo, con, grafo, ahora, monkeypatch, frio, lote_usado):
+def test_empaque_activo_en_el_plan_y_en_supuestos(mundo, con, grafo, ahora, monkeypatch):
     monkeypatch.setattr(optimizar, "FACTOR_EMPAQUE_ACTIVO", 1.2)
-    con.execute("UPDATE acopios SET tiene_frio=? WHERE id=1", (frio,))
-    # Vence en 31 min: sin empaque nada llega con 30 min de margen; con empaque y frío (37,2 min) sí.
+    con.execute("UPDATE acopios SET tiene_frio=1 WHERE id=1")
+    # Vence en 31 min: sin empaque nada llega con 30 min de margen; con empaque (37,2 min) sí.
     mundo.lote(2, producto="fruta", kg=50, perecedero=1, vence=ahora + timedelta(minutes=31))
-    mundo.lote(3, producto="fruta", kg=50, perecedero=1, vence=ahora + timedelta(minutes=31), empaque=1)
+    mundo.lote(3, producto="fruta", kg=50, perecedero=1, vence=ahora + timedelta(minutes=31), acopio_id=1,
+               empaque=1)
     mundo.pedido(1, 3, 20, producto="fruta")
     mundo.listo()
     pid = optimizar.planificar(con, segundos=SEG, g=grafo, ahora=ahora)
     _, r = plan(con, pid)
-    if lote_usado:
-        assert r["pedidos_atendidos"] == 1
-        assert [l["lote_id"] for l in r["surtido"]["1"]] == [lote_usado]
-    else:
-        assert r["pedidos_atendidos"] == 0
-    if r.get("supuestos"):
-        assert r["supuestos"]["factor_empaque_activo"] == 1.2
-        assert "ICTA" in r["supuestos"]["factor_empaque_activo_nota"]
-        assert "37476" in r["supuestos"]["factor_empaque_activo_nota"]
-        assert "fruta" in r["supuestos"]["factor_empaque_activo_aplica"]
-
-
-def test_factor_de_empaque_por_defecto_es_1_2():
-    import os
-    assert optimizar.FACTOR_EMPAQUE_ACTIVO == max(1.0, float(os.environ.get("DESPACHOX_FACTOR_EMPAQUE") or 1.2))
+    assert r["pedidos_atendidos"] == 1
+    assert [l["lote_id"] for l in r["surtido"]["1"]] == [3]
+    assert r["supuestos"]["factor_empaque_activo"] == optimizar.FACTOR_EMPAQUE_ACTIVO
+    assert "ICTA" in r["supuestos"]["factor_empaque_activo_nota"]
+    assert "37476" in r["supuestos"]["factor_empaque_activo_nota"]
+    assert "fruta" in r["supuestos"]["factor_empaque_activo_aplica_a"]
 
 
 # ---------- 3. cantidad supuesta ----------

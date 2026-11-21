@@ -6,6 +6,8 @@ Uso:
 
 Regla del módulo: el plan siempre nace `propuesto`; solo el despachador lo aprueba. Si no hay
 solución se escribe un plan vacío con el motivo. Nunca se lanza una excepción hacia afuera.
+Una alerta por silencio (`pedidos.origen='silencio'`) nunca sale con comida, aunque esté
+confirmada: no se surte ni se rutea, y queda listada en `resumen.verificar`.
 
 Modelo (sustituto declarado de «tiempo de llegada y privación»):
   minimizar  tiempo de viaje
@@ -41,25 +43,31 @@ KG_POR_FAMILIA = 10.0            # si el pedido no trae kilos
 LIMITE_POR_URGENCIA_H = {3: 4, 2: 12, 1: 24}      # si el pedido no trae `limite_en`
 PESO_RETRASO = {1: 1, 2: 3, 3: 10}                # costo por segundo de retraso
 # Los pedidos de puntos críticos (albergues, comedores) pesan más en el retraso y en quedar
-# sin atender: es lo que mide el indicador del reto. 1 = sin trato especial. El valor por
-# defecto es 3: en el barrido de la simulación (docs/SIMULACION.md, sección 8) mejora en promedio
-# los críticos a tiempo y no empeora nada medible; en 30 semillas nuevas la ventaja sobre la regla
-# experta es positiva pero no significativa. Lo aprobó Carlos el 20 de noviembre a las 5:22 p. m.
-# Se barre con la variable de entorno DESPACHOX_FACTOR_CRITICO.
+# sin atender: es lo que mide el indicador del reto. 1 = sin trato especial. El 3 por defecto
+# lo propuso la simulación (barrido de 1, 3, 10 y 30 en docs/SIMULACION.md, sección 8; canal,
+# 16:57) y lo aprobó Carlos el viernes 20: mejora en promedio los críticos a tiempo y no
+# empeora nada medido. Se barre con la variable de entorno DESPACHOX_FACTOR_CRITICO.
 FACTOR_CRITICO = max(1, int(os.environ.get("DESPACHOX_FACTOR_CRITICO") or 3))
+MOTIVO_SILENCIO = "alerta por silencio: visita de verificación, no sale con comida"
 PENAL_SIN_ATENDER = 20_000_000                    # por nivel de urgencia
 PENAL_KG_PERECEDERO = 20_000                      # extra por kilo perecedero que se quedaría
-# Empaque captador de etileno (patente UNAL, certificado 37476). Un lote de fruta con
-# `empaque_activo=1` en un acopio con frío dura más: el tiempo que le queda hasta `vence_en` se
-# multiplica por este factor. 1,2 es una cota inferior: en la solicitud de la patente, gulupa a
-# 8 °C sin empaque llega al pico de etileno en la semana 5 y con empaque no lo tiene hasta la
-# semana 6 (figuras 1 y 2, folio 18; docs/investigacion/07_patentes_a_fondo.md). No hay medición
-# en otros productos ni sin frío, así que ahí vale 1,0. Lo decidió Carlos el 20 de noviembre a
-# las 11:00 p. m. Se barre con DESPACHOX_FACTOR_EMPAQUE.
+# Empaque captador de etileno (patente UNAL, certificado 37476). Un lote de fruta perecedera con
+# `empaque_activo=1`, guardado en un acopio con frío (`tiene_frio=1`), dura más: el tiempo que le
+# queda hasta `vence_en` se multiplica por este factor. A todo lo demás se le aplica 1,0.
+# La solicitud de la patente solo lo probó en gulupa a 8 °C: sin empaque el pico de etileno llega
+# en la semana 5 y con el empaque no hay pico hasta la semana 6 (figuras 1 y 2, folio 18;
+# docs/investigacion/07_patentes_a_fondo.md). 6/5 = 1,2 es una cota inferior, no una vida útil
+# medida. Se barre con DESPACHOX_FACTOR_EMPAQUE.
 FACTOR_EMPAQUE_ACTIVO = max(1.0, float(os.environ.get("DESPACHOX_FACTOR_EMPAQUE") or 1.2))
 NOTA_EMPAQUE = ("cota inferior medida en gulupa a 8 °C en la solicitud de la patente UNAL 37476; "
                 "pendiente de datos del ICTA para otros productos")
-APLICA_EMPAQUE = "solo fruta en acopios con frío"
+EMPAQUE_APLICA_A = "lotes de fruta perecedera con empaque activo en acopios con frío; 1,0 en lo demás"
+# Frutas frescas, ya normalizadas (sin tildes, minúsculas). El plátano no está: el SIPSA del DANE
+# lo cuenta con los tubérculos, no con las frutas.
+FRUTAS = ("fruta", "frutas", "gulupa", "maracuya", "granadilla", "curuba", "uchuva", "mora", "fresa",
+          "lulo", "guayaba", "feijoa", "tomate de arbol", "banano", "naranja", "mandarina", "limon",
+          "mango", "papaya", "pina", "manzana", "pera", "uva", "durazno", "melon", "patilla",
+          "guanabana", "pitahaya", "aguacate")
 
 
 @dataclass
@@ -160,12 +168,6 @@ def _demanda_lineas(p: dict) -> list[dict]:
     return [{"producto": None, "kg": total}]
 
 
-def es_visita(p: dict) -> bool:
-    """Alerta por silencio (`origen='silencio'`) que el despachador confirmó: se va a verificar
-    con una parada sin carga, no se surte comida. La alerta la crea entrada/silencio.py."""
-    return p.get("origen") == "silencio"
-
-
 def _sirve(lote: dict, producto: str | None) -> bool:
     if producto is None:                       # mercado genérico: solo no perecederos
         return not lote["perecedero"]
@@ -174,33 +176,43 @@ def _sirve(lote: dict, producto: str | None) -> bool:
 
 
 def es_fruta(producto: str | None) -> bool:
-    n = normalizar(producto or "")
-    return n.startswith("fruta") or n == "gulupa"
+    """«fruta», «frutas», «gulupa», «mora de castilla»…; no «verdura» ni «tomate»."""
+    n = normalizar(producto)
+    return any(n == f or n.startswith(f + " ") for f in FRUTAS)
 
 
-def vence_efectivo(lote: dict, ahora: datetime) -> datetime | None:
-    """Vencimiento que usa el modelo. El empaque alarga el tiempo restante solo en fruta con frío.
+def factor_empaque(lote: dict, frio: bool) -> float:
+    """FACTOR_EMPAQUE_ACTIVO para fruta perecedera con empaque activo en un acopio con frío; si no, 1,0."""
+    if frio and lote.get("perecedero") and lote.get("empaque_activo") and es_fruta(lote.get("producto")):
+        return FACTOR_EMPAQUE_ACTIVO
+    return 1.0
 
-    `acopio_frio` lo pone `_resolver` a partir de `acopios.tiene_frio`; sin esa clave no se alarga.
+
+def vence_efectivo(lote: dict, ahora: datetime, frio: bool = False) -> datetime | None:
+    """Vencimiento que usa el modelo. `frio`: el acopio del lote tiene frío.
+
+    Solo a la fruta perecedera con empaque activo en frío se le alarga el tiempo restante.
     """
     vence = _fecha(lote.get("vence_en"))
-    if (vence is None or vence <= ahora or not lote.get("perecedero") or not lote.get("empaque_activo")
-            or not lote.get("acopio_frio") or not es_fruta(lote.get("producto"))):
+    factor = factor_empaque(lote, frio)
+    if vence is None or factor == 1.0 or vence <= ahora:
         return vence
-    return ahora + (vence - ahora) * FACTOR_EMPAQUE_ACTIVO
+    return ahora + (vence - ahora) * factor
 
 
 def surtir(pedidos: list[dict], lotes: list[dict], ahora: datetime, acopios_de: dict,
-           segundos_a: dict, existencias: dict[int, float] | None = None) -> dict[int, Surtido]:
+           segundos_a: dict, existencias: dict[int, float] | None = None,
+           frios: frozenset[int] | set[int] = frozenset()) -> dict[int, Surtido]:
     """Asigna lotes a pedidos: primero el pedido más urgente, primero el lote que vence primero.
 
     acopios_de[pedido_id]  -> acopios desde los que algún vehículo puede llegar al punto
     segundos_a[(acopio_id, pedido_id)] -> tiempo de viaje del vehículo más rápido
+    frios -> ids de los acopios con frío (solo ahí cuenta el empaque activo)
     Un lote que vencería antes de poder llegar no se asigna a ese pedido.
     """
     queda = existencias if existencias is not None else {l["id"]: float(l["kg"]) for l in lotes}
     lejos = datetime.max.replace(tzinfo=db.BOGOTA)
-    vence_de = {l["id"]: vence_efectivo(l, ahora) for l in lotes}
+    vence_de = {l["id"]: vence_efectivo(l, ahora, l["acopio_id"] in frios) for l in lotes}
     orden_lotes = sorted(lotes, key=lambda l: (vence_de[l["id"]] or lejos, l["id"]))
     resultado: dict[int, Surtido] = {}
 
@@ -291,15 +303,29 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
             avisos.append(f"vehículo {v['id']}: sin acopio asignado, queda fuera del plan")
         else:
             flota.append(v)
-    pedidos = [p for p in datos["pedidos"] if p["punto_id"] in puntos]
+    # Una alerta por silencio (`origen='silencio'`, entrada/silencio.py) es una visita de
+    # verificación, no un pedido: nunca sale con comida. Se aparta antes del surtido para que no
+    # reserve inventario, no entra al ruteo ni a los indicadores y queda en `resumen.verificar`.
+    pedidos, verificar = [], []
+    for p in datos["pedidos"]:
+        if p["punto_id"] not in puntos:
+            continue
+        if p.get("origen") == "silencio":
+            verificar.append({"pedido_id": p["id"], "punto_id": p["punto_id"], "motivo": MOTIVO_SILENCIO})
+            avisos.append(f"pedido {p['id']} ({puntos[p['punto_id']]['nombre']}): {MOTIVO_SILENCIO}. "
+                          "Descártelo o reemplácelo por un pedido real.")
+        else:
+            pedidos.append(p)
 
     def vacio(motivo: str) -> dict:
         return {"paradas": [], "resumen": {
             "vacio": True, "motivo_vacio": motivo, "pedidos_considerados": len(pedidos),
-            "pedidos_atendidos": 0, "sin_atender": sin_atender, "avisos": avisos}}
+            "pedidos_atendidos": 0, "sin_atender": sin_atender, "verificar": verificar, "avisos": avisos}}
 
     if not pedidos:
-        return vacio("no hay pedidos confirmados por despachar")
+        return vacio("no hay pedidos confirmados por despachar"
+                     + (f"; {len(verificar)} alerta(s) por silencio se verifican en persona, sin comida"
+                        if verificar else ""))
     if not flota:
         return vacio("no hay vehículos disponibles")
 
@@ -336,14 +362,11 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
             t = matrices[v["tipo"]].tiempo(inicio_de[v["id"]], f"punto:{p['punto_id']}")
             clave = (v["acopio_id"], p["id"])
             segundos_a[clave] = min(segundos_a.get(clave, t), t)
-    lotes = [{**l, "acopio_frio": bool((acopios.get(l["acopio_id"]) or {}).get("tiene_frio"))}
-             for l in datos["lotes"]]
-    existencias = {l["id"]: float(l["kg"]) for l in lotes}
+    existencias = {l["id"]: float(l["kg"]) for l in datos["lotes"]}
+    frios = frozenset(a for a, r in acopios.items() if r.get("tiene_frio"))
     todos_acopios = {p["id"]: list(acopios) for p in datos["ya_asignados"]}
-    surtir(datos["ya_asignados"], lotes, ahora, todos_acopios, {}, existencias)  # ya comprometido
-    surtido = surtir([p for p in pedidos if not es_visita(p)], lotes, ahora, acopios_de,
-                     segundos_a, existencias)
-    surtido.update({p["id"]: Surtido() for p in pedidos if es_visita(p)})
+    surtir(datos["ya_asignados"], datos["lotes"], ahora, todos_acopios, {}, existencias, frios)  # ya comprometido
+    surtido = surtir(pedidos, datos["lotes"], ahora, acopios_de, segundos_a, existencias, frios)
 
     # --- Qué pedidos entran al modelo ---
     nodos_pedido: list[dict] = []
@@ -353,12 +376,11 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
         if not acopios_de[p["id"]]:
             sin_atender.append({**base, "motivo": "punto aislado: ningún vehículo disponible llega"})
             continue
-        visita = es_visita(p)
-        if s.kg <= 0 and not visita:
+        if s.kg <= 0:
             sin_atender.append({**base, "motivo": "sin inventario para este pedido"})
             continue
         permitidos = [k for k, v in enumerate(flota)
-                      if (visita or v["acopio_id"] == s.acopio_id) and s.kg <= v["capacidad_kg"]
+                      if v["acopio_id"] == s.acopio_id and s.kg <= v["capacidad_kg"]
                       and (bloqueos.get(p["id"]) == v["id"] if p["id"] in bloqueos
                            else v["estado"] != "en_ruta" and llega(v, p))]
         if not permitidos:
@@ -371,10 +393,9 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
         if s.vence is not None:
             duro = int((s.vence - ahora).total_seconds()) - MARGEN_VENCIMIENTO_S
         notas: list[str] = []
-        if not visita:
-            _demanda(p, notas)
+        _demanda(p, notas)
         nodos_pedido.append({"p": p, "s": s, "permitidos": permitidos, "urg": urg, "limite": limite,
-                             "supuesta": "; ".join(notas) or None, "visita": visita,
+                             "supuesta": "; ".join(notas) or None,
                              "factor": FACTOR_CRITICO if puntos[p["punto_id"]]["critico"] else 1,
                              "blando": max(0, int((limite - ahora).total_seconds())), "duro": duro})
     if not nodos_pedido:
@@ -447,7 +468,7 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
             atendidos.add(x["p"]["id"])
             retraso = max(0, llegada_s - x["blando"])
             retraso_total += retraso
-            if puntos[x["p"]["punto_id"]]["critico"] and not x["visita"]:   # una visita no es una entrega
+            if puntos[x["p"]["punto_id"]]["critico"]:
                 criticos_total += 1
                 criticos_a_tiempo += retraso == 0
             paradas.append({
@@ -455,7 +476,7 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
                 "pedido_id": x["p"]["id"], "kg": round(x["s"].kg, 3),
                 "llegada_estimada": (ahora + timedelta(seconds=llegada_s)).isoformat(timespec="seconds"),
                 "geometria": m.geometria(g, previo, claves[n]), "retraso_s": retraso,
-                "cantidad_supuesta": x["supuesta"], "visita": x["visita"]})
+                "cantidad_supuesta": x["supuesta"]})
             previo = claves[n]
         if orden:
             por_vehiculo.append({
@@ -477,9 +498,6 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
     hechos = [x for x in nodos_pedido if x["p"]["id"] in atendidos]
     supuestas = {str(x["p"]["id"]): x["supuesta"] for x in hechos if x["supuesta"]}
     for x in hechos:
-        if x["visita"]:
-            avisos.append(f"pedido {x['p']['id']} ({puntos[x['p']['punto_id']]['nombre']}): alerta por silencio, "
-                          "parada de verificación sin carga.")
         if x["supuesta"]:
             avisos.append(f"pedido {x['p']['id']} ({puntos[x['p']['punto_id']]['nombre']}): cantidad supuesta, "
                           f"{round(x['s'].kg, 1):g} kg; {x['supuesta']}. Confirmar con quien pidió.")
@@ -494,8 +512,8 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
         "retraso_total_s": retraso_total,
         "criticos": {"paradas": criticos_total, "a_tiempo": criticos_a_tiempo},
         "sin_atender": sin_atender,
+        "verificar": verificar,
         "cantidad_supuesta": supuestas,
-        "visitas": [x["p"]["id"] for x in hechos if x["visita"]],
         "faltantes": [{"pedido_id": x["p"]["id"], **f} for x in hechos for f in x["s"].faltantes],
         "surtido": {str(x["p"]["id"]): [{k: l[k] for k in ("lote_id", "producto", "kg")}
                                         for l in x["s"].lineas] for x in hechos},
@@ -511,7 +529,7 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
                       "factor_critico": FACTOR_CRITICO,
                       "factor_empaque_activo": FACTOR_EMPAQUE_ACTIVO,
                       "factor_empaque_activo_nota": NOTA_EMPAQUE,
-                      "factor_empaque_activo_aplica": APLICA_EMPAQUE,
+                      "factor_empaque_activo_aplica_a": EMPAQUE_APLICA_A,
                       "factor_tiempo": mod_matriz.FACTOR_TIEMPO, "un_viaje_por_vehiculo": True},
     }
     if not paradas:
