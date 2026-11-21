@@ -104,7 +104,7 @@ El núcleo es un ruteo de vehículos con capacidad y ventanas de tiempo. Lo reso
 
 **15. ¿La simulación no está hecha a su favor?**
 
-Para evitarlo, pusimos como línea base a un despachador con oficio que prioriza lo urgente y rota la bodega, porque una regla intuitiva puede quedar cerca del óptimo (Cook y Lodree, 2017). También encontramos dos supuestos optimistas. Uno eran los 39,0 km/h en vías primarias, frente a 22,6 km/h de media en la ruta de un bus diésel en Manizales (tesis UNAL de 2019, p. 50). El otro, un huevo que vencía en horas cuando dura días [M, F]. Esta noche repetimos la corrida con las velocidades de la tesis UNAL de 2019 (`docs/SIMULACION.md`, sección 9), pero la vida útil por producto todavía no se corrió.
+Pusimos como línea base a un despachador con oficio que prioriza lo urgente y rota la bodega, porque una regla intuitiva puede quedar cerca del óptimo (Cook y Lodree, 2017). También encontramos dos supuestos optimistas. Uno eran los 39,0 km/h en vías primarias, frente a 22,6 km/h de media en la ruta de un bus diésel en Manizales (tesis UNAL de 2019, p. 50). El otro, un huevo que vencía en horas cuando dura días [M, F]. Esta noche repetimos la corrida con las velocidades de la tesis UNAL de 2019 (`docs/SIMULACION.md`, sección 9), pero la vida útil por producto todavía no se corrió.
 
 *Respaldo.* `docs/SIMULACION.md`, sección 3; `docs/datos/flota_perecederos_costos.md`, secciones 1 y 3; `docs/RIESGOS.md`, R6.
 
