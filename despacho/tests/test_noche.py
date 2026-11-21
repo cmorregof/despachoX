@@ -91,3 +91,63 @@ def test_semilla_empaque_solo_en_fruta_del_acopio_con_frio():
     assert con_empaque, "la semilla debe mostrar al menos un lote con empaque"
     assert all(l["producto"] == "fruta" and frio[l["acopio_id"]] for l in con_empaque)
     assert all(l["empaque_activo"] == "1" for l in lotes if l["producto"] == "fruta" and frio[l["acopio_id"]])
+
+
+# ---------- alertas por silencio ----------
+
+def _alerta(con, id, punto_id, urgencia=2, estado="confirmado"):
+    """Como la deja entrada/silencio.py: sin familias, kilos ni productos."""
+    from datetime import timedelta
+    from despacho.tests.conftest import AHORA, iso
+    con.execute("INSERT INTO pedidos(id,creado_en,punto_id,urgencia,estado,texto_original,origen) "
+                "VALUES (?,?,?,?,?, 'Sin contacto hace 7 h. Visita de verificación.', 'silencio')",
+                (id, iso(AHORA - timedelta(hours=2)), punto_id, urgencia, estado))
+
+
+def _resumen(con, plan_id):
+    import json
+    return json.loads(con.execute("SELECT resumen FROM planes WHERE id=?", (plan_id,)).fetchone()[0])
+
+
+def test_alerta_de_silencio_confirmada_no_sale_con_comida(mundo, con, grafo, ahora):
+    from despacho import optimizar, paquetes
+    mundo.punto(5, 12, critico=1)
+    con.execute("UPDATE lotes SET kg=20 WHERE id=1")       # solo 20 kg de arroz en bodega
+    _alerta(con, 1, 5, urgencia=3)                          # sin el arreglo, se surtiría primero
+    mundo.pedido(2, 3, 20)
+    mundo.listo()
+    pid = optimizar.planificar(con, segundos=1, g=grafo, ahora=ahora)
+    r = _resumen(con, pid)
+    assert [p["pedido_id"] for p in con.execute("SELECT pedido_id FROM paradas WHERE plan_id=?", (pid,))] == [2]
+    assert r["verificar"] == [{"pedido_id": 1, "punto_id": 5, "motivo": optimizar.MOTIVO_SILENCIO}]
+    assert r["pedidos_considerados"] == 1 and r["pedidos_atendidos"] == 1
+    assert r["criticos"] == {"paradas": 0, "a_tiempo": 0}
+    assert r["sin_atender"] == [] and r["faltantes"] == []  # no le quitó inventario al pedido real
+    assert r["surtido"]["2"] == [{"lote_id": 1, "producto": "arroz", "kg": 20}]
+    assert any("pedido 1" in a and "no sale con comida" in a for a in r["avisos"])
+    assert optimizar.aprobar(con, pid, "despachador de prueba")
+    assert [f["pedido_id"] for f in paquetes.listar(con)] == [2]
+    assert con.execute("SELECT estado FROM pedidos WHERE id=1").fetchone()[0] == "confirmado"
+
+
+def test_solo_alertas_de_silencio_da_plan_vacio_que_lo_explica(mundo, con, grafo, ahora):
+    from despacho import optimizar
+    _alerta(con, 1, 1)
+    mundo.listo()
+    r = _resumen(con, optimizar.planificar(con, segundos=1, g=grafo, ahora=ahora))
+    assert r["vacio"] and "alerta(s) por silencio" in r["motivo_vacio"]
+    assert [v["pedido_id"] for v in r["verificar"]] == [1]
+
+
+def test_recalculo_saca_la_alerta_aunque_figure_asignada(mundo, con, grafo, ahora):
+    from despacho import optimizar, recalcular
+    mundo.pedido(2, 3, 20)
+    mundo.listo()
+    p1 = optimizar.planificar(con, segundos=1, g=grafo, ahora=ahora)
+    assert optimizar.aprobar(con, p1)
+    _alerta(con, 1, 1, estado="asignado")                   # como si viniera de una base vieja
+    con.commit()
+    p2 = recalcular.recalcular(con, segundos=1, g=grafo, ahora=ahora, motivo="pedido nuevo")
+    r = _resumen(con, p2)
+    paradas = [p["pedido_id"] for p in con.execute("SELECT pedido_id FROM paradas WHERE plan_id=?", (p2,))]
+    assert paradas == [2] and [v["pedido_id"] for v in r["verificar"]] == [1]

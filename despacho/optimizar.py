@@ -6,6 +6,8 @@ Uso:
 
 Regla del módulo: el plan siempre nace `propuesto`; solo el despachador lo aprueba. Si no hay
 solución se escribe un plan vacío con el motivo. Nunca se lanza una excepción hacia afuera.
+Una alerta por silencio (`pedidos.origen='silencio'`) nunca sale con comida, aunque esté
+confirmada: no se surte ni se rutea, y queda listada en `resumen.verificar`.
 
 Modelo (sustituto declarado de «tiempo de llegada y privación»):
   minimizar  tiempo de viaje
@@ -46,6 +48,7 @@ PESO_RETRASO = {1: 1, 2: 3, 3: 10}                # costo por segundo de retraso
 # 16:57) y lo aprobó Carlos el viernes 20: mejora en promedio los críticos a tiempo y no
 # empeora nada medido. Se barre con la variable de entorno DESPACHOX_FACTOR_CRITICO.
 FACTOR_CRITICO = max(1, int(os.environ.get("DESPACHOX_FACTOR_CRITICO") or 3))
+MOTIVO_SILENCIO = "alerta por silencio: visita de verificación, no sale con comida"
 PENAL_SIN_ATENDER = 20_000_000                    # por nivel de urgencia
 PENAL_KG_PERECEDERO = 20_000                      # extra por kilo perecedero que se quedaría
 # Empaque captador de etileno (patente UNAL, certificado 37476). Un lote de fruta perecedera con
@@ -293,15 +296,29 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
             avisos.append(f"vehículo {v['id']}: sin acopio asignado, queda fuera del plan")
         else:
             flota.append(v)
-    pedidos = [p for p in datos["pedidos"] if p["punto_id"] in puntos]
+    # Una alerta por silencio (`origen='silencio'`, entrada/silencio.py) es una visita de
+    # verificación, no un pedido: nunca sale con comida. Se aparta antes del surtido para que no
+    # reserve inventario, no entra al ruteo ni a los indicadores y queda en `resumen.verificar`.
+    pedidos, verificar = [], []
+    for p in datos["pedidos"]:
+        if p["punto_id"] not in puntos:
+            continue
+        if p.get("origen") == "silencio":
+            verificar.append({"pedido_id": p["id"], "punto_id": p["punto_id"], "motivo": MOTIVO_SILENCIO})
+            avisos.append(f"pedido {p['id']} ({puntos[p['punto_id']]['nombre']}): {MOTIVO_SILENCIO}. "
+                          "Descártelo o reemplácelo por un pedido real.")
+        else:
+            pedidos.append(p)
 
     def vacio(motivo: str) -> dict:
         return {"paradas": [], "resumen": {
             "vacio": True, "motivo_vacio": motivo, "pedidos_considerados": len(pedidos),
-            "pedidos_atendidos": 0, "sin_atender": sin_atender, "avisos": avisos}}
+            "pedidos_atendidos": 0, "sin_atender": sin_atender, "verificar": verificar, "avisos": avisos}}
 
     if not pedidos:
-        return vacio("no hay pedidos confirmados por despachar")
+        return vacio("no hay pedidos confirmados por despachar"
+                     + (f"; {len(verificar)} alerta(s) por silencio se verifican en persona, sin comida"
+                        if verificar else ""))
     if not flota:
         return vacio("no hay vehículos disponibles")
 
@@ -488,6 +505,7 @@ def _resolver(datos: dict, g, ahora: datetime, segundos: int, bloqueos: dict[int
         "retraso_total_s": retraso_total,
         "criticos": {"paradas": criticos_total, "a_tiempo": criticos_a_tiempo},
         "sin_atender": sin_atender,
+        "verificar": verificar,
         "cantidad_supuesta": supuestas,
         "faltantes": [{"pedido_id": x["p"]["id"], **f} for x in hechos for f in x["s"].faltantes],
         "surtido": {str(x["p"]["id"]): [{k: l[k] for k in ("lote_id", "producto", "kg")}
