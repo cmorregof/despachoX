@@ -12,9 +12,9 @@ Banco de 30 preguntas para ensayar la defensa del sábado, agrupadas por criteri
 
 **1. ¿Cuál es el problema, en una frase?**
 
-Después del sismo, la comida donada llegó a la región y se atascó en el despacho. Al sexto día, la red de bancos de alimentos tenía 404.587 kg en acopio y había entregado 41.163 kg en todo el país [F]. Según las fuentes que revisamos, ninguna herramienta en uso une el pedido de cada barrio o vereda, el vehículo, la vía abierta y la confirmación de entrega.
+Después del sismo, la comida donada llegó a la región y se atascó en el despacho. Según Portafolio, el 16 de agosto los bancos de alimentos tenían 404.587 kg en acopio y 157.164 kg en tránsito, y habían entregado 41.163 kg [F]. Según las fuentes que revisamos, ninguna herramienta en uso une el pedido de cada barrio o vereda, el vehículo, la vía abierta y la confirmación de entrega.
 
-*Respaldo.* `docs/FICHA_CORTA.md`, componente 1. La cifra es de Portafolio, 16 de agosto, en `docs/investigacion/10_problema_usuarios_alternativas.md`, sección 1.
+*Respaldo.* `docs/FICHA_CORTA.md`, componente 1. La cifra es de Portafolio, 16 de agosto, en `docs/investigacion/10_problema_usuarios_alternativas.md`, sección 1. La nota no dice «sexto día» ni «en todo el país», no da fecha de corte y atribuye las cifras a «los Bancos de Alimentos» (`docs/FUENTES.md`, rama `fuentes-noche`, D3).
 
 **2. ¿Por qué es un problema de Manizales y no solo del sismo?**
 
